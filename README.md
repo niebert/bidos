@@ -1,6 +1,7 @@
-BiDoS (Education Documentation System for Daycare)
-==================================================
+### BiDoS (Bildungsdokumentationssystem für Kindertagesstätten)
 
-**Bi**ldungs**do**kumentations**s**ystem für Kindertagesstätten
+_Education Documentation System for Daycare_
 
-+ [Technology Stack](https://github.com/rwilhelm/BiDoS/blob/master/doc/TECHSTACK.md)
+
+
+Not much to see, yet. Check the [Wiki](https://github.com/rwilhelm/BiDoS/wiki) for a drafted [Technology Stack](https://github.com/rwilhelm/BiDoS/wiki/Technology-Stack).
