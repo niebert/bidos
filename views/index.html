@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+  <meta name="google" content="notranslate"/>
+  <meta name="description" content="Live+Gov Front End"/>
+  <meta name="viewport" content="width=device-width"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>fe</title>
+
+  <link rel="stylesheet" href="lib/pure/pure-min.css"/>
+  <link rel="stylesheet" href="./css/index.css"/>
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet'>
+
+	<script src="lib/angular/angular.js" charset="utf-8"></script>
+	<script src="lib/angular-resource/angular-resource.js" charset="utf-8"></script>
+	<script src="lib/angular-route/angular-route.js" charset="utf-8"></script>
+	<script src="lib/angular-ui-router/release/angular-ui-router.js" charset="utf-8"></script>
+	<script src="lib/d3/d3.js" charset="utf-8"></script>
+</head>
+<body ng-controller="appCtrl">
+
+  <a class="logout" href='/logout'>LOG OUT</a>
+
+  <header>
+    <ul class='pure-menu pure-menu-open pure-menu-horizontal pure-menu-views'>
+      <li>
+        <a ui-sref='trips'>Records</a>
+      </li>
+      <li>
+        <a ui-sref='raw({tripId: trip.props.id})'>Raw Data</a>
+      </li>
+      <li>
+        <a ui-sref='har({tripId: trip.props.id})'>Activity Recognition</a>
+      </li>
+      <li>
+        <a ui-sref='sld({tripId: trip.props.id})'>Service Line Detection</a>
+      </li>
+    </ul>
+  </header>
+
+  <div ui-view></div>
+
+  <script src="lib/moment/min/moment.min.js"></script>
+  <script src="lib/lodash/dist/lodash.min.js"></script>
+  <script src="lib/angular-route/angular-route.js"></script>
+  <script src="lib/angular-animate/angular-animate.js"></script>
+  <script src="lib/angular-resource/angular-resource.js"></script>
+  <script src="lib/react/react.js"></script>
+  <script src="lib/d3/d3.min.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script></body>
+</html>
