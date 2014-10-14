@@ -7,8 +7,7 @@
         lodash        = require('lodash'),
         Promise       = require('bluebird'),
         passport      = require('koa-passport'),
-        LocalStrategy = require('passport-local').Strategy,
-        statements    = require('./statements');
+        LocalStrategy = require('passport-local').Strategy;
 
   var users;
 
@@ -44,6 +43,7 @@
   });
 
   module.exports = function (app) {
+    var statements = require('./statements')(app);
 
     // get auth table (users, passwords) TODO
     app.use(function *(next) {

@@ -10,16 +10,15 @@
   module.exports = function (app) {
     var statements = require('../statements')(app);
 
-    router.get('/trips', function*() {
+    router.get('/sensor/:sensorName/:tripId', function*() {
       var result = yield this.pg.db.client.query_(lodash.merge({
-        values: [this.session.passport.user]
-      }, statements.trips.user));
-
+        values: [this.params.tripId]
+      }, statements.sensors.get(this.params.sensorName)));
       this.body = result.rows;
-      this.status = result.rowCount ? 200 : 204;
+      this.status = 200;
     });
 
-    return { trips: router };
+    return { sensors: router };
   };
 
 }());

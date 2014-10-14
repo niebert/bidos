@@ -33,8 +33,8 @@
 
   gulp.task('server', function() {
     nodemon({
-      script: 'app.js',
-      watch: 'app.js',
+      script: 'index.js',
+      watch: 'index.js',
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'tunnel' }
     })
@@ -43,8 +43,8 @@
 
   gulp.task('server-production', function() {
     nodemon({
-      script: 'app.js',
-      watch: 'app.js',
+      script: 'index.js',
+      watch: 'index.js',
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'production' }
     })
@@ -53,8 +53,8 @@
 
   gulp.task('server-development', function() {
     nodemon({
-      script: 'app.js',
-      watch: 'app.js',
+      script: 'index.js',
+      watch: 'index.js',
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'development' }
     })
@@ -63,8 +63,8 @@
 
   gulp.task('server-local', function() {
     nodemon({
-      script: 'app.js',
-      watch: 'app.js',
+      script: 'index.js',
+      watch: 'index.js',
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'local' }
     })

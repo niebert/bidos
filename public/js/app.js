@@ -8,12 +8,7 @@
     api: {
       trips: 'api/trips',
       tables: 'api/tables',
-      columns: function(table) { return 'api/columns/' + table; },
-
-      // e.g. localhost:3000/api/trips/18/sensor_accelerometer
-      sensors: function(id, sensor) { return 'api/trips/' + id + '/' + sensor; },
-
-      count: function(id, table) { return 'api/count/' + id + '/' + table; },
+      sensors: function(id, sensor) { return 'api/sensor/' + sensor + '/' + id; },
     },
     windowSize: 200
   };
@@ -211,45 +206,9 @@
         } else {
           $http.get(config.api.tables)
           .success(function(data) {
-
-            var promises = data.map(function(table) {
-              return $http.get(config.api.columns(table.relname))
-              .success(function(columns) {
-                tables[table.relname] = _.map(columns, 'attname');
-              });
-            });
-
-            $q.all(promises).then(function(data) {
-              deferred.resolve(tables);
-            });
+              deferred.resolve(data);
           });
         }
-
-        return deferred.promise;
-      },
-
-      count: function(tripId) {
-        var deferred = $q.defer();
-
-        // FIXME you cant just count for all tables, as there's e.g. auth and
-        // service_sld w/o trip_id or ts
-        // -> remove auth in back end after retrieval
-
-        // step101: get all tables
-        // step201: pick tables w/ trip_id and ts
-
-        // TODO clean up using _.all
-        // remove
-        var tablesWithTripId = _.pick(tables, function(table) { return _.contains(table, 'trip_id'); });
-        var tablesWithTripIdAndTs = _.pick(tablesWithTripId, function(table) { return _.contains(table, 'ts'); });
-
-        var promises = _.keys(tablesWithTripIdAndTs).map(function(table) {
-          return $http.get(config.api.count(tripId, table));
-        });
-
-        $q.all(promises).then(function(data) {
-          deferred.resolve(data);
-        });
 
         return deferred.promise;
       },
@@ -278,87 +237,30 @@
       // get all sensor, gps and har data for a trip
       loadData: function(trip, tables) {
 
-        // resolves: $scope.trip.sensors, e.g.:
-        // $scope.trip.sensors = {
-        //   ...
-        // }
-        var init = function() {
-          var deferred = $q.defer();
-
-          // $scope.trip.state.updated is changed on ...
-          if (trip.state.updated) {
-            deferred.resolve(_.pick(trip.sensors, function(d) { return d.isMotionSensor; }));
-          } else {
-            this.count(trip.props.id).then(function(counts) {
-
-              // -> {sensor_velocity: "0", ...}
-              counts = _(counts).map('data').flatten().foldr(function(a,b){ return _.merge(a, b); });
-
-              trip.sensors = _.pick(counts, function(d) { return d; }); // to filter sensors w/o data: return d > 0
-
-              // {sensor_gps: {count:123}, ...}
-              trip.sensors = _.each(trip.sensors, function(v,k){ trip.sensors[k] = {}; trip.sensors[k].count = v; });
-
-              // [{name: sensor_gps, count:123}, ...]
-              // trip.sensors_.map(trip.sensors, function(v,k){ return {name:k, count:v.count}; });
-
-              _(tables).each(function(columns, tableName) {
-                if (trip.sensors.hasOwnProperty(tableName)) {
-                  trip.sensors[tableName].columns = columns;
-                } else {
-                  trip.sensors[tableName] = {};
-                  trip.sensors[tableName].columns = columns;
-                }}).value();
-
-              // mark motion sensors
-              // trip.sensors is $scope.trip.sensors
-              _(trip.sensors).each(function(sensor, sensorName, a) {
-                sensor.isMotionSensor = _(['x', 'y', 'z']).all(function(xyz) {
-                  return _(tables[sensorName]).values().contains(xyz); // XXX
-                });
-              });
-
-              deferred.resolve(trip.sensors);
-            });
-          }
-          return deferred.promise;
-        }.bind(this);
-
         var deferred = $q.defer();
-
-        init().then(function(sensors) {
-          // sensors = _.pick(sensors, function(sensor) { return sensor.isMotionSensor; });
-
-          sensors = _.pick(sensors, function(sensor) { return _.contains(sensor.columns, 'trip_id'); });
-          sensors = _.pick(sensors, function(sensor) { return _.contains(sensor.columns, 'ts'); });
-
-          var queries = _(sensors).map(function(sensor, sensorName) {
-            var options;
-            if (sensor.isMotionSensor) {
-              options = {
-                params: {
-                  'w': (trip.state.windowSize || config.windowSize),
-                  'e': (trip.state.extent && trip.state.extent.join(","))
-                }
-              };
+        // debugger
+        var sensors = tables;
+        var queries = _(sensors).map(function(sensorName) {
+          return $http.get(config.api.sensors(trip.props.id, sensorName), {
+            params: {
+              'w': (trip.state.windowSize || config.windowSize),
+              'e': (trip.state.extent && trip.state.extent.join(","))
             }
-
-            return $http.get(config.api.sensors(trip.props.id, sensorName), options);
           });
+        });
 
-          // xhr to api for every sensorname, e.g. GET /api/13/sensor_velocity
-          $q.all(queries)
-          .then(function(sensors) {
-            _.forEach(sensors, function(sensor) {
-              var sensorName = _.last(sensor.config.url.split('/'));
-              trip.sensors[sensorName].data = _.forEach(sensor.data, function(d) {
-                d.ts = +d.ts;
-              });
-
+        // xhr to api for every sensorname, e.g. GET /api/sensors/acc/13
+        $q.all(queries)
+        .then(function(sensors) {
+          _.forEach(sensors, function(sensor, i) {
+            var sensorName = tables[i];
+            trip.sensors[sensorName] = _.forEach(sensor.data, function(d) {
+              d.ts = +d.ts;
             });
-            trip.state.updated = Date.now();
-            deferred.resolve();
           });
+
+          trip.state.updated = Date.now();
+          deferred.resolve();
         });
 
         return deferred.promise;
@@ -454,10 +356,12 @@
         // $scope.trip.state.updated is changed on ... (2/2)
         $scope.$watch('trip.state.updated', function(trip) {
           if ($scope.trip.state.updated) {
+            console.info('rendering chart', $scope.trip.sensors, $scope.trip.state.extent);
+            console.log(_.pick($scope.trip.sensors, function(d) { return _.contains(Object.keys(d[0]), 'x'); }));
             React.renderComponent(Charts({
 
               // only give motion sensor data and extent state
-              sensors: _.pick($scope.trip.sensors, function(d) { return d.isMotionSensor; }),
+              sensors: _.pick($scope.trip.sensors, function(d) { return _.contains(Object.keys(d[0]), 'x'); }),
               extent: $scope.trip.state.extent || [],
 
               setState: function(state) {

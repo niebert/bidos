@@ -81,10 +81,8 @@ var Chart = React.createClass({
     var translate = function(x, y) { return 'translate(' + x + ',' + y + ')' }
 
     function dataSeries(data, props) {
-      return data.map(function(d) {
-        return props.map(function(p) {
-          return d[p];
-        });
+      return _.map(data, function(d) {
+        return [d[props[0]], d[props[1]]];
       });
     };
 

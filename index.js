@@ -38,7 +38,7 @@
   // sessions
   app.keys = config.session.keys;
   app.use(session({
-    // store: new RedisStore(), // persistent sessions
+    store: new RedisStore(), // persistent sessions
     key: config.session.cookie, // cookie name
   }));
 
@@ -65,11 +65,12 @@
     }
   };
 
-  app.use(secured); // TODO
+  // app.use(secured); // TODO
 
   // secured routes
   app.use(mount('/api', routers.trips.middleware()));
   app.use(mount('/api', routers.helpers.middleware()));
+  app.use(mount('/api', routers.sensors.middleware()));
   app.use(mount('/', serve(path.join(__dirname, 'views'))));
 
   var listen = function(port) {

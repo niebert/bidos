@@ -3,7 +3,7 @@
 var Charts = React.createClass({
   // calculates domain with given values
   calculateDomain: function(data, props) {
-    return d3.extent(_(data).select('data').map('data').flatten().map(function(d) {
+    return d3.extent(_(data).map().flatten().map(function(d) {
       return props.map(function(e) {
         return d[e];
       });
@@ -33,22 +33,21 @@ var Charts = React.createClass({
   render: function() {
 
     // don't draw charts for sensors without data
-    this.props.sensors = _.omit(this.props.sensors, function(sensor) { return sensor.data.length == 0; });
-
+    this.props.sensors = _.omit(this.props.sensors, function(sensor) { return sensor.length == 0; });
     var charts = _.map(this.props.sensors, function(sensor, sensorName) {
       return (
         <div key={sensorName} className='pure-g'>
           <div className='pure-u-24-24'>
             <ChartHeader
-              sensorName={sensorName.replace(/sensor/, '').replace(/_/g, ' ')}
-              loadedData={sensor.data.length}
+              sensorName={sensorName}
+              loadedData={sensor.length}
             />
             <ChartInfo
               sensorName={sensorName}
-              loadedData={sensor.data.length}
+              loadedData={sensor.length}
             />
             <Chart
-              data={sensor.data}
+              data={sensor}
               extent={this.props.extent}
               xDomain={this.state.xDomain}
               yDomain={this.state.yDomain}

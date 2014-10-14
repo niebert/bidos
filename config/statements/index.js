@@ -2,23 +2,25 @@
 (function() {
   'use strict';
 
-  var _ = require('lodash'),
-      Promise = require('bluebird');
-
   var fs     = require('fs'),
       path   = require('path'),
       lodash = require('lodash'),
       statements = {};
 
-  fs.readdirSync(__dirname)
-    .filter(function(file) {
-      return (file.indexOf('.') !== 0) && (file !== 'index.js');
-    })
-    .forEach(function(file) {
-      lodash.merge(statements, require('./' + file));
-    });
+  module.exports = function(app) {
 
-  // just export an object containing all prepared statements
-  module.exports = exports = statements;
+    if (!Object.keys(statements).length) {
+      console.log('getting statements');
+      fs.readdirSync(__dirname)
+        .filter(function(file) {
+          return (file.indexOf('.') !== 0) && (file !== 'index.js');
+        })
+        .forEach(function(file) {
+          lodash.merge(statements, require('./' + file)(app));
+        });
+    }
+
+    return statements;
+  };
 
 }());
