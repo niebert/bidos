@@ -13,10 +13,10 @@
       text: 'SELECT table_name FROM information_schema.columns WHERE column_name = \'ts\''
     },
 
-    tableColumns: function(relname) {
+    columns: function(tableName) {
       return {
         name: 'tableColumns',
-        text: "SELECT attname FROM pg_attribute WHERE attrelid = 'public." + relname + "'::regclass AND attnum > 0 AND NOT attisdropped ORDER BY attnum"
+        text: "SELECT attname FROM pg_attribute WHERE attrelid = 'public." + tableName + "'::regclass AND attnum > 0 AND NOT attisdropped ORDER BY attnum"
       };
     },
 

@@ -238,8 +238,7 @@
       loadData: function(trip, tables) {
 
         var deferred = $q.defer();
-        // debugger
-        var sensors = tables;
+        var sensors = tables; // TODO
         var queries = _(sensors).map(function(sensorName) {
           return $http.get(config.api.sensors(trip.props.id, sensorName), {
             params: {
@@ -356,12 +355,23 @@
         // $scope.trip.state.updated is changed on ... (2/2)
         $scope.$watch('trip.state.updated', function(trip) {
           if ($scope.trip.state.updated) {
-            console.info('rendering chart', $scope.trip.sensors, $scope.trip.state.extent);
-            console.log(_.pick($scope.trip.sensors, function(d) { return _.contains(Object.keys(d[0]), 'x'); }));
+            // console.log(Object.keys($scope.trip.sensors));
+            // console.log(Object.keys($scope.trip.sensors).length);
+            // console.log('>>> RENDERING CHARTS:', _.pick($scope.trip.sensors, function(d) { return _.contains(Object.keys(d[0]), 'x'); }));
+            // console.log($scope.trip.sensors);
+
+            var sensors = _.pick($scope.trip.sensors, function(d, i) {
+              console.log(i, d.length);
+              return d.length && _.contains(Object.keys(d[0]), 'x');
+            });
+
+            console.log('>>> RENDERING CHARTS:', sensors)
+            console.log(sensors);
+
             React.renderComponent(Charts({
 
               // only give motion sensor data and extent state
-              sensors: _.pick($scope.trip.sensors, function(d) { return _.contains(Object.keys(d[0]), 'x'); }),
+              sensors: sensors,
               extent: $scope.trip.state.extent || [],
 
               setState: function(state) {

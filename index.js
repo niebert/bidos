@@ -19,7 +19,7 @@
       serve      = require('koa-static'),
       views      = require('koa-views');
 
-  var config = require('./config').development;
+  var config = require('./config').remote_dev; // local_test, remote_dev
 
   // random middleware
   app.use(logger());
@@ -65,7 +65,7 @@
     }
   };
 
-  // app.use(secured); // TODO
+  app.use(secured); // TODO
 
   // secured routes
   app.use(mount('/api', routers.trips.middleware()));
