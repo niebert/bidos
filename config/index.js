@@ -3,31 +3,45 @@
 
 	module.exports = exports = {
 
-		local_test: {
+		development: {
 			app: {
 				port: 3000,
 				env: 'development'
 			},
 			session: {
 				keys: ['ahqua2ahj0Ci', 'weeghuyeiQu4'],
-				cookie: 'livegovwp1-local_test.sid'
+				cookie: 'bidos-dev.sid'
 			},
 			postgres: {
-				url: 'pg://localhost/liveandgov_test'
+				url: 'pg://localhost/bidos_dev'
 			}
 		},
 
-		remote_dev: {
+		test: {
 			app: {
-				port: 3000,
-				env: 'development'
+				port: 3001,
+				env: 'test'
 			},
 			session: {
-				keys: ['aica6EeF7ees', 'phu9Weu8CoeT'],
-				cookie: 'livegovwp1-remote_dev.sid'
+				keys: ['Eev6xee6', 'Ohzo1poh'],
+				cookie: 'bidos-test.sid'
 			},
 			postgres: {
-				url: 'pg://postgres:liveandgov@localhost:3333/liveandgov_dev'
+				url: 'pg://localhost/bidos_test'
+			}
+		},
+
+		production: {
+			app: {
+				port: 3002,
+				env: 'production'
+			},
+			session: {
+				keys: ['ahXe9Eexai', 'aezahL2Z'],
+				cookie: 'bidos-production.sid'
+			},
+			postgres: {
+				url: 'pg://localhost/bidos_production'
 			}
 		}
 

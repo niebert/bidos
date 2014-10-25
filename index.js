@@ -17,9 +17,12 @@
       mount      = require('koa-mount'),
       RedisStore = require('koa-redis'),
       serve      = require('koa-static'),
-      views      = require('koa-views');
+      views      = require('koa-views'),
+      jwt        = require('koa-jwt');
 
-  var config = require('./config').remote_dev; // local_test, remote_dev
+  console.log(process.env.NODE_ENV);
+  var config = require('./config').development; // development, test, production
+  // var config = require('./config').dev; // dev, test, production
 
   // random middleware
   app.use(logger());

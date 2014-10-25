@@ -36,37 +36,7 @@
       script: 'index.js',
       watch: 'index.js',
       nodeArgs: ['--harmony'],
-      env: { NODE_ENV: 'tunnel' }
-    })
-    .on('change', []);
-  });
-
-  gulp.task('server-production', function() {
-    nodemon({
-      script: 'index.js',
-      watch: 'index.js',
-      nodeArgs: ['--harmony'],
-      env: { NODE_ENV: 'production' }
-    })
-    .on('change', []);
-  });
-
-  gulp.task('server-development', function() {
-    nodemon({
-      script: 'index.js',
-      watch: 'index.js',
-      nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'development' }
-    })
-    .on('change', []);
-  });
-
-  gulp.task('server-local', function() {
-    nodemon({
-      script: 'index.js',
-      watch: 'index.js',
-      nodeArgs: ['--harmony'],
-      env: { NODE_ENV: 'local' }
     })
     .on('change', []);
   });
@@ -78,8 +48,7 @@
     gulp.watch('src/scss/**/*.scss', ['sass']);
   });
 
-  gulp.task('development', ['react', 'sass', 'server-development', 'watch']);
-  gulp.task('production',  ['react', 'sass', 'server-production', 'watch']);
-  gulp.task('local',       ['react', 'sass', 'server-local', 'watch']);
-  gulp.task('default',     ['react', 'sass', 'server', 'watch']);
+  gulp.task('development', ['react', 'sass', 'server', 'watch']);
+  gulp.task('default',     ['development']);
+
 }());
