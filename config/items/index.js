@@ -1,8 +1,9 @@
+//jshint esnext:true
+
 (function() {
   'use strict';
 
   var fs     = require('fs'),
-      path   = require('path'),
       lodash = require('lodash'),
       items  = {};
 

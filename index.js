@@ -20,9 +20,8 @@
       views      = require('koa-views'),
       jwt        = require('koa-jwt');
 
-  console.log(process.env.NODE_ENV);
+  // TODO use process.env.NODE_ENV
   var config = require('./config').development; // development, test, production
-  // var config = require('./config').dev; // dev, test, production
 
   // random middleware
   app.use(logger());
@@ -45,35 +44,34 @@
     key: config.session.cookie, // cookie name
   }));
 
-  // initialize more
-  var passport = require('./config/passport')(app),
-      routers = require('./config/routers')(app);
-
-  // authentication
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // initialize routes
+  var routes = require('./config/routes');
 
   // public routes
-  app.use(mount('/', routers.auth.middleware()));
-  app.use(mount('/', serve(path.join(__dirname, 'public'))));
-  app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
+  app.use(mount('/', routes.public.middleware()));
+  app.use(mount('/', routes.auth.middleware()));
 
-  var secured = function*(next) {
-    if (this.isAuthenticated()) {
-      console.log('authorized');
-      yield next;
-    } else {
-      console.log('unauthorized');
-      this.redirect('/login');
+  // Custom 401 handling if you don't want to expose koa-jwt errors to users
+  app.use(function *(next){
+    try {
+      yield next; // -> jwt authorization
+    } catch (err) {
+      if (401 == err.status) {
+        this.status = 401;
+        // authentication is possible but has failed
+        this.body = 'Protected resource, use Authorization header to get access\n';
+      } else {
+        throw err;
+      }
     }
-  };
+  });
 
-  app.use(secured); // TODO
+  // authorization
+  app.use(jwt({ secret: config.session.secret })); // .unless({ path: [ '/login' ]}));
 
   // secured routes
-  app.use(mount('/api', routers.trips.middleware()));
-  app.use(mount('/api', routers.helpers.middleware()));
-  app.use(mount('/api', routers.sensors.middleware()));
+  app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
+  app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/', serve(path.join(__dirname, 'views'))));
 
   var listen = function(port) {

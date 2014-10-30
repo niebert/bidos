@@ -2,6 +2,10 @@
 (function() {
 	'use strict';
 
+	///////////
+	// stub! //
+	///////////
+
 	var _ = require('lodash'),
 			Promise = require('bluebird');
 
@@ -12,9 +16,9 @@
 
 	describe('the api', function(done) {
 
-		it('should return all trips . GET /trips', function(done) {
+		it('should return all x . GET /x', function(done) {
 			request(app)
-				.get('/api/trips')
+				.get('/api/x')
 	      .set('Accept', 'application/json')
 	      .expect('Content-Type', /json/)
 				.auth('asdf', 123)

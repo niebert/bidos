@@ -10,10 +10,11 @@
 			},
 			session: {
 				keys: ['ahqua2ahj0Ci', 'weeghuyeiQu4'],
-				cookie: 'bidos-dev.sid'
+				cookie: 'bidos-development.sid',
+				secret: 'quaiQu8Aejee8MaikohdooSasohhiechieQu0idohthoo8Theesaepu6Tuc2yeed', // jwt secret
 			},
 			postgres: {
-				url: 'pg://localhost/bidos_dev'
+				url: 'pg://localhost/bidos_development'
 			}
 		},
 
@@ -24,7 +25,8 @@
 			},
 			session: {
 				keys: ['Eev6xee6', 'Ohzo1poh'],
-				cookie: 'bidos-test.sid'
+				cookie: 'bidos-test.sid',
+				secret: 'Iqu4eeheitah3aiVeYaey9eewohghiezo2Eepai1jooBaaT7ooj9wei9oob5oBoo' // jwt secret
 			},
 			postgres: {
 				url: 'pg://localhost/bidos_test'
@@ -38,7 +40,8 @@
 			},
 			session: {
 				keys: ['ahXe9Eexai', 'aezahL2Z'],
-				cookie: 'bidos-production.sid'
+				cookie: 'bidos-production.sid',
+				secret: 'loibeik7Oi7eichuthehaiteir5geiqu5oolei5ep3En3eepaavah6Ti8Ahquovi' // jwt secret
 			},
 			postgres: {
 				url: 'pg://localhost/bidos_production'

@@ -25,6 +25,7 @@
     "koa-body": "^0.3.0",
     "koa-bodyparser": "^1.0.1",
     "koa-compress": "^1.0.8",
+    "koa-cors": "0.0.13",
     "koa-generic-session": "^1.2.2",
     "koa-jwt": "^0.1.2",
     "koa-logger": "^1.2.2",

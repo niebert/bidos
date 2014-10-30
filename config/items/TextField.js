@@ -9,20 +9,20 @@
 
 	module.exports = {
 
-		// GSM
+		// Proximity
 
-		gsm: {
-			cellIdentity: {
+		prx: {
+			key: {
 				type: "text",
-				value: function(value) { return value.cellIdentity; }
+				value: function(value) { return value[0]; }
 			},
-			cellType: {
-				type: "text",
-				value: function(value) { return value.cellType; }
+			inside: {
+				type: "boolean",
+				value: function(value) { return value[1]; }
 			},
-			rssi: {
+			of: {
 				type: "text",
-				value: function(value) { return value.rssi; }
+				value: function(value) { return value[2]; }
 			}
 		}
 
