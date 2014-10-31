@@ -52,6 +52,9 @@
     yield this.redirect('/login');
   };
 
+  function* testAuth(next) {
+  }
+
   module.exports = exports = router
     .get('/login', login)
     .post('/login', authenticate, tokenize)

@@ -56,6 +56,15 @@
   app.use(mount('/css', serve(path.join(__dirname, 'public/css'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
 
+  // redirect to login if not authenticated
+  // app.use(function *(next) {
+  //   if (this.req.url !== '/login')
+  //     this.redirect('/login');
+  //   else {
+  //     yield next;
+  //   }
+  // });
+
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
   app.use(function *(next) {
