@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="google" content="notranslate"/>
   <meta name="description" content="bidos/server"/>
   <meta name="viewport" content="width=device-width"/>
@@ -27,37 +27,7 @@
 
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular-jwt/dist/angular-jwt.js"></script>
-  <script>
-    'use strict';
-    angular
-    .module('app', ['angular-jwt'])
-    .controller('appCtrl', function Controller(jwtHelper, User) {
-      var vm = this;
-      vm.login = function(username, password) {
-        console.log(username, password);
-        User.login(username, password).then(function success(res) {
-          vm.user = res.data.user;
-        }, handleError);
-      };
-
-      function handleError(res) {
-        alert('Error: ' + res.data);
-      };
-    })
-    .factory('User', function($http, $q) {
-      return {
-        login: function (username, password) {
-          return $http.post('/login', {
-            username: username,
-            password: password
-          }).then(function (res) {
-            debugger
-            return res.data.token;
-          });
-        }
-      }
-    });
-  </script>
+  <script src="js/login.js"></script>
 
 </body>
 </html>

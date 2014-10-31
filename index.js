@@ -52,18 +52,9 @@
   var routes = require('./config/routes');
 
   // mount public routes
-  app.use(mount('/', routes.auth.middleware())); // POST /login, GET /logout
-  app.use(mount('/css', serve(path.join(__dirname, 'public/css'))));
+  app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
-
-  // redirect to login if not authenticated
-  // app.use(function *(next) {
-  //   if (this.req.url !== '/login')
-  //     this.redirect('/login');
-  //   else {
-  //     yield next;
-  //   }
-  // });
+  app.use(mount('/', routes.auth.middleware())); // POST /login, GET /logout
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -80,6 +71,14 @@
     }
   });
 
+  app.use(function *(next) {
+    if (this.url.match(/^\/login/)) {
+      yield this.render('login');
+    } else {
+      yield next;
+    }
+  });
+
   /* Authorization happens next. The header sent by the client via POST must
   /* contain a validable base64 encoded payload.
 
@@ -89,11 +88,12 @@
   /* Routes below the next loc are ony accessible to authenticated clients and
   /* should be considered secure. */
 
+  app.use(function *(next) { yield next; });
   app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
   app.use(mount('/', routes.public.middleware())); // GET /
-  app.use(mount('/js', serve(path.join(__dirname, 'public/js'))));
+  app.use(mount('/', serve(path.join(__dirname, 'private'))));
   app.use(mount('/', serve(path.join(__dirname, 'views'))));
 
   // main

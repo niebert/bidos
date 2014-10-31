@@ -52,6 +52,7 @@
   gulp.task('server', function() {
     nodemon({
       script: 'index.js',
+      debug: true,
       watch: ['index.js', 'config'],
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'development' }

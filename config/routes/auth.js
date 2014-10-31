@@ -17,30 +17,31 @@
 
   function* authenticate(next) {
     var body = this.request.body;
+    console.log('authenticate():', body);
+
     if (!body.username || !body.password) {
-      this.body = 'Must provide username and password';
       this.status = 400;
-    }
-    if (body.username !== user.username || body.password !== user.password) {
-      this.body = 'Username or password incorrect';
+      this.body = 'Must provide username or password';
+    } else if (body.username !== user.username || body.password !== user.password) {
       this.status = 401;
+      this.body = 'Username or password incorrect';
+    } else {
+      console.log('else');
+      yield next;
     }
-    this.redirect('/login');
-    yield next;
-  };
+  }
 
   function* tokenize(next) {
     var token = jwt.sign({
       username: user.username
     }, config.session.secret);
 
-    this.body = {
+    console.log('token:', token);
+
+    yield this.body = {
       token: token,
       user: user
     };
-
-    // yield next;
-    this.redirect('/');
   }
 
   function* login() {
@@ -52,8 +53,7 @@
     yield this.redirect('/login');
   };
 
-  function* testAuth(next) {
-  }
+  function* testAuth(next) {}
 
   module.exports = exports = router
     .get('/login', login)
