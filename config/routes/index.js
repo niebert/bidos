@@ -4,7 +4,6 @@
   'use strict';
 
   var fs     = require('fs'),
-      lodash = require('lodash'),
       routes = {};
 
   if (!Object.keys(routes).length) {
@@ -14,7 +13,7 @@
         return (file.indexOf('.') !== 0) && (file !== 'index.js');
       })
       .forEach(function(file) {
-        lodash.merge(routes, require('./' + file));
+        routes[file.split('.')[0]] = require('./' + file);
       });
   }
 

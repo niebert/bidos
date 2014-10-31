@@ -13,6 +13,7 @@
     windowSize: 200
   };
 
+
   angular.module('app', ['ngResource', 'ui.router'])
 
   .config(function ($provide, $httpProvider, $stateProvider, $urlRouterProvider) {

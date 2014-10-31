@@ -52,16 +52,13 @@
   var routes = require('./config/routes');
 
   // mount public routes
-  app.use(mount('/', routes.public.middleware())); // GET /
   app.use(mount('/', routes.auth.middleware())); // POST /login, GET /logout
   app.use(mount('/css', serve(path.join(__dirname, 'public/css'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
 
-  // Custom 401 handling if you don't want to expose koa-jwt errors to users
+  // custom 401 handling to hide koa-jwt errors from users: instantly moves on
+  // to the next middleware and returns here, if that fails.
   app.use(function *(next) {
-
-    /* instantly moves on to the next middleware and return here, if that fails. */
-
     try {
       yield next; // -> jwt authorization
     } catch (err) {
@@ -83,17 +80,17 @@
   /* Routes below the next loc are ony accessible to authenticated clients and
   /* should be considered secure. */
 
-  // TODO handle user roles
-  app.use(jwt({ secret: config.session.secret })); // TODO .unless({ path: [ '/login' ]}));
+  app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
+  app.use(mount('/', routes.public.middleware())); // GET /
   app.use(mount('/js', serve(path.join(__dirname, 'public/js'))));
   app.use(mount('/', serve(path.join(__dirname, 'views'))));
 
   // main
   var listen = function(port) {
     app.listen(config.app.port);
-    console.log('api running on port ' + (config.app.port));
+    console.log('api accessible on port ' + (config.app.port));
   };
 
   require.main === module ? listen() : module.exports = exports = listen;

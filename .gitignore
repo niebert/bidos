@@ -19,3 +19,4 @@ public/js/reusable/*.js
 public/js/reusable/src/*.js
 Session.vim
 trash
+build
