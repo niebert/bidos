@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+  <meta name="google" content="notranslate"/>
+  <meta name="description" content="bidos/server"/>
+  <meta name="viewport" content="width=device-width"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>bds/server</title>
+
+  <link rel="stylesheet" href="lib/pure/pure-min.css"/>
+  <link rel="stylesheet" href="css/index.css"/>
+
+</head>
+<body ng-controller="appCtrl">
+
+  <form ng-submit="vm.login(vm.username, vm.password)" class="pure-form pure-form-stacked">
+    <fieldset>
+      <legend>you need to authenticate</legend>
+      <input type="text" ng-model="vm.username" placeholder="username" >
+      <input type="password" ng-model="vm.password" placeholder="password">
+      <button type="submit" class="pure-button pure-button-primary"> sign in</button> or <a href="/signup">sign up</a>
+    </fieldset>
+  </form>
+
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular-jwt/dist/angular-jwt.js"></script>
+  <script>
+    angular
+    .module('app', ['angular-jwt'])
+    .controller('appCtrl', function Controller(jwtHelper) {
+      var vm = this;
+      vm.login = function(username, password) {
+        User.login(username, password).then(function success(res) {
+          vm.user = res.data.user;
+        }, handleError);
+      };
+
+      function handleError(res) {
+        alert('Error: ' + res.data);
+      };
+    })
+    .factory('User', function($http, $q) {
+      return {
+        login: function (username, password) {
+          return $http.post('/login', {
+            username: username,
+            password: password
+          }).then(function (res) {
+            return res.data.token;
+          });
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
