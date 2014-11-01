@@ -1,17 +1,25 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['angular-jwt']);
+  var app = angular.module('loginApp', ['angular-jwt', 'ui.router']);
 
-  app.constant('API_URL', 'http://localhost:3000')
+  app.constant('API_URL', 'http://localhost:3000');
+  app.constant('TOKEN_KEY', 'auth_token');
 
-  app.controller('appCtrl', function Controller(jwtHelper, UserFactory) {
+  app.config(function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
+    jwtInterceptorProvider.tokenGetter = function() {
+      return localStorage.getItem(TOKEN_KEY);
+    }
+
+    $httpProvider.interceptors.push('jwtInterceptor');
+  });
+
+  app.controller('loginCtrl', ['UserFactory', function(UserFactory) {
     var vm = this;
 
     vm.login = function(username, password) {
-      UserFactory.login(username, password).then(function success(res) {
-        console.log(res);
-        vm.user = res.data.user;
+      UserFactory.login(username, password).then(function(response) {
+        vm.user = response.data.user;
       }, handleError);
     };
 
@@ -20,47 +28,41 @@
       vm.user = null;
     };
 
-    function handleError(res) {
-      alert('Error: ' + res.data);
+    function handleError(response) {
+      alert('Error: ' + response.data);
     };
-  })
+  }]);
 
-  app.factory('UserFactory', function UserFactory($http, $q, AuthTokenFactory, API_URL) {
+  app.factory('UserFactory', ['$http', '$q', '$location', '$window', 'AuthTokenFactory', 'API_URL',
+    function($http, $q, $location, AuthTokenFactory, API_URL) {
+
     return {
-      logout: logout,
       login: login,
-      getUser: getUser
+      logout: logout
     };
 
     function login(username, password) {
       return $http.post(API_URL + '/login', {
         username: username,
         password: password
-      }).success(function(res) {
-        AuthTokenFactory.setToken(res.token);
-        return res;
-      }).error(function(res) {
-        console.error(res ? ('ERROR: ', res) : 'REQUEST FAILED')
+      }).success(function(response) {
+        // $location.path('/');
+        $window.location.href = '/addressbook';
+        // debugger
+        AuthTokenFactory.setToken(response.token);
       });
     }
 
     function logout(username, password) {
-      AuthTokenFactory.setToken(); // set empty token, i.e. remove it
+      AuthTokenFactory.setToken(); // removes token from localStorage
     }
+  }]);
 
-    function getUser() {
-      if (AuthTokenFactory.getToken()) {
-        return $http.get(API_URL + '/me');
-      } else {
-        return $q.reject({ data: 'client has no auth token' });
-      }
-    }
+  app.factory('AuthTokenFactory', ['$window', 'TOKEN_KEY',
+    function($window, TOKEN_KEY) {
 
-  })
-
-  app.factory('AuthTokenFactory', function AuthTokenFactory($window) {
     var store = $window.localStorage;
-    var key = 'auth-token';
+    var key = TOKEN_KEY;
 
     return {
      getToken: getToken,
@@ -78,24 +80,6 @@
         store.removeItem(key);
       }
     }
+  }]);
 
-  })
-
-  app.factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory) {
-    return {
-      request: addToken
-    };
-
-    function addToken(config) {
-
-      console.log('addToken()', config);
-
-      var token = AuthTokenFactory.getToken();
-      if (token) {
-        config.headers = config.headers || {};
-        config.headers.Authorization = 'Bearer ' + token;
-      }
-      return config;
-    }
-  });
 }());

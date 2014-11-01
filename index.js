@@ -9,15 +9,10 @@
   var path = require('path');
 
   // utilities
-  var lodash = require('lodash'),
-      Promise = require('bluebird');
+  var lodash = require('lodash');
 
   // koa itself
   var app = require('koa')();
-
-  // sessions
-  var session = require('koa-generic-session'),
-      RedisStore = require('koa-redis');
 
   // authentication
   var jwt = require('koa-jwt');
@@ -41,13 +36,6 @@
     cache: false
   }));
 
-  // sessions
-  app.keys = config.session.keys;
-  app.use(session({
-    // store: new RedisStore(), // persistent sessions TODO do we really want redis?
-    // key: config.session.cookie, // cookie name TODO we dont need no cookies anymore
-  }));
-
   // initialize routes
   var routes = require('./config/routes');
 
@@ -55,6 +43,7 @@
   app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
   app.use(mount('/', routes.auth.middleware())); // POST /login, GET /logout
+  app.use(mount('/', routes.public.middleware())); // GET /
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -64,37 +53,27 @@
     } catch (err) {
       if (401 == err.status) {
         this.status = 401; // authentication is possible but has failed
-        this.body = 'Protected resource. Use authorization header to get access.\n';
+        this.body = 'Error: Protected resource. No Authorization header found.\n';
+        console.log('user is not authenticated')
       } else {
         throw err;
       }
     }
   });
 
-  app.use(function *(next) {
-    if (this.url.match(/^\/login/)) {
-      yield this.render('login');
-    } else {
-      yield next;
-    }
-  });
+  /* Routes below the next loc are only accessible to authenticated clients. */
 
-  /* Authorization happens next. The header sent by the client via POST must
-  /* contain a validable base64 encoded payload.
-
-      http://jwt.io/
-      https://github.com/auth0/angular-jwt
-
-  /* Routes below the next loc are ony accessible to authenticated clients and
-  /* should be considered secure. */
-
-  app.use(function *(next) { yield next; });
+  // app.use(function *(next) {});
   app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
-  app.use(mount('/', routes.public.middleware())); // GET /
   app.use(mount('/', serve(path.join(__dirname, 'private'))));
   app.use(mount('/', serve(path.join(__dirname, 'views'))));
+
+  app.use(function *() {
+    console.log('last');
+    yield this.render('index');
+  });
 
   // main
   var listen = function(port) {

@@ -15,10 +15,10 @@
     password: "123"
   };
 
+   // check for correct authentication headers. the actual authentication
+   // happens at the jwt() call in ../index.js
   function* authenticate(next) {
     var body = this.request.body;
-    console.log('authenticate():', body);
-
     if (!body.username || !body.password) {
       this.status = 400;
       this.body = 'Must provide username or password';
@@ -26,34 +26,43 @@
       this.status = 401;
       this.body = 'Username or password incorrect';
     } else {
-      console.log('else');
       yield next;
     }
   }
 
   function* tokenize(next) {
-    var token = jwt.sign({
-      username: user.username
-    }, config.session.secret);
+    if (this.url.match(/^\/login/)) {
+      console.log(this.request.body);
 
-    console.log('token:', token);
+      var token = jwt.sign({
+        username: user.username
+      }, config.session.secret);
 
-    yield this.body = {
-      token: token,
-      user: user
-    };
+      this.redirect('/');
+
+      this.body = {
+        token: token,
+        user: user
+      };
+    } else {
+      yield next;
+    }
   }
 
+  // renders ./views/login.html
   function* login() {
     yield this.render('login');
   };
 
-  function* logout() {
-    this.logout();
-    yield this.redirect('/login');
-  };
+  // renders ./views/index.html
+  // function* index() {
+  //   yield this.render('index');
+  // };
 
-  function* testAuth(next) {}
+  // redirects to /login
+  function* logout() {
+    this.redirect('/login');
+  };
 
   module.exports = exports = router
     .get('/login', login)
