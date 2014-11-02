@@ -25,16 +25,6 @@
       vm.user = user;
     });
 
-    // token.payload = jwtHelper.decodeToken(token.text);
-    // token.expDate = jwtHelper.getTokenExpirationDate(token.text);
-    // token.isExpired = jwtHelper.isTokenExpired(token.text);
-
-
-    // var token = AuthTokenFactory.getToken();
-    // var tokenPayload = jwtHelper.decodeToken(token);
-    // var date = jwtHelper.getTokenExpirationDate(expToken);
-
-    // var tokenPayload = jwtHelper.decodeToken(UserFactory.getUser());
     vm.login = function(username, password) {
       UserFactory.login(username, password).then(function(response) {
         vm.user = response.data.user;
@@ -52,8 +42,8 @@
   }]);
 
   app.factory('UserFactory',
-    ['$http', 'AuthTokenFactory', 'API_URL', '$q', 'jwtHelper',
-    function($http, AuthTokenFactory, API_URL, $q, jwtHelper) {
+    ['$http', 'AuthTokenFactory', 'API_URL', '$q',
+    function($http, AuthTokenFactory, API_URL, $q) {
 
     return {
       login: login,
@@ -77,15 +67,15 @@
     function getUser() {
       return $q(function(resolve, reject) {
         AuthTokenFactory.getToken().then(function(token) {
-          resolve(jwtHelper.decodeToken(token));
+          resolve(token);
         });
       });
     }
   }]);
 
   app.factory('AuthTokenFactory',
-    ['$window', 'TOKEN_KEY', '$q',
-    function($window, TOKEN_KEY, $q) {
+    ['$window', 'TOKEN_KEY', '$q', 'jwtHelper',
+    function($window, TOKEN_KEY, $q, jwtHelper) {
 
     var store = $window.localStorage;
     var key = TOKEN_KEY;
@@ -97,7 +87,7 @@
 
     function getToken() {
       return $q(function(resolve, reject) {
-        resolve(store.getItem(key));
+        resolve(jwtHelper.decodeToken(store.getItem(key)));
       });
     }
 

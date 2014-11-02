@@ -14,8 +14,43 @@
     password: "123"
   };
 
-   // check for correct authentication headers. the actual authentication
-   // happens at the jwt() call in ../index.js
+  // !!!
+  // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
+
+  var userJWT = {
+    jti: 'qazwsxedcrfvtgbyhnujmikolp', // unique token id
+    email: 'asdf@uni-koblenz.de',
+    username: 'asdf',
+    name: {
+      first: 'René',
+      last: 'Wilhelm'
+    },
+    organization: 'Universität Koblenz-Landau, Campus Koblenz',
+    phone: '0160 8040042',
+    role: 'admin',
+    user_fields: {}
+  };
+
+  var users = [
+    {
+      username: "asdf",
+      password: "123",
+      role: "admin"
+    },
+    {
+      username: "asdf",
+      password: "123",
+      role: "scientist"
+    },
+    {
+      username: "asdf",
+      password: "123",
+      role: "practitioner"
+    },
+  ];
+
+  // check for correct authentication headers. the actual authentication
+  // happens at the jwt() call in ../index.js
   function* authenticate(next) { // jshint -W040
     var body = this.request.body;
 

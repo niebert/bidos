@@ -23,7 +23,7 @@
     gulp.src('src/angular/**/*.js')
       .pipe(plumber({errorHandler:onError}))
       .pipe(concat('angular-app.js'))
-      .pipe(gulp.dest('build'));
+      .pipe(gulp.dest('public/js'));
   });
 
   gulp.task('react', function() {
@@ -31,13 +31,6 @@
       .pipe(plumber({errorHandler:onError}))
       .pipe(react({harmony:true, noCacheDir:false}))
       .pipe(concat('react-components.js'))
-      .pipe(gulp.dest('build'));
-  });
-
-  gulp.task('compress', ['angular', 'react'], function() {
-    gulp.src(['build/*.js'])
-      .pipe(plumber({errorHandler:onError}))
-      .pipe(concat('app.js'))
       .pipe(gulp.dest('public/js'));
   });
 
@@ -60,11 +53,12 @@
   });
 
   gulp.task('watch', function() {
-    gulp.watch('src/**/*.{js,jsx}', ['compress']);
+    gulp.watch('src/angular/**/*.js', ['angular']);
+    gulp.watch('src/react/**/*.jsx', ['react']);
     gulp.watch('src/scss/**/*.scss', ['sass']);
   });
 
-  gulp.task('development', ['compress', 'sass', 'server', 'watch']);
+  gulp.task('development', ['angular', 'react', 'sass', 'server', 'watch']);
   gulp.task('default',     ['development']);
 
 }());
