@@ -6,11 +6,12 @@
   var Router = require('koa-router');
   var router = new Router();
 
-  function* index(next) {
-    yield this.render('index');
+  function* api(next) {
+    this.body = 'secured api routes go here\n';
+    yield next;
   }
 
   module.exports = exports = router
-    .get('/', index);
+    .get('/', api);
 
 }());

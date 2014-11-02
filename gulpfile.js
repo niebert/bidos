@@ -4,15 +4,15 @@
    var gulp    = require('gulp'),
        util    = require('gulp-util'),
        react   = require('gulp-react'),
-       flatten = require('gulp-flatten'),
+       // flatten = require('gulp-flatten'),
        concat  = require('gulp-concat'),
        plumber = require('gulp-plumber'),
        nodemon = require('gulp-nodemon'),
        prefix  = require('gulp-autoprefixer'),
        sass    = require('gulp-ruby-sass');
 
-   var browserify = require('browserify'),
-       source     = require('vinyl-source-stream');
+   // var browserify = require('browserify'),
+   //     source     = require('vinyl-source-stream');
 
   var onError = function(err) {
     util.beep();
@@ -52,7 +52,6 @@
   gulp.task('server', function() {
     nodemon({
       script: 'index.js',
-      debug: true,
       watch: ['index.js', 'config'],
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'development' }
@@ -60,10 +59,8 @@
     .on('change', []);
   });
 
-  // gulp.task('tunnel', function() {});
-
   gulp.task('watch', function() {
-    gulp.watch('src/**/*.js{,x}', ['compress']);
+    gulp.watch('src/**/*.{js,jsx}', ['compress']);
     gulp.watch('src/scss/**/*.scss', ['sass']);
   });
 

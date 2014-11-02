@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  var fs     = require('fs'),
+  var fs = require('fs'),
       routes = {};
 
   if (!Object.keys(routes).length) {
@@ -18,5 +18,4 @@
   }
 
   module.exports = exports = routes;
-
 }());

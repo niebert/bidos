@@ -9,8 +9,7 @@
 				env: 'development'
 			},
 			session: {
-				keys: ['ahqua2ahj0Ci', 'weeghuyeiQu4'],
-				cookie: 'bidos-development.sid',
+				// keys: ['ahqua2ahj0Ci', 'weeghuyeiQu4'],
 				secret: 'quaiQu8Aejee8MaikohdooSasohhiechieQu0idohthoo8Theesaepu6Tuc2yeed', // jwt secret
 			},
 			postgres: {
@@ -24,8 +23,7 @@
 				env: 'test'
 			},
 			session: {
-				keys: ['Eev6xee6', 'Ohzo1poh'],
-				cookie: 'bidos-test.sid',
+				// keys: ['Eev6xee6', 'Ohzo1poh'],
 				secret: 'Iqu4eeheitah3aiVeYaey9eewohghiezo2Eepai1jooBaaT7ooj9wei9oob5oBoo' // jwt secret
 			},
 			postgres: {
@@ -39,8 +37,7 @@
 				env: 'production'
 			},
 			session: {
-				keys: ['ahXe9Eexai', 'aezahL2Z'],
-				cookie: 'bidos-production.sid',
+				// keys: ['ahXe9Eexai', 'aezahL2Z'],
 				secret: 'loibeik7Oi7eichuthehaiteir5geiqu5oolei5ep3En3eepaavah6Ti8Ahquovi' // jwt secret
 			},
 			postgres: {

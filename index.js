@@ -39,11 +39,13 @@
   // initialize routes
   var routes = require('./config/routes');
 
-  // mount public routes
+  // serve static dirs
   app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
-  app.use(mount('/', routes.auth.middleware())); // POST /login, GET /logout
-  app.use(mount('/', routes.public.middleware())); // GET /
+
+  // mount public routes
+  app.use(mount('/', routes.auth.middleware()));
+  app.use(mount('/', routes.public.middleware()));
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -54,26 +56,19 @@
       if (401 == err.status) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
-        console.log('user is not authenticated')
+        console.log('user is not authenticated');
+        this.redirect('/login');
       } else {
         throw err;
       }
     }
   });
 
-  /* Routes below the next loc are only accessible to authenticated clients. */
-
-  // app.use(function *(next) {});
+  // routes below the next loc are only accessible to authenticated clients
   app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
-  app.use(mount('/', serve(path.join(__dirname, 'private'))));
-  app.use(mount('/', serve(path.join(__dirname, 'views'))));
-
-  app.use(function *() {
-    console.log('last');
-    yield this.render('index');
-  });
+  app.use(mount('/api', routes.api.middleware()));
 
   // main
   var listen = function(port) {
@@ -81,5 +76,6 @@
     console.log('api accessible on port ' + (config.app.port));
   };
 
+  /*jshint -W030 */
   require.main === module ? listen() : module.exports = exports = listen;
 }());
