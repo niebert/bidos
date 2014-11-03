@@ -11,23 +11,20 @@
       session: {
         secret: 'quaiQu8Aejee8MaikohdooSasohhiechieQu0idohthoo8Theesaepu6Tuc2yeed', // jwt secret
       },
-      database: {
-        url: 'postgres://localhost/bidos_development',
-        options: {
-          name: 'bidos_development',
-          username: 'asdf',
-          password: null,
-          host: '127.0.0.1',
-          dialect: 'postgres',
-          dialectModulePath: 'pg.js',
-          quoteIdentifiers: false,
-          define: {
-            underscored: true,
-            underscoredAll: true,
-            paranoid: true,
-            freezeTableName: false,
-            timestamps: true
-          }
+      db: {
+        name: 'bidos_development',
+        username: 'asdf',
+        password: null,
+        host: '127.0.0.1',
+        dialect: 'postgres',
+        dialectModulePath: 'pg.js',
+        quoteIdentifiers: false, // TODO review options
+        define: {
+          underscored: true,
+          underscoredAll: true,
+          paranoid: true,
+          freezeTableName: false,
+          timestamps: true
         }
       }
     },
