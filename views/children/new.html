@@ -1,0 +1,36 @@
+<h2>make a new child</h2>
+
+<form ng-submit="createChild()" class="pure-form pure-form-aligned">
+  <fieldset>
+
+    <div class="pure-control-group">
+
+      <label for="fname">first name</label>
+      <input id="fname" ng-model="child.name.first" type="text" placeholder="first name"><br />
+
+      <label for="lname">last name</label>
+      <input id="lname" ng-model="child.name.last" type="text" placeholder="last name"><br />
+
+      <label for="birthday">birthday</label>
+      <!-- <input id="birthday" pick-a-date="child.birthday" type="text" placeholder="birthday" /><br /> -->
+      <!-- <input id="birthday" type="datetime"  date-time ng-model="child.birthday"><br /> -->
+
+      <quick-datepicker
+        id="birthday"
+        ng-model='child.birthday'
+        date-format='EEEE, MMMM d, yyyy'
+        placeholder='pick a date'
+        disable-timepicker='true'>
+      </quick-datepicker><br />
+
+      <label for="group">group</label>
+      <select id="group">
+        <option ng-repeat="group in groups">{{group.name}}</option>
+      </select>
+    </div>
+
+    <div class="pure-controls">
+      <button ng-model="child" type="submit" class="pure-button pure-button-primary">save</button>
+    </div>
+  </fieldset>
+</form>
