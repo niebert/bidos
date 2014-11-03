@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['angular-jwt', 'ui.router']);
+  var app = angular.module('app', ['angular-jwt', 'ui.router', 'react']);
 
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
