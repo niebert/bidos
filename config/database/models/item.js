@@ -7,7 +7,7 @@
     }, {
       classMethods: {
         associate: function(models) {
-          Item.belongsTo(models.Quest);
+          Item.belongsTo(models.Survey);
         }
       }
     });

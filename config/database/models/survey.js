@@ -2,7 +2,7 @@
   'use strict';
 
   module.exports = function(sequelize, DataTypes) {
-    var Quest = sequelize.define('Quest', {
+    var Survey = sequelize.define('Survey', {
                firstName:  DataTypes.STRING,
                lastName:   DataTypes.STRING,
                email:      DataTypes.STRING,
@@ -10,12 +10,12 @@
     }, {
       classMethods: {
         associate: function(models) {
-          Quest.hasMany(models.Item);
+          Survey.hasMany(models.Item);
         }
       }
     });
 
-    return Quest;
+    return Survey;
   };
 
 }());

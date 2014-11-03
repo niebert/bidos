@@ -7,8 +7,6 @@
     }, {
       classMethods: {
         associate: function(models) {
-          Group.hasMany(models.Child);
-          Group.hasMany(models.User);
         }
       }
     });
@@ -17,3 +15,4 @@
   };
 
 }());
+
