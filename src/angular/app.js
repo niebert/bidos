@@ -87,7 +87,12 @@
 
     function getToken() {
       return $q(function(resolve, reject) {
-        resolve(jwtHelper.decodeToken(store.getItem(key)));
+        var tokenKey = store.getItem(key);
+        if (tokenKey) {
+          resolve(jwtHelper.decodeToken(tokenKey));
+        } else {
+          reject({ data: "you are not authorized"});
+        }
       });
     }
 
