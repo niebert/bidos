@@ -14,40 +14,10 @@
     password: "123"
   };
 
+  var db = require('../database');
+
   // !!!
   // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
-
-  var userJWT = {
-    jti: 'qazwsxedcrfvtgbyhnujmikolp', // unique token id
-    email: 'asdf@uni-koblenz.de',
-    username: 'asdf',
-    name: {
-      first: 'René',
-      last: 'Wilhelm'
-    },
-    organization: 'Universität Koblenz-Landau, Campus Koblenz',
-    phone: '0160 8040042',
-    role: 'admin',
-    user_fields: {}
-  };
-
-  var users = [
-    {
-      username: "asdf",
-      password: "123",
-      role: "admin"
-    },
-    {
-      username: "asdf",
-      password: "123",
-      role: "scientist"
-    },
-    {
-      username: "asdf",
-      password: "123",
-      role: "practitioner"
-    },
-  ];
 
   // check for correct authentication headers. the actual authentication
   // happens at the jwt() call in ../index.js
@@ -83,10 +53,23 @@
     yield this.render('login');
   }
 
+  // renders ./views/signup.html
+  function* signup() { // jshint -W040
+    yield this.render('signup');
+  }
+
+  // renders ./views/signup.html
+  function* createUser() { // jshint -W040
+    // Users = 
+    yield this.render('signup');
+  }
+
   // for now logging out is done on the clients side by deleting the token
 
   module.exports = exports = router
     .get('/login', login)
+    .get('/signup', signup)
+    .post('/signup', createUser)
     .post('/login', authenticate, tokenize);
 
 }());
