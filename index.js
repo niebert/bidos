@@ -17,9 +17,8 @@
   // authentication
   var jwt = require('koa-jwt');
 
-  // database and orm
-  var pg = require('koa-pg');
-  app.use(pg(config.postgres.url));
+  // orm
+  // var database = require('./config/database')();
 
   // miscellaneous middleware
   var mount = require('koa-mount'),
@@ -68,12 +67,19 @@
   app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
-  app.use(mount('/api', routes.api.middleware()));
+  app.use(mount('/v1', routes.api.middleware()));
+
+  var database = require('./config/database/models');
 
   // main
   var listen = function(port) {
-    app.listen(config.app.port);
-    console.log('api accessible on port ' + (config.app.port));
+    database.sequelize.sync().success(function () {
+      app.listen(config.app.port);
+      console.log('api accessible on port ' + (config.app.port));
+    });
+
+    // app.listen(config.app.port);
+    // console.log('api accessible on port ' + (config.app.port));
   };
 
   /*jshint -W030 */
