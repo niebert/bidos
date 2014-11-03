@@ -23,6 +23,7 @@
 
     UserFactory.getUser().then(function(user) {
       vm.user = user;
+      console.info('vm.user', vm.user);
     });
 
     vm.login = function(username, password) {

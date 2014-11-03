@@ -11,12 +11,14 @@
 .sass-cache
 .trash
 bower_components
+build
 node_modules
 npm-debug.log
+public
 public/html/*.html
+public/js/angular-app.js
 public/js/components.js
 public/js/reusable/*.js
 public/js/reusable/src/*.js
 Session.vim
 trash
-build
