@@ -69,17 +69,12 @@
   // secured routes
   app.use(mount('/v1', routes.api.middleware()));
 
-  var database = require('./config/database/models');
+  var database = require('./config/database')();
 
   // main
   var listen = function(port) {
-    database.sequelize.sync().success(function () {
-      app.listen(config.app.port);
-      console.log('api accessible on port ' + (config.app.port));
-    });
-
-    // app.listen(config.app.port);
-    // console.log('api accessible on port ' + (config.app.port));
+    app.listen(config.app.port);
+    console.log('api accessible on port ' + (config.app.port));
   };
 
   /*jshint -W030 */
