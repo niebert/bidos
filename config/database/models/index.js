@@ -6,7 +6,7 @@
       lodash = require('lodash'),
       Sequelize = require("sequelize"),
       config = require('../..')[process.env.NODE_ENV],
-      sequelize = new Sequelize(config.database.options.name, config.database.options.username, config.database.options.password, config.database.options),
+      sequelize = new Sequelize(config.db.name, config.db.username, config.db.password, config.db),
       models = {};
 
   fs.readdirSync(__dirname)
