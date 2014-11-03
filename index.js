@@ -17,8 +17,8 @@
   // authentication
   var jwt = require('koa-jwt');
 
-  // orm
-  // var database = require('./config/database')();
+  // sequelize/postgres
+  var database = require('./config/database')();
 
   // miscellaneous middleware
   var mount = require('koa-mount'),
@@ -68,8 +68,6 @@
 
   // secured routes
   app.use(mount('/v1', routes.api.middleware()));
-
-  var database = require('./config/database')();
 
   // main
   var listen = function(port) {
