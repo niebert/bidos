@@ -11,6 +11,7 @@
     "co-busboy": "^1.2.0",
     "co-monk": "^1.0.0",
     "debug": "^2.0.0",
+    "flux": "^2.0.1",
     "gulp": "^3.8.8",
     "gulp-autoprefixer": "^1.0.1",
     "gulp-browserify": "^0.5.0",
@@ -47,13 +48,17 @@
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "pg.js": "^3.5.0",
+    "react": "^0.12.0",
+    "react-router": "^0.10.2",
     "sequelize": "^2.0.0-rc2",
     "socket.io": "^1.2.0",
     "sql": "^0.40.0"
   },
   "devDependencies": {
     "browserify": "^6.2.0",
+    "gulp-browserify": "^0.5.0",
     "gulp-uglify": "^1.0.1",
+    "reactify": "^0.15.2",
     "vinyl-source-stream": "^1.0.0"
   },
   "scripts": {

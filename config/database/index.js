@@ -20,7 +20,7 @@
           username: 'asdf'
         })
         .success(function(user) {
-          debugger
+          // debugger
         })
         .error(function(error) {
         });

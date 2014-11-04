@@ -53,6 +53,11 @@
     yield this.render('login');
   }
 
+  // renders ./views/logout.html
+  function* logout() { // jshint -W040
+    yield this.render('logout');
+  }
+
   // renders ./views/signup.html
   function* signup() { // jshint -W040
     yield this.render('signup');
@@ -60,7 +65,7 @@
 
   // renders ./views/signup.html
   function* createUser() { // jshint -W040
-    // Users = 
+    // Users =
     yield this.render('signup');
   }
 

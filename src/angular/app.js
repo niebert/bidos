@@ -1,7 +1,10 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['angular-jwt', 'ui.router', 'react']);
+  var APP = require('../react');
+  var app = angular.module('app', ['angular-jwt']);
+
+  app.value('APP', APP); // main react app
 
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
@@ -13,51 +16,6 @@
     };
 
     $httpProvider.interceptors.push('jwtInterceptor');
-  });
-
-  // app.config(function ($httpProvider) {
-  //   // http interceptor (so we can check on ongoing xhr calls)
-  //   $provide.factory('httpInterceptor', function ($q, $rootScope) {
-  //     return {
-  //       'request': function (config) {
-  //         // intercept and change config: e.g. change the URL
-  //         // config.url += '?nocache=' + (new Date()).getTime();
-  //         $rootScope.$broadcast('httpRequest', config);
-  //         return config || $q.when(config);
-  //       },
-  //       'response': function (response) {
-  //         // we can intercept and change response here
-  //         $rootScope.$broadcast('httpResponse', response);
-  //         return response || $q.when(response);
-  //       },
-  //       'requestError': function (rejection) {
-  //         $rootScope.$broadcast('httpRequestError', rejection);
-  //         return $q.reject(rejection);
-  //       },
-  //       'responseError': function (rejection) {
-  //         $rootScope.$broadcast('httpResponseError', rejection);
-  //         return $q.reject(rejection);
-  //       }
-  //     };
-  //   });
-  //   $httpProvider.interceptors.push('httpInterceptor');
-  // });
-
-  app.config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
-    $stateProvider
-    .state('login', {
-      url: '/login',
-      templateUrl: 'login'
-    })
-    .state('logout', {
-      url: '/logout',
-      templateUrl: 'logout'
-    })
-    .state('signup', {
-      url: '/signup',
-      templateUrl: 'signup'
-    });
   });
 
   app.controller('appCtrl',
