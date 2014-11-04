@@ -1,13 +1,29 @@
+
+/** @jsx React.DOM */
+
 (function() {
   'use strict';
 
-  var APP = require('../react');
-  var app = angular.module('app', ['angular-jwt']);
+  var app = angular.module('app', ['angular-jwt', 'react']);
 
-  app.value('APP', APP); // main react app
+  app.value('APP', React.createClass({
+    handleClick: function() {
+      console.log('blalbla');
+    },
+
+    render: function() {
+      return (
+        <div onClick={this.handleClick}>qwe</div>
+      );
+    }
+  }));
 
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
+
+  app.directive('app', function(reactDirective) {
+    return reactDirective('APP');
+  });
 
   app.config(function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
     jwtInterceptorProvider.tokenGetter = function() {

@@ -20,31 +20,8 @@
     console.log(err);
   };
 
-  // gulp.task('angular', function() {
-  //   browserify('./src/angular/app.js')
-  //     .transform(reactify)
-  //     .bundle()
-  //     .pipe(source('angular-app.js'))
-  //     .pipe(gulp.dest('build/js'));
-  // });
-
-  // gulp.task('react', function() {
-  //   browserify('./src/react/main.jsx')
-  //     .transform(reactify)
-  //     .bundle()
-  //     .pipe(source('react-components.js'))
-  //     .pipe(gulp.dest('build/js'));
-  // });
-
-  // gulp.task('copy', function() {
-  //   gulp.src('build/js/{react,angular}*.js')
-  //     .pipe(plumber({errorHandler:onError}))
-  //     .pipe(concat('app.js'))
-  //     .pipe(gulp.dest('public/js'));
-  // });
-
   gulp.task('browserify', function() {
-    browserify('./src/angular/app.js')
+    browserify('./src/js/app.js')
       .transform(reactify)
       .bundle()
       .pipe(source('app.js'))
@@ -70,16 +47,11 @@
   });
 
   gulp.task('watch', function() {
-    gulp.watch('src/**/*.{js,jsx}', ['browserify']);
+    gulp.watch('src/**/*', ['browserify']);
     gulp.watch('src/scss/**/*.scss', ['sass']);
-    // gulp.watch('src/angular/**/*.js', ['angular']);
-    // gulp.watch('src/react/**/*.jsx', ['react']);
-    // gulp.watch('build/js/**/*.js', ['copy']);
   });
 
-  // gulp.task('build', ['react', 'angular', 'sass']);
-  gulp.task('build', ['browserify', 'sass']);
-  gulp.task('development', ['build', 'watch', 'serve']);
+  gulp.task('development', ['browserify', 'sass', 'watch', 'serve']);
   gulp.task('default', ['development']);
 
 }());
