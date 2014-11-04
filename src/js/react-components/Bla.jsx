@@ -6,6 +6,7 @@ var Bla = React.createClass({
   },
 
 	render: function() {
+		console.log('blaprops', this.props);
 		return (
 	    <div onClick={this.handleClick}>bla!</div>
 		);

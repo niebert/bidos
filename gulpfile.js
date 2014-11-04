@@ -3,15 +3,15 @@
 
    var gulp = require('gulp'),
        util = require('gulp-util'),
-       react = require('gulp-react'),
        flatten = require('gulp-flatten'),
        concat = require('gulp-concat'),
        plumber = require('gulp-plumber'),
-       uglify = require('gulp-uglify'),
        nodemon = require('gulp-nodemon'),
-       reactify = require('reactify'),
        source = require('vinyl-source-stream'),
+       react = require('gulp-react'),
+       reactify = require('reactify'),
        browserify = require('browserify'),
+       uglify = require('gulp-uglify'),
        prefix  = require('gulp-autoprefixer'),
        sass = require('gulp-ruby-sass');
 

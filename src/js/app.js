@@ -6,9 +6,10 @@
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
 
-  app.value('APP', React.createClass({
+  app.value('APP', React.createClass({ // <-- main react component
     render: function() {
-      return (React.createElement(Bla, null));
+      console.log('appprops', this.props);
+      return (React.createElement(Index, this.props));
     }
   }));
 
