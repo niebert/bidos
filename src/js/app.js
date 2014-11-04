@@ -1,25 +1,16 @@
-
-/** @jsx React.DOM */
-
 (function() {
   'use strict';
 
   var app = angular.module('app', ['angular-jwt', 'react']);
 
-  app.value('APP', React.createClass({
-    handleClick: function() {
-      console.log('blalbla');
-    },
-
-    render: function() {
-      return (
-        <div onClick={this.handleClick}>qwe</div>
-      );
-    }
-  }));
-
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
+
+  app.value('APP', React.createClass({
+    render: function() {
+      return (React.createElement(Bla, null));
+    }
+  }));
 
   app.directive('app', function(reactDirective) {
     return reactDirective('APP');
