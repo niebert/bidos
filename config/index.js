@@ -12,6 +12,9 @@
         secret: 'quaiQu8Aejee8MaikohdooSasohhiechieQu0idohthoo8Theesaepu6Tuc2yeed', // jwt secret
       },
       db: {
+        mongo: {
+          url: 'mongodb://localhost/bidos_development'
+        },
         name: 'bidos_development',
         username: 'asdf',
         password: null,

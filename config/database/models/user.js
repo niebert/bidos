@@ -1,81 +1,36 @@
 (function() {
   'use strict';
 
-  var bcrypt = require('bcrypt');
+  var mongoose = require('mongoose'),
+      Schema = mongoose.Schema,
+      // bcrypt = require('bcrypt'),
+      SALT_WORK_FACTOR = 10;
 
-  module.exports = function(sequelize, DataTypes) {
-    var User = sequelize.define('User', {
-      jwt_id: DataTypes.STRING,
+  var Promise = require("bluebird"),
+      bcrypt = Promise.promisifyAll(require('bcrypt'));
 
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      },
+  var UserSchema = new Schema({
+    username: { type: String, required: true, index: { unique: true } },
+    password: { type: String, required: true }
+  });
 
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
+  UserSchema.pre('save', function(next) {
+    var user = this;
 
-      password: {
-        type: DataTypes.STRING,
-        set: function(v) {
-          bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(v, salt, function(err, hash) {
-              this.setDataValue('password', hash);
-            }.bind(this));
-          }.bind(this));
-        }
-      },
+      // only hash the password if it has been modified (or is new)
+      if (!user.isModified('password')) return next();
 
-      lname: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
+      bcrypt.genSaltAsync(SALT_WORK_FACTOR).then(function(salt) {
+        return bcrypt.hashAsync(user.password, salt);
+      }).then(function(hash) {
+        user.password = hash;
+      });
 
-      fname: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-
-      organization: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-
-      enabled: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      }
-
-    }, {
-      paranoid: true,
-      instanceMethods: {
-        comparePassword: function(v, cb) {
-          bcrypt.compare(v, this.getDataValue('password'), function(err, isMatch) {
-            if(err) return cb(err);
-            cb(null, isMatch);
-          });
-        },
-        setToken: function() {
-          // bla bla bla
-          // bla bla bla
-        },
-        getFullname: function() {
-          return [this.firstName, this.lastName].join(' ');
-        }
-      },
-      classMethods: {
-        associate: function(models) {
-          // User.belongsTo(models.Role);
-          // User.hasMany(models.Task);
-        }
-      }
     });
 
-    return User;
+  UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+    return bcrypt.compareAsync(candidatePassword, this.password);
   };
 
+  module.exports = mongoose.model('User', UserSchema);
 }());

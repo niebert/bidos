@@ -17,9 +17,6 @@
   // authentication
   var jwt = require('koa-jwt');
 
-  // sequelize/postgres
-  var database = require('./config/database').sequelize;
-
   // miscellaneous middleware
   var mount = require('koa-mount'),
       serve = require('koa-static'),
@@ -71,15 +68,8 @@
 
   // main
   var listen = function(port) {
-    database.sync({force:true}).complete(function(err) {
-      if (!!err) {
-        console.log('an error occurred while creating the table:', err);
-      } else {
-        console.log('api accessible on port ' + (config.app.port));
-        console.log('database schemes synchronized.');
-        app.listen(config.app.port);
-      }
-    });
+    console.log('api accessible on port ' + (config.app.port));
+    app.listen(config.app.port);
   };
 
   /*jshint -W030 */

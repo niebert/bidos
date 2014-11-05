@@ -1,23 +1,21 @@
 (function() {
   'use strict';
 
-  // https://github.com/sequelize/sequelize/wiki/API-Reference-Sequelize
+  var models = require('./models');
+  var mongoose = require('mongoose');
+  var config = require('..')[process.env.NODE_ENV];
 
-  var db = require('./models');
+  mongoose.connect(config.db.mongo.url);
 
-  var sync = function() {
-    db.sequelize.sync().complete(function(err) {
-       if (!!err) {
-         console.log('An error occurred while creating the table:', err);
-       } else {
-        console.log('Database schemes synchronized.');
-       }
-    });
+  var db = mongoose.connection;
 
-  };
+  db.on('error', console.error.bind(console, 'connection error:'));
 
+  db.once('open', function callback () {
+    console.log('database connection established');
+  });
 
   // TODO return a promise here to be safe?
-  module.exports = exports = db;
+  module.exports = exports = models;
 
 }());
