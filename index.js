@@ -64,7 +64,7 @@
   app.use(jwt({ secret: config.session.secret }));
 
   // secured routes
-  app.use(mount('/v1', routes.api.middleware()));
+  app.use(mount('/v1', routes.api.bla.middleware()));
 
   // main
   var listen = function(port) {

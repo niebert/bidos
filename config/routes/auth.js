@@ -15,7 +15,6 @@
 
   // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
 
-
   function verifyCredentials(username, password) {
     return new Promise(function (resolve, reject) {
       User.findOne(username).exec()
@@ -58,7 +57,7 @@
       this.status = 401;
       this.body = "authentication is possible but has failed\n"
     } else {
-      console.log('user', user);
+      console.log('user', currentUser);
       yield next;
     }
   }
@@ -88,14 +87,17 @@
 
   function* createUser() { // jshint -W040
     console.log('createUser', this.request.body);
-
-    yield User.create(this.request.body).then(function (user) {
+    yield User.create(this.request.body)
+    .then(function (user) {
       console.log('successfully created user', user);
       this.status = 200;
-    }.bind(this), function(err) {
+      return user;
+    }.bind(this), function error(err) {
       console.log('failed creating user', err); // TODO return nicer error message
       this.status = 500;
     }.bind(this));
+
+    yield next; // XXX ?
   }
 
   // for now logging out is done on the clients side by deleting the token
