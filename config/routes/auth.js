@@ -9,20 +9,28 @@
   var jwt    = require('koa-jwt');
   var config = require('..')[process.env.NODE_ENV];
 
-  var user = {
-    username: "asdf",
-    password: "123"
-  };
-
   var db = require('../database');
 
-  // !!!
   // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
 
   // check for correct authentication headers. the actual authentication
   // happens at the jwt() call in ../index.js
   function* authenticate(next) { // jshint -W040
+
     var body = this.request.body;
+    var user = db.User.find({
+      where: {
+        username: body.username
+      }
+    }).success(function(user) {
+      console.log('USER', user);
+      debugger
+      user.comparePassword(body.password);
+    }).error(function(err) {
+      console.log('ERROR', err);
+    });
+
+    debugger
 
     if (!body.username || !body.password) {
       this.status = 400;
