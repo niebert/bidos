@@ -11,11 +11,36 @@
 
   var db = require('../database');
 
+  var bcrypt = require('bcrypt');
+
   // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
 
   // check for correct authentication headers. the actual authentication
   // happens at the jwt() call in ../index.js
   function* authenticate(next) { // jshint -W040
+
+    // var body = this.request.body;
+    // var user = db.User.find({
+    //   where: {
+    //     username: body.username
+    //   }
+    // }).success(function(user) {
+    //   console.log('USER', user);
+    //   bcrypt.compare(body.password, user.password, function(err, isMatch) {
+    //     if(err) return cb(err);
+    //     cb(null, isMatch);
+    //   });
+    // }).error(function(err) {
+    //   console.log('ERROR', err);
+    // });
+
+
+
+    // Sequelize is a mess, at least it's documentation. Cannot get clean
+    // access to query result. Pretty annoying. Cannot access the model's
+    // instance function like comparepassword;
+
+
 
     var body = this.request.body;
     var user = db.User.find({
@@ -23,14 +48,16 @@
         username: body.username
       }
     }).success(function(user) {
-      console.log('USER', user);
-      debugger
-      user.comparePassword(body.password);
+      console.log('USER', user.dataValues);
+      bcrypt.compare(body.password, user.password, function(err) {
+        if(err) { console.log('wrong pw'); } else {
+        console.log('correct pw'); }
+      }).error(function(err) {
+        console.log('ERROR', err);
+      });
     }).error(function(err) {
       console.log('ERROR', err);
     });
-
-    debugger
 
     if (!body.username || !body.password) {
       this.status = 400;
