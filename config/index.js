@@ -18,7 +18,6 @@
         host: '127.0.0.1',
         dialect: 'postgres',
         dialectModulePath: 'pg.js',
-        quoteIdentifiers: false, // TODO review options
         define: {
           underscored: true,
           underscoredAll: true,
