@@ -49,31 +49,35 @@
   }
 
   // renders ./views/login.html
-  function* login() { // jshint -W040
+  function* renderLogin() { // jshint -W040
     yield this.render('login');
   }
 
-  // renders ./views/logout.html
-  function* logout() { // jshint -W040
-    yield this.render('logout');
-  }
-
   // renders ./views/signup.html
-  function* signup() { // jshint -W040
+  function* renderSignup() { // jshint -W040
     yield this.render('signup');
   }
 
-  // renders ./views/signup.html
   function* createUser() { // jshint -W040
-    // Users =
-    yield this.render('signup');
+    console.log('createUser', this.request.body);
+
+    db.User.create(this.request.body)
+    .success(function(user) {
+      this.status = 204;
+      console.log('User created successfully:', user.dataValues.username);
+    }.bind(this))
+    .error(function(err) {
+      this.status = 507;
+      console.log('Failed creating user:', err);
+    }.bind(this));
+
   }
 
   // for now logging out is done on the clients side by deleting the token
 
   module.exports = exports = router
-    .get('/login', login)
-    .get('/signup', signup)
+    .get('/login', renderLogin)
+    .get('/signup', renderSignup)
     .post('/signup', createUser)
     .post('/login', authenticate, tokenize);
 
