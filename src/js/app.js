@@ -2,6 +2,7 @@
   'use strict';
 
   var app = angular.module('app', ['angular-jwt', 'react']);
+  var Index = require('./react-components/Index.react');
 
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
@@ -34,18 +35,25 @@
 
     UserFactory.getUser().then(function(user) {
       vm.user = user;
-      console.info('vm.user', vm.user);
+      console.info('vm', vm);
     });
 
     vm.login = function(username, password) {
+      console.log('vm.login', username, password);
       UserFactory.login(username, password).then(function(response) {
         vm.user = response.data.user;
       }, handleError);
     };
 
     vm.logout = function() {
+      console.log('vm.logout');
       UserFactory.logout();
       vm.user = null;
+    };
+
+    vm.signup = function(formData) {
+      console.log('vm.signup', formData);
+      UserFactory.signup(formData);
     };
 
     function handleError(response) {
@@ -60,6 +68,7 @@
     return {
       login: login,
       logout: logout,
+      signup: signup,
       getUser: getUser
     };
 
@@ -69,6 +78,13 @@
         password: password
       }).success(function(response) {
         AuthTokenFactory.setToken(response.token);
+      });
+    }
+
+    function signup(formData) {
+      return $http.post(API_URL + '/signup', formData)
+      .success(function(response) {
+        console.log('SIGNUP DATA SENT!', response);
       });
     }
 
