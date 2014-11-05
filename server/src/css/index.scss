@@ -1,0 +1,32 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  margin: 16px 32px;
+  height: 100%;
+  width: 100%;
+}
+
+#app {
+	margin: 16px auto;
+}
+
+th {
+  text-align: left;
+}
+
+td,
+th {
+  padding: 4px;
+}
+
+table {
+  width: 100%;
+}
+
+#main {
+  margin-bottom: 150px;
+}
+
+a {
+	color: #0078e7;
+	text-decoration: none;
+}
