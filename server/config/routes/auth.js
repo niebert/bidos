@@ -97,7 +97,7 @@
       this.status = 500;
     }.bind(this));
 
-    yield next; // XXX ?
+    // yield next; // XXX ?
   }
 
   // for now logging out is done on the clients side by deleting the token
