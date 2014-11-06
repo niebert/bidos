@@ -46,9 +46,9 @@
       currentUser = yield verifyCredentials(username, password)
       .then(function (user) {
         this.status = 200;
+        console.log('user', user);
         return user;
       }.bind(this), function error(err) {
-        console.log('user', user);
         this.status = 500;
       }.bind(this));
     }

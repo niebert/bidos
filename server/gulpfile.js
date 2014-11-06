@@ -37,7 +37,7 @@
   });
 
   gulp.task('sass', function() {
-    gulp.src('src/sass/*.scss')
+    gulp.src('src/css/*.scss')
       .pipe(plumber({errorHandler:onError}))
       .pipe(sass({sourcemap:false, style:'compressed'}))
       .pipe(prefix(['last 1 version', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
