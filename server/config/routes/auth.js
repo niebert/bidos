@@ -55,7 +55,7 @@
 
     if (!currentUser) {
       this.status = 401;
-      this.body = "authentication is possible but has failed\n"
+      this.body = "Bad username or password\n";
     } else {
       console.log('user', currentUser);
       yield next;
