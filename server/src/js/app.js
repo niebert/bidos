@@ -1,136 +1,14 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['angular-jwt', 'react']);
-  var Index = require('./react-components/Index.react');
+  require('./rw-react');
+  require('./rw-auth');
+  require('./rw-router');
 
-  app.constant('API_URL', 'http://localhost:3000');
-  app.constant('TOKEN_KEY', 'auth_token');
-
-  app.value('APP', React.createClass({ // <-- main react component
-    render: function() {
-      console.log('appprops', this.props);
-      return (React.createElement(Index, this.props));
-    }
-  }));
-
-  app.directive('app', function(reactDirective) {
-    return reactDirective('APP');
-  });
-
-  app.config(function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
-    jwtInterceptorProvider.tokenGetter = function() {
-      console.log('Sending Token');
-      return localStorage.getItem(TOKEN_KEY);
-    };
-
-    $httpProvider.interceptors.push('jwtInterceptor');
-  });
-
-  app.controller('appCtrl',
-    ['UserFactory',
-    function(UserFactory) {
-
-    var vm = this;
-
-    UserFactory.getUser().then(function(user) {
-      vm.user = user;
-      console.info('vm', vm);
-    });
-
-    vm.login = function(username, password) {
-      console.log('vm.login', username, password);
-      UserFactory.login(username, password).then(function(response) {
-        vm.user = response.data.user;
-      }, handleError);
-    };
-
-    vm.logout = function() {
-      console.log('vm.logout');
-      UserFactory.logout();
-      vm.user = null;
-    };
-
-    vm.signup = function(formData) {
-      console.log('vm.signup', formData);
-      UserFactory.signup(formData);
-    };
-
-    function handleError(response) {
-      alert('Error: ' + response.data);
-    }
-  }]);
-
-  app.factory('UserFactory',
-    ['$http', 'AuthTokenFactory', 'API_URL', '$q',
-    function($http, AuthTokenFactory, API_URL, $q) {
-
-    return {
-      login: login,
-      logout: logout,
-      signup: signup,
-      getUser: getUser
-    };
-
-    function login(username, password) {
-      return $http.post(API_URL + '/login', {
-        username: username,
-        password: password
-      }).success(function(response) {
-        AuthTokenFactory.setToken(response.token);
-      });
-    }
-
-    function signup(formData) {
-      return $http.post(API_URL + '/signup', formData)
-      .success(function(response) {
-        console.log('SIGNUP DATA SENT!', response);
-      });
-    }
-
-    function logout() {
-      AuthTokenFactory.setToken(); // removes token from local storage
-    }
-
-    function getUser() {
-      return $q(function(resolve, reject) {
-        AuthTokenFactory.getToken().then(function(token) {
-          resolve(token);
-        });
-      });
-    }
-  }]);
-
-  app.factory('AuthTokenFactory',
-    ['$window', 'TOKEN_KEY', '$q', 'jwtHelper',
-    function($window, TOKEN_KEY, $q, jwtHelper) {
-
-    var store = $window.localStorage;
-    var key = TOKEN_KEY;
-
-    return {
-     getToken: getToken,
-     setToken: setToken
-    };
-
-    function getToken() {
-      return $q(function(resolve, reject) {
-        var tokenKey = store.getItem(key);
-        if (tokenKey) {
-          resolve(jwtHelper.decodeToken(tokenKey));
-        } else {
-          reject({ data: "you are not authorized"});
-        }
-      });
-    }
-
-    function setToken(token) {
-      if (token) {
-        store.setItem(key, token);
-      } else {
-        store.removeItem(key);
-      }
-    }
-  }]);
+  var app = angular.module('rw', [
+  	'rw.react',
+  	'rw.auth',
+  	'rw.router'
+  ]);
 
 }());

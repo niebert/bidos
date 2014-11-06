@@ -3,7 +3,7 @@
 var LoginForm = React.createClass({
 
   propTypes: {
-    submitLogin: React.PropTypes.func.isRequired
+    login: React.PropTypes.func.isRequired
   },
 
   handleSubmit: function(e) {
@@ -13,7 +13,7 @@ var LoginForm = React.createClass({
         password = this.refs.password.getDOMNode().value.trim();
 
     console.log('handleSubmit', username, password);
-    this.props.submitLogin(username, password);
+    this.props.login(username, password);
   },
 
   render: function() {

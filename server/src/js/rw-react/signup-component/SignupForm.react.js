@@ -1,29 +1,28 @@
 /** @jsx React.DOM */
 
-var LoginForm = React.createClass({
+var SignupForm = React.createClass({
 
   propTypes: {
-    submitSignup: React.PropTypes.func.isRequired
+    signup: React.PropTypes.func.isRequired
   },
 
   handleSignup: function(e) {
     e.preventDefault();
 
     var nodeValue = function(ref) {
-    	return this.refs[ref].getDOMNode().value.trim();
+      return this.refs[ref].getDOMNode().value.trim();
     }.bind(this);
 
     var formData = {
-    	password: nodeValue('password'),
-    	username: nodeValue('username'),
-    	email:    nodeValue('email'),
-    	fname:    nodeValue('fname'),
-    	lname:    nodeValue('lname'),
-    }
-
+      password: nodeValue('password'),
+      username: nodeValue('username'),
+      email:    nodeValue('email'),
+      fname:    nodeValue('fname'),
+      lname:    nodeValue('lname'),
+    };
 
     console.log('handleSignup', formData);
-    this.props.submitSignup(formData);
+    this.props.signup(formData);
   },
 
   render: function() {
@@ -48,4 +47,4 @@ var LoginForm = React.createClass({
 
 });
 
-module.exports = LoginForm;
+module.exports = SignupForm;
