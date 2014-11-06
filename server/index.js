@@ -53,7 +53,6 @@
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
         console.log('user is not authenticated');
-        this.redirect('/login');
       } else {
         throw err;
       }
