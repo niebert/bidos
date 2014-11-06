@@ -22,17 +22,9 @@
 
   gulp.task('browserify', function() {
     browserify('./src/js/app.js')
-      .transform(reactify)
+      // .transform(reactify)
       .bundle()
       .pipe(source('app.js'))
-      .pipe(gulp.dest('public/js'));
-  });
-
-  gulp.task('copy', function() {
-    gulp.src('src/**/*.js{,x}')
-      .pipe(plumber({errorHandler:onError}))
-      .pipe(react({harmony:true, noCacheDir:false}))
-      .pipe(concat('app.js'))
       .pipe(gulp.dest('public/js'));
   });
 

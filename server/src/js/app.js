@@ -1,22 +1,10 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['angular-jwt', 'react']);
-  var Index = require('./react-components/Index.react');
+  var app = angular.module('app', ['angular-jwt']);
 
   app.constant('API_URL', 'http://localhost:3000');
   app.constant('TOKEN_KEY', 'auth_token');
-
-  app.value('APP', React.createClass({ // <-- main react component
-    render: function() {
-      console.log('appprops', this.props);
-      return (React.createElement(Index, this.props));
-    }
-  }));
-
-  app.directive('app', function(reactDirective) {
-    return reactDirective('APP');
-  });
 
   app.config(function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
     jwtInterceptorProvider.tokenGetter = function() {
