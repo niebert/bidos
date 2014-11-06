@@ -59,11 +59,19 @@
     }
   });
 
-  // routes below the next loc are only accessible to authenticated clients
+  // routes below the next loc are only accessible to authenticated clients.
+  // if the authorization succeeds, next is yielded and the following routes
+  // are reached. if it fails, it throws and the previous middleware will
+  // catch that error and send back status 401 and redirect to /login.
   app.use(jwt({ secret: config.session.secret }));
 
+  app.use(function *(next) {
+    console.log('valid token received: user is authenticated');
+    yield next;
+  });
+
   // secured routes
-  app.use(mount('/v1', routes.api.bla.middleware()));
+  app.use(mount('/v1', routes.api.users.middleware()));
 
   // main
   var listen = function(port) {

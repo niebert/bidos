@@ -15,50 +15,61 @@
 
   // https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
 
+  /////////////////////////////////////////////
+  // FIXME: wrong usernames are not catched! //
+  /////////////////////////////////////////////
+
   function verifyCredentials(username, password) {
     return new Promise(function (resolve, reject) {
-      User.findOne(username).exec()
+      User.findOne({username: username}).exec()
       .then(function (user) {
         user.comparePassword(password, user.password)
         .then(function (isMatch) {
-          isMatch ? resolve(user) : reject();
+          isMatch ? resolve(user) : reject({msg: 'wrong password'});
         }, function error(err) {
-          reject();
+          console.log('password verification failed');
+          reject({msg: 'password verification failed'});
         });
-      }, function error(err) {
-        reject();
+      }, function error(err) { // <-- FIXME
+        console.log('username lookup failed');
+        reject({msg: 'username lookup failed'});
       });
     });
   }
 
   // check for correct authentication headers. the actual authentication
-  // happens at the jwt() call in ../index.js
+  // happens in the middleware containing the jwt() call. see ../index.js
   function* authenticate(next) { // jshint -W040
     console.log('this.request.body', this.request.body);
 
     var username = this.request.body.username,
         password = this.request.body.password;
 
-    if (!username || !password) {
+    if (!username || !password) { // FIXME this is never reached
       this.status = 400;
       this.body = 'Must provide both username and password';
     } else {
-      currentUser = yield verifyCredentials(username, password)
-      .then(function (user) {
-        this.status = 200;
-        return user;
-      }.bind(this), function error(err) {
-        console.log('user', user);
-        this.status = 500;
-      }.bind(this));
-    }
+      try {
+        currentUser = yield verifyCredentials(username, password)
+        .then(function (user) {
+          console.log('successfully verified user credentials');
+          return user;
+        }, function error(err) { // username not found or wrong password
+          console.log('failed verifying user credentials');
+          throw(err);
+        });
 
-    if (!currentUser) {
-      this.status = 401;
-      this.body = "authentication is possible but has failed\n"
-    } else {
-      console.log('user', currentUser);
-      yield next;
+        if (!currentUser) {
+          this.status = 401;
+          this.body = "authentication is possible but has failed\n";
+        } else {
+          console.log('user', currentUser);
+          yield next;
+        }
+      } catch(err) {
+        this.status = 400;
+        this.body = "bad username\n"; // user not found, actually (?)
+      }
     }
   }
 
