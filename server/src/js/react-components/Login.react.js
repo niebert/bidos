@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var Bla = React.createClass({
+var Login = React.createClass({
   handleClick: function() {
     console.log('bla!');
   },
@@ -14,4 +14,4 @@ var Bla = React.createClass({
 
 });
 
-module.exports = Bla;
+module.exports = Login;
