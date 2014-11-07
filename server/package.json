@@ -57,9 +57,12 @@
   },
   "devDependencies": {
     "browserify": "^6.2.0",
+    "co-mocha": "^1.0.3",
     "gulp-browserify": "^0.5.0",
     "gulp-uglify": "^1.0.1",
+    "mocha": "^2.0.1",
     "reactify": "^0.15.2",
+    "supertest": "^0.14.0",
     "vinyl-source-stream": "^1.0.0"
   },
   "scripts": {

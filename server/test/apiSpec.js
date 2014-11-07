@@ -1,5 +1,4 @@
 // jshint esnext:true
-(function() {
 	'use strict';
 
 	///////////
@@ -20,11 +19,9 @@
 			request(app)
 				.get('/api/x')
 	      .set('Accept', 'application/json')
-	      .expect('Content-Type', /json/)
 				.auth('asdf', 123)
 				.expect(200, done);
 		});
 
 	});
 
-}());

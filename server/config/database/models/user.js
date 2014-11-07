@@ -27,11 +27,12 @@
       return bcrypt.hashAsync(user.password, salt);
     }).then(function(hash) {
       user.password = hash;
+      return next();
     });
 
   });
 
-  UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+  UserSchema.methods.comparePassword = function(candidatePassword) {
     return bcrypt.compareAsync(candidatePassword, this.password);
   };
 

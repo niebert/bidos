@@ -40,8 +40,8 @@
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
 
   // mount public routes
-  app.use(mount('/', routes.auth.middleware()));
-  app.use(mount('/', routes.public.middleware()));
+  app.use(mount('/', routes.public.auth.middleware()));
+  app.use(mount('/', routes.public.home.middleware()));
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -51,20 +51,27 @@
     } catch (err) {
       if (401 == err.status) {
         this.status = 401; // authentication is possible but has failed
-        // this.body = 'Error: Protected resource. No Authorization header found.\n';
-        console.log('user is not authenticated -> redirect to /login');
-        this.redirect('/login');
+        this.body = 'Error: Protected resource. No Authorization header found.\n';
+        console.log('user is not authenticated');
       } else {
         throw err;
       }
     }
   });
 
-  // routes below the next loc are only accessible to authenticated clients
+  // routes below the next loc are only accessible to authenticated clients.
+  // if the authorization succeeds, next is yielded and the following routes
+  // are reached. if it fails, it throws and the previous middleware will
+  // catch that error and send back status 401 and redirect to /login.
   app.use(jwt({ secret: config.session.secret }));
 
+  app.use(function *(next) {
+    console.log('valid token received: user is authenticated');
+    yield next;
+  });
+
   // secured routes
-  app.use(mount('/v1', routes.api.bla.middleware()));
+  app.use(mount('/v1', routes.api.users.middleware()));
 
   // main
   var listen = function(port) {

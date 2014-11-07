@@ -4,18 +4,17 @@
   'use strict';
 
   var fs = require('fs'),
-      routes = {};
+      objects = {};
 
-  if (!Object.keys(routes).length) {
-    console.log('getting routes');
+  if (!Object.keys(objects).length) {
     fs.readdirSync(__dirname)
       .filter(function(file) {
         return (file.indexOf('.') !== 0) && (file !== 'index.js');
       })
       .forEach(function(file) {
-        routes[file.split('.')[0]] = require('./' + file);
+        objects[file.split('.')[0]] = require('./' + file);
       });
   }
 
-  module.exports = exports = routes;
+  module.exports = exports = objects;
 }());
