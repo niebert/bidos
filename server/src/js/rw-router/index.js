@@ -25,6 +25,11 @@
       .state('signup', {
         url: "/signup",
         template: '<react-component name="Signup" props="vm">'
+      })
+
+      .state('reset', {
+        url: "/reset",
+        template: '<react-component name="ResetPassword" props="vm">'
       });
   }]);
 

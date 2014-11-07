@@ -17,9 +17,16 @@
 
   <div id="auth" ng-controller="authCtrl as vm">
 
-    <a ng-hide="vm.user" ui-sref="login">Log In</a>
-    <a ng-hide="vm.user" ui-sref="signup">Sign Up</a>
-    <a ng-show="vm.user" ng-click="vm.logout()">Log Out</a>
+    <span ng-hide="vm.user">
+      <a ui-sref="login">log in</a> .
+      <a ui-sref="signup">sign up</a> .
+      <a ui-sref="reset">forgot password</a>
+    </span>
+
+    <span ng-show="vm.user">
+      <a ng-click="vm.logout()">log out</a> .
+    </span>
+
 
     <div ui-view></div>
 
