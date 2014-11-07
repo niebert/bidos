@@ -27,10 +27,17 @@
         template: '<react-component name="Signup" props="vm">'
       })
 
-      .state('reset', {
-        url: "/reset",
-        template: '<react-component name="ResetPassword" props="vm">'
+      .state('admin', {
+        url: "/admin",
+        template: '<div />'
+      })
+
+      .state('admin.users', {
+        url: "/admin/users",
+        template: '<react-component name="Users" props="vm">',
+        controller: 'adminCtrl'
       });
+
   }]);
 
 }());

@@ -25,14 +25,8 @@
       .then(function (user) {
         user.comparePassword(password, user.password)
         .then(function (isMatch) {
-          isMatch ? resolve(user) : reject({msg: 'wrong password'});
-        }, function error(err) {
-          console.log('password verification failed');
-          reject({msg: 'password verification failed'});
+          isMatch ? resolve(user) : reject();
         });
-      }, function error(err) {
-        console.log('username lookup failed');
-        reject({msg: 'username lookup failed'});
       });
     });
   }
@@ -45,30 +39,24 @@
     var username = this.request.body.username,
         password = this.request.body.password;
 
-    if (!username || !password) { // FIXME this is never reached
+    if (!username || !password) {
       this.status = 400;
-      this.body = 'Must provide both username and password';
+      this.body = 'must provide both username and password\n';
     } else {
-      try {
-        currentUser = yield verifyCredentials(username, password)
-        .then(function (user) {
-          console.log('successfully verified user credentials');
-          return user;
-        }, function error(err) { // username not found or wrong password
-          console.log('failed verifying user credentials');
-          throw(err);
-        });
+      currentUser = yield verifyCredentials(username, password)
+      .then(function (user) {
+        console.log('successfully verified user credentials');
+        return user;
+      }, function error(err) {
+        console.log('failed verifying user credentials');
+      });
 
-        if (!currentUser) {
-          this.status = 401;
-          this.body = "authentication is possible but has failed\n";
-        } else {
-          console.log('user', currentUser);
-          yield next;
-        }
-      } catch(err) {
-        this.status = 400;
-        this.body = "bad username\n"; // user not found, actually (?)
+      if (!currentUser) {
+        this.status = 401;
+        this.body = "authentication is possible but has failed\n";
+      } else {
+        console.log('user', currentUser);
+        yield next;
       }
     }
   }
@@ -82,7 +70,7 @@
 
     this.body = { // jshint -W040
       token: token,
-      user: this.request.body // XXX any reason the store the password in local storage?
+      user: this.request.body // XXX any reason to store the password in local storage?
     };
   }
 
@@ -105,8 +93,8 @@
       this.status = 200;
       return user;
     }.bind(this), function error(err) {
-      console.log('failed creating user', err); // TODO return nicer error message
-      this.status = 500;
+      console.log('failed creating user', err);
+      this.status = 400;
     }.bind(this));
   }
 
