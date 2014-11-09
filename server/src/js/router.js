@@ -1,6 +1,10 @@
 (function() {
   'use strict';
 
+  ////////////
+  // ROUTER //
+  ////////////
+
   angular.module('rw.router', ['ui.router'])
 
   .config(['$stateProvider', '$urlRouterProvider',
