@@ -3,10 +3,12 @@
 
   require('./auth');
   require('./router');
+  require('./http-interceptor');
 
-  var app = angular.module('rw', [
+  angular.module('rw', [
   	'rw.auth',
-  	'rw.router'
+    'rw.router',
+  	'rw.httpInterceptor'
   ]);
 
 }());

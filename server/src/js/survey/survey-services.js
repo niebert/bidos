@@ -3,10 +3,6 @@
 
   require('./survey-constants');
 
-  ////////////////////
-  // SURVEY SERVICE //
-  ////////////////////
-
   angular.module('survey.service', ['survey.constants'])
 
   .service('SurveyService', ['$http', '$q', 'RESOURCE_URL',

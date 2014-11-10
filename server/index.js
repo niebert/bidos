@@ -2,14 +2,11 @@
 (function() {
 	'use strict';
 
-  // see ./config/index.js
-  var config = require('./config')[process.env.NODE_ENV];
+  var config = require('./platform/config')[process.env.NODE_ENV],
+      routes = require('./platform/routes');
 
   // node core
   var path = require('path');
-
-  // utilities
-  var lodash = require('lodash');
 
   // koa itself
   var app = require('koa')();
@@ -26,22 +23,22 @@
   app.use(require('koa-bodyparser')());
   app.use(require('koa-compress')());
 
+  // database
+  app.use(require('koa-pg')(config.db.postgres.url));
+
   // plain html files are rendered from ./views
   app.use(views('views', {
     default: 'html',
     cache: false
   }));
 
-  // initialize routes
-  var routes = require('./config/routes');
-
   // serve static dirs
   app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
 
   // mount public routes
-  app.use(mount('/', routes.public.auth.middleware()));
-  app.use(mount('/', routes.public.home.middleware()));
+  app.use(mount('/', routes.auth.middleware()));
+  app.use(mount('/', routes.home.middleware()));
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -49,7 +46,7 @@
     try {
       yield next; // -> jwt authorization
     } catch (err) {
-      if (401 == err.status) {
+      if (401 === err.status) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
         console.log('user is not authenticated');
@@ -63,7 +60,7 @@
   // if the authorization succeeds, next is yielded and the following routes
   // are reached. if it fails, it throws and the previous middleware will
   // catch that error and send back status 401 and redirect to /login.
-  app.use(jwt({ secret: config.session.secret }));
+  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
   app.use(function *(next) {
     console.log('valid token received: user is authenticated');
@@ -71,12 +68,12 @@
   });
 
   // secured routes
-  app.use(mount('/v1', routes.api.users.middleware()));
+  // app.use(mount('/v1', routes.users.middleware()));
 
   // main
   var listen = function(port) {
-    console.log('api accessible on port ' + (config.app.port));
-    app.listen(config.app.port);
+    console.log('api accessible on port ' + (port || config.app.port));
+    app.listen(port || config.app.port);
   };
 
   /*jshint -W030 */
