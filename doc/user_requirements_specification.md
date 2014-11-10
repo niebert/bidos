@@ -1,103 +1,102 @@
 
 
 model: user
------------
+===========
 
-first name
-last name
-password
-email
+- [x] first **name
+- [x] last **name
+- [x] password
+- [x] email
 
-
-user role: practitian
----------------------
+role: practitian
+----------------
 
 ### authentification
 
-/lf0010/    register account √
-/lf0020/    login √
-/lf0030/    logout √
-/lf0040/    forgot password
+- [x] **/lf0010/**    register account
+- [x] **/lf0020/**    login
+- [x] **/lf0030/**    logout
+- [ ] **/lf0040/**    forgot password *POSTPONED*
 
 ### private config
 
-/lf0110/    view config
-/lf0120/    edit config
-/lf0130/    save config xxx
-/lf0140/    delete config xxx
-/lf0150/    load config xxx
-/lf0160/    print config xxx
+- [ ] **/lf0110/**    view config
+- [ ] **/lf0120/**    edit config
+- [ ] **/lf0130/**    save config *POSTPONED*
+- [ ] **/lf0140/**    delete config *POSTPONED*
+- [ ] **/lf0150/**    load config *POSTPONED*
+- [ ] **/lf0160/**    print config *POSTPONED*
 
 ### private profile
 
-/lf0210/    view profile xxx
-/lf0220/    add new scholar to group yyy
+- [ ] **/lf0210/**    view profile *POSTPONED*
+- [ ] **/lf0220/**    add new scholar to group
 
 ### data input
 
-/lf0310/    rate scholar via questionary yyy
-/lf0320/    add custom questionary item yyy
+- [ ] **/lf0310/**    rate scholar via questionary
+- [ ] **/lf0320/**    add custom questionary item
 
 ### search
 
-/lf0410/    search for child yyy
-/lf0420/    filter pupils by property yyy
-/lf0430/    search for questionary items yyy
+- [ ] **/lf0410/**    search for child
+- [ ] **/lf0420/**    filter pupils by property
+- [ ] **/lf0430/**    search for questionary items
 
-user role: scientist
---------------------
+role: scientist
+---------------
 
 ### authentification
 
-/lf0510/    register account
-/lf0520/    login
-/lf0530/    logout
-/lf0540/    forgot password
+- [x] **/lf0510/**    register account
+- [x] **/lf0520/**    login
+- [x] **/lf0530/**    logout
+- [ ] **/lf0540/**    forgot password *POSTPONED*
 
 ### private config
 
-/lf0610/    view config
-/lf0620/    edit config
-/lf0630/    save config
-/lf0640/    delete config
-/lf0650/    load config
-/lf0660/    print config
+- [ ] **/lf0610/**    view config
+- [ ] **/lf0620/**    edit config
+- [ ] **/lf0630/**    save config
+- [ ] **/lf0640/**    delete config
+- [ ] **/lf0650/**    load config
+- [ ] **/lf0660/**    print config
 
 ### private profile
 
-/lf0710/    view profile
-/lf0720/    add new scholar to group wtf
+- [ ] **/lf0710/**    view profile
 
 ### search
 
-/lf0810/    search for pupil by id
-/lf0820/    search for group by property
+- [ ] **/lf0810/**    search for pupil by id
+- [ ] **/lf0820/**    search for group by property
 
 ### export data
 
-/lf0910/    export to csv/json/yaml
+- [ ] **/lf0910/**    export to csv/json/yaml
 
-user role: admin
-----------------
+role: admin
+-----------
 
 ### system configuration
 
-/lf1010/    configure system
+- [ ] **/lf1010/**    configure system
 
 ### user management 
 
-/lf1110/    accept/reject user registration yyy
-/lf1120/    configure user account scope yyy
-/lf1130/    edit/delete user account yyy
+- [ ] **/lf1110/**    accept/reject user registration
+- [ ] **/lf1120/**    configure user account scope
+- [ ] **/lf1130/**    edit/delete user account
 
 persistent data
----------------
+===============
 
-/ld100/     store data in database [BE] √
+- [x] **/ld100/**     store data in database
 
 data integrity
---------------
+===============
 
-/ll100/     database must always be valid [BE]
-/ll200/     database only accepts valid data [FE]
-/ll210/     don't clear form when input is faulty
+- [ ] **/ll100/**     database must always be valid (front end)
+- [ ] **/ll200/**     database only accepts valid data (back end)
+- [ ] **/ll210/**     don't clear form when input is faulty
+

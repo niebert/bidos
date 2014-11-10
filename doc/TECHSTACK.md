@@ -9,16 +9,6 @@ Tech Stack
 
 > AngularJS is a toolset for building the framework most suited to your application development. It is fully extensible and works well with other libraries.
 
-> The resulting environment is extraordinarily expressive, readable, and quick to develop.
-
-+ Because it's made by Google (if that's an argument) and provides all the neccessary capabilities like routing, two-way-data-binding, service-providers etc.
-
-[**React**](facebook.github.io/react)
-
-> A Javascript library for building User Interfaces.
-
-+ Even though it is made by Facebook, it drastically improves page rendering speed and provides a modular and well integrated framework for the V (view) in angular's MVW (Model-View-Whatever) infrastructure.
-
 ### Server Side Framework
 
 [**Node.js**](nodejs.org)
@@ -29,19 +19,15 @@ Tech Stack
 
 > Koa is a new web framework […] which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling.
 
-+ Because they are slim, fast and easy to code and play very well together with the corresponding front end architecture.
+### Caching
 
-+ Alternative: [Go](golang.org) and the [Gorilla Web Toolkit](gorillatoolkit.org). Because the resulting API would be probably more robust, performant and less error-prone.
+[**Redis**](redis.io)
 
-> Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
-
-> Gorilla is a web toolkit for the Go programming language.
+> Redis is an open source, BSD licensed, advanced key-value store.
 
 ### Database
 
-[**Redis**](redis.io) for initial development and very likely [PostgreSQL](postgresql.org) as soon as the data models reach a final design state.
-
-> Redis is an open source, BSD licensed, advanced key-value store.
+[**PostgreSQL**](postgresql.org)
 
 > PostgreSQL is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness.
 
@@ -53,17 +39,17 @@ Tech Stack
 
 ### Client Side Deployment
 
+[**Ionic**](ionicframework.com)
+
+> Free and open source, Ionic offers a library of mobile-optimized HTML, CSS and JS components for building highly interactive apps. Built with Sass and optimized for AngularJS.
+
 [**Cordova**](cordova.apache.org)
 
 > Apache Cordova is a platform for building native mobile applications using HTML, CSS and JavaScript.
 
-+ Additionally: [RequireJS](requirejs.org) or [Browserify](browserify.org).
+[**Browserify**](browserify.org)
 
 ### CSS
-
-[**Ionic**](ionicframework.com)
-
-> Free and open source, Ionic offers a library of mobile-optimized HTML, CSS and JS components for building highly interactive apps. Built with Sass and optimized for AngularJS.
 
 [**Sass**](sass-lang.com)
 
