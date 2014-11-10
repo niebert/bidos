@@ -6,33 +6,40 @@
   .constant('TOKEN_KEY', 'auth_token')
   .constant('API_URL', 'http://localhost:3000')
 
-  .config(function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
+  .config(['$httpProvider', 'jwtInterceptorProvider', 'TOKEN_KEY',
+    function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
     jwtInterceptorProvider.tokenGetter = function() {
-      console.log('Sending Token');
+      console.log('jwtInterceptorProvider.tokenGetter');
       return localStorage.getItem(TOKEN_KEY);
     };
 
     $httpProvider.interceptors.push('jwtInterceptor');
-  })
+  }])
 
   .controller('authCtrl',
     ['UserFactory', '$state',
     function(UserFactory, $state) {
 
-    var vm = this;
+    var vm = this; // view model
 
-    UserFactory.getUser().then(function(user) {
-      vm.user = user;
-      console.info('vm', vm); // vm is for viewmodel, btw
-      $state.go('index'); // go to / if authenticated
-    }, function error(err) {
-      $state.go('login'); // go to /login if not authenticated
-    });
+    // FIXME
+    function init () {
+      UserFactory.getUser()
+      .then(function(user) {
+        vm.user = user;
+        console.info('vm', vm);
+        $state.go('index');
+      }, function notAuthenticated() {
+        $state.go('login');
+      });
+    }
 
-    vm.login = function(username, password) {
-      console.log('vm.login', username, password);
-      UserFactory.login(username, password).then(function(response) {
-        vm.user = response.data.user;
+    vm.login = function(credentials) {
+      console.log('vm.login', credentials);
+
+      UserFactory.login(credentials)
+      .then(function(response) {
+        vm.user = response.data;
         $state.go('index');
       }, handleError);
     };
@@ -46,43 +53,31 @@
 
     vm.signup = function(formData) {
       console.log('vm.signup', formData);
-      UserFactory.signup(formData);
-    };
-
-    vm.handleLink = function(href) {
-      console.log("vm.handleLink", href);
+      UserFactory.signup(formData)
+      .then(function(response) {
+        vm.user = response.data;
+        $state.go('index');
+      }, handleError);
     };
 
     function handleError(response) {
-      alert('Error: ' + response.data);
+      alert('Error: ' + response.data.error);
     }
   }])
 
   .factory('UserFactory',
-    ['$http', 'AuthTokenFactory', 'API_URL', '$q',
-    function($http, AuthTokenFactory, API_URL, $q) {
+    ['$http', 'AuthTokenFactory', 'API_URL',
+    function($http, AuthTokenFactory, API_URL) {
 
-    return {
-      login: login,
-      logout: logout,
-      signup: signup,
-      getUser: getUser
-    };
-
-    function login(username, password) {
-      return $http.post(API_URL + '/login', {
-        username: username,
-        password: password
-      }).success(function(response) {
-        AuthTokenFactory.setToken(response.token);
+    function login(credentials) {
+      return $http.post(API_URL + '/login', credentials)
+      .success(function(response) {
+        return AuthTokenFactory.setToken(response.token);
       });
     }
 
     function signup(formData) {
-      return $http.post(API_URL + '/signup', formData)
-      .success(function(response) {
-        console.log('SIGNUP DATA SENT!', response);
-      });
+      return $http.post(API_URL + '/signup', formData);
     }
 
     function logout() {
@@ -90,14 +85,15 @@
     }
 
     function getUser() {
-      return $q(function(resolve, reject) {
-        AuthTokenFactory.getToken().then(function(token) {
-          resolve(token);
-        }, function error(err) {
-          reject();
-        });
-      });
+      return AuthTokenFactory.getToken(); // decoded token is user obj
     }
+
+    return {
+      login: login,
+      logout: logout,
+      signup: signup,
+      getUser: getUser
+    };
   }])
 
   .factory('AuthTokenFactory',
@@ -107,18 +103,13 @@
     var store = $window.localStorage;
     var key = TOKEN_KEY;
 
-    return {
-     getToken: getToken,
-     setToken: setToken
-    };
-
     function getToken() {
       return $q(function(resolve, reject) {
         var tokenKey = store.getItem(key);
         if (tokenKey) {
           resolve(jwtHelper.decodeToken(tokenKey));
         } else {
-          reject({ data: "you are not authorized"});
+          reject({ data: 'you are not authorized' });
         }
       });
     }
@@ -130,6 +121,10 @@
         store.removeItem(key);
       }
     }
-  }]);
 
+    return {
+     getToken: getToken,
+     setToken: setToken
+    };
+  }]);
 }());
