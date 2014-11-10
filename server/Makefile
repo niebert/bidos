@@ -1,16 +1,18 @@
 BASEDIR = .
 
 ifeq (${NODE_ENV},production)
-PORT=3500
+PORT=3001
+DATABASE = bidos_production
 ENVIRONMENT = --production
 else
-PORT=4500
+PORT=3000
+DATABASE = bidos_development
 endif
 
 IGNOREFILE = $(BASEDIR)/.gitignore
 REMOVEFILES = `cat $(IGNOREFILE)` *bz2
 
-NAME = bidos-koa
+NAME = bidos-server
 TARBALL = $(NAME)-`date '+%Y%m%d'`.tar.bz2
 
 REMOTE_HOST = rene@141.26.69.238
@@ -18,6 +20,8 @@ REMOTE_PATH = $(NAME)
 
 DEPLOY_CMD = "cd $(REMOTE_PATH); make setup"
 FOREVER_CMD = "PORT=$(PORT) forever start -w -a -o out.log -e err.log server.js"
+
+DB_SETUP_FILE = ./platform/database/db_setup.sql
 
 install: npm bower
 
@@ -44,4 +48,11 @@ deploy:
 	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
 	@ssh $(REMOTE_HOST)
 
-setup:
+dbinit:
+	@echo initializing database $(DATABASE)
+	@psql -f $(DB_SETUP_FILE) $(DATABASE)
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "admin", "password": "123", "email": "asdf@uni-koblenz.de" }' localhost:$(PORT)/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "rene", "password": "123", "email": "rene.wilhelm@uni-koblenz.de" }' localhost:$(PORT)/signup
+	@psql -c "UPDATE users SET role_id = 1 WHERE user_id = 1" $(DATABASE)
+	@psql -c "UPDATE users SET role_id = 2 WHERE user_id = 2" $(DATABASE)
+
