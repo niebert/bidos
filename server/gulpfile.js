@@ -3,15 +3,12 @@
 
    var gulp = require('gulp'),
        util = require('gulp-util'),
-       flatten = require('gulp-flatten'),
-       concat = require('gulp-concat'),
        plumber = require('gulp-plumber'),
+       uglify = require('gulp-uglify'),
        nodemon = require('gulp-nodemon'),
        source = require('vinyl-source-stream'),
-       react = require('gulp-react'),
-       reactify = require('reactify'),
+       buffer = require('vinyl-buffer'),
        browserify = require('browserify'),
-       uglify = require('gulp-uglify'),
        prefix  = require('gulp-autoprefixer'),
        sass = require('gulp-ruby-sass');
 
@@ -22,9 +19,10 @@
 
   gulp.task('browserify', function() {
     browserify('./src/js/app.js')
-      // .transform(reactify)
       .bundle()
       .pipe(source('app.js'))
+      // .pipe(buffer())
+      // .pipe(uglify())
       .pipe(gulp.dest('public/js'));
   });
 
@@ -44,7 +42,7 @@
   gulp.task('serve', function() {
     nodemon({
       script: 'index.js',
-      watch: ['index.js', 'config'],
+      watch: ['index.js', 'platform'],
       nodeArgs: ['--harmony'],
       env: { NODE_ENV: 'development' }
     })
