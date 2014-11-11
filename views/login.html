@@ -1,0 +1,17 @@
+<!-- <paper-dialog transition="core-transition-center"> -->
+  <form class="auth" novalidate>
+
+    <paper-input-decorator floatingLabel label="username">
+      <input type="text" ng-model="credentials.username" required />
+    </paper-input-decorator>
+
+    <paper-input-decorator floatingLabel label="password">
+      <input type="password" ng-model="credentials.password" required />
+    </paper-input-decorator>
+
+    <paper-button class="submit-button" ng-click="vm.login(credentials)" raised>
+      log in
+    </paper-button>
+
+  </form>
+<!-- </paper-dialog> -->
