@@ -10,13 +10,13 @@
       router = new Router(),
       user;
 
-
-
   function* authenticate(next) {
-    var bcrypt = require('co-bcrypt'),
-        statements = require('../database').statements;
+    var bcrypt = require('co-bcrypt');
 
-    var result = yield this.pg.db.client.query_(statements.users.getUser, [this.request.body.username]);
+    var result = yield this.pg.db.client.query_({
+      name: 'readUser',
+      text: 'SELECT * FROM users'
+    }, [this.request.body.username]);
 
     if (!result.rowCount) {
       this.status = 401;
@@ -34,8 +34,6 @@
     }
   }
 
-
-
   function *tokenize() {
     this.body = _.merge(user, {
       token: jwt.sign(user, secret, {
@@ -46,18 +44,19 @@
     yield {}; //
   }
 
-
-
   function *createUser() {
-    var bcrypt = require('co-bcrypt'),
-        statements = require('../database').statements;
+    var bcrypt = require('co-bcrypt');
 
     _.merge(this.request.body, {
       password: yield bcrypt.hash(this.request.body.password, yield bcrypt.genSalt(10))
     });
 
     try {
-      var response = yield this.pg.db.client.query_(statements.users.createUser, _.map(this.request.body));
+      var response = yield this.pg.db.client.query_({
+      name: 'createUser',
+      text: 'INSERT INTO users (username, password, email, fname, lname) VALUES ($1, $2, $3, $4, $5) RETURNING *'
+    }, _.map(this.request.body));
+
       console.info(response.rows[0]);
       this.body = response.rows[0];
       this.status = 201;
@@ -66,8 +65,6 @@
       this.status = 422;
     }
   }
-
-
 
   // renders ./views/login.html
   function *renderLogin() { // jshint -W040

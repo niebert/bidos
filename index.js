@@ -2,8 +2,18 @@
 (function() {
 	'use strict';
 
+  var _ = require('lodash');
+
   var config = require('./platform/config')[process.env.NODE_ENV],
       routes = require('./platform/routes');
+
+  // console.log(_.keys(routes));
+  // _(routes).keys().each(function(d) {
+  //   // _.values(routes[d])[0].routes.each(function(d) { console.log(d); });
+  //   console.log(_(routes[d]).values());
+  // }).value();
+
+  // console.log(routes.users.view);
 
   // node core
   var path = require('path');
@@ -40,6 +50,8 @@
   app.use(mount('/', routes.auth.middleware()));
   app.use(mount('/', routes.home.middleware()));
 
+  app.use(mount('/users', routes.users.view.middleware()));
+
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
   app.use(function *(next) {
@@ -62,13 +74,17 @@
   // catch that error and send back status 401 and redirect to /login.
   app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
+  console.log(routes.users.view.routes[0].name, routes.users.view.routes[0].path);
+
   app.use(function *(next) {
     console.log('valid token received: user is authenticated');
     yield next;
   });
 
   // secured routes
-  // app.use(mount('/v1', routes.users.middleware()));
+  app.use(mount('/v1/users', routes.users.data.middleware()));
+
+  // TODO export all /v1 as one router (cascade koa middleware)
 
   // main
   var listen = function(port) {

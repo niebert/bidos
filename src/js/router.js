@@ -17,7 +17,13 @@
 
       .state('login', {
         url: '/login',
-        templateUrl: '/login'
+        views: {
+          auth: {
+            templateUrl: '/login',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          }
+        }
       })
 
       .state('signup', {
@@ -25,14 +31,9 @@
         templateUrl: '/signup'
       })
 
-      .state('admin', {
-        url: '/admin',
-        templateUrl: '/admin'
-      })
-
-      .state('admin.users', {
-        url: '/admin/users',
-        templateUrl: '/admin/users',
+      .state('users', {
+        url: '/users',
+        templateUrl: '/users',
       });
 
   }]);

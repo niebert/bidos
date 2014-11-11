@@ -6,7 +6,7 @@
   var Router = require('koa-router');
   var router = new Router();
 
-  function* index(next) {
+  function* index() {
     yield this.render('index');
   }
 

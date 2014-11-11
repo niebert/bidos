@@ -103,7 +103,7 @@ CREATE VIEW all_users AS
   INNER JOIN roles ON users.role_id = roles.role_id;
 
 -- all users belonging to groups
-CREATE VIEW all_practitioners AS
+CREATE VIEW all_user_with_a_group AS
   SELECT user_id, username, email, fname, lname, rolename, groupname FROM users
   INNER JOIN roles ON users.role_id = roles.role_id
   INNER JOIN groups ON users.group_id = groups.group_id;

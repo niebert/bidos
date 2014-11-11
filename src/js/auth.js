@@ -22,17 +22,14 @@
 
     var vm = this; // view model
 
-    // FIXME
-    function init () {
-      UserFactory.getUser()
-      .then(function(user) {
-        vm.user = user;
-        console.info('vm', vm);
-        $state.go('index');
-      }, function notAuthenticated() {
-        $state.go('login');
-      });
-    }
+    UserFactory.getUser()
+    .then(function(user) {
+      vm.user = user;
+      console.info('vm', vm);
+      // $state.go('index');
+    }, function notAuthenticated() {
+      // $state.go('login');
+    });
 
     vm.login = function(credentials) {
       console.log('vm.login', credentials);
@@ -61,7 +58,7 @@
     };
 
     function handleError(response) {
-      alert('Error: ' + response.data.error);
+      alert('Error: ' + response);
     }
   }])
 

@@ -4,10 +4,10 @@
    var gulp = require('gulp'),
        util = require('gulp-util'),
        plumber = require('gulp-plumber'),
-       uglify = require('gulp-uglify'),
        nodemon = require('gulp-nodemon'),
        source = require('vinyl-source-stream'),
-       buffer = require('vinyl-buffer'),
+       // uglify = require('gulp-uglify'),
+       // buffer = require('vinyl-buffer'),
        browserify = require('browserify'),
        prefix  = require('gulp-autoprefixer'),
        sass = require('gulp-ruby-sass');
@@ -35,8 +35,8 @@
   });
 
   gulp.task('watch', function() {
-    gulp.watch('src/**/*', ['browserify']);
-    gulp.watch('src/scss/**/*.scss', ['sass']);
+    gulp.watch('src/**/*.js', ['browserify']);
+    gulp.watch('src/css/**/*.scss', ['sass']);
   });
 
   gulp.task('serve', function() {

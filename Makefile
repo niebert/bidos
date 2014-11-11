@@ -21,7 +21,7 @@ REMOTE_PATH = $(NAME)
 DEPLOY_CMD = "cd $(REMOTE_PATH); make setup"
 FOREVER_CMD = "PORT=$(PORT) forever start -w -a -o out.log -e err.log server.js"
 
-DB_SETUP_FILE = ./platform/database/db_setup.sql
+DB_SETUP_FILE = ./db_setup.sql
 
 install: npm bower
 
@@ -51,8 +51,8 @@ deploy:
 dbinit:
 	@echo initializing database $(DATABASE)
 	@psql -f $(DB_SETUP_FILE) $(DATABASE)
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "admin", "password": "123", "email": "asdf@uni-koblenz.de" }' localhost:$(PORT)/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "rene", "password": "123", "email": "rene.wilhelm@uni-koblenz.de" }' localhost:$(PORT)/signup
+	curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "admin", "password": "123", "email": "asdf@uni-koblenz.de", "fname": "René", "lname": "Wilhelm" }' localhost:$(PORT)/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "rene", "password": "123", "email": "rene.wilhelm@uni-koblenz.de", "fname": "René", "lname": "Wilhelm" }' localhost:$(PORT)/signup
 	@psql -c "UPDATE users SET role_id = 1 WHERE user_id = 1" $(DATABASE)
 	@psql -c "UPDATE users SET role_id = 2 WHERE user_id = 2" $(DATABASE)
 
