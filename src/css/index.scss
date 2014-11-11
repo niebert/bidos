@@ -1,0 +1,77 @@
+// .
+// └── html
+//     └── body
+//         └── app
+//             └── main
+
+@import '_color-palette';
+
+body {
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  margin: 32px auto;
+  width: 80%;
+  font-family: 'Roboto', sans-serif;
+}
+
+#app {
+	margin: 16px auto;
+}
+
+#auth {
+  width: 100px;
+}
+
+.submit-button {
+  background: color($indigo, 500);
+  color: white;
+  float: right;
+  margin-top: 32px;
+}
+
+.cancel-button:hover {
+  background: color($red, 500);
+  color: white;
+}
+
+form {
+  &.auth {
+    width: 200px;
+    margin: 200px auto;
+  }
+}
+
+// th {
+//   text-align: left;
+// }
+
+// td,
+// th {
+//   padding: 4px;
+// }
+
+// table {
+//   width: 100%;
+// }
+
+// #main {
+//   width: 94%;
+//   margin: 50px auto;
+// }
+
+// a {
+// 	color: #0078e7;
+// 	text-decoration: none;
+// }
+
+// #auth {
+//   text-align: right;
+//   width: 94%;
+//   margin: 10px auto;
+//   #forms {
+//     margin: 0 auto;
+//   }
+//   #categories {
+//     text-align: left;
+//   }
+// }
