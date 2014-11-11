@@ -3,8 +3,8 @@
 model: user
 ===========
 
-- [x] first **name
-- [x] last **name
+- [x] first name
+- [x] last name
 - [x] password
 - [x] email
 
