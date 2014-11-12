@@ -7,14 +7,6 @@
   var config = require('./platform/config')[process.env.NODE_ENV],
       routes = require('./platform/routes');
 
-  // console.log(_.keys(routes));
-  // _(routes).keys().each(function(d) {
-  //   // _.values(routes[d])[0].routes.each(function(d) { console.log(d); });
-  //   console.log(_(routes[d]).values());
-  // }).value();
-
-  // console.log(routes.users.view);
-
   // node core
   var path = require('path');
 
@@ -36,8 +28,8 @@
   // database
   app.use(require('koa-pg')(config.db.postgres.url));
 
-  // plain html files are rendered from ./views
-  app.use(views('views', {
+  // plain html files are rendered from ./platform/views
+  app.use(views('platform/views', {
     default: 'html',
     cache: false
   }));
@@ -47,10 +39,8 @@
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
 
   // mount public routes
-  app.use(mount('/', routes.auth.middleware()));
-  app.use(mount('/', routes.home.middleware()));
-
-  app.use(mount('/users', routes.users.view.middleware()));
+  app.use(mount('/', routes.auth.middleware())); // FIXME current routing order sucks
+  app.use(mount('/', routes.templates.middleware())); // FIXME
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -74,7 +64,7 @@
   // catch that error and send back status 401 and redirect to /login.
   app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
-  console.log(routes.users.view.routes[0].name, routes.users.view.routes[0].path);
+  // console.log(routes.users.view.routes[0].name, routes.users.view.routes[0].path);
 
   app.use(function *(next) {
     console.log('valid token received: user is authenticated');
@@ -82,9 +72,8 @@
   });
 
   // secured routes
-  app.use(mount('/v1/users', routes.users.data.middleware()));
-
   // TODO export all /v1 as one router (cascade koa middleware)
+  app.use(mount('/v1/user', routes.user.middleware()));
 
   // main
   var listen = function(port) {

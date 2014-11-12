@@ -9,69 +9,50 @@
 body {
   -webkit-font-smoothing: antialiased;
   height: 100%;
-  margin: 32px auto;
-  width: 80%;
+  width: 100%;
   font-family: 'Roboto', sans-serif;
 }
 
 #app {
-	margin: 16px auto;
+  margin: 32px auto;
 }
 
-#auth {
-  width: 100px;
-}
-
-.submit-button {
-  background: color($indigo, 500);
-  color: white;
-  float: right;
-  margin-top: 32px;
-}
-
-.cancel-button:hover {
-  background: color($red, 500);
-  color: white;
-}
-
-form {
-  &.auth {
-    width: 200px;
-    margin: 200px auto;
+.top-menu {
+  background-color: color($teal, 300);
+  a {
+    color: white;
   }
 }
 
-// th {
-//   text-align: left;
-// }
+div.auth {
+  margin: 32px auto;
+  width: 50%;
 
-// td,
-// th {
-//   padding: 4px;
-// }
+  paper-shadow {
+    width: 100%;
+  }
 
-// table {
-//   width: 100%;
-// }
+  paper-button {
+    // margin-top: 16px;
+  }
 
-// #main {
-//   width: 94%;
-//   margin: 50px auto;
-// }
+  form {
+    // padding: 6% 2%;
+    width: 65%;
+    margin: 0 auto;
+  }
+}
 
-// a {
-// 	color: #0078e7;
-// 	text-decoration: none;
-// }
+.submit-button {
+  color: color($indigo, 500);
+  float: right;
+}
 
-// #auth {
-//   text-align: right;
-//   width: 94%;
-//   margin: 10px auto;
-//   #forms {
-//     margin: 0 auto;
-//   }
-//   #categories {
-//     text-align: left;
-//   }
-// }
+.cancel-button:hover {
+  color: color($red, 500);
+}
+
+a {
+	color: color($indigo, 500);
+	text-decoration: none;
+}

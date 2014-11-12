@@ -5,27 +5,36 @@
 
   var Router = require('koa-router');
 
-  // var path = require('path');
-  // console.log(__filename.slice(__filename.lastIndexOf(path.sep) + 1));
+  // var routes = {
+  //   user: {
+  //     readUser: {
+  //       mount: '/user',
+  //       path: '/',
+  //       method: 'GET',
+  //       text: 'SELECT * FROM users WHERE username = $1',
+  //     }
+  //   }
+  // };
 
-  var viewRouter = new Router()
-    .get('indexUser', '/', function *indexUser() {
-      yield this.render('user/index');
-    })
+  // var bla = new Router()
+  //   .get('readUser', '/', 'SELECT * FROM users WHERE username = $1');
 
-    .get('newUser', '/new', function *newUser() {
-      yield this.render('user/new');
-    })
+  // var routeObject = {
+  //   model: 'user',
+  //   name: 'readUser',
+  //   method: 'GET',
+  //   path: '/',
+  //   text: 'SELECT * FROM users WHERE username = $1',
+  // };
 
-    .get('showUser', '/:id', function *showUser() {
-      yield this.render('user/show');
-    })
 
-    .get('editUser', '/:id/edit', function *editUser() {
-      yield this.render('user/edit');
-    });
+  // var generateRouteFunction = function(routeObj) {
+  //   var f = new Function('name', 'text', 'var result = yield this.pg.db.client.query_({name:name, text:text}); this.body = result.rows;');
+  // };
 
-  var dataRouter = new Router()
+
+  module.exports = exports = new Router()
+
     .get('readUser', '/', function *readUser() {
       var result = yield this.pg.db.client.query_({
         name: 'readUser',
@@ -47,7 +56,6 @@
         name: 'updateUser',
         text: 'UPDATE users SET $2 WHERE user_id = $1'
       });
-
       this.body = result.rows;
     })
 
@@ -59,8 +67,4 @@
       this.body = result.rows;
     });
 
-  module.exports = exports = {
-    view: viewRouter, // html view templates: mount on /
-    data: dataRouter // json data resource: mount on /v1
-  };
 }());

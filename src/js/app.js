@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  require('./user');
   require('./auth');
+  require('./user');
   require('./router');
   require('./http-interceptor');
 

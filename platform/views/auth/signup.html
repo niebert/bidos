@@ -1,0 +1,31 @@
+<div class="auth signup">
+  <paper-shadow z=0>
+    <form novalidate>
+
+      <paper-input-decorator floatingLabel label="username">
+        <input type="text" ng-model="credentials.username" required />
+      </paper-input-decorator>
+
+      <paper-input-decorator floatingLabel label="password">
+        <input type="password" ng-model="credentials.password" required />
+      </paper-input-decorator>
+
+      <paper-input-decorator floatingLabel label="full name">
+        <input type="text" ng-model="credentials.name" required />
+      </paper-input-decorator>
+
+      <paper-input-decorator floatingLabel label="phone">
+        <input type="tel" ng-model="credentials.phone" />
+      </paper-input-decorator>
+
+      <paper-input-decorator floatingLabel label="organization">
+        <input type="text" ng-model="credentials.organization" required />
+      </paper-input-decorator>
+
+      <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
+        sign up
+      </paper-button>
+
+    </form>
+  </paper-shadow>
+</div>

@@ -10,32 +10,67 @@
 
     $stateProvider
 
-      .state('index', {
-        url: '/',
-        templateUrl: '/'
-      })
-
-      .state('login', {
-        url: '/login',
+      .state('unauthorized', {
         views: {
-          auth: {
-            templateUrl: '/login',
+          'navbar': {
+            templateUrl: 'navbar.unauthorized',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          },
+          'main': {
+            templateUrl: 'login',
             controller: 'authCtrl',
             controllerAs: 'vm'
           }
         }
       })
 
-      .state('signup', {
-        url: '/signup',
-        templateUrl: '/signup'
+      .state('unauthorized.login', {
+        views: {
+          'navbar': {
+            templateUrl: 'navbar.unauthorized',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          },
+          'main': {
+            templateUrl: 'login',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          }
+        }
       })
 
-      .state('users', {
-        url: '/users',
-        templateUrl: '/users',
-      });
+      .state('unauthorized.signup', {
+        views: {
+          'navbar': {
+            templateUrl: 'navbar.unauthorized',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          },
+          'main': {
+            templateUrl: 'signup',
+            controller: 'authCtrl',
+            controllerAs: 'vm'
+          }
+        }
+      })
+
+
+      .state('login', {
+        url: '/login',
+        templateUrl: '/login',
+        controller: 'authCtrl',
+        controllerAs: 'vm'
+      })
+
+      .state('signup', {
+        url: '/signup',
+        templateUrl: '/signup',
+        controller: 'authCtrl',
+        controllerAs: 'vm'
+      })
+
+      ;
 
   }]);
-
 }());

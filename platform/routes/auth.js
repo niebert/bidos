@@ -15,7 +15,7 @@
 
     var result = yield this.pg.db.client.query_({
       name: 'readUser',
-      text: 'SELECT * FROM users'
+      text: 'SELECT * FROM users WHERE username = $1'
     }, [this.request.body.username]);
 
     if (!result.rowCount) {
@@ -66,14 +66,12 @@
     }
   }
 
-  // renders ./views/login.html
-  function *renderLogin() { // jshint -W040
-    yield this.render('login');
+  function *renderLogin() {
+    yield this.render('auth/login');
   }
 
-  // renders ./views/signup.html
-  function *renderSignup() { // jshint -W040
-    yield this.render('signup');
+  function *renderSignup() {
+    yield this.render('auth/signup');
   }
 
   // logging out is done on the clients side by deleting the token. todo: keep
@@ -82,7 +80,7 @@
   module.exports = exports = router
     .get('/login', renderLogin)
     .get('/signup', renderSignup)
-    .post('/signup', createUser)
-    .post('/login', authenticate, tokenize);
+    .post('/login', authenticate, tokenize)
+    .post('/signup', createUser);
 
 }());

@@ -26,14 +26,13 @@
     .then(function(user) {
       vm.user = user;
       console.info('vm', vm);
-      // $state.go('index');
+      $state.go('authorized.index.' + user.role);
     }, function notAuthenticated() {
-      // $state.go('login');
+      $state.go('unauthorized');
     });
 
     vm.login = function(credentials) {
       console.log('vm.login', credentials);
-
       UserFactory.login(credentials)
       .then(function(response) {
         vm.user = response.data;
@@ -58,7 +57,8 @@
     };
 
     function handleError(response) {
-      alert('Error: ' + response);
+      console.info('ERROR_HANDLER', response);
+      alert('Error: ' + response.data.error);
     }
   }])
 
