@@ -8,7 +8,7 @@
        source = require('vinyl-source-stream'),
        // uglify = require('gulp-uglify'),
        // buffer = require('vinyl-buffer'),
-       browserify = require('browserify'),
+       browserify = require('gulp-browserify'),
        prefix  = require('gulp-autoprefixer'),
        sass = require('gulp-ruby-sass');
 
@@ -17,26 +17,30 @@
     console.log(err);
   };
 
+  var sourceDir = 'client/src';
+  var targetDir = 'client/build';
+
   gulp.task('browserify', function() {
-    browserify('./src/js/app.js')
-      .bundle()
-      .pipe(source('app.js'))
-      // .pipe(buffer())
-      // .pipe(uglify())
-      .pipe(gulp.dest('public/js'));
+    // Single entry point to browserify
+    gulp.src(sourceDir + '/js/app.js')
+      .pipe(browserify({
+        insertGlobals : true,
+        debug : !gulp.env.production
+      }))
+      .pipe(gulp.dest(targetDir + '/js'));
   });
 
   gulp.task('sass', function() {
-    gulp.src('src/css/*.scss')
+    gulp.src(sourceDir + '/css/*.scss')
       .pipe(plumber({errorHandler:onError}))
       .pipe(sass({sourcemap:false, style:'compressed'}))
       .pipe(prefix(['last 1 version', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
-      .pipe(gulp.dest('public/css'));
+      .pipe(gulp.dest(targetDir + '/css'));
   });
 
   gulp.task('watch', function() {
-    gulp.watch('src/**/*.js', ['browserify']);
-    gulp.watch('src/css/**/*.scss', ['sass']);
+    gulp.watch(sourceDir + '/**/*.js', ['browserify']);
+    gulp.watch(sourceDir + '/css/**/*.scss', ['sass']);
   });
 
   gulp.task('serve', function() {

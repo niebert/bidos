@@ -66,20 +66,10 @@
     }
   }
 
-  function *renderLogin() {
-    yield this.render('auth/login');
-  }
-
-  function *renderSignup() {
-    yield this.render('auth/signup');
-  }
-
   // logging out is done on the clients side by deleting the token. todo: keep
   // track of deployed tokens
 
   module.exports = exports = router
-    .get('/login', renderLogin)
-    .get('/signup', renderSignup)
     .post('/login', authenticate, tokenize)
     .post('/signup', createUser);
 

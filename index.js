@@ -4,8 +4,8 @@
 
   var _ = require('lodash');
 
-  var config = require('./platform/config')[process.env.NODE_ENV],
-      routes = require('./platform/routes');
+  var config = require('./server/config')[process.env.NODE_ENV],
+      routes = require('./server/routes');
 
   // node core
   var path = require('path');
@@ -18,8 +18,7 @@
 
   // miscellaneous middleware
   var mount = require('koa-mount'),
-      serve = require('koa-static'),
-      views = require('koa-views');
+      serve = require('koa-static');
 
   app.use(require('koa-logger')());
   app.use(require('koa-bodyparser')());
@@ -28,19 +27,13 @@
   // database
   app.use(require('koa-pg')(config.db.postgres.url));
 
-  // plain html files are rendered from ./platform/views
-  app.use(views('platform/views', {
-    default: 'html',
-    cache: false
-  }));
-
   // serve static dirs
-  app.use(mount('/', serve(path.join(__dirname, 'public'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
+  app.use(mount('/', serve(path.join(__dirname, 'client/public_html'))));
+  app.use(mount('/', serve(path.join(__dirname, 'client/build'))));
 
   // mount public routes
-  app.use(mount('/', routes.auth.middleware())); // FIXME current routing order sucks
-  app.use(mount('/', routes.templates.middleware())); // FIXME
+  app.use(mount('/', routes.auth.middleware()));
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -72,7 +65,6 @@
   });
 
   // secured routes
-  // TODO export all /v1 as one router (cascade koa middleware)
   app.use(mount('/v1/user', routes.user.middleware()));
 
   // main
