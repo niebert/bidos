@@ -18,11 +18,20 @@ body {
 }
 
 .top-menu {
-  background-color: color($teal, 300);
+  background-color: white;
   a {
-    color: white;
+    color: color($teal, 300);
   }
+
 }
+
+  paper-tabs::shadow #selectionBar {
+    background-color: color($teal, 300);
+  }
+
+  paper-tabs paper-tab::shadow #ink {
+    color: color($teal, 100);
+  }
 
 div.auth {
   margin: 32px auto;
