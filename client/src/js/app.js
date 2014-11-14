@@ -1,3 +1,5 @@
+/* global angular, localStorage, alert */
+
 (function() {
   'use strict';
 
@@ -28,15 +30,13 @@
 
     var vm = this; // view model
 
-    console.info('current state', $state.current);
-
     UserFactory.getUser()
-    .then(function(user) {
+    .then(function authorized(user) {
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
       $state.go('authorized.' + vm.user.role);
-    }, function notAuthenticated() {
+    }, function unauthorized() {
       console.warn('not authorized');
       $state.go('unauthorized');
     });

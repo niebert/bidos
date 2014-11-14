@@ -1,9 +1,8 @@
 <paper-tabs class="top-menu">
+  <paper-tab><a horizontal center-center layout ui-sref="users">users</a></paper-tab>
   <paper-tab><a horizontal center-center layout ui-sref="groups">groups</a></paper-tab>
   <paper-tab><a horizontal center-center layout ui-sref="children">children</a></paper-tab>
   <paper-tab><a horizontal center-center layout ui-sref="surveys">surveys</a></paper-tab>
   <paper-tab><a horizontal center-center layout ui-sref="items">items</a></paper-tab>
-  <paper-tab><a horizontal center-center layout ui-sref="preferences">{{vm.user.username}}/</a>
+  <paper-tab><a horizontal center-center layout ui-sref="preferences">{{vm.user.username}}/{{vm.user.role}}</a>
 </paper-tab></paper-tabs>
-
-<div ui-view="main">

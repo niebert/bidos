@@ -1,0 +1,41 @@
+___INDEX___
+<div id="userList" ng-controller="UserCtrl as vm">
+
+  username:
+  <input type="text" ng-model="userName"/>
+
+  role:
+  <select ng-model="elementPhase">
+    <option value="">All</option>
+    <option value="Gas">Admin</option>
+    <option value="Solid">Practitioner</option>
+    <option value="Liquid">Scientist</option>
+  </select>
+
+  order:
+  <select ng-model="elementOrder">
+    <option value="name" selected>Name (ascending)</option>
+    <option value="-name">Name (descending)</option>
+    <option value="melting">Melting Point (asc)</option>
+    <option value="-melting">Melting Point (desc)</option>
+  </select>
+
+  <table class="table">
+    <tr>
+      <th>id</th>
+      <th>role</th>
+      <th>group</th>
+      <th>username</th>
+      <th>email</th>
+      <th>name</th>
+    </tr>
+    <tr ng-repeat="user in vm.user">
+      <td>{{ user.user_id }}</td>
+      <td>{{ user.role_id }}</td>
+      <td>{{ user.group_id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.fname }} {{ user.lname }}</td>
+    </tr>
+  </table>
+</div>

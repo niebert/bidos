@@ -1,3 +1,5 @@
+/* global angular */
+
 (function() {
   'use strict';
 
@@ -16,45 +18,67 @@
       .state('unauthorized', {
         url: '',
         views: {
-          navbar: {
-            templateUrl: 'navbar/unauthorized.html',
-            controller: 'authCtrl',
-            controllerAs: 'vm',
-          },
+          navbar: { templateUrl: 'unauthorized/navbar.html' },
         }
       })
 
       .state('unauthorized.login', {
         url: '/login',
         views: {
-          main: { templateUrl: 'auth/login.html' }
+          main: { templateUrl: 'unauthorized/login.html' }
         }
       })
 
       .state('unauthorized.signup', {
         url: '/signup',
         views: {
-          main: { templateUrl: 'auth/signup.html' }
+          main: { templateUrl: 'unauthorized/signup.html' }
         }
       })
 
       .state('authorized', {
-        abstract: true,
         url: '',
-        views: {
-          navbar: {
-            template: '<div ui-view="navbar"/><div ui-view="main"/>',
-            controller: 'authCtrl',
-            controllerAs: 'vm',
-          }
-        }
+        abstract: true,
+        template: '<div ui-view="navbar"></div><div ui-view="main"></div>'
       })
 
       .state('authorized.admin', {
         url: '/admin',
         views: {
-          navbar: { templateUrl: 'navbar/authorized/admin.html' },
-          main: { templateUrl: 'content/admin/dashboard.html' }
+          navbar: { templateUrl: 'authorized/admin/navbar.html' },
+          main: { templateUrl: 'authorized/admin/dashboard.html' }
+        }
+      })
+
+      ///////////
+      // users //
+      ///////////
+
+      .state('authorized.admin.users', {
+        url: '/users',
+        views: {
+          main: { templateUrl: 'models/user/index.html' }
+        }
+      })
+
+      .state('authorized.admin.users.new', {
+        url: '/new',
+        views: {
+          main: { templateUrl: 'models/user/new.html' }
+        }
+      })
+
+      .state('authorized.admin.users.edit', {
+        url: '/edit',
+        views: {
+          main: { templateUrl: 'models/user/edit.html' }
+        }
+      })
+
+      .state('authorized.admin.users.show', {
+        url: '/show',
+        views: {
+          main: { templateUrl: 'models/user/show.html' }
         }
       })
 
