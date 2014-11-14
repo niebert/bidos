@@ -15,7 +15,7 @@
 
     var result = yield this.pg.db.client.query_({
       name: 'readUser',
-      text: 'SELECT * FROM users WHERE username = $1'
+      text: 'SELECT * FROM auth WHERE username = $1'
     }, [this.request.body.username]);
 
     if (!result.rowCount) {

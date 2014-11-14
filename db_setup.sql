@@ -108,4 +108,10 @@ CREATE VIEW all_user_with_a_group AS
   INNER JOIN roles ON users.role_id = roles.role_id
   INNER JOIN groups ON users.group_id = groups.group_id;
 
+-- auth table to run authentication queries against
+-- return value will be the clients user obj encoded in the jwt token
+CREATE VIEW auth AS
+  SELECT user_id, username, rolename as role, email, password, fname, lname FROM users
+  INNER JOIN roles ON users.role_id = roles.role_id;
+
 -- EOF
