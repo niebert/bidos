@@ -18,7 +18,7 @@
       .state('unauthorized', {
         url: '',
         views: {
-          // ? navbarsgone
+          main: { templateUrl: 'unauthorized/landing.html' }
         }
       })
 
