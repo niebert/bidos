@@ -56,10 +56,8 @@
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
-      // $state.go('authorized.' + vm.user.role);
     }, function unauthorized() {
       console.warn('not authorized');
-      // $state.go('unauthorized');
     });
 
     vm.login = function(credentials) {
