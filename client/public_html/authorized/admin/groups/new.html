@@ -1,0 +1,19 @@
+<h1>neue gruppe</h1>
+
+<div ng-controller="groupCtrl as vm">
+  <div class="edit group">
+    <paper-shadow z=0>
+      <form novalidate>
+
+        <paper-input-decorator floatingLabel label="groupname">
+          <input type="text" ng-model="group.name" required />
+        </paper-input-decorator>
+
+        <paper-button affirmative class="submit-button" ng-click="vm.create(group)">
+          gruppe erstellen
+        </paper-button>
+
+      </form>
+    </paper-shadow>
+  </div>
+</div>

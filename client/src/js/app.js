@@ -4,6 +4,7 @@
   'use strict';
 
   require('./user');
+  require('./group');
   require('./router');
   require('./menu.controller');
   require('./crud.provider');
@@ -14,6 +15,7 @@
     'rw.router',
     'rw.user',
     'rw.crud.provider',
+    'rw.group',
     'rw.menu',
     'ngMaterial'
     ])

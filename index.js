@@ -66,6 +66,7 @@
 
   // secured routes
   app.use(mount('/v1/users', routes.users.middleware()));
+  app.use(mount('/v1/group', routes.group.middleware()));
 
   // main
   var listen = function(port) {
