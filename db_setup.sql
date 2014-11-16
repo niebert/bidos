@@ -32,16 +32,14 @@ CREATE TABLE IF NOT EXISTS users (
   username      TEXT UNIQUE NOT NULL,
   email         TEXT UNIQUE NOT NULL,
   password      TEXT NOT NULL,
-  fname         TEXT,
-  lname         TEXT
+  name          TEXT
 );
 
 -- TABLE children
 CREATE TABLE IF NOT EXISTS children (
   child_id      SERIAL PRIMARY KEY,
   group_id      INT REFERENCES groups(group_id),
-  fname         TEXT NOT NULL,
-  lname         TEXT NOT NULL
+  name          TEXT NOT NULL
 );
 
 -- TABLE surveys
@@ -98,20 +96,20 @@ INSERT INTO roles (rolename) VALUES ('scientist');
 -- default users are set in ./Makefile via curl
 
 -- all users
-CREATE VIEW all_users AS
-  SELECT user_id, username, email, fname, lname, rolename FROM users
+CREATE VIEW allUsers AS
+  SELECT user_id, username, email, name, rolename as role FROM users
   INNER JOIN roles ON users.role_id = roles.role_id;
 
 -- all users belonging to groups
 CREATE VIEW all_user_with_a_group AS
-  SELECT user_id, username, email, fname, lname, rolename, groupname FROM users
+  SELECT user_id, username, email, name, rolename as role, groupname FROM users
   INNER JOIN roles ON users.role_id = roles.role_id
   INNER JOIN groups ON users.group_id = groups.group_id;
 
 -- auth table to run authentication queries against
 -- return value will be the clients user obj encoded in the jwt token
 CREATE VIEW auth AS
-  SELECT user_id, username, rolename as role, email, password, fname, lname FROM users
+  SELECT user_id as id, username, rolename as role, email, password, name FROM users
   INNER JOIN roles ON users.role_id = roles.role_id;
 
 -- EOF

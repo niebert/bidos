@@ -54,7 +54,7 @@
     try {
       var response = yield this.pg.db.client.query_({
       name: 'createUser',
-      text: 'INSERT INTO users (username, password, email, fname, lname) VALUES ($1, $2, $3, $4, $5) RETURNING *'
+      text: 'INSERT INTO users (username, password, email, name) VALUES ($1, $2, $3, $4) RETURNING *'
     }, _.map(this.request.body));
 
       console.info(response.rows[0]);
