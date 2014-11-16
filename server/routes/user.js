@@ -1,7 +1,7 @@
 //jshint esnext:true
 
 (function() {
-	'use strict';
+  'use strict';
 
   var Router = require('koa-router');
 
@@ -35,18 +35,10 @@
 
   module.exports = exports = new Router()
 
-    .get('readAllUsers', '/', function *readAllUsers() {
-      var result = yield this.pg.db.client.query_({
-        name: 'readAllUsers',
-        text: 'SELECT * FROM users'
-      });
-      this.body = result.rows;
-    })
-
-    .get('readUser', '/:id', function *readUser() {
+    .get('readUser', '/:id?', function *readUser() {
       var result = yield this.pg.db.client.query_({
         name: 'readUser',
-        text: 'SELECT * FROM users WHERE username = $1'
+        text: 'SELECT * FROM users' + (this.params.id ? ' WHERE username = $1' : '')
       });
       this.body = result.rows;
     })
@@ -54,7 +46,7 @@
     .post('createUser', '/', function *createUser() {
       var result = yield this.pg.db.client.query_({
         name: 'createUser',
-        text: 'INSERT INTO users (username, password, email, fname, lname) VALUES ($1, $2, $3, $4, $5) RETURNING *'
+        text: 'INSERT INTO users (username, password, email, name) VALUES ($1, $2, $3, $4) RETURNING *'
       });
       this.body = result.rows;
     })

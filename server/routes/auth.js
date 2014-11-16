@@ -44,6 +44,7 @@
     yield {}; //
   }
 
+  // TODO should utilize the route stored in ./user
   function *createUser() {
     var bcrypt = require('co-bcrypt');
 
