@@ -4,12 +4,16 @@
   'use strict';
 
   require('./user');
-  require('./app-router');
+  require('./router');
+  require('./menu.controller');
 
   angular.module('rw', [
     'ng-polymer-elements',
     'angular-jwt',
     'rw.router',
+    'rw.user',
+    'rw.menu',
+    'ngMaterial'
     ])
 
   .constant('TOKEN_KEY', 'auth_token')
@@ -24,9 +28,22 @@
     $httpProvider.interceptors.push('jwtInterceptor');
   }])
 
+  .controller('appCtrl',
+    ['$scope', '$state', '$mdSidenav',
+    function($scope, $state, $mdSidenav) {
+
+    $scope.toggleLeft = function() {
+      $mdSidenav('left').toggle();
+    };
+
+    $scope.toggleRight = function() {
+      $mdSidenav('right').toggle();
+    };
+  }])
+
   .controller('authCtrl',
-    ['UserFactory', '$state',
-    function(UserFactory, $state) {
+    ['UserFactory', '$state', '$location',
+    function(UserFactory, $state, $location) {
 
     var vm = this; // view model
 
@@ -35,10 +52,10 @@
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
-      $state.go('authorized.' + vm.user.role);
+      // $state.go('authorized.' + vm.user.role);
     }, function unauthorized() {
       console.warn('not authorized');
-      $state.go('unauthorized');
+      // $state.go('unauthorized');
     });
 
     vm.login = function(credentials) {
@@ -62,7 +79,6 @@
       UserFactory.signup(formData)
       .then(function(response) {
         vm.user = response.data;
-        $state.go('login');
       }, handleError);
     };
 

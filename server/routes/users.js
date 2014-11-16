@@ -35,7 +35,15 @@
 
   module.exports = exports = new Router()
 
-    .get('readUser', '/', function *readUser() {
+    .get('readAllUsers', '/', function *readAllUsers() {
+      var result = yield this.pg.db.client.query_({
+        name: 'readAllUsers',
+        text: 'SELECT * FROM users'
+      });
+      this.body = result.rows;
+    })
+
+    .get('readUser', '/:id', function *readUser() {
       var result = yield this.pg.db.client.query_({
         name: 'readUser',
         text: 'SELECT * FROM users WHERE username = $1'

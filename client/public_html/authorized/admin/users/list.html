@@ -1,0 +1,22 @@
+<h1>alle benutzer</h1>
+
+<div id="userList" ng-controller="userCtrl as vm">
+  <table class="table">
+    <tr>
+      <th>#</th>
+      <th>role</th>
+      <th>group</th>
+      <th>username</th>
+      <th>email</th>
+      <th>name</th>
+    </tr>
+    <tr ng-repeat="user in vm.users">
+      <td>{{ user.user_id }}</td>
+      <td>{{ user.role }}</td>
+      <td>{{ user.group_id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.fname }} {{ user.lname }}</td>
+    </tr>
+  </table>
+</div>

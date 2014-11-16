@@ -1,0 +1,34 @@
+<core-menu selected="0" on-core-select="{{selectItem}}">
+  <core-submenu icon="social:group" on-core-select="{{state('users')}}" label="Users">
+    <core-item icon="" label="liste" ui-sref="authorized.admin.users.list"></core-item>
+    <core-item icon="" label="neu" ui-sref="authorized.admin.users.new"></core-item>
+  </core-submenu>
+
+  <core-submenu icon="social:group" label="Groups">
+    <core-item icon="" label="list"></core-item>
+    <core-item icon="" label="new"></core-item>
+  </core-submenu>
+
+  <core-submenu icon="social:group" label="Children">
+    <core-item icon="" label="list"></core-item>
+    <core-item icon="" label="new"></core-item>
+  </core-submenu>
+
+  <core-submenu icon="list" label="Surveys">
+    <core-item icon="" label="list"></core-item>
+    <core-item icon="" label="new"></core-item>
+  </core-submenu>
+
+  <core-submenu icon="list" label="Items">
+    <core-item icon="" label="list"></core-item>
+    <core-item icon="" label="new"></core-item>
+  </core-submenu>
+
+  <core-submenu icon="settings" label="Settings">
+    <core-item icon="" label="user preferences"></core-item>
+    <core-item icon="" label="log out"></core-item>
+  </core-submenu>
+
+  <core-item icon="exit-to-app" label="log out"></core-item>
+
+</core-menu>

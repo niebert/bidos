@@ -5,7 +5,7 @@
 
   angular.module('rw.user.controller', ['rw.user.service'])
 
-  .controller('UserCtrl',
+  .controller('userCtrl',
     ['UserService', '$state',
     function(UserService, $state) {
 
@@ -24,9 +24,8 @@
     vm.read = function(id) {
       console.info('user:vm.read');
       UserService.read(id).then(function(response) {
-        console.warn(response);
-        vm.user = response.data.user;
-        $state.go('view', vm.user.id);
+        vm.users = response.data;
+        console.warn(vm.users);
       }, handleError);
     };
 
@@ -39,6 +38,8 @@
       }, handleError);
     };
 
+    vm.read();
+
     // destroy user in vm and db
     vm.destroy = function(id) {
       console.info('user:vm.destroy');
@@ -49,16 +50,8 @@
     };
 
     function handleError(response) {
-      alert('Error: ' + response.data);
+      console.warn('Error: ' + response.data);
     }
-
-    // init
-    UserService.read().then(function(response) {
-      vm.user = response.data;
-      console.info('vm', vm);
-    }, function error(err) {
-      handleError(err);
-    });
 
   }]);
 }());

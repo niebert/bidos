@@ -18,7 +18,7 @@
       .state('unauthorized', {
         url: '',
         views: {
-          navbar: { templateUrl: 'unauthorized/navbar.html' },
+          // ? navbarsgone
         }
       })
 
@@ -38,15 +38,18 @@
 
       .state('authorized', {
         url: '',
-        abstract: true,
-        template: '<div ui-view="navbar"></div><div ui-view="main"></div>'
+        templateUrl: 'authorized/layout.html'
       })
+
+      ///////////
+      // admin //
+      ///////////
 
       .state('authorized.admin', {
         url: '/admin',
         views: {
-          navbar: { templateUrl: 'authorized/admin/navbar.html' },
-          main: { templateUrl: 'authorized/admin/dashboard.html' }
+          menu: { templateUrl: 'authorized/admin/menu.html' },
+          main: { template: '<div ui-view="main"></div>' }
         }
       })
 
@@ -57,28 +60,35 @@
       .state('authorized.admin.users', {
         url: '/users',
         views: {
-          main: { templateUrl: 'models/user/index.html' }
+          main: { template: '<div ui-view="main"></div>' }
+        }
+      })
+
+      .state('authorized.admin.users.list', {
+        url: '/list',
+        views: {
+          main: { templateUrl: 'authorized/admin/users/list.html' }
         }
       })
 
       .state('authorized.admin.users.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'models/user/new.html' }
+          main: { templateUrl: 'authorized/admin/users/new.html' }
         }
       })
 
       .state('authorized.admin.users.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'models/user/edit.html' }
+          main: { templateUrl: 'authorized/admin/users/edit.html' }
         }
       })
 
       .state('authorized.admin.users.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'models/user/show.html' }
+          main: { templateUrl: 'authorized/admin/users/show.html' }
         }
       })
 
