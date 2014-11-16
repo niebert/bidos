@@ -3,6 +3,7 @@
 //     └── body
 //         └── app
 //             └── main
+//                 └── nope
 
 @import '_color-palette';
 
@@ -10,16 +11,25 @@ html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
   /* Set your content font stack here: */
   font-family: 'Roboto', sans-serif;
+  font-weight: '300';
+}
+
+.l-box {
+  padding: 64px 96px;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
   height: 100%;
   width: 100%;
+  color: #373737;
 }
 
 #app {
   margin: 32px auto;
+}
+
+#main {
 }
 
 .top-menu {
@@ -27,16 +37,15 @@ body {
   a {
     color: color($teal, 300);
   }
-
 }
 
-  paper-tabs::shadow #selectionBar {
-    background-color: color($teal, 300);
-  }
+paper-tabs::shadow #selectionBar {
+  background-color: color($teal, 300);
+}
 
-  paper-tabs paper-tab::shadow #ink {
-    color: color($teal, 100);
-  }
+paper-tabs paper-tab::shadow #ink {
+  color: color($teal, 100);
+}
 
 div.auth {
   margin: 32px auto;
@@ -69,4 +78,61 @@ div.auth {
 a {
 	color: color($indigo, 500);
 	text-decoration: none;
+}
+
+table {
+  width: 100%;
+}
+
+thead {
+  text-align: left;
+  border-bottom: 2px solid #333;
+}
+
+th, td {
+  padding: 12px 16px;
+}
+
+tbody > tr:hover {
+  background-color: color($amber, 50);
+}
+
+div.form {
+  max-width: 33%;
+}
+
+form {
+  margin: 0 auto;
+}
+
+th.del {
+  width: 10px;
+}
+
+td.del:hover {
+  background-color: color($red, 400);
+  color: white;
+}
+
+.user-info {
+  padding-top: 9px;
+}
+
+paper-button {
+  &.create {
+    background-color: color($blue, 500);
+    color: white;
+  }
+}
+
+.floatHeader {
+}
+
+core-item {
+  &:hover {
+    color: color($blue, 400);
+  }
+  &.logout:hover {
+    color: color($red, 300);
+  }
 }
