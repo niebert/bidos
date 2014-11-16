@@ -1,53 +1,49 @@
 (function() {
   'use strict';
 
-  require('./user-service');
+  var _ = require('lodash');
+  require('../crud.provider');
 
-  angular.module('rw.user.controller', ['rw.user.service'])
+  angular.module('rw.user.controller', ['rw.crud.provider'])
 
-  .controller('userCtrl',
-    ['UserService', '$state',
-    function(UserService, $state) {
+  .controller('userCtrl', ['CRUD', '$state', function(CRUD, $state) {
 
     var vm = this;
+    vm.users = {};
 
     // post form data
-    vm.create = function(userFormData) {
-      console.info('user:vm.create', userFormData);
-      UserService.create(userFormData).then(function(response) {
-        vm.user = response.data.user;
-        $state.go('view', vm.user.id);
+    vm.create = function(formData) {
+      console.info('CRUD.create', formData);
+      CRUD.create('user', formData).then(function(response) {
+        _.merge(vm.users, response.data);
       }, handleError);
     };
 
     // get 1 or * users
     vm.read = function(id) {
       console.info('user:vm.read');
-      UserService.read(id).then(function(response) {
-        vm.users = response.data;
-        console.warn(vm.users);
+      CRUD.read('user', id).then(function(response) {
+        _.merge(vm.users, response.data);
       }, handleError);
     };
 
     // post form data
-    vm.update = function(id) {
+    vm.update = function(id, formData) {
       console.info('user:vm.update');
-      UserService.update(id).then(function(response) {
-        vm.user = response.data.user;
-        $state.go('view', vm.user.id);
+      CRUD.update('user', id, formData).then(function(response) {
+        // update vm
       }, handleError);
     };
-
-    vm.read();
 
     // destroy user in vm and db
     vm.destroy = function(id) {
       console.info('user:vm.destroy');
-      UserService.destroy(id).then(function(response) {
-        vm.user = response.data.user;
-        $state.go('list');
+      CRUD.destroy('user', id).then(function(response) {
+        // update vm
       }, handleError);
     };
+
+    vm.read();
 
     function handleError(response) {
       console.warn('Error: ' + response.data);

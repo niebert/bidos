@@ -60,7 +60,7 @@
       .state('authorized.admin.users', {
         url: '/users',
         views: {
-          main: { template: '<div ui-view="main"></div>' }
+          main: { templateUrl: 'authorized/admin/users/index.html' }
         }
       })
 
@@ -89,6 +89,45 @@
         url: '/show',
         views: {
           main: { templateUrl: 'authorized/admin/users/show.html' }
+        }
+      })
+
+      ////////////
+      // groups //
+      ////////////
+
+      .state('authorized.admin.groups', {
+        url: '/groups',
+        views: {
+          main: { templateUrl: 'authorized/admin/groups/index.html' }
+        }
+      })
+
+      .state('authorized.admin.groups.list', {
+        url: '/list',
+        views: {
+          main: { templateUrl: 'authorized/admin/groups/list.html' }
+        }
+      })
+
+      .state('authorized.admin.groups.new', {
+        url: '/new',
+        views: {
+          main: { templateUrl: 'authorized/admin/groups/new.html' }
+        }
+      })
+
+      .state('authorized.admin.groups.edit', {
+        url: '/edit',
+        views: {
+          main: { templateUrl: 'authorized/admin/groups/edit.html' }
+        }
+      })
+
+      .state('authorized.admin.groups.show', {
+        url: '/show',
+        views: {
+          main: { templateUrl: 'authorized/admin/groups/show.html' }
         }
       })
 

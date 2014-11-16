@@ -6,12 +6,14 @@
   require('./user');
   require('./router');
   require('./menu.controller');
+  require('./crud.provider');
 
   angular.module('rw', [
     'ng-polymer-elements',
     'angular-jwt',
     'rw.router',
     'rw.user',
+    'rw.crud.provider',
     'rw.menu',
     'ngMaterial'
     ])
