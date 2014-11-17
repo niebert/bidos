@@ -9,10 +9,12 @@
 
     $stateProvider
 
+      // UNAUTHORIZED
+
       .state('unauthorized', {
         url: '',
         views: {
-          main: { templateUrl: 'unauthorized/landing.html' }
+          main: { templateUrl: 'unauthorized/layout.html' }
         }
       })
 
@@ -29,6 +31,8 @@
           main: { templateUrl: 'unauthorized/signup.html' }
         }
       })
+
+      // UNAUTHORIZED
 
       .state('authorized', {
         url: '',

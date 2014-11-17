@@ -5,9 +5,9 @@
 (function() {
   'use strict';
 
-    angular.module('bidos.menu-controller', []).
+    angular.module('bidos.main-controller', []).
 
-    controller('menuCtrl', ['$scope', function ($scope) {
+    controller('mainCtrl', ['$scope', function ($scope) {
 
       // stub!
 

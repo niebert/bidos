@@ -13,13 +13,12 @@ require('./auth-services');
 
     var vm = this; // view model
 
-    debugger
-
     UserFactory.getUser()
     .then(function authorized(user) {
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
+      $state.go('authorized.' + user.role)
     }, function unauthorized() {
       console.warn('not authorized');
     });

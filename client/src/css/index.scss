@@ -9,6 +9,12 @@
 
 // general
 
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   color: #373737;
@@ -42,13 +48,20 @@ h2 {
 #app {
 }
 
-#main {
-}
-
 #menu {
   background-color: color($grey, 200);
-  width: 160px;
   height: 100vh;
+  width: 15%;
+  padding: 24px 32px;
+  float: left;
+  overflow: hidden;
+}
+
+#main {
+  padding: 24px 32px;
+  height: 100vh;
+  float: left;
+  width: 85%;
 }
 
 
@@ -63,7 +76,7 @@ html, button, input, select, textarea,
 }
 
 .l-box {
-  padding: 64px 96px;
+  // padding: 64px 96px;
 }
 
 
