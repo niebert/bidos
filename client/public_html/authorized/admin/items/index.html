@@ -1,0 +1,30 @@
+<div ng-controller="itemCtrl as vm">
+  <h2>items</h2>
+
+  <div>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>rolle</th>
+        <th>gruppe</th>
+        <th>itemsname</th>
+        <th>email</th>
+        <th>name</th>
+        <th></th>
+      </tr>  </thead>
+    <tbody>
+      <tr ng-repeat="item in vm.items">
+        <td>{{ item.item_id }}</td>
+        <td>{{ item.role }}</td>
+        <td>{{ item.group_id }}</td>
+        <td>{{ item.itemname }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.name }}</td>
+        <td class="del" ng-click="vm.deleteUser(item)">✗</td>
+      </tr>  </tbody>
+    </table>
+  </div>
+</div>
+
+

@@ -3,7 +3,7 @@
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
--- use faker to generate random children, groups and users
+-- use faker to generate random kids, groups and users
 
 -- do i need junction tables _and_ foreign keys? can't i just do my joins `ON`
 -- the foreign keys instead of `USING` the junction table?
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS users (
   name          TEXT
 );
 
--- TABLE children
-CREATE TABLE IF NOT EXISTS children (
-  child_id      SERIAL PRIMARY KEY,
+-- TABLE kids
+CREATE TABLE IF NOT EXISTS kids (
+  kid_id        SERIAL PRIMARY KEY,
   group_id      INT REFERENCES groups(group_id),
   name          TEXT NOT NULL
 );
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS children (
 -- TABLE surveys
 CREATE TABLE IF NOT EXISTS surveys (
   survey_id     SERIAL PRIMARY KEY,
-  child_id      INT REFERENCES children(child_id),
+  kid_id        INT REFERENCES kids(kid_id),
   title         TEXT NOT NULL,
   description   TEXT
 );
@@ -70,10 +70,10 @@ CREATE TABLE IF NOT EXISTS groups_users (
   user_id       INT REFERENCES users(user_id)
 );
 
--- JUNCTION TABLE groups_children
-CREATE TABLE IF NOT EXISTS groups_children (
+-- JUNCTION TABLE groups_kids
+CREATE TABLE IF NOT EXISTS groups_kids (
   group_id      INT REFERENCES groups(group_id),
-  child_id      INT REFERENCES children(child_id)
+  kid_id        INT REFERENCES kids(kid_id)
 );
 
 -- JUNCTION TABLE surveys_items
@@ -82,10 +82,10 @@ CREATE TABLE IF NOT EXISTS surveys_items (
   item_id       INT REFERENCES items(item_id)
 );
 
--- JUNCTION TABLE surveys_children
-CREATE TABLE IF NOT EXISTS surveys_children (
+-- JUNCTION TABLE surveys_kids
+CREATE TABLE IF NOT EXISTS surveys_kids (
   survey_id     INT REFERENCES surveys(survey_id),
-  child_id      INT REFERENCES children(child_id)
+  kid_id        INT REFERENCES kids(kid_id)
 );
 
 -- roles

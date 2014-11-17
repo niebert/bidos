@@ -1,12 +1,12 @@
 <pre>STUB!</pre>
-<h1>neuer benutzer</h1>
+<h1>neue umfrage</h1>
 
 <div class="form">
   <paper-shadow z=0>
     <form class="new" novalidate>
 
-      <paper-input-decorator floatingLabel label="username">
-        <input type="text" ng-model="credentials.username" required />
+      <paper-input-decorator floatingLabel label="surveyname">
+        <input type="text" ng-model="credentials.surveyname" required />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="password">
@@ -27,7 +27,7 @@
 
       <!-- TODO separate vm.createUser() -->
       <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
-        create user
+        umfrage erstellen
       </paper-button>
 
     </form>

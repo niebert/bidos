@@ -1,0 +1,27 @@
+<pre>STUB!</pre>
+<h1>alle umfragen</h1>
+
+<div id="surveyList" ng-controller="surveyCtrl as vm">
+  <table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>rolle</th>
+      <th>gruppe</th>
+      <th>umfragenname</th>
+      <th>email</th>
+      <th>name</th>
+      <th></th>
+    </tr>  </thead>
+  <tbody>
+    <tr ng-repeat="survey in vm.surveys">
+      <td>{{ survey.survey_id }}</td>
+      <td>{{ survey.role }}</td>
+      <td>{{ survey.group_id }}</td>
+      <td>{{ survey.surveyname }}</td>
+      <td>{{ survey.email }}</td>
+      <td>{{ survey.name }}</td>
+      <td class="del" ng-click="vm.deleteUser(survey)">✗</td>
+    </tr>  </tbody>
+  </table>
+</div>
