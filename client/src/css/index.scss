@@ -7,6 +7,54 @@
 
 @import '_color-palette';
 
+// general
+
+body {
+  -webkit-font-smoothing: antialiased;
+  color: #373737;
+}
+
+a {
+  color: color($indigo, 500);
+  text-decoration: none;
+}
+
+h2 {
+  margin: 0;
+}
+
+
+// custom
+
+.submit-button {
+  color: color($indigo, 500);
+  float: right;
+}
+
+.cancel-button:hover {
+  color: color($red, 500);
+}
+
+
+
+// containers (2)
+
+#app {
+}
+
+#main {
+}
+
+#menu {
+  background-color: color($grey, 200);
+  width: 160px;
+  height: 100vh;
+}
+
+
+
+// pure.css
+
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
   /* Set your content font stack here: */
@@ -18,67 +66,21 @@ html, button, input, select, textarea,
   padding: 64px 96px;
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  height: 100%;
-  width: 100%;
-  color: #373737;
+
+
+// forms
+
+div.form {
+  max-width: 33%;
 }
 
-#app {
-  margin: 32px auto;
+form {
+  // margin: 0 auto;
 }
 
-#main {
-}
 
-.top-menu {
-  background-color: white;
-  a {
-    color: color($teal, 300);
-  }
-}
 
-paper-tabs::shadow #selectionBar {
-  background-color: color($teal, 300);
-}
-
-paper-tabs paper-tab::shadow #ink {
-  color: color($teal, 100);
-}
-
-div.auth {
-  margin: 32px auto;
-  width: 50%;
-
-  paper-shadow {
-    width: 100%;
-  }
-
-  paper-button {
-    // margin-top: 16px;
-  }
-
-  form {
-    // padding: 6% 2%;
-    width: 65%;
-    margin: 0 auto;
-  }
-}
-
-.submit-button {
-  color: color($indigo, 500);
-  float: right;
-}
-
-.cancel-button:hover {
-  color: color($red, 500);
-}
-
-a {
-	color: color($indigo, 500);
-	text-decoration: none;
-}
+// tables
 
 table {
   width: 100%;
@@ -97,14 +99,6 @@ tbody > tr:hover {
   background-color: color($amber, 50);
 }
 
-div.form {
-  max-width: 33%;
-}
-
-form {
-  margin: 0 auto;
-}
-
 th.del {
   width: 10px;
 }
@@ -114,8 +108,16 @@ td.del:hover {
   color: white;
 }
 
-.user-info {
-  padding-top: 9px;
+
+
+// polymer
+
+paper-tabs::shadow #selectionBar {
+  background-color: color($teal, 300);
+}
+
+paper-tabs paper-tab::shadow #ink {
+  color: color($teal, 100);
 }
 
 paper-button {
@@ -123,9 +125,6 @@ paper-button {
     background-color: color($blue, 500);
     color: white;
   }
-}
-
-.floatHeader {
 }
 
 core-item {
