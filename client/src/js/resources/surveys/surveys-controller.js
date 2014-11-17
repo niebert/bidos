@@ -12,13 +12,13 @@
   .controller('surveyCtrl', ['CRUD', '$state', function(CRUD, $state) {
 
     var vm = this;
-    vm.surveys = {};
+    vm.surveys = [];
 
     // post form data
     vm.create = function(formData) {
       console.info('CRUD.create', formData);
       CRUD.create('survey', formData).then(function(response) {
-        _.merge(vm.surveys, response.data);
+        vm.surveys.push(response.data[0]);
       }, handleError);
     };
 

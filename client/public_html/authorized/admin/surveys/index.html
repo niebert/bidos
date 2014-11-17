@@ -1,29 +1,48 @@
-<pre>STUB!</pre>
-<div ng-controller="surveyCtrl as vm">
-  <h2>umfragen</h2>
+<h1>umfragen</h1>
 
+<div ng-controller="surveyCtrl as vm">
+
+
+<paper-shadow z=1>
+  <form class="survey form" novalidate>
+
+    <paper-input-decorator floatingLabel label="name">
+      <input type="text" ng-model="survey.title" required />
+    </paper-input-decorator>
+
+    <paper-button affirmative class="submit-button" ng-click="vm.create(survey)">
+      umfrage erstellen
+    </paper-button>
+
+  </form>
+</paper-shadow>
+
+<!--
+<div horizontal end-justified layout style="width:100%">
+  <paper-button class="create" raised ng-click="vm.createSurvey('foo')">neue umfrage</paper-button>
+</div>
+--->
   <div>
     <table class="table">
     <thead>
       <tr>
         <th>id</th>
-        <th>rolle</th>
-        <th>gruppe</th>
-        <th>umfragenname</th>
-        <th>email</th>
         <th>name</th>
+        <th>fragen</th>
+        <th>erstellungsdatum</th>
+        <th>author</th>
         <th></th>
-      </tr>  </thead>
+      </tr>
+    </thead>
     <tbody>
       <tr ng-repeat="survey in vm.surveys">
         <td>{{ survey.survey_id }}</td>
-        <td>{{ survey.role }}</td>
-        <td>{{ survey.group_id }}</td>
-        <td>{{ survey.surveyname }}</td>
-        <td>{{ survey.email }}</td>
-        <td>{{ survey.name }}</td>
-        <td class="del" ng-click="vm.deleteUser(survey)">✗</td>
-      </tr>  </tbody>
+        <td>{{ survey.title }}</td>
+        <td></td>
+        <td></td>
+        <td class="del" ng-click="vm.deleteSurvey(survey)">✗</td>
+      </tr>
+    </tbody>
     </table>
   </div>
 </div>
