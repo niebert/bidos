@@ -13,10 +13,9 @@
 
       .state('unauthorized', {
         url: '',
-        views: {
-          main: { templateUrl: 'unauthorized/layout.html' }
-        }
+        templateUrl: 'unauthorized/layout.html'
       })
+
 
       .state('unauthorized.login', {
         url: '/login',

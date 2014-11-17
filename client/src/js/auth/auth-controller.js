@@ -21,6 +21,7 @@ require('./auth-services');
       $state.go('authorized.' + user.role)
     }, function unauthorized() {
       console.warn('not authorized');
+      $state.go('unauthorized.login');
     });
 
     vm.login = function(credentials) {
