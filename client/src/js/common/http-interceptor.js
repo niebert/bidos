@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('rw.httpInterceptor', [])
+  angular.module('bidos.http-interceptor', [])
 
   .config(['$provide', '$httpProvider',
     function ($provide, $httpProvider) {

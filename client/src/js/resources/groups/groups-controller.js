@@ -1,10 +1,13 @@
+/* global angular */
+
 (function() {
   'use strict';
 
   var _ = require('lodash');
-  require('../crud.provider');
 
-  angular.module('rw.group.controller', ['rw.crud.provider'])
+  require('../../common/crud-service');
+
+  angular.module('bidos.resources.groups.controller', ['bidos.crud-service'])
 
   .controller('groupCtrl', ['CRUD', '$state', function(CRUD, $state) {
 

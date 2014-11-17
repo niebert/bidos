@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  angular.module('rw.crud.provider', [])
+  angular.module('bidos.crud-service', [])
 
   .constant('RESOURCE_URL', '/v1')
 
