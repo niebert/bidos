@@ -5,6 +5,8 @@
 
   var Router = require('koa-router');
 
+  // TODO refactor all the things!
+
   // var routes = {
   //   user: {
   //     readUser: {
@@ -54,7 +56,7 @@
     .patch('updateUser', '/:id', function *updateUser() {
       var result = yield this.pg.db.client.query_({
         name: 'updateUser',
-        text: 'UPDATE users SET $2 WHERE user_id = $1'
+        text: 'UPDATE users SET $2 WHERE id = $1'
       });
       this.body = result.rows;
     })
@@ -62,7 +64,7 @@
     .delete('deleteUser', '/:id', function *deleteUser() {
       var result = yield this.pg.db.client.query_({
         name: 'deleteUser',
-        text: 'DELETE FROM users WHERE user_id = $1'
+        text: 'DELETE FROM users WHERE id = $1'
       });
       this.body = result.rows;
     });

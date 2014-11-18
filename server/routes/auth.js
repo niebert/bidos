@@ -41,7 +41,7 @@
       })
     });
 
-    yield {}; //
+    yield {}; // to satisfy jshint's need to yield just anything in a generator function
   }
 
   // TODO should utilize the route stored in ./user

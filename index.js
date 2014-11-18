@@ -65,9 +65,11 @@
   });
 
   // secured routes
-  app.use(mount('/v1/user', routes.user.middleware()));
-  app.use(mount('/v1/group', routes.group.middleware()));
-  app.use(mount('/v1/survey', routes.survey.middleware()));
+  app.use(mount('/v1/users', routes.users.middleware()));
+  app.use(mount('/v1/groups', routes.groups.middleware()));
+  app.use(mount('/v1/kids', routes.kids.middleware()));
+  app.use(mount('/v1/surveys', routes.surveys.middleware()));
+  app.use(mount('/v1/items', routes.items.middleware()));
 
   // main
   var listen = function(port) {
