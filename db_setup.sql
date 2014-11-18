@@ -10,41 +10,48 @@ CREATE SCHEMA public;
 
 -- `ON` vs `USING` when doing joins: http://stackoverflow.com/a/10432141/220472
 
+-- things have titles, creatures and multitudes of creatures have names. but
+-- files have names!
+
+--   http://stackoverflow.com/questions/5527632/c-sharp-naming-convention-title-vs-name
+
+-- referenced ids look like <referenced_table_name>_id
+
 -- TABLE roles
 CREATE TABLE IF NOT EXISTS roles (
-  role_id       SERIAL PRIMARY KEY,
-  rolename      TEXT UNIQUE NOT NULL,
+  id            SERIAL PRIMARY KEY,
+  name          TEXT UNIQUE NOT NULL,
   description   TEXT
 );
 
 -- TABLE groups
 CREATE TABLE IF NOT EXISTS groups (
-  group_id      SERIAL PRIMARY KEY,
-  groupname     TEXT UNIQUE NOT NULL,
+  id            SERIAL PRIMARY KEY,
+  name          TEXT UNIQUE NOT NULL,
   description   TEXT
 );
 
 -- TABLE users
 CREATE TABLE IF NOT EXISTS users (
-  user_id       SERIAL PRIMARY KEY,
+  id            SERIAL PRIMARY KEY,
   role_id       INT REFERENCES roles(role_id),
   group_id      INT REFERENCES groups(group_id),
-  username      TEXT UNIQUE NOT NULL,
   email         TEXT UNIQUE NOT NULL,
+  username      TEXT UNIQUE NOT NULL,
   password      TEXT NOT NULL,
   name          TEXT
 );
 
 -- TABLE kids
 CREATE TABLE IF NOT EXISTS kids (
-  kid_id        SERIAL PRIMARY KEY,
+  id            SERIAL PRIMARY KEY,
   group_id      INT REFERENCES groups(group_id),
   name          TEXT NOT NULL
 );
 
 -- TABLE surveys
 CREATE TABLE IF NOT EXISTS surveys (
-  survey_id     SERIAL PRIMARY KEY,
+  id            SERIAL PRIMARY KEY,
   kid_id        INT REFERENCES kids(kid_id),
   title         TEXT NOT NULL,
   description   TEXT
@@ -52,7 +59,7 @@ CREATE TABLE IF NOT EXISTS surveys (
 
 -- TABLE items
 CREATE TABLE IF NOT EXISTS items (
-  item_id       SERIAL PRIMARY KEY,
+  id            SERIAL PRIMARY KEY,
   survey_id     INT REFERENCES surveys(survey_id),
   title         TEXT NOT NULL,
   description   TEXT
@@ -93,7 +100,7 @@ INSERT INTO roles (rolename) VALUES ('admin');
 INSERT INTO roles (rolename) VALUES ('practitioner');
 INSERT INTO roles (rolename) VALUES ('scientist');
 
--- default users are set in ./Makefile via curl
+-- default users are created in ./Makefile via curl (TODO)
 
 -- all users
 CREATE VIEW allUsers AS
