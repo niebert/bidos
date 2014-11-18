@@ -16,7 +16,6 @@
         templateUrl: 'unauthorized/layout.html'
       })
 
-
       .state('unauthorized.login', {
         url: '/login',
         views: {

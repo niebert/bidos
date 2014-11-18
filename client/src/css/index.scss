@@ -35,17 +35,17 @@ h2 {
 .submit-button {
   color: color($indigo, 500);
   float: right;
+  margin-top: 12px;
 }
 
 .cancel-button:hover {
   color: color($red, 500);
 }
 
-
-
 // containers (2)
 
-#app {
+#nav {
+  padding: 12px 24px;
 }
 
 #menu {
@@ -64,7 +64,16 @@ h2 {
   width: 85%;
 }
 
+#main.unauthorized {
+  padding: 8% 0;
+  width: 100%;
 
+  .login,
+  .signup {
+    width: 16em;
+    margin: 0 auto;
+  }
+}
 
 // pure.css
 

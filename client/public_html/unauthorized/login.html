@@ -1,4 +1,4 @@
-<div class="auth login">
+<div class="login">
   <paper-shadow z=0>
     <form novalidate>
 
@@ -10,10 +10,11 @@
         <input type="password" ng-model="credentials.password" required />
       </paper-input-decorator>
 
-      <paper-button affirmative class="submit-button" ng-click="vm.login(credentials)">
-        log in
+      <paper-button raised affirmative class="submit-button" ng-click="vm.login(credentials)">
+        anmelden
       </paper-button>
 
     </form>
   </paper-shadow>
+
 </div>

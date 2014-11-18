@@ -9,19 +9,30 @@ require('./auth-services');
 
   angular.module('auth.controller', [])
 
-  .controller('authCtrl', ['UserFactory', '$state', function(UserFactory, $state) {
+  .controller('authCtrl', ['$rootScope', '$scope', 'UserFactory', '$state', function($rootScope, $scope, UserFactory, $state) {
 
     var vm = this; // view model
+
+    $scope.state = $state.current.name;
+    $scope.bla = 'asdf';
+    console.log($scope.state);
+    console.log($state.current.name);
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      $scope.state = toState.name;
+    });
 
     UserFactory.getUser()
     .then(function authorized(user) {
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
+      console.log($state.current.name);
       $state.go('authorized.' + user.role)
     }, function unauthorized() {
       console.warn('not authorized');
       $state.go('unauthorized.login');
+      console.log($state.current.name);
     });
 
     vm.login = function(credentials) {
