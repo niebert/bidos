@@ -1,0 +1,13 @@
+<div id="layout" layout="row">
+
+
+  <md-sidenav
+    id="menu" class="md-sidenav-left md-whiteframe-z2 md-closed ng-isolate-scope md-locked-open sidenav"
+    md-component-id="left" md-is-locked-open="true"
+    ui-view="menu" ng-controller="menuCtrl" >
+  </md-sidenav>
+
+  <md-content id="main" ui-view="main" ng-controller="resourceCtrl">
+    <div ></div>
+  </md-content>
+</div>
