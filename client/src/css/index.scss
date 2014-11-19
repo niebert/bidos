@@ -1,178 +1,188 @@
-// .
-// └── html
-//     └── body
-//         └── app
-//             └── main
-//                 └── nope
-
-@import '_color-palette';
-
-// general
-
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  color: #373737;
-}
-
-a {
-  color: color($indigo, 500);
-  text-decoration: none;
-}
-
-h2 {
-  margin: 0;
-}
-
-
-// custom
-
-.submit-button {
-  color: color($indigo, 500);
-  float: right;
-  margin-top: 12px;
-}
-
-.cancel-button:hover {
-  color: color($red, 500);
-}
-
-// containers (2)
-
-#pref {
-  padding: 12px 24px;
-  float: right;
-  height: 100px;
-  background-color: #ff7793;
-  color: white;
-  font-weight: 400;
-  width: 100%;
-  text-align: right;
-}
-
-#menu {
-  background-color: color($grey, 200);
+.sidenav {
   height: 100vh;
-  width: 200px;
-  padding: 24px 32px;
-  float: left;
-  overflow: hidden;
-}
-
-#main {
-  // padding: 24px 32px;
-  height: 100vh;
-  float: left;
-  width: 100%;
-}
-
-#main.unauthorized {
-  padding: 8% 0;
-  width: 100%;
-
-  .login,
-  .signup {
-    width: 16em;
-    margin: 0 auto;
-  }
-}
-
-// pure.css
-
-html, button, input, select, textarea,
-.pure-g [class *= "pure-u"] {
-  /* Set your content font stack here: */
-  font-family: 'Roboto', sans-serif;
-  font-weight: '300';
-}
-
-.l-box {
-  // padding: 64px 96px;
+  width: 170px;
 }
 
 
 
-// forms
-
-div.form {
-  max-width: 33%;
-}
-
-form {
-  // margin: 0 auto;
-}
 
 
 
-// tables
+// // .
+// // └── html
+// //     └── body
+// //         └── app
+// //             └── main
+// //                 └── nope
 
-table {
-  width: 100%;
-}
+// @import '_color-palette';
 
-thead {
-  text-align: left;
-  border-bottom: 2px solid #333;
-}
+// // general
 
-th, td {
-  padding: 12px 16px;
-}
+// * {
+//   box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   -webkit-box-sizing: border-box
+// }
 
-tbody > tr:hover {
-  background-color: color($amber, 50);
-}
+// body {
+//   -webkit-font-smoothing: antialiased;
+//   color: #373737;
+// }
 
-th.del {
-  width: 10px;
-}
+// a {
+//   color: color($indigo, 500);
+//   text-decoration: none;
+// }
 
-td.del:hover {
-  background-color: color($red, 400);
-  color: white;
-}
-
-
-
-// polymer
-
-paper-tabs::shadow #selectionBar {
-  background-color: color($teal, 300);
-}
-
-paper-tabs paper-tab::shadow #ink {
-  color: color($teal, 100);
-}
-
-paper-button {
-  &.create {
-    background-color: color($blue, 500);
-    color: white;
-  }
-}
-
-core-item {
-  &:hover {
-    color: color($blue, 400);
-  }
-  &.logout:hover {
-    color: color($red, 300);
-  }
-}
+// h2 {
+//   margin: 0;
+// }
 
 
-// flexbox
+// // custom
 
-.container {
-  display: flex;
-}
+// .submit-button {
+//   color: color($indigo, 500);
+//   float: right;
+//   margin-top: 12px;
+// }
 
-.element {
-  order: 1;
-  flex: 0 1 auto;
-}
+// .cancel-button:hover {
+//   color: color($red, 500);
+// }
+
+// // containers (2)
+
+// #pref {
+//   padding: 12px 24px;
+//   float: right;
+//   height: 100px;
+//   background-color: #ff7793;
+//   color: white;
+//   font-weight: 400;
+//   width: 100%;
+//   text-align: right;
+// }
+
+// #menu {
+//   background-color: color($grey, 200);
+//   height: 100vh;
+//   width: 200px;
+//   padding: 24px 32px;
+//   float: left;
+//   overflow: hidden;
+// }
+
+// #main {
+//   // padding: 24px 32px;
+//   height: 100vh;
+//   float: left;
+//   width: 100%;
+// }
+
+// #main.unauthorized {
+//   padding: 8% 0;
+//   width: 100%;
+
+//   .login,
+//   .signup {
+//     width: 16em;
+//     margin: 0 auto;
+//   }
+// }
+
+// // pure.css
+
+// html, button, input, select, textarea,
+// .pure-g [class *= "pure-u"] {
+//   /* Set your content font stack here: */
+//   font-family: 'Roboto', sans-serif;
+//   font-weight: '300';
+// }
+
+// .l-box {
+//   // padding: 64px 96px;
+// }
+
+
+
+// // forms
+
+// div.form {
+//   max-width: 33%;
+// }
+
+// form {
+//   // margin: 0 auto;
+// }
+
+
+
+// // tables
+
+// table {
+//   width: 100%;
+// }
+
+// thead {
+//   text-align: left;
+//   border-bottom: 2px solid #333;
+// }
+
+// th, td {
+//   padding: 12px 16px;
+// }
+
+// tbody > tr:hover {
+//   background-color: color($amber, 50);
+// }
+
+// th.del {
+//   width: 10px;
+// }
+
+// td.del:hover {
+//   background-color: color($red, 400);
+//   color: white;
+// }
+
+
+
+// // polymer
+
+// paper-tabs::shadow #selectionBar {
+//   background-color: color($teal, 300);
+// }
+
+// paper-tabs paper-tab::shadow #ink {
+//   color: color($teal, 100);
+// }
+
+// paper-button {
+//   &.create {
+//     background-color: color($blue, 500);
+//     color: white;
+//   }
+// }
+
+// core-item {
+//   &:hover {
+//     color: color($blue, 400);
+//   }
+//   &.logout:hover {
+//     color: color($red, 300);
+//   }
+// }
+
+
+// // flexbox
+
+// .container {
+//   display: flex;
+// }
+
+// .element {
+//   order: 1;
+//   flex: 0 1 auto;
+// }
