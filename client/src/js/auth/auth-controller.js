@@ -1,7 +1,3 @@
-/* global angular, alert */
-
-// FIXME
-
 require('./auth-services');
 
 (function() {
@@ -11,27 +7,21 @@ require('./auth-services');
 
   .controller('authCtrl', ['$rootScope', '$scope', 'UserFactory', '$state', function($rootScope, $scope, UserFactory, $state) {
 
-    var vm = this; // view model
-
-    $scope.bla = 'asdf';
-    console.log($scope.state);
-    console.log($state.current.name);
-
+    // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $rootScope.state = toState.name;
     });
 
+    // init
     UserFactory.getUser()
     .then(function authorized(user) {
-      vm.user = user;
-      console.info('vm', vm);
       console.info('authorized');
       $rootScope.user = user;
       $state.go('auth.' + user.role) // really?
     }, function unauthorized() {
       console.warn('not authorized');
-      $state.go('unauthorized.login');
-      console.log($state.current.name);
+
+      $state.go('login');
     });
 
     $scope.login = function(credentials) {
@@ -58,7 +48,7 @@ require('./auth-services');
       console.log('$scope.signup', formData);
       UserFactory.signup(formData)
       .then(function(response) {
-        vm.user = response.data;
+        $state.go('thankyou');
       }, handleError);
     };
 
