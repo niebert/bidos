@@ -1,0 +1,27 @@
+<h1>umfragen</h1>
+
+<div>
+  <table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>name</th>
+      <th>fragen</th>
+      <th>erstellungsdatum</th>
+      <th>author</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="survey in vm.surveys">
+      <td>{{ survey.survey_id }}</td>
+      <td>{{ survey.title }}</td>
+      <td></td>
+      <td></td>
+      <td class="del" ng-click="vm.deleteSurvey(survey)">✗</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+
+

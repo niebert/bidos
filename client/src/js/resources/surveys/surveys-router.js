@@ -12,38 +12,38 @@
 
       // ADMIN
 
-      .state('authorized.admin.surveys', {
+      .state('auth.admin.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'authorized/admin/surveys/index.html' }
+          main: { templateUrl: 'auth/admin/surveys/index.html' }
         }
       })
 
-      .state('authorized.admin.surveys.list', {
+      .state('auth.admin.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/admin/surveys/list.html' }
+          main: { templateUrl: 'auth/admin/surveys/list.html' }
         }
       })
 
-      .state('authorized.admin.surveys.new', {
+      .state('auth.admin.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/admin/surveys/new.html' }
+          main: { templateUrl: 'auth/admin/surveys/new.html' }
         }
       })
 
-      .state('authorized.admin.surveys.edit', {
+      .state('auth.admin.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/admin/surveys/edit.html' }
+          main: { templateUrl: 'auth/admin/surveys/edit.html' }
         }
       })
 
-      .state('authorized.admin.surveys.show', {
+      .state('auth.admin.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/admin/surveys/show.html' }
+          main: { templateUrl: 'auth/admin/surveys/show.html' }
         }
       })
 
@@ -51,38 +51,38 @@
 
       // PRACTITIONER
 
-      .state('authorized.practitioner.surveys', {
+      .state('auth.practitioner.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'authorized/practitioner/surveys/index.html' }
+          main: { templateUrl: 'auth/practitioner/surveys/index.html' }
         }
       })
 
-      .state('authorized.practitioner.surveys.list', {
+      .state('auth.practitioner.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/practitioner/surveys/list.html' }
+          main: { templateUrl: 'auth/practitioner/surveys/list.html' }
         }
       })
 
-      .state('authorized.practitioner.surveys.new', {
+      .state('auth.practitioner.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/practitioner/surveys/new.html' }
+          main: { templateUrl: 'auth/practitioner/surveys/new.html' }
         }
       })
 
-      .state('authorized.practitioner.surveys.edit', {
+      .state('auth.practitioner.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/practitioner/surveys/edit.html' }
+          main: { templateUrl: 'auth/practitioner/surveys/edit.html' }
         }
       })
 
-      .state('authorized.practitioner.surveys.show', {
+      .state('auth.practitioner.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/practitioner/surveys/show.html' }
+          main: { templateUrl: 'auth/practitioner/surveys/show.html' }
         }
       })
 
@@ -90,38 +90,38 @@
 
       // SCIENTIST
 
-      .state('authorized.scientist.surveys', {
+      .state('auth.scientist.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'authorized/scientist/surveys/index.html' }
+          main: { templateUrl: 'auth/scientist/surveys/index.html' }
         }
       })
 
-      .state('authorized.scientist.surveys.list', {
+      .state('auth.scientist.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/scientist/surveys/list.html' }
+          main: { templateUrl: 'auth/scientist/surveys/list.html' }
         }
       })
 
-      .state('authorized.scientist.surveys.new', {
+      .state('auth.scientist.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/scientist/surveys/new.html' }
+          main: { templateUrl: 'auth/scientist/surveys/new.html' }
         }
       })
 
-      .state('authorized.scientist.surveys.edit', {
+      .state('auth.scientist.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/scientist/surveys/edit.html' }
+          main: { templateUrl: 'auth/scientist/surveys/edit.html' }
         }
       })
 
-      .state('authorized.scientist.surveys.show', {
+      .state('auth.scientist.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/scientist/surveys/show.html' }
+          main: { templateUrl: 'auth/scientist/surveys/show.html' }
         }
       })
 

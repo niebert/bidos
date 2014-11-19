@@ -12,38 +12,38 @@
 
       // ADMIN
 
-      .state('authorized.admin.kids', {
+      .state('auth.admin.kids', {
         url: '/kids',
         views: {
-          main: { templateUrl: 'authorized/admin/kids/index.html' }
+          main: { templateUrl: 'auth/admin/kids/index.html' }
         }
       })
 
-      .state('authorized.admin.kids.list', {
+      .state('auth.admin.kids.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/admin/kids/list.html' }
+          main: { templateUrl: 'auth/admin/kids/list.html' }
         }
       })
 
-      .state('authorized.admin.kids.new', {
+      .state('auth.admin.kids.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/admin/kids/new.html' }
+          main: { templateUrl: 'auth/admin/kids/new.html' }
         }
       })
 
-      .state('authorized.admin.kids.edit', {
+      .state('auth.admin.kids.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/admin/kids/edit.html' }
+          main: { templateUrl: 'auth/admin/kids/edit.html' }
         }
       })
 
-      .state('authorized.admin.kids.show', {
+      .state('auth.admin.kids.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/admin/kids/show.html' }
+          main: { templateUrl: 'auth/admin/kids/show.html' }
         }
       })
 
@@ -51,38 +51,38 @@
 
       // PRACTITIONER
 
-      .state('authorized.practitioner.kids', {
+      .state('auth.practitioner.kids', {
         url: '/kids',
         views: {
-          main: { templateUrl: 'authorized/practitioner/kids/index.html' }
+          main: { templateUrl: 'auth/practitioner/kids/index.html' }
         }
       })
 
-      .state('authorized.practitioner.kids.list', {
+      .state('auth.practitioner.kids.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/practitioner/kids/list.html' }
+          main: { templateUrl: 'auth/practitioner/kids/list.html' }
         }
       })
 
-      .state('authorized.practitioner.kids.new', {
+      .state('auth.practitioner.kids.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/practitioner/kids/new.html' }
+          main: { templateUrl: 'auth/practitioner/kids/new.html' }
         }
       })
 
-      .state('authorized.practitioner.kids.edit', {
+      .state('auth.practitioner.kids.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/practitioner/kids/edit.html' }
+          main: { templateUrl: 'auth/practitioner/kids/edit.html' }
         }
       })
 
-      .state('authorized.practitioner.kids.show', {
+      .state('auth.practitioner.kids.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/practitioner/kids/show.html' }
+          main: { templateUrl: 'auth/practitioner/kids/show.html' }
         }
       })
 
@@ -90,38 +90,38 @@
 
       // SCIENTIST
 
-      .state('authorized.scientist.kids', {
+      .state('auth.scientist.kids', {
         url: '/kids',
         views: {
-          main: { templateUrl: 'authorized/scientist/kids/index.html' }
+          main: { templateUrl: 'auth/scientist/kids/index.html' }
         }
       })
 
-      .state('authorized.scientist.kids.list', {
+      .state('auth.scientist.kids.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/scientist/kids/list.html' }
+          main: { templateUrl: 'auth/scientist/kids/list.html' }
         }
       })
 
-      .state('authorized.scientist.kids.new', {
+      .state('auth.scientist.kids.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/scientist/kids/new.html' }
+          main: { templateUrl: 'auth/scientist/kids/new.html' }
         }
       })
 
-      .state('authorized.scientist.kids.edit', {
+      .state('auth.scientist.kids.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/scientist/kids/edit.html' }
+          main: { templateUrl: 'auth/scientist/kids/edit.html' }
         }
       })
 
-      .state('authorized.scientist.kids.show', {
+      .state('auth.scientist.kids.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/scientist/kids/show.html' }
+          main: { templateUrl: 'auth/scientist/kids/show.html' }
         }
       })
 

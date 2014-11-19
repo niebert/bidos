@@ -9,54 +9,63 @@
 
     $stateProvider
 
-      // UNAUTHORIZED
+      // THE ALL EMBRACING AUTH ROUTE: all subsequent routes inherit it's
+      // controller, as every connection to the back end must be authenticated
 
-      .state('unauthorized', {
+      // PUBLIC ROUTES
+
+      .state('public', {
         url: '',
-        templateUrl: 'unauthorized/layout.html'
+        templateUrl: 'public/layout.html'
       })
 
-      .state('unauthorized.login', {
+      .state('public.login', {
         url: '/login',
         views: {
-          main: { templateUrl: 'unauthorized/login.html' }
+          main: { templateUrl: 'public/login.html' }
         }
       })
 
-      .state('unauthorized.signup', {
+      .state('public.signup', {
         url: '/signup',
         views: {
-          main: { templateUrl: 'unauthorized/signup.html' }
+          main: { templateUrl: 'public/signup.html' }
         }
       })
 
-      // UNAUTHORIZED
+      // AUTHORIZED
 
-      .state('authorized', {
+      // why tf is the controller sometimes recognized when it's set up here,
+      // like below and sometimes when it's added directly to the element...
+      // and sometimes vice versa.
+
+      .state('auth', {
         url: '',
-        templateUrl: 'authorized/layout.html'
+        templateUrl: 'auth/layout.html',
+        controller: 'resourceCtrl',
+        controllerAs: 'vm'
       })
 
-      .state('authorized.admin', {
+      .state('auth.admin', {
         url: '/admin',
         views: {
-          menu: { templateUrl: 'authorized/admin/menu.html' },
+          menu: { templateUrl: 'auth/admin/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })
 
-      .state('authorized.practitioner', {
+      .state('auth.practitioner', {
         url: '/practitioner',
         views: {
-          menu: { templateUrl: 'authorized/practitioner/menu.html' },
+          menu: { templateUrl: 'auth/practitioner/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })
 
-      .state('authorized.scientist', {
+      .state('auth.scientist', {
         url: '/scientist',
         views: {
-          menu: { templateUrl: 'authorized/scientist/menu.html' },
+          menu: { templateUrl: 'auth/scientist/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })

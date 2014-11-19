@@ -12,38 +12,38 @@
 
       // ADMIN
 
-      .state('authorized.admin.groups', {
+      .state('auth.admin.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'authorized/admin/groups/index.html' }
+          main: { templateUrl: 'auth/admin/groups/index.html' }
         }
       })
 
-      .state('authorized.admin.groups.list', {
+      .state('auth.admin.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/admin/groups/list.html' }
+          main: { templateUrl: 'auth/admin/groups/list.html' }
         }
       })
 
-      .state('authorized.admin.groups.new', {
+      .state('auth.admin.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/admin/groups/new.html' }
+          main: { templateUrl: 'auth/admin/groups/new.html' }
         }
       })
 
-      .state('authorized.admin.groups.edit', {
+      .state('auth.admin.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/admin/groups/edit.html' }
+          main: { templateUrl: 'auth/admin/groups/edit.html' }
         }
       })
 
-      .state('authorized.admin.groups.show', {
+      .state('auth.admin.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/admin/groups/show.html' }
+          main: { templateUrl: 'auth/admin/groups/show.html' }
         }
       })
 
@@ -51,38 +51,38 @@
 
       // PRACTITIONER
 
-      .state('authorized.practitioner.groups', {
+      .state('auth.practitioner.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'authorized/practitioner/groups/index.html' }
+          main: { templateUrl: 'auth/practitioner/groups/index.html' }
         }
       })
 
-      .state('authorized.practitioner.groups.list', {
+      .state('auth.practitioner.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/practitioner/groups/list.html' }
+          main: { templateUrl: 'auth/practitioner/groups/list.html' }
         }
       })
 
-      .state('authorized.practitioner.groups.new', {
+      .state('auth.practitioner.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/practitioner/groups/new.html' }
+          main: { templateUrl: 'auth/practitioner/groups/new.html' }
         }
       })
 
-      .state('authorized.practitioner.groups.edit', {
+      .state('auth.practitioner.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/practitioner/groups/edit.html' }
+          main: { templateUrl: 'auth/practitioner/groups/edit.html' }
         }
       })
 
-      .state('authorized.practitioner.groups.show', {
+      .state('auth.practitioner.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/practitioner/groups/show.html' }
+          main: { templateUrl: 'auth/practitioner/groups/show.html' }
         }
       })
 
@@ -90,38 +90,38 @@
 
       // SCIENTIST
 
-      .state('authorized.scientist.groups', {
+      .state('auth.scientist.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'authorized/scientist/groups/index.html' }
+          main: { templateUrl: 'auth/scientist/groups/index.html' }
         }
       })
 
-      .state('authorized.scientist.groups.list', {
+      .state('auth.scientist.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'authorized/scientist/groups/list.html' }
+          main: { templateUrl: 'auth/scientist/groups/list.html' }
         }
       })
 
-      .state('authorized.scientist.groups.new', {
+      .state('auth.scientist.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'authorized/scientist/groups/new.html' }
+          main: { templateUrl: 'auth/scientist/groups/new.html' }
         }
       })
 
-      .state('authorized.scientist.groups.edit', {
+      .state('auth.scientist.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'authorized/scientist/groups/edit.html' }
+          main: { templateUrl: 'auth/scientist/groups/edit.html' }
         }
       })
 
-      .state('authorized.scientist.groups.show', {
+      .state('auth.scientist.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'authorized/scientist/groups/show.html' }
+          main: { templateUrl: 'auth/scientist/groups/show.html' }
         }
       })
 

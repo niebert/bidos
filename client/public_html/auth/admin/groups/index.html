@@ -1,0 +1,21 @@
+<h1>gruppen</h1>
+
+<!-- table containing all groups -->
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>name</th>
+      <th>beschreibung</th>
+      <th class="del"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="group in vm.groups">
+      <td>{{ group.id }}</td>
+      <td>{{ group.name }}</td>
+      <td>{{ group.description }}</td>
+      <td class="del" ng-click="vm.destroy(group.id)">✗</td>
+    </tr>
+  </tbody>
+</table>

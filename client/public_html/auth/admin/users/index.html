@@ -1,7 +1,6 @@
-<pre>STUB!</pre>
-<h1>alle benutzer</h1>
+<h1>benutzer</h1>
 
-<div id="userList" ng-controller="userCtrl as vm">
+<div>
   <table class="table">
   <thead>
     <tr>
@@ -14,8 +13,8 @@
       <th></th>
     </tr>  </thead>
   <tbody>
-    <tr ng-repeat="user in vm.users">
-      <td>{{ user.user_id }}</td>
+    <tr ng-repeat="user in vm.resources.users">
+      <td>{{ user.id }}</td>
       <td>{{ user.role }}</td>
       <td>{{ user.group_id }}</td>
       <td>{{ user.username }}</td>
@@ -25,3 +24,5 @@
     </tr>  </tbody>
   </table>
 </div>
+
+

@@ -1,0 +1,23 @@
+<h1>kinder</h1>
+
+<div>
+  <table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>gruppe</th>
+      <th>name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="kid in vm.kids">
+      <td>{{ kid.kid_id }}</td>
+      <td>{{ kid.group_id }}</td>
+      <td>{{ kid.name }}</td>
+      <td class="del" ng-click="vm.deleteKid(kid)">✗</td>
+    </tr>  </tbody>
+  </table>
+</div>
+
+
