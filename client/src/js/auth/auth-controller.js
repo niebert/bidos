@@ -13,13 +13,12 @@ require('./auth-services');
 
     var vm = this; // view model
 
-    $scope.state = $state.current.name;
     $scope.bla = 'asdf';
     console.log($scope.state);
     console.log($state.current.name);
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      $scope.state = toState.name;
+      $rootScope.state = toState.name;
     });
 
     UserFactory.getUser()
@@ -27,8 +26,8 @@ require('./auth-services');
       vm.user = user;
       console.info('vm', vm);
       console.info('authorized');
-      console.log($state.current.name);
-      $state.go('authorized.' + user.role)
+      $rootScope.user = user;
+      $state.go('auth.' + user.role) // really?
     }, function unauthorized() {
       console.warn('not authorized');
       $state.go('unauthorized.login');
