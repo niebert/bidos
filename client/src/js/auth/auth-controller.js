@@ -34,24 +34,28 @@ require('./auth-services');
       console.log($state.current.name);
     });
 
-    vm.login = function(credentials) {
-      console.log('vm.login', credentials);
+    $scope.login = function(credentials) {
+      console.log('$scope.login', credentials);
+
       UserFactory.login(credentials)
-      .then(function(response) {
-        vm.user = response.data;
-        $state.go('authorized.' + vm.user.role);
+      .then(function authorized(response) {
+        $rootScope.user = response.data;
+        $state.go('auth.' + response.data.role);
       }, handleError);
     };
 
-    vm.logout = function() {
-      console.log('vm.logout');
-      UserFactory.logout();
-      $state.go('goodbye');
-      vm.user = null;
+    $scope.logout = function() {
+      console.log('$scope.logout');
+
+      UserFactory.logout()
+      .then(function() {
+        $state.go('goodbye');
+        $rootScope.user = null;
+      }, handleError);
     };
 
-    vm.signup = function(formData) {
-      console.log('vm.signup', formData);
+    $scope.signup = function(formData) {
+      console.log('$scope.signup', formData);
       UserFactory.signup(formData)
       .then(function(response) {
         vm.user = response.data;
