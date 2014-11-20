@@ -1,23 +1,28 @@
-<h1>kinder</h1>
+<md-toolbar class="md-medium-tall">
+  <div class="md-toolbar-tools" layout-arrange="center center">
+    <p hide-phone>
+      kinder
+    </p>
+  </div>
+</md-toolbar>
 
-<div>
+<md-content flex>
   <table class="table">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>gruppe</th>
-      <th>name</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="kid in vm.kids">
-      <td>{{ kid.kid_id }}</td>
-      <td>{{ kid.group_id }}</td>
-      <td>{{ kid.name }}</td>
-      <td class="del" ng-click="vm.deleteKid(kid)">✗</td>
-    </tr>  </tbody>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>gruppe</th>
+        <th>name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="kid in vm.kids">
+        <td>{{ kid.kid_id }}</td>
+        <td>{{ kid.group_id }}</td>
+        <td>{{ kid.name }}</td>
+        <td class="del" ng-click="vm.deleteKid(kid)">✗</td>
+      </tr>
+    </tbody>
   </table>
-</div>
-
-
+</md-content>

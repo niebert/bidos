@@ -1,7 +1,13 @@
-<h1>items</h1>
+<md-toolbar class="md-medium-tall">
+<div class="md-toolbar-tools" layout-arrange="center center">
+  <p hide-phone>
+    items
+  </p>
+</div>
+</md-toolbar>
 
-<div>
-  <table class="table">
+<md-content flex>
+<table class="table">
   <thead>
     <tr>
       <th>id</th>
@@ -11,7 +17,8 @@
       <th>email</th>
       <th>name</th>
       <th></th>
-    </tr>  </thead>
+    </tr>
+  </thead>
   <tbody>
     <tr ng-repeat="item in vm.items">
       <td>{{ item.item_id }}</td>
@@ -21,8 +28,7 @@
       <td>{{ item.email }}</td>
       <td>{{ item.name }}</td>
       <td class="del" ng-click="vm.deleteUser(item)">✗</td>
-    </tr>  </tbody>
-  </table>
-</div>
-
-
+    </tr>
+  </tbody>
+</table>
+</md-content>

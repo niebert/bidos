@@ -1,0 +1,11 @@
+<!-- LEFT SIDE NAVIGATION -->
+
+<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2 md-closed ng-isolate-scope md-locked-open sidenav" md-component-id="left" md-is-locked-open="$media('md')" tabindex="-1">
+  <div ui-view="menu" ng-controller="menuCtrl"></div>
+</md-sidenav>
+
+<!-- MAIN CONTENT -->
+
+<div flex layout="column">
+  <div ui-view="main" ng-controller="resourceCtrl"></div>
+</div>

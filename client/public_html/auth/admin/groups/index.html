@@ -1,6 +1,12 @@
-<h1>gruppen</h1>
+<md-toolbar class="md-medium-tall">
+<div class="md-toolbar-tools" layout-arrange="center center">
+  <p hide-phone>
+    gruppen
+  </p>
+</div>
+</md-toolbar>
 
-<!-- table containing all groups -->
+<md-content flex>
 <table>
   <thead>
     <tr>
@@ -18,4 +24,4 @@
       <td class="del" ng-click="vm.destroy(group.id)">✗</td>
     </tr>
   </tbody>
-</table>
+</table></md-content>
