@@ -16,7 +16,7 @@
 
       .state('public', {
         url: '',
-        templateUrl: 'layout.html'
+        templateUrl: 'public/layout.html'
       })
 
       .state('public.login', {
@@ -41,7 +41,7 @@
 
       .state('auth', {
         url: '',
-        templateUrl: 'layout.html',
+        templateUrl: 'auth/layout.html',
         controller: 'resourceCtrl',
         controllerAs: 'vm'
       })
