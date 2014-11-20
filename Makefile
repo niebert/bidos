@@ -53,6 +53,6 @@ dbinit:
 	@psql -f $(DB_SETUP_FILE) $(DATABASE)
 	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "admin", "password": "123", "email": "asdf@uni-koblenz.de", "name": "René Wilhelm" }' localhost:$(PORT)/signup
 	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "rene", "password": "123", "email": "rene.wilhelm@uni-koblenz.de", "name": "René Wilhelm" }' localhost:$(PORT)/signup
-	@psql -c "UPDATE users SET role_id = 1 WHERE user_id = 1" $(DATABASE)
-	@psql -c "UPDATE users SET role_id = 2 WHERE user_id = 2" $(DATABASE)
+	@psql -c "UPDATE users SET role_id = 1 WHERE id = 1" $(DATABASE)
+	@psql -c "UPDATE users SET role_id = 2 WHERE id = 2" $(DATABASE)
 
