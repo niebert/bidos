@@ -1,7 +1,43 @@
-<core-menu selected="0" on-core-select="{{selectItem}}">
-  <core-item icon="social:group" label="benutzer" ui-sref="auth.admin.users"></core-item>
-  <core-item icon="social:circles-extended" label="gruppen" ui-sref="auth.admin.groups"></core-item>
-  <core-item icon="social:people-outline" label="kinder" ui-sref="auth.admin.kids"></core-item>
-  <core-item icon="check-box" label="umfragen" ui-sref="auth.admin.surveys"></core-item>
-</core-menu>
+<!-- TOOLBAR -->
 
+<md-toolbar class="md-medium-tall">
+  <h1 class="md-toolbar-tools" style="padding-top:25px;">
+    <a href ng-click="goHome()" tabindex="0">bidos</a>
+  </h1>
+</md-toolbar>
+
+<!-- CONTENT -->
+
+<md-content flex>
+  <md-subheader>Comment Actions</md-subheader>
+  <md-list>
+
+    <md-item>
+      <md-button ui-sref="auth.admin.users">
+        <span class="md-inline-list-icon-label">benutzer</span>
+      </md-button>
+    </md-item>
+    <br />
+
+    <md-item>
+    <md-button ui-sref="auth.admin.groups">
+      <span class="md-inline-list-icon-label">gruppen</span>
+    </md-button>
+    </md-item>
+    <br />
+
+    <md-item>
+      <md-button ui-sref="auth.admin.kids">
+        <span class="md-inline-list-icon-label">kinder</span>
+      </md-button>
+    </md-item>
+    <br />
+
+    <md-item>
+      <md-button ui-sref="auth.admin.surveys">
+        <span class="md-inline-list-icon-label">umfragen</span>
+      </md-button>
+    </md-item>
+
+  </md-list>
+</md-content>
