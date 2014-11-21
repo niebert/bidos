@@ -17,6 +17,7 @@
     "co-mocha": "^1.0.3",
     "co-monk": "^1.0.0",
     "debug": "^2.1.0",
+    "dgeni": "^0.4.1",
     "flux": "^2.0.1",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^1.0.1",

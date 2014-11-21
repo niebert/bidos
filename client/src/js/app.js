@@ -13,6 +13,7 @@
     'dialog',
     'bidos.menu.controller',
     'bidos.resources',
+    'ng-polymer-elements', // use polymer elements with angular
     'ui.router', // require once for all routes
     'ngMaterial', // <3
   ]);
