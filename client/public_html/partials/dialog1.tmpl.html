@@ -1,0 +1,49 @@
+<md-dialog>
+
+  <md-content>
+    <h1>neuer benutzer</h1>
+
+    <div class="row" layout-align="center">
+      <form>
+
+        <md-text-float label="Name" ng-model="user.name"></md-text-float>
+        <md-text-float label="E-Mail" ng-model="user.email" type="email"></md-text-float>
+        <md-text-float label="Passwort" ng-model="user.password" type="password"></md-text-float>
+
+        <paper-dropdown-menu label="Gruppe">
+          <paper-dropdown class="dropdown">
+            <core-menu class="menu">
+              <paper-item>Gruppe 1</paper-item>
+              <paper-item>Gruppe 2</paper-item>
+              <paper-item>Gruppe 3</paper-item>
+              <paper-item>Gruppe 4</paper-item>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+        <br />
+
+        <paper-dropdown-menu label="Rolle">
+          <paper-dropdown class="dropdown">
+            <core-menu class="menu">
+              <paper-item>Practitioner</paper-item>
+              <paper-item>Scientist</paper-item>
+              <paper-item>Administrator</paper-item>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+
+        <md-checkbox ng-model="user.validated">
+          Verifiziert
+        </md-checkbox>
+      </div>
+
+    </form>
+  </md-content>
+
+  <div class="md-actions" layout="row">
+    <md-button ng-click="vm.create('users', user)" class="md-primary">
+      Benutzer erstellen
+    </md-button>
+  </div>
+
+</md-dialog>
