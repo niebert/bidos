@@ -10,6 +10,7 @@
        // buffer = require('vinyl-buffer'),
        browserify = require('gulp-browserify'),
        prefix  = require('gulp-autoprefixer'),
+       ngAnnotate = require('gulp-ng-annotate'),
        sass = require('gulp-ruby-sass');
 
   var onError = function(err) {
@@ -23,6 +24,7 @@
   gulp.task('browserify', function() {
     // Single entry point to browserify
     gulp.src(sourceDir + '/js/app.js')
+      .pipe(ngAnnotate())
       .pipe(browserify({
         insertGlobals : true,
         debug : !gulp.env.production // FIXME deprecated -> yargs, minimist
