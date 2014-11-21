@@ -14,8 +14,6 @@
   .controller('resourceCtrl', ['$scope', '$rootScope', 'resourceService', '$state', 'RESOURCE_ACCESS',
     function($scope, $rootScope, resourceService, $state, RESOURCE_ACCESS) {
 
-    console.log($scope);
-
     var vm = this;
     vm.resources = {};
 
@@ -32,6 +30,7 @@
       console.info(resource + ':vm.read');
       resourceService.read(resource, id).then(function(response) {
         _.merge(vm.resources, response);
+        console.log(vm.resources);
       }, handleError);
     };
 

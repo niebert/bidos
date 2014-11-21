@@ -10,23 +10,20 @@
   <table class="table">
     <thead>
       <tr>
-        <th>id</th>
-        <th>rolle</th>
-        <th>gruppe</th>
+        <th>name</th>
         <th>benutzername</th>
         <th>email</th>
-        <th>name</th>
-        <th></th>
-      </tr>  </thead>
+        <th>rolle</th>
+        <th>gruppe</th>
+      </tr>
+    </thead>
     <tbody>
       <tr ng-repeat="user in vm.resources.users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.role }}</td>
-        <td>{{ user.group_id }}</td>
+        <td>{{ user.name }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.name }}</td>
-        <td class="del" ng-click="vm.deleteUser(user)">✗</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.group_id }}</td>
       </tr>
     </tbody>
   </table>

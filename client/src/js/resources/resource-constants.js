@@ -26,5 +26,5 @@
 
   .constant('ROLES',     ['admin', 'practitioner', 'scientist'])
   .constant('RESOURCES', ['users', 'groups', 'kids', 'surveys', 'items'])
-  .constant('VIEWS',     ['list', 'new', 'edit', 'show'])
+  .constant('VIEWS',     ['list', 'new', 'edit', 'show']);
 }());
