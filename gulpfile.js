@@ -25,7 +25,7 @@
     gulp.src(sourceDir + '/js/app.js')
       .pipe(browserify({
         insertGlobals : true,
-        debug : !gulp.env.production
+        debug : !gulp.env.production // FIXME deprecated -> yargs, minimist
       }))
       .pipe(gulp.dest(targetDir + '/js'));
   });
@@ -48,7 +48,7 @@
       script: 'index.js',
       watch: ['index.js', 'platform'],
       nodeArgs: ['--harmony'],
-      env: { NODE_ENV: 'development' }
+      env: { NODE_ENV: 'development' } // FIXME deprecated -> yargs, minimist
     })
     .on('change', []);
   });
