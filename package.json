@@ -78,6 +78,8 @@
     "gulp-browserify": "^0.5.0",
     "gulp-inject": "^1.0.2",
     "gulp-ng-annotate": "^0.3.6",
+    "gulp-rename": "^1.2.0",
+    "gulp-savefile": "^0.1.1",
     "gulp-uglify": "^1.0.1",
     "mocha": "^2.0.1",
     "supertest": "^0.14.0",
