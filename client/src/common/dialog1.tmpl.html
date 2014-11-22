@@ -1,0 +1,35 @@
+<md-dialog ng-controller="itemCtrl as vm">
+
+  <md-content>
+    <h1>neues skala frage</h1>
+
+    <div class="row" layout-align="center">
+      <form>
+
+        <md-text-float label="Titel" ng-model="itemObj.title"></md-text-float>
+
+        <md-checkbox md-no-ink ng-model="itemObj.description.enabled">Beschreibung (optional)</md-checkbox>
+
+        <paper-autogrow-textarea id="a1" ng-if="description.enabled">
+          <textarea ng-model="itemObj.description.text" id="t1"></textarea>
+        </paper-autogrow-textarea>
+
+        <paper-autogrow-textarea id="a2">
+          <textarea id="t2"></textarea>
+        </paper-autogrow-textarea>
+
+        <md-slider md-discrete ng-model="itemObj.rating" step="1" min="{{ itemObj.rating.startWithZero ? 0 : 1}}" max="{{ itemObj.rating.startWithZero ? 9 : 10}}" aria-label="rating">
+        </md-slider>
+
+        <md-checkbox md-no-ink ng-model="itemObj.rating.startWithZero">bei 0 anfangen</md-checkbox>
+
+    </form>
+  </md-content>
+
+  <div class="md-actions" layout="row">
+    <md-button ng-click="answer(itemObj)" class="md-primary">
+      Item erstellen
+    </md-button>
+  </div>
+
+</md-dialog>

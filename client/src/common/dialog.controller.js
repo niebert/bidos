@@ -15,14 +15,22 @@
         targetEvent: ev,
       })
       .then(function(answer) {
-        $scope.alert = 'You said the information was "' + answer + '".';
+        // ITEMOBJ___ ! <3
+        debugger
+
+        $scope.itemObject = 'You said the information was "' + answer + '".';
       }, function() {
-        $scope.alert = 'You cancelled the dialog.';
+        $scope.itemObject = 'You cancelled the dialog.';
       });
     };
   }]);
 
   function DialogController($scope, $mdDialog) {
+
+    debugger
+    console.log($mdDialog.clickOutsideToClose);
+
+
     $scope.hide = function() {
       $mdDialog.hide();
     };
