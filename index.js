@@ -28,9 +28,9 @@
   app.use(require('koa-pg')(config.db.postgres.url));
 
   // serve static dirs
-  app.use(mount('/', serve(path.join(__dirname, 'client/public_html'))));
-  app.use(mount('/', serve(path.join(__dirname, 'client/build'))));
+  app.use(mount('/build', serve(path.join(__dirname, 'client/build'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'client/vendor'))));
+  app.use(mount('/', serve(path.join(__dirname, 'client/src'))));
 
   // mount public routes
   app.use(mount('/', routes.auth.middleware()));
