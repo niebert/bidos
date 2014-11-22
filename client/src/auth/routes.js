@@ -14,22 +14,17 @@
 
       // PUBLIC ROUTES
 
-      .state('public', {
-        url: '',
-        templateUrl: 'public/layout.html'
-      })
-
-      .state('public.login', {
+      .state('login', {
         url: '/login',
         views: {
-          main: { templateUrl: 'public/login.html' }
+          main: { templateUrl: 'auth/login.html' }
         }
       })
 
-      .state('public.signup', {
+      .state('signup', {
         url: '/signup',
         views: {
-          main: { templateUrl: 'public/signup.html' }
+          main: { templateUrl: 'auth/signup.html' }
         }
       })
 
@@ -41,15 +36,13 @@
 
       .state('auth', {
         url: '',
-        templateUrl: 'auth/layout.html',
-        controller: 'resourceCtrl',
-        controllerAs: 'vm'
+        templateUrl: 'partials/layout.html',
       })
 
       .state('auth.admin', {
         url: '/admin',
         views: {
-          menu: { templateUrl: 'auth/admin/menu.html' },
+          menu: { templateUrl: 'partials/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })
@@ -57,7 +50,7 @@
       .state('auth.practitioner', {
         url: '/practitioner',
         views: {
-          menu: { templateUrl: 'auth/practitioner/menu.html' },
+          menu: { templateUrl: 'partials/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })
@@ -65,7 +58,7 @@
       .state('auth.scientist', {
         url: '/scientist',
         views: {
-          menu: { templateUrl: 'auth/scientist/menu.html' },
+          menu: { templateUrl: 'partials/menu.html' },
           main: { template: '<div ui-view="main"></div>' }
         }
       })

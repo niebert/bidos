@@ -3,10 +3,12 @@
 (function() {
   'use strict';
 
-  require('./items-router');
+  require('./routes');
+  require('./controllers');
 
-  angular.module('bidos.resources.items', [
-    'bidos.resources.items.router',
+  angular.module('bidos.resource.item', [
+    'bidos.resource.item.routes',
+    'bidos.resource.item.controllers'
   ]);
 
 }());

@@ -3,10 +3,9 @@
 (function() {
   'use strict';
 
-  angular.module('bidos.resources.items.router', ['ui.router'])
+  angular.module('bidos.resource.item.routes', [])
 
-  .config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', function($stateProvider) {
 
     $stateProvider
 
@@ -15,35 +14,35 @@
       .state('auth.admin.items', {
         url: '/items',
         views: {
-          main: { templateUrl: 'auth/admin/items/index.html' }
+          main: { templateUrl: 'resources/users/views/index.html' }
         }
       })
 
       .state('auth.admin.items.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/admin/items/list.html' }
+          main: { templateUrl: 'resources/users/views/list.html' }
         }
       })
 
       .state('auth.admin.items.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/admin/items/new.html' }
+          main: { templateUrl: 'resources/users/views/new.html' }
         }
       })
 
       .state('auth.admin.items.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/admin/items/edit.html' }
+          main: { templateUrl: 'resources/users/views/edit.html' }
         }
       })
 
       .state('auth.admin.items.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/admin/items/show.html' }
+          main: { templateUrl: 'resources/users/views/show.html' }
         }
       })
 
@@ -54,35 +53,35 @@
       .state('auth.practitioner.items', {
         url: '/items',
         views: {
-          main: { templateUrl: 'auth/practitioner/items/index.html' }
+          main: { templateUrl: 'resources/users/views/index.html' }
         }
       })
 
       .state('auth.practitioner.items.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/practitioner/items/list.html' }
+          main: { templateUrl: 'resources/users/views/list.html' }
         }
       })
 
       .state('auth.practitioner.items.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/practitioner/items/new.html' }
+          main: { templateUrl: 'resources/users/views/new.html' }
         }
       })
 
       .state('auth.practitioner.items.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/practitioner/items/edit.html' }
+          main: { templateUrl: 'resources/users/views/edit.html' }
         }
       })
 
       .state('auth.practitioner.items.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/practitioner/items/show.html' }
+          main: { templateUrl: 'resources/users/views/show.html' }
         }
       })
 
@@ -93,35 +92,35 @@
       .state('auth.scientist.items', {
         url: '/items',
         views: {
-          main: { templateUrl: 'auth/scientist/items/index.html' }
+          main: { templateUrl: 'resources/users/views/index.html' }
         }
       })
 
       .state('auth.scientist.items.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/scientist/items/list.html' }
+          main: { templateUrl: 'resources/users/views/list.html' }
         }
       })
 
       .state('auth.scientist.items.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/scientist/items/new.html' }
+          main: { templateUrl: 'resources/users/views/new.html' }
         }
       })
 
       .state('auth.scientist.items.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/scientist/items/edit.html' }
+          main: { templateUrl: 'resources/users/views/edit.html' }
         }
       })
 
       .state('auth.scientist.items.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/scientist/items/show.html' }
+          main: { templateUrl: 'resources/users/views/show.html' }
         }
       })
 

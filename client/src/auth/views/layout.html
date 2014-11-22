@@ -1,0 +1,17 @@
+<div>
+
+  <div id="nav" class="unauthorized">
+    <paper-button ng-show="state == 'signup'" raised class="submit-button" ui-sref="login">
+      anmelden
+    </paper-button>
+
+    <paper-button ng-show="state == 'login'" raised class="submit-button" ui-sref="signup">
+      registrieren
+    </paper-button>
+  </div>
+
+  <div id="main" class="unauthorized">
+    <div ui-view="main"></div>
+  </div>
+
+</div>

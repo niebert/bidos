@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  require('./surveys-router');
+  require('./routes');
 
-  angular.module('bidos.resources.surveys', [
-    'bidos.resources.surveys.router',
+  angular.module('bidos.resource.survey', [
+    'bidos.resource.survey.routes',
   ]);
 
 }());

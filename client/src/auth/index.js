@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  require('./auth-interceptor');
-  require('./auth-services');
-  require('./auth-controller');
-  require('./auth-router');
+  require('./interceptors');
+  require('./services');
+  require('./controllers');
+  require('./routes');
 
   angular.module('auth', [
     'auth.interceptor',

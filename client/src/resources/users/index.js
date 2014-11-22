@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  require('./users-router');
+  require('./routes');
 
-  angular.module('bidos.resources.users', [
-    'bidos.resources.users.router',
+  angular.module('bidos.resource.user', [
+    'bidos.resource.user.routes',
   ]);
 
 }());

@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  require('./groups-router');
+  require('./routes');
 
-  angular.module('bidos.resources.groups', [
-    'bidos.resources.groups.router',
+  angular.module('bidos.resource.group', [
+    'bidos.resource.group.routes',
   ]);
 
 }());

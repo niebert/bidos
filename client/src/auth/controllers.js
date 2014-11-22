@@ -1,11 +1,14 @@
-require('./auth-services');
+/* global angular */
 
 (function() {
   'use strict';
 
-  angular.module('auth.controller', [])
+  require('./services');
 
-  .controller('authCtrl', ['$rootScope', '$scope', 'UserFactory', '$state', function($rootScope, $scope, UserFactory, $state) {
+  angular.module('auth.controller', [])
+  .controller('authCtrl', ['$rootScope', '$scope', 'UserFactory', '$state', authCtrl]);
+
+  function authCtrl($rootScope, $scope, UserFactory, $state) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -20,13 +23,11 @@ require('./auth-services');
       $state.go('auth.' + user.role) // really?
     }, function unauthorized() {
       console.warn('not authorized');
-
       $state.go('login');
     });
 
     $scope.login = function(credentials) {
       console.log('$scope.login', credentials);
-
       UserFactory.login(credentials)
       .then(function authorized(response) {
         $rootScope.user = response.data;
@@ -36,7 +37,6 @@ require('./auth-services');
 
     $scope.logout = function() {
       console.log('$scope.logout');
-
       UserFactory.logout()
       .then(function() {
         $state.go('goodbye');
@@ -56,6 +56,6 @@ require('./auth-services');
       console.info('ERROR_HANDLER', response);
       alert('Error: ' + response.data.error);
     }
-  }]);
+  }
 
 }());

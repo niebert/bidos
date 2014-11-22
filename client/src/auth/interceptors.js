@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  require('./auth-constants');
+  require('./constants');
 
   angular.module('auth.interceptor', [
     'auth.constants',

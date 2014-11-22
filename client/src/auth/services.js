@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-  require('./auth-constants');
+  require('./constants');
 
   angular.module('auth.services', [
     'auth.constants',

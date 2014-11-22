@@ -3,15 +3,16 @@
 (function() {
   'use strict';
 
-  angular.module('dialog', ['ngMaterial'])
+  angular.module('bidos.resource.item.controllers', ['ngMaterial'])
+  .controller('itemCtrl', itemCtrl);
 
-  .controller('dialogCtrl', ['$scope', '$mdDialog', function($scope, $mdDialog) {
+  function itemCtrl($scope, $mdDialog) {
     $scope.alert = '';
 
     $scope.showDialog = function(ev) {
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'partials/dialog1.tmpl.html',
+        templateUrl: 'resources/items/views/dialog.html',
         targetEvent: ev,
       })
       .then(function(answer) {
@@ -23,14 +24,9 @@
         $scope.itemObject = 'You cancelled the dialog.';
       });
     };
-  }]);
+  }
 
   function DialogController($scope, $mdDialog) {
-
-    debugger
-    console.log($mdDialog.clickOutsideToClose);
-
-
     $scope.hide = function() {
       $mdDialog.hide();
     };

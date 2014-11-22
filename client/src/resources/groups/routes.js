@@ -3,10 +3,9 @@
 (function() {
   'use strict';
 
-  angular.module('bidos.resources.groups.router', ['ui.router'])
+  angular.module('bidos.resource.group.routes', [])
 
-  .config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', function($stateProvider) {
 
     $stateProvider
 
@@ -15,35 +14,35 @@
       .state('auth.admin.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'auth/admin/groups/index.html' }
+          main: { templateUrl: 'resources/groups/views/index.html' }
         }
       })
 
       .state('auth.admin.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/admin/groups/list.html' }
+          main: { templateUrl: 'resources/groups/views/list.html' }
         }
       })
 
       .state('auth.admin.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/admin/groups/new.html' }
+          main: { templateUrl: 'resources/groups/views/new.html' }
         }
       })
 
       .state('auth.admin.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/admin/groups/edit.html' }
+          main: { templateUrl: 'resources/groups/views/edit.html' }
         }
       })
 
       .state('auth.admin.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/admin/groups/show.html' }
+          main: { templateUrl: 'resources/groups/views/show.html' }
         }
       })
 
@@ -54,35 +53,35 @@
       .state('auth.practitioner.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'auth/practitioner/groups/index.html' }
+          main: { templateUrl: 'resources/groups/views/index.html' }
         }
       })
 
       .state('auth.practitioner.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/practitioner/groups/list.html' }
+          main: { templateUrl: 'resources/groups/views/list.html' }
         }
       })
 
       .state('auth.practitioner.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/practitioner/groups/new.html' }
+          main: { templateUrl: 'resources/groups/views/new.html' }
         }
       })
 
       .state('auth.practitioner.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/practitioner/groups/edit.html' }
+          main: { templateUrl: 'resources/groups/views/edit.html' }
         }
       })
 
       .state('auth.practitioner.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/practitioner/groups/show.html' }
+          main: { templateUrl: 'resources/groups/views/show.html' }
         }
       })
 
@@ -93,35 +92,35 @@
       .state('auth.scientist.groups', {
         url: '/groups',
         views: {
-          main: { templateUrl: 'auth/scientist/groups/index.html' }
+          main: { templateUrl: 'resources/groups/views/index.html' }
         }
       })
 
       .state('auth.scientist.groups.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/scientist/groups/list.html' }
+          main: { templateUrl: 'resources/groups/views/list.html' }
         }
       })
 
       .state('auth.scientist.groups.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/scientist/groups/new.html' }
+          main: { templateUrl: 'resources/groups/views/new.html' }
         }
       })
 
       .state('auth.scientist.groups.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/scientist/groups/edit.html' }
+          main: { templateUrl: 'resources/groups/views/edit.html' }
         }
       })
 
       .state('auth.scientist.groups.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/scientist/groups/show.html' }
+          main: { templateUrl: 'resources/groups/views/show.html' }
         }
       })
 

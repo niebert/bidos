@@ -1,0 +1,49 @@
+<div ng-controller="menuCtrl">
+  <!-- TOOLBAR -->
+
+  <md-toolbar class="md-medium-tall">
+    <h1 class="md-toolbar-tools" style="padding-top:25px;">
+      <a href ng-click="goHome()" tabindex="0">bidos</a>
+    </h1>
+  </md-toolbar>
+
+  <!-- CONTENT -->
+
+  <md-content flex>
+    <section>
+      <md-subheader>{{ user.username }}/{{ user.role }}</md-subheader>
+
+      <md-list>
+
+        <md-item>
+          <md-button ui-sref="auth.admin.users">
+            <span class="md-inline-list-icon-label">benutzer</span>
+          </md-button>
+        </md-item>
+        <br />
+
+        <md-item>
+          <md-button ui-sref="auth.admin.groups">
+            <span class="md-inline-list-icon-label">gruppen</span>
+          </md-button>
+        </md-item>
+        <br />
+
+        <md-item>
+          <md-button ui-sref="auth.admin.kids">
+            <span class="md-inline-list-icon-label">kinder</span>
+          </md-button>
+        </md-item>
+        <br />
+
+        <md-item>
+          <md-button ui-sref="auth.admin.surveys">
+            <span class="md-inline-list-icon-label">umfragen</span>
+          </md-button>
+        </md-item>
+
+      </md-list>
+
+    </section>
+  </md-content>
+</div>

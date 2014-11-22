@@ -3,26 +3,20 @@
 (function() {
   'use strict';
 
-  require('./users');
+  require('./controllers');
   require('./groups');
+  require('./items');
   require('./kids');
   require('./surveys');
-  require('./items');
+  require('./users');
 
-  // TODO generate all those pesky route
-
-  require('./resource-controller');
-  // require('./resource-routes');
-
-  angular.module('bidos.resources', [
-    'bidos.resources.users',
-    'bidos.resources.groups',
-    'bidos.resources.kids',
-    'bidos.resources.surveys',
-    'bidos.resources.items',
-
-    'bidos.resource.controller',
-    // 'bidos.resource.routes',
+  angular.module('bidos.resource', [
+    'bidos.resource.controllers',
+    'bidos.resource.group',
+    'bidos.resource.item',
+    'bidos.resource.kid',
+    'bidos.resource.survey',
+    'bidos.resource.user',
   ]);
 
 }());

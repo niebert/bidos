@@ -3,10 +3,9 @@
 (function() {
   'use strict';
 
-  angular.module('bidos.resources.surveys.router', ['ui.router'])
+  angular.module('bidos.resource.survey.routes', [])
 
-  .config(['$stateProvider', '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', function($stateProvider) {
 
     $stateProvider
 
@@ -15,35 +14,35 @@
       .state('auth.admin.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'auth/admin/surveys/index.html' }
+          main: { templateUrl: 'resources/surveys/views/index.html' }
         }
       })
 
       .state('auth.admin.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/admin/surveys/list.html' }
+          main: { templateUrl: 'resources/surveys/views/list.html' }
         }
       })
 
       .state('auth.admin.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/admin/surveys/new.html' }
+          main: { templateUrl: 'resources/surveys/views/new.html' }
         }
       })
 
       .state('auth.admin.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/admin/surveys/edit.html' }
+          main: { templateUrl: 'resources/surveys/views/edit.html' }
         }
       })
 
       .state('auth.admin.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/admin/surveys/show.html' }
+          main: { templateUrl: 'resources/surveys/views/show.html' }
         }
       })
 
@@ -54,35 +53,35 @@
       .state('auth.practitioner.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'auth/practitioner/surveys/index.html' }
+          main: { templateUrl: 'resources/surveys/views/index.html' }
         }
       })
 
       .state('auth.practitioner.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/practitioner/surveys/list.html' }
+          main: { templateUrl: 'resources/surveys/views/list.html' }
         }
       })
 
       .state('auth.practitioner.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/practitioner/surveys/new.html' }
+          main: { templateUrl: 'resources/surveys/views/new.html' }
         }
       })
 
       .state('auth.practitioner.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/practitioner/surveys/edit.html' }
+          main: { templateUrl: 'resources/surveys/views/edit.html' }
         }
       })
 
       .state('auth.practitioner.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/practitioner/surveys/show.html' }
+          main: { templateUrl: 'resources/surveys/views/show.html' }
         }
       })
 
@@ -93,35 +92,35 @@
       .state('auth.scientist.surveys', {
         url: '/surveys',
         views: {
-          main: { templateUrl: 'auth/scientist/surveys/index.html' }
+          main: { templateUrl: 'resources/surveys/views/index.html' }
         }
       })
 
       .state('auth.scientist.surveys.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'auth/scientist/surveys/list.html' }
+          main: { templateUrl: 'resources/surveys/views/list.html' }
         }
       })
 
       .state('auth.scientist.surveys.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'auth/scientist/surveys/new.html' }
+          main: { templateUrl: 'resources/surveys/views/new.html' }
         }
       })
 
       .state('auth.scientist.surveys.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'auth/scientist/surveys/edit.html' }
+          main: { templateUrl: 'resources/surveys/views/edit.html' }
         }
       })
 
       .state('auth.scientist.surveys.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'auth/scientist/surveys/show.html' }
+          main: { templateUrl: 'resources/surveys/views/show.html' }
         }
       })
 

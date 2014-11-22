@@ -3,14 +3,14 @@
     <form novalidate>
 
       <paper-input-decorator floatingLabel label="username">
-        <input type="text" ng-model="credentials.username" required />
+        <input type="text" ng-model="user.username" required />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="password">
-        <input type="password" ng-model="credentials.password" required />
+        <input type="password" ng-model="user.password" required />
       </paper-input-decorator>
 
-      <paper-button raised affirmative class="submit-button" ng-click="login(credentials)">
+      <paper-button raised affirmative class="submit-button" ng-click="login(user)">
         anmelden
       </paper-button>
 

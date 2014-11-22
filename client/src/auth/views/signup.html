@@ -3,27 +3,27 @@
     <form novalidate>
 
       <paper-input-decorator floatingLabel label="username">
-        <input type="text" ng-model="credentials.username" required />
+        <input type="text" ng-model="newUser.username" required />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="password">
-        <input type="password" ng-model="credentials.password" required />
+        <input type="password" ng-model="newUser.password" required />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="full name">
-        <input type="text" ng-model="credentials.name" required />
+        <input type="text" ng-model="newUser.name" required />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="phone">
-        <input type="tel" ng-model="credentials.phone" />
+        <input type="tel" ng-model="newUser.phone" />
       </paper-input-decorator>
 
       <paper-input-decorator floatingLabel label="organization">
-        <input type="text" ng-model="credentials.organization" required />
+        <input type="text" ng-model="newUser.organization" required />
       </paper-input-decorator>
 
-      <paper-button affirmative class="submit-button" ng-click="signup(credentials)">
-        sign up
+      <paper-button affirmative class="submit-button" ng-click="signup(newUser)">
+        registrieren
       </paper-button>
 
     </form>
