@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  require('./kids-router');
+  require('./routes');
 
-  angular.module('bidos.resources.kids', [
-    'bidos.resources.kids.router',
+  angular.module('bidos.resource.kid', [
+    'bidos.resource.kid.routes',
   ]);
 
 }());
