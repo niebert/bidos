@@ -1,0 +1,32 @@
+authen
+
+
+
+
+EMAIL           NODEMAILER
+
+AUTHORIZATION
+
+AUTHENTICATION  PASSPORT
+
+USER ROLES
+
+DATABASE
+
+BCRYPT
+
+
+
+
+-- 
+
+SAILS
+
+    - postgresql √
+    - authentication/authorization/policies √
+    - 
+
+    - AUTHENTICATION
+      - sails-generate-auth
+      - http://sethetter.com/user-authentication-with-sails-js/
+    - 

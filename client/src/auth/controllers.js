@@ -1,4 +1,6 @@
+/* jshint unused:false */
 /* global angular */
+/* exported authCtrl */
 
 (function() {
   'use strict';
@@ -6,7 +8,7 @@
   require('./services');
 
   angular.module('auth.controller', [])
-  .controller('authCtrl', ['$rootScope', '$scope', 'UserFactory', '$state', authCtrl]);
+  .controller('authCtrl', authCtrl);
 
   function authCtrl($rootScope, $scope, UserFactory, $state) {
 
@@ -15,37 +17,41 @@
       $rootScope.state = toState.name;
     });
 
-    // init
+    console.log('[authCtrl] $rootScope.state', $rootScope.state);
+    console.log('[authCtrl] $rootScope.auth ', $rootScope.auth);
+
+    // init: decrypt auth token and check if we're authenticated
     UserFactory.getUser()
     .then(function authorized(user) {
-      console.info('authorized');
-      $rootScope.user = user;
-      $state.go('auth.' + user.role) // really?
+      console.info('[authCtrl] authorized');
+      $rootScope.auth = user;
+      // $state.go('auth.' + user.role) // really?
+      $state.go('auth');
     }, function unauthorized() {
-      console.warn('not authorized');
-      $state.go('login');
+      console.warn('[authCtrl] not authorized');
+      $state.go('public.login');
     });
 
     $scope.login = function(credentials) {
-      console.log('$scope.login', credentials);
+      console.log('[authCtrl] $scope.login', credentials);
       UserFactory.login(credentials)
       .then(function authorized(response) {
-        $rootScope.user = response.data;
-        $state.go('auth.' + response.data.role);
+        $rootScope.auth = response.data;
+        $state.go('auth.items', {'domainId': 0}); // FIXME
       }, handleError);
     };
 
     $scope.logout = function() {
-      console.log('$scope.logout');
+      console.log('[authCtrl] $scope.logout');
       UserFactory.logout()
       .then(function() {
         $state.go('goodbye');
-        $rootScope.user = null;
+        $rootScope.auth = null;
       }, handleError);
     };
 
     $scope.signup = function(formData) {
-      console.log('$scope.signup', formData);
+      console.log('[authCtrl] $scope.signup', formData);
       UserFactory.signup(formData)
       .then(function(response) {
         $state.go('thankyou');
@@ -53,7 +59,7 @@
     };
 
     function handleError(response) {
-      console.info('ERROR_HANDLER', response);
+      console.info('[authCtrl] ERROR_HANDLER', response);
       alert('Error: ' + response.data.error);
     }
   }

@@ -3,11 +3,16 @@
 (function() {
   'use strict';
 
-  angular.module('bidos.resource.item.controllers', ['ngMaterial'])
+  angular.module('bidos.resource.item.controllers', ['ngMaterial', 'bidos.resource.services'])
   .controller('itemCtrl', itemCtrl);
 
-  function itemCtrl($scope, $mdDialog) {
+  function itemCtrl($scope, $mdDialog, resourceService) {
     $scope.alert = '';
+
+    // set up the item that's edited in the form beforehand, so we have null
+    // values and match the amount of expected values of the prepared
+    // statement
+    $scope.item = { title: null, description: null, custom: {} };
 
     $scope.showDialog = function(ev) {
       $mdDialog.show({
@@ -15,13 +20,12 @@
         templateUrl: 'resources/items/views/dialog.html',
         targetEvent: ev,
       })
-      .then(function(answer) {
-        // ITEMOBJ___ ! <3
-        debugger
+      .then(function(item) {
+        resourceService.create('items', item);
 
-        $scope.itemObject = 'You said the information was "' + answer + '".';
+        $scope.itemObject = 'item "' + item.title + '" erstellt';
       }, function() {
-        $scope.itemObject = 'You cancelled the dialog.';
+        $scope.itemObject = 'abgebrochen';
       });
     };
   }

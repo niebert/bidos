@@ -11,113 +11,35 @@
 
       // ADMIN
 
-      .state('auth.admin.users', {
+      .state('auth.users', {
         url: '/users',
         views: {
           main: { templateUrl: 'resources/users/views/index.html' }
         }
       })
 
-      .state('auth.admin.users.list', {
+      .state('auth.users.list', {
         url: '/list',
         views: {
           main: { templateUrl: 'resources/users/views/list.html' }
         }
       })
 
-      .state('auth.admin.users.new', {
+      .state('auth.users.new', {
         url: '/new',
         views: {
           main: { templateUrl: 'resources/users/views/new.html' }
         }
       })
 
-      .state('auth.admin.users.edit', {
+      .state('auth.users.edit', {
         url: '/edit',
         views: {
           main: { templateUrl: 'resources/users/views/edit.html' }
         }
       })
 
-      .state('auth.admin.users.show', {
-        url: '/show',
-        views: {
-          main: { templateUrl: 'resources/users/views/show.html' }
-        }
-      })
-
-
-
-      // PRACTITIONER
-
-      .state('auth.practitioner.users', {
-        url: '/users',
-        views: {
-          main: { templateUrl: 'resources/users/views/index.html' }
-        }
-      })
-
-      .state('auth.practitioner.users.list', {
-        url: '/list',
-        views: {
-          main: { templateUrl: 'resources/users/views/list.html' }
-        }
-      })
-
-      .state('auth.practitioner.users.new', {
-        url: '/new',
-        views: {
-          main: { templateUrl: 'resources/users/views/new.html' }
-        }
-      })
-
-      .state('auth.practitioner.users.edit', {
-        url: '/edit',
-        views: {
-          main: { templateUrl: 'resources/users/views/edit.html' }
-        }
-      })
-
-      .state('auth.practitioner.users.show', {
-        url: '/show',
-        views: {
-          main: { templateUrl: 'resources/users/views/show.html' }
-        }
-      })
-
-
-
-      // SCIENTIST
-
-      .state('auth.scientist.users', {
-        url: '/users',
-        views: {
-          main: { templateUrl: 'resources/users/views/index.html' }
-        }
-      })
-
-      .state('auth.scientist.users.list', {
-        url: '/list',
-        views: {
-          main: { templateUrl: 'resources/users/views/list.html' }
-        }
-      })
-
-      .state('auth.scientist.users.new', {
-        url: '/new',
-        views: {
-          main: { templateUrl: 'resources/users/views/new.html' }
-        }
-      })
-
-      .state('auth.scientist.users.edit', {
-        url: '/edit',
-        views: {
-          main: { templateUrl: 'resources/users/views/edit.html' }
-        }
-      })
-
-      .state('auth.scientist.users.show', {
+      .state('auth.users.show', {
         url: '/show',
         views: {
           main: { templateUrl: 'resources/users/views/show.html' }

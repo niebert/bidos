@@ -3,8 +3,7 @@
 (function() {
   'use strict';
 
-  var Router = require('koa-router'),
-      _ = require('lodash'),
+  var _ = require('lodash'),
       fs = require('fs'),
       router = {}; // lots of
 

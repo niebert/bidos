@@ -10,7 +10,7 @@
       },
       db: {
         postgres: {
-          url: process.env.DB_URL || 'postgres://localhost/bidos_development'
+          url: process.env.DB_URL || 'postgres://asdf@localhost/bidos_development'
         }
       },
       secret: {
@@ -20,13 +20,5 @@
     }
 
   };
-
-  // module.exports = {
-  //   database: function(env) {
-  //     return _.merge(config.database.defaults, config.database[env]);
-  //   },
-  //   app: config.app,
-  //   config: config
-  // };
 
 }());

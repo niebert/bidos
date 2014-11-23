@@ -1,33 +1,33 @@
 <md-dialog ng-controller="itemCtrl as vm">
 
-  <md-content>
-    <h1>neues skala frage</h1>
+  <md-content class="dialog">
+    <h1>neue skala frage</h1>
 
     <div class="row" layout-align="center">
       <form>
 
-        <md-text-float label="Titel" ng-model="itemObj.title"></md-text-float>
+        <md-text-float label="Titel" ng-model="item.title" required></md-text-float>
 
-        <md-checkbox md-no-ink ng-model="itemObj.description.enabled">Beschreibung (optional)</md-checkbox>
+        <md-checkbox md-no-ink ng-model="hasDescription">Beschreibung (optional)</md-checkbox>
 
-        <paper-autogrow-textarea id="a1" ng-if="description.enabled">
-          <textarea ng-model="itemObj.description.text" id="t1"></textarea>
-        </paper-autogrow-textarea>
+        <paper-input-decorator id="a1" ng-if="hasDescription" label="Description">
+          <textarea ng-model="item.description" id="t1"></textarea>
+        </paper-input-decorator>
 
-        <paper-autogrow-textarea id="a2">
-          <textarea id="t2"></textarea>
-        </paper-autogrow-textarea>
+        <!-- md-slider's min-value is r/o after element is attached to the dom. on checkbox below remove this md-slider first and add it again with changed min-value. -->
 
-        <md-slider md-discrete ng-model="itemObj.rating" step="1" min="{{ itemObj.rating.startWithZero ? 0 : 1}}" max="{{ itemObj.rating.startWithZero ? 9 : 10}}" aria-label="rating">
+        <h2>Bewertung</h2>
+
+        <md-slider md-discrete ng-model="item.custom.rating" step="1" min="{{ startWithZero ? '0' : '1' }}" max="{{ startWithZero ? '9' : '10' }}" aria-label="rating" required>
         </md-slider>
 
-        <md-checkbox md-no-ink ng-model="itemObj.rating.startWithZero">bei 0 anfangen</md-checkbox>
+        <md-checkbox md-no-ink ng-model="startWithZero">bei 0 anfangen</md-checkbox>
 
     </form>
   </md-content>
 
   <div class="md-actions" layout="row">
-    <md-button ng-click="answer(itemObj)" class="md-primary">
+    <md-button ng-click="answer(item)" class="md-primary">
       Item erstellen
     </md-button>
   </div>

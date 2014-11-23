@@ -1,27 +1,64 @@
-// jshint esnext:true
-	'use strict';
+/* global describe, it */
+/* jshint esnext:true, unused:false */
+'use strict';
 
-	///////////
-	// stub! //
-	///////////
+var hippie = require('hippie');
+var server = require('..')(3001);
 
-	var _ = require('lodash'),
-			Promise = require('bluebird');
+var chai = require('chai'),
+    expect = chai.expect,
+    should = chai.should();
 
-	var path = require('path');
+const API_URL='http://localhost:3001/v1';
 
-	var app = require('../');
-	var request = require('supertest');
+describe('API', function () {
 
-	describe('the api', function(done) {
+  describe('GET  /user', function () {
+    it('  should return all users', function (done) {
+      hippie(server)
+        .json()
+        .get(API_URL + '/user')
+        .expectStatus(200)
+        .end(function(err, res, body) {
+          if (err) { throw err; }
+          expect(body).to.have.length.above(1);
+          done();
+        });
+    });
+  });
 
-		it('should return all x . GET /x', function(done) {
-			request(app)
-				.get('/api/x')
-	      .set('Accept', 'application/json')
-				.auth('asdf', 123)
-				.expect(200, done);
-		});
+  describe('GET  /user/1', function () {
+    it('should return a single user by id', function (done) {
+      hippie(server)
+        .json()
+        .get(API_URL + '/user/1')
+        .expectStatus(200)
+        .end(function(err, res, body) {
+          if (err) { throw err; }
+          expect(body).to.have.length(1);
+          expect(body[0]).to.have.property('id');
+          expect(body[0].id).to.equal(1);
+          expect(body[0].password).to.have.length(60);
+          done();
+        });
+    });
+  });
 
-	});
+  describe('POST /user/1', function () {
+    it('should create a new user', function (done) {
+      hippie(server)
+        .json()
+        .post(API_URL + '/user/1')
+        .expectStatus(200)
+        .end(function(err, res, body) {
+          if (err) { throw err; }
+          expect(body).to.have.length(1);
+          expect(body[0]).to.have.property('id');
+          expect(body[0].id).to.equal(1);
+          expect(body[0].password).to.have.length(60);
+          done();
+        });
+    });
+  });
 
+});

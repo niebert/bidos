@@ -4,7 +4,7 @@
 
   var _ = require('lodash');
 
-  var config = require('./server/config')[process.env.NODE_ENV],
+  var config = require('./server/config')[process.env.NODE_ENV || 'development'],
       routes = require('./server/routes');
 
   // node core
@@ -20,9 +20,12 @@
   var mount = require('koa-mount'),
       serve = require('koa-static');
 
-  app.use(require('koa-logger')());
   app.use(require('koa-bodyparser')());
   app.use(require('koa-compress')());
+
+  if (require.main === module) {
+    app.use(require('koa-logger')());
+  }
 
   // database
   app.use(require('koa-pg')(config.db.postgres.url));
@@ -55,21 +58,29 @@
   // if the authorization succeeds, next is yielded and the following routes
   // are reached. if it fails, it throws and the previous middleware will
   // catch that error and send back status 401 and redirect to /login.
-  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
-
-  // console.log(routes.users.view.routes[0].name, routes.users.view.routes[0].path);
-
-  app.use(function *(next) {
-    console.log('valid token received: user is authenticated');
-    yield next;
-  });
+  // app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
   // secured routes
-  app.use(mount('/v1/users', routes.users.middleware()));
-  app.use(mount('/v1/groups', routes.groups.middleware()));
-  app.use(mount('/v1/kids', routes.kids.middleware()));
-  app.use(mount('/v1/surveys', routes.surveys.middleware()));
-  app.use(mount('/v1/items', routes.items.middleware()));
+  app.use(mount('/v1/user', routes.user.middleware()));
+
+  // TODO: bundle and abstract resources to provide fewer entry points
+
+  // resource: subjects
+  app.use(mount('/v1/group', routes.group.middleware()));
+  app.use(mount('/v1/kid', routes.kid.middleware()));
+
+  // resource: categories
+  app.use(mount('/v1/domain', routes.domain.middleware()));
+  app.use(mount('/v1/subdomain', routes.subdomain.middleware()));
+  app.use(mount('/v1/item', routes.item.middleware()));
+
+  // resource: items
+  app.use(mount('/v1/behaviour', routes.behaviour.middleware()));
+  app.use(mount('/v1/example', routes.example.middleware()));
+
+  // resource: surveys
+  app.use(mount('/v1/rating', routes.rating.middleware()));
+  app.use(mount('/v1/sheet', routes.sheet.middleware()));
 
   // main
   var listen = function(port) {

@@ -1,0 +1,29 @@
+Resources
+
+general requirements: hi-tech, small, non-bloated, modular, open-source, future-proof.
+
+css framework: ionic. because it has native angular support and is made for mobile apps first.
+
+front end js framework: angular. because it's made by google (if that's an argument) and provides all the neccessary capabilities like routing, two-way-data-binding, services etc.
+
+front end view component: react. even though it is made by facebook, it drastically improves page rendering speed and provides a modular and well integrated framework for the v (view) in angular's mvw (model-view-whatever) infrastructure.
+
+server side (api, authorization): node.js + koa. because they are slim, fast and easy to code and play very well together with the coresponding front end architecture.
+
+database: redis for initial development and very likeley postgresql for production mode. [to-be-decided]
+
+css will be written in sass + compass, html in jade and react components in jsx. they all will (probably) be precompiled on the server and served by an api, not as static files.
+
+server side deployment: docker seems to be a solid option, even though plain node.js deployment via package.json should work fine. [to-be-decided]
+
+client bundling: either require.js or browserify. probably the latter.
+
+mobile device deployment: the most viable option seems to be cordova.
+
+General Principles
+
+https everywhere, full test coverage, write tests parallel to code, conventions over configurability, minimize ui complexity, keep things as simple as possible and as complex as neccessary, branch a lot, modularize (components should be well defined and replaceable), core-shell-architecture, flux architecture (react), have a roadmap and milestones, deploy often, travis.ci, ...
+
+
+
+

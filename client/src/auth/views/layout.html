@@ -1,17 +1,30 @@
-<div>
+<div class="unauthorized">
 
-  <div id="nav" class="unauthorized">
-    <paper-button ng-show="state == 'signup'" raised class="submit-button" ui-sref="login">
+  <div id="nav">
+    <core-icon-button ui-sref="auth.items"
+      id="navicon" icon="home">
+    </core-icon-button>
+
+    <paper-button raised class="submit-button" ui-sref="public.login">
       anmelden
     </paper-button>
 
-    <paper-button ng-show="state == 'login'" raised class="submit-button" ui-sref="signup">
+    <paper-button raised class="submit-button" ui-sref="public.signup">
       registrieren
     </paper-button>
   </div>
 
-  <div id="main" class="unauthorized">
+  <div id="main">
     <div ui-view="main"></div>
   </div>
 
+</div>
+
+<!-- left align for proper indent -->
+<div class="debug">
+<strong>$rootScope.state</strong>
+<pre>{{ state | json }}</pre>
+
+<strong>$rootScope.auth</strong>
+<pre>{{ auth | json }}</pre>
 </div>

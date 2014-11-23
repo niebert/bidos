@@ -1,8 +1,8 @@
 BASEDIR = .
 
 ifeq (${NODE_ENV},production)
-PORT=3001
-DATABASE = bidos_production
+PORT=3105
+DATABASE = bidos_development
 ENVIRONMENT = --production
 else
 PORT=3000
@@ -49,10 +49,14 @@ deploy:
 	@ssh $(REMOTE_HOST)
 
 dbinit:
-	@echo initializing database $(DATABASE)
-	@psql -f $(DB_SETUP_FILE) $(DATABASE)
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "admin", "password": "123", "email": "asdf@uni-koblenz.de", "name": "René Wilhelm" }' localhost:$(PORT)/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "username": "rene", "password": "123", "email": "rene.wilhelm@uni-koblenz.de", "name": "René Wilhelm" }' localhost:$(PORT)/signup
-	@psql -c "UPDATE users SET role_id = 1 WHERE id = 1" $(DATABASE)
-	@psql -c "UPDATE users SET role_id = 2 WHERE id = 2" $(DATABASE)
+	echo initializing database $(DATABASE)
+	psql -f $(DB_SETUP_FILE) $(DATABASE)
+
+dbsetup:
+	curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/signup
+	curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/signup
+	curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/signup
+	psql -c "UPDATE users SET role_id = 1 WHERE id = 1" $(DATABASE)
+	psql -c "UPDATE users SET role_id = 2 WHERE id = 2" $(DATABASE)
+	psql -c "UPDATE users SET role_id = 3 WHERE id = 2" $(DATABASE)
 

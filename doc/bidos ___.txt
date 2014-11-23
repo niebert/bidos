@@ -1,0 +1,33 @@
+
+<!--
+
+  detail view:
+    created_at
+    modified_at
+    id: some id nerd info
+    hash: some id nerd info
+    group_id some id nerd info
+    surveys
+      open surveys: see all surveys that need to be done, and missed ones, and answered ones etc.
+      answered surveys
+    groups: the groups the user is in
+    children: a list of all the children associated with the user, presenting information related to this user
+    custom items         : the custom items the user proposed
+
+    button to toggle ids on all views
+    verified at
+    verified by
+    last login
+    last survey
+    surveys answered
+    surveys unanswered (n/A!)
+
+    list of answered surveys and connected children and items
+
+    just _everything_
+
+    token expiry date
+    token creation date
+
+    more details (phone, organization, gender)
+ -->

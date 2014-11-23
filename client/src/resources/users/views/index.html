@@ -1,33 +1,143 @@
-<div ng-controller="resourceCtrl as vm">
-  <md-toolbar class="md-medium-tall">
-    <div class="md-toolbar-tools" layout-arrange="center center">
-      <p hide-phone>
-        benutzer
-      </p>
+<core-toolbar id="mainheader">
+  <span flex>Benutzer</span>
+
+  <!-- a button to hide/show the menu on narrow displays -->
+  <core-icon-button
+    id="navicon" icon="menu">
+  </core-icon-button>
+
+  <!-- a button to show a modal to create a new user -->
+  <core-icon-button icon="add" ng-click="newDomainFormOverlay=true">
+  </core-icon-button>
+
+  <!-- TODO MODULARIZE -->
+
+  <core-overlay ng-opened="newDomainFormOverlay" backdrop>
+
+  <!-- TODO separate controller for overlays -->
+
+    <!-- new user form -->
+    <div class="form">
+      <paper-shadow z=1 class="new-resource-form-overlay">
+          <form name="newUserForm" class="rx-form" novalidate>
+
+            <!-- Role -->
+            <select id="roles" list="roles" ng-model="newUser.role_id" required>
+              <option value="2">Practitioner</option>
+              <option value="3">Scientist</option>
+              <option value="1">Administrator</option>
+            </select>
+
+            <!-- Full Name -->
+            <div>
+              <paper-input-decorator floatingLabel label="Vorname Nachname">
+                <input name="_name" id="name" type="text" ng-model="newUser.name" required pattern="[A-Z].* [A-Z].*" />
+              </paper-input-decorator>
+
+              <div ng-if="newUserForm._name.$touched || !newUserForm._name.$invalid" ng-messages="newUserForm._name.$error">
+                <div ng-message="required">Geben Sie Ihren Namen an.</div>
+                <div ng-message="pattern">Der Name muss im Format <strong><em>Vorname Nachname</em></strong> angegeben werden.</div>
+              </div>
+            </div>
+
+            <!-- Username -->
+            <div>
+              <paper-input-decorator floatingLabel label="bmueller">
+                <input name="_username" id="username" type="text" ng-model="newUser.username" minlength="5"/>
+              </paper-input-decorator>
+
+              <div ng-if="newUserForm._username.$touched || !newUserForm._username.$invalid" ng-messages="newUserForm._username.$error">
+                <div ng-message="minlength">Der Benutzername ist zu kurz.</div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div>
+              <paper-input-decorator floatingLabel label="eof_!au6Wa">
+                <input name="_password" id="password" type="password" ng-model="newUser.password" required minlength="5"/>
+              </paper-input-decorator>
+
+              <div ng-if="newUserForm._password.$touched || !newUserForm._password.$invalid" ng-messages="newUserForm._password.$error">
+                <div ng-message="required">Es muss ein Passwort angegeben werden.</div>
+                <div ng-message="minlength">Das Passwort ist zu kurz.</div>
+              </div>
+            </div>
+
+            <!-- E-Mail -->
+            <div>
+              <paper-input-decorator floatingLabel label="bmueller@iddqd.org">
+                <input name="_email" id="email" type="email" ng-model="newUser.email" required minlength="5" />
+              </paper-input-decorator>
+
+              <div ng-if="newUserForm._email.$touched || !newUserForm._email.$invalid" ng-messages="newUserForm._email.$error">
+                <div ng-message="required">Es muss ein E-Mail-Adresse angegeben werden.</div>
+                <div ng-message="email">Die angegebene E-Mail-Adresse ist ungültig.</div>
+              </div>
+            </div>
+
+            <!-- Group -->
+            <div layout="row" flex ng-if="newUser.role_id == '2'">
+              <span class="group-title">Gruppe</span>{{ group.name }}
+              <input type="text" list="groups">
+                <datalist id="groups">
+                  <option ng-repeat="group in rx.groups">{{ group.name }}</option>
+                </datalist>
+              </input>
+            </div>
+
+            <!-- Submit Button -->
+            <paper-button affirmative ng-disabled="newUserForm.$invalid" class="submit-button" ng-click="vm.createUser(newUser)">
+              Benutzer erstellen
+            </paper-button>
+          </form>
+
+      </paper-shadow>
     </div>
-  </md-toolbar>
+  </core-overlay>
 
+</core-toolbar>
 
-  <md-content flex>
-    <table class="table">
+<paper-shadow z="2" ng-repeat="group in vm.groups">
+
+  <core-toolbar>
+    <span flex>{{ group.name }}</span>
+
+    <core-menu-button>
+      <core-icon-button icon="menu"></core-icon-button>
+      <core-dropdown class="dropdown" layered halign="right" valign="top">
+        <core-menu>
+          <core-item>Bearbeiten</core-item>
+          <core-item>Löschen</core-item>
+          <core-item>Details</core-item>
+        </core-menu>
+      </core-dropdown>
+    </core-menu-button>
+
+  </core-toolbar>
+
+  <div class="content">
+    <table>
       <thead>
-        <tr>
-          <th>name</th>
-          <th>benutzername</th>
-          <th>email</th>
-          <th>rolle</th>
-          <th>gruppe</th>
-        </tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Benutzername</th>
+        <th>E-Mail</th>
+        <th>Gruppe</th>
+        <th>Rolle</th>
+        <th>Status</th>
       </thead>
       <tbody>
-        <tr ng-repeat="user in vm.resources.users">
+        <tr ng-repeat="user in vm.users">
+          <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
           <td>{{ user.group_id }}</td>
+          <td>{{ user.role_id }}</td>
+          <td>{{ user.verified }}</td>
         </tr>
       </tbody>
     </table>
-  </md-content>
-</div>
+  </div>
+
+</paper-shadow>

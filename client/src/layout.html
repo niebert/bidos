@@ -1,0 +1,47 @@
+
+<!-- MAIN LAYOUT -->
+
+<core-drawer-panel ng-controller="resourceCtrl as vm" id="drawerPanel"> <!-- MAIN RESOURCE CONTROLLER HERE!! -->
+
+  <core-header-panel drawer>
+    <core-toolbar id="navheader">
+      <span>BiDoS</span>
+    </core-toolbar>
+
+    <core-menu>
+
+      <!-- TODO: generate by ng-repeat on an configured object, dependant on user role -->
+
+      <!-- Kategorien: Kompetenzbereiche, Teilbereiche, Bausteine -->
+      <!-- Items: Verhaltensbeschreibungen, Beobachtungsbeispiele -->
+      <core-submenu icon="grade" label="Kompetenzen">
+        <core-item label="soziale" ui-sref="auth.items({domainId: '2'})"></core-item>
+        <core-item label="personale" ui-sref="auth.items({domainId: '0'})"></core-item>
+        <core-item label="sprachliche" ui-sref="auth.items({domainId: '1'})"></core-item>
+        <core-item label="mathematische" ui-sref="auth.items({domainId: '3'})"></core-item>
+      </core-submenu>
+
+      <hr>
+      <!-- Assets -->
+      <core-item icon="social:people-outline" label="Kinder" ui-sref="auth.kids"></core-item>
+      <core-item icon="social:person" label="Fachkräfte" ui-sref="auth.users"></core-item>
+
+    </core-menu>
+  </core-header-panel>
+
+  <core-header-panel main ui-view="main">
+  </core-header-panel>
+
+</core-drawer-panel>
+
+<script>
+  /* globals document */
+  'use strict';
+  document.addEventListener('polymer-ready', function() {
+    var navicon = document.getElementById('navicon');
+    var drawerPanel = document.getElementById('drawerPanel');
+    navicon.addEventListener('click', function() {
+      drawerPanel.togglePanel();
+    });
+  });
+</script>

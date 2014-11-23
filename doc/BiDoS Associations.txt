@@ -1,0 +1,8 @@
+USER_ROLES
+
+Administrator
+
+ - Assigns practicioners to groups.
+
+ - Assigns items to questionaries.
+ - Verifies and assigns proposed items to questionaries.

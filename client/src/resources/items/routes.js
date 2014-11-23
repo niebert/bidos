@@ -11,116 +11,38 @@
 
       // ADMIN
 
-      .state('auth.admin.items', {
-        url: '/items',
+      .state('auth.items', {
+        url: '/items/:domainId',
         views: {
-          main: { templateUrl: 'resources/users/views/index.html' }
+          main: { templateUrl: 'resources/items/views/index.html' }
         }
       })
 
-      .state('auth.admin.items.list', {
+      .state('auth.items.list', {
         url: '/list',
         views: {
-          main: { templateUrl: 'resources/users/views/list.html' }
+          main: { templateUrl: 'resources/items/views/list.html' }
         }
       })
 
-      .state('auth.admin.items.new', {
+      .state('auth.items.new', {
         url: '/new',
         views: {
-          main: { templateUrl: 'resources/users/views/new.html' }
+          main: { templateUrl: 'resources/items/views/new.html' }
         }
       })
 
-      .state('auth.admin.items.edit', {
+      .state('auth.items.edit', {
         url: '/edit',
         views: {
-          main: { templateUrl: 'resources/users/views/edit.html' }
+          main: { templateUrl: 'resources/items/views/edit.html' }
         }
       })
 
-      .state('auth.admin.items.show', {
+      .state('auth.items.show', {
         url: '/show',
         views: {
-          main: { templateUrl: 'resources/users/views/show.html' }
-        }
-      })
-
-
-
-      // PRACTITIONER
-
-      .state('auth.practitioner.items', {
-        url: '/items',
-        views: {
-          main: { templateUrl: 'resources/users/views/index.html' }
-        }
-      })
-
-      .state('auth.practitioner.items.list', {
-        url: '/list',
-        views: {
-          main: { templateUrl: 'resources/users/views/list.html' }
-        }
-      })
-
-      .state('auth.practitioner.items.new', {
-        url: '/new',
-        views: {
-          main: { templateUrl: 'resources/users/views/new.html' }
-        }
-      })
-
-      .state('auth.practitioner.items.edit', {
-        url: '/edit',
-        views: {
-          main: { templateUrl: 'resources/users/views/edit.html' }
-        }
-      })
-
-      .state('auth.practitioner.items.show', {
-        url: '/show',
-        views: {
-          main: { templateUrl: 'resources/users/views/show.html' }
-        }
-      })
-
-
-
-      // SCIENTIST
-
-      .state('auth.scientist.items', {
-        url: '/items',
-        views: {
-          main: { templateUrl: 'resources/users/views/index.html' }
-        }
-      })
-
-      .state('auth.scientist.items.list', {
-        url: '/list',
-        views: {
-          main: { templateUrl: 'resources/users/views/list.html' }
-        }
-      })
-
-      .state('auth.scientist.items.new', {
-        url: '/new',
-        views: {
-          main: { templateUrl: 'resources/users/views/new.html' }
-        }
-      })
-
-      .state('auth.scientist.items.edit', {
-        url: '/edit',
-        views: {
-          main: { templateUrl: 'resources/users/views/edit.html' }
-        }
-      })
-
-      .state('auth.scientist.items.show', {
-        url: '/show',
-        views: {
-          main: { templateUrl: 'resources/users/views/show.html' }
+          main: { templateUrl: 'resources/items/views/show.html' }
         }
       })
 

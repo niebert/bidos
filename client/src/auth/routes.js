@@ -10,21 +10,26 @@
     $stateProvider
 
       // THE ALL EMBRACING AUTH ROUTE: all subsequent routes inherit it's
-      // controller, as every connection to the back end must be authenticated
+      // controller, as every connection must be authenticated
 
       // PUBLIC ROUTES
 
-      .state('login', {
+      .state('public', {
+        url: '',
+        templateUrl: 'auth/views/layout.html'
+      })
+
+      .state('public.login', {
         url: '/login',
         views: {
-          main: { templateUrl: 'auth/login.html' }
+          main: { templateUrl: 'auth/views/login.html' }
         }
       })
 
-      .state('signup', {
+      .state('public.signup', {
         url: '/signup',
         views: {
-          main: { templateUrl: 'auth/signup.html' }
+          main: { templateUrl: 'auth/views/signup.html' }
         }
       })
 
@@ -34,35 +39,12 @@
       // like below and sometimes when it's added directly to the element...
       // and sometimes vice versa.
 
+      // TODO: break out separate menu
+
       .state('auth', {
         url: '',
-        templateUrl: 'partials/layout.html',
+        templateUrl: 'layout.html'
       })
-
-      .state('auth.admin', {
-        url: '/admin',
-        views: {
-          menu: { templateUrl: 'partials/menu.html' },
-          main: { template: '<div ui-view="main"></div>' }
-        }
-      })
-
-      .state('auth.practitioner', {
-        url: '/practitioner',
-        views: {
-          menu: { templateUrl: 'partials/menu.html' },
-          main: { template: '<div ui-view="main"></div>' }
-        }
-      })
-
-      .state('auth.scientist', {
-        url: '/scientist',
-        views: {
-          menu: { templateUrl: 'partials/menu.html' },
-          main: { template: '<div ui-view="main"></div>' }
-        }
-      })
-
       ;
 
   }]);
