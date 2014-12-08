@@ -82,6 +82,9 @@
   app.use(mount('/v1/rating', routes.rating.middleware()));
   app.use(mount('/v1/sheet', routes.sheet.middleware()));
 
+  // full resources (get all only, for sync to client)
+  app.use(mount('/v1/resources', routes.resources.middleware()));
+
   // main
   var listen = function(port) {
     console.log('api accessible on port ' + (port || config.app.port));

@@ -1,34 +1,39 @@
-
 <!-- MAIN LAYOUT -->
 
-<core-drawer-panel ng-controller="resourceCtrl as vm" id="drawerPanel"> <!-- MAIN RESOURCE CONTROLLER HERE!! -->
+<!-- MAIN RESOURCE CONTROLLER -->
+<core-drawer-panel ng-controller="resourceCtrl as vm" id="drawerPanel">
 
   <core-header-panel drawer>
-    <core-toolbar id="navheader">
+    <core-toolbar id="navheader" class="medium-tall">
       <span>BiDoS</span>
     </core-toolbar>
 
+    <!-- MENU -->
     <core-menu>
 
-      <!-- TODO: generate by ng-repeat on an configured object, dependant on user role -->
+        <core-submenu ng-repeat="group in vm.data.groups" label="{{group.name}}">
+          <core-item ng-repeat="kid in group.kids" label="{{kid.name}}" ng-click="vm.selectKid(kid)" ui-sref="auth.domain"></core-item>
+        </core-submenu>
+      <hr>
 
-      <!-- Kategorien: Kompetenzbereiche, Teilbereiche, Bausteine -->
-      <!-- Items: Verhaltensbeschreibungen, Beobachtungsbeispiele -->
-      <core-submenu icon="grade" label="Kompetenzen">
-        <core-item label="soziale" ui-sref="auth.items({domainId: '2'})"></core-item>
-        <core-item label="personale" ui-sref="auth.items({domainId: '0'})"></core-item>
-        <core-item label="sprachliche" ui-sref="auth.items({domainId: '1'})"></core-item>
-        <core-item label="mathematische" ui-sref="auth.items({domainId: '3'})"></core-item>
-      </core-submenu>
+        <core-submenu ng-repeat="domain in vm.data.domains" label="{{domain.title}}" ng-click="vm.selectDomain(domain)" class="domain">
+          <core-submenu ng-repeat="subdomain in domain.subdomains" label="{{subdomain.title}}" ng-click="vm.selectSubdomain(subdomain)" class="subdomain">
+            <core-item ng-repeat="item in subdomain.items" label="{{item.title}}" ng-click="vm.selectItem(item)" class="item">
+            </core-item>
+          </core-submenu>
+        </core-submenu>
 
       <hr>
+
       <!-- Assets -->
       <core-item icon="social:people-outline" label="Kinder" ui-sref="auth.kids"></core-item>
       <core-item icon="social:person" label="Fachkräfte" ui-sref="auth.users"></core-item>
 
     </core-menu>
+
   </core-header-panel>
 
+  <!-- MAIN CONTENT -->
   <core-header-panel main ui-view="main">
   </core-header-panel>
 

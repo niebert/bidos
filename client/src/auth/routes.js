@@ -9,10 +9,7 @@
 
     $stateProvider
 
-      // THE ALL EMBRACING AUTH ROUTE: all subsequent routes inherit it's
-      // controller, as every connection must be authenticated
-
-      // PUBLIC ROUTES
+      // Public routes to authenticate. All other routes are private.
 
       .state('public', {
         url: '',
@@ -33,18 +30,6 @@
         }
       })
 
-      // AUTHORIZED
-
-      // why tf is the controller sometimes recognized when it's set up here,
-      // like below and sometimes when it's added directly to the element...
-      // and sometimes vice versa.
-
-      // TODO: break out separate menu
-
-      .state('auth', {
-        url: '',
-        templateUrl: 'layout.html'
-      })
       ;
 
   }]);

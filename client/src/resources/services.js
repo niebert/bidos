@@ -3,11 +3,7 @@
 (function() {
   'use strict';
 
-  require('./constants');
-
-  angular.module('bidos.resource.services', [
-    'bidos.resource.constants'
-  ])
+  angular.module('bidos.resource.services', [])
 
   .service('resourceService', resourceService);
 
@@ -18,56 +14,37 @@
     // data relevant to the user, i.e. a user with the role `practitioner` for
     // example won't get any data about `users`.
 
-    // non authorized api requests (a) should not happen here and (b) should
+    // non authorized api requests should (a) not happen here and should (b)
     // fail on the back ends side anyways.
-
-    // see ./constants.js
 
     var data = {}; // resources data model
 
-    var url = function(resource, id) {
-      return API_URL + API_PATH + '/' + resource + (id ? '/' + id : '');
-    };
-
     return {
-      // id: number, optional (1 or *)
-      // allowedResources: array, see ./constants
-      get: function(allowedResources, id) {
+      get: function() {
         var deferred = $q.defer();
 
-        allowedResources = [
-          'user',
-          'group',
-          'kid',
-          'domain',
-          'subdomain',
-          'item',
-          'example',
-          'behaviour'
+        var queries = [
+          $http.get(API_URL + API_PATH + '/resources/items'),
+          $http.get(API_URL + API_PATH + '/resources/kids')
         ];
 
-        console.log('allowedResources', allowedResources);
-        var queries = _(allowedResources).map(function(resource) {
-          return $http.get(url(resource, id)).then(function(response) {
-            data[resource] = _.merge((data[resource] || {}), response.data); // update data model object here
+        $q.all(queries).then(function(response) {
+          _.each(response, function(res) {
+            _.merge(data, res.data[0]);
           });
-        }).value();
-
-        $q.all(queries).then(function() {
-          data.updated = Date.now();
-          deferred.resolve(data); // <-- resolve old/updated resources data model
+          data.updatedAt = Date.now();
+          deferred.resolve(data);
         });
 
         return deferred.promise;
       },
 
       create: function(resource, formData) {
-        debugger
-        return $http.post(url(resource), formData);
+        return $http.post(url(resource), formData); // TODO
       },
 
       update: function(resource, id, formData) {
-        return $http.patch(url(resource, id), formData);
+        return $http.patch(url(resource, id), formData); // TODO
       },
 
       destroy: function(resource, id) {

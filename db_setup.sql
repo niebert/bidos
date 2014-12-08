@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS kids (
 
   name          TEXT NOT NULL,
 
-  nickname      TEXT UNIQUE NOT NULL,
+  alias      TEXT UNIQUE NOT NULL,
 
   group_id      INT REFERENCES groups(id),
 
@@ -222,23 +222,21 @@ INSERT INTO roles (name) VALUES ('admin');
 INSERT INTO roles (name) VALUES ('practitioner');
 INSERT INTO roles (name) VALUES ('scientist');
 
-INSERT INTO groups (name) VALUES ('Gruppe Rot-1');
-INSERT INTO groups (name) VALUES ('Gruppe Blau');
-INSERT INTO groups (name) VALUES ('Gruppe XY');
+INSERT INTO groups (name) VALUES ('Rot-1');
+INSERT INTO groups (name) VALUES ('Blau');
+INSERT INTO groups (name) VALUES ('XY');
 
-INSERT INTO kids (name, nickname, group_id) VALUES ('Luke Skywalker', 'xcxc', '1');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Leia Organa', 'wrgq', '1');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Han Solo', 'htej', '1');
+INSERT INTO kids (name, alias, group_id) VALUES ('Luke Skywalker', 'xcxc', '1');
+INSERT INTO kids (name, alias, group_id) VALUES ('Leia Organa', 'wrgq', '1');
+INSERT INTO kids (name, alias, group_id) VALUES ('Han Solo', 'htej', '1');
 
-INSERT INTO kids (name, nickname, group_id) VALUES ('Emma', 'aefg', '2');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Elsa', 'erge', '2');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Adam', 'vwwv', '2');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Marlene', 'ls', '2');
+INSERT INTO kids (name, alias, group_id) VALUES ('Emma', 'aefg', '2');
+INSERT INTO kids (name, alias, group_id) VALUES ('Elsa', 'erge', '2');
+INSERT INTO kids (name, alias, group_id) VALUES ('Adam', 'vwwv', '2');
 
-INSERT INTO kids (name, nickname, group_id) VALUES ('Matilda', 'h3wc', '3');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Johann', 'sdfs', '3');
-INSERT INTO kids (name, nickname, group_id) VALUES ('India', 'v2vr', '3');
-INSERT INTO kids (name, nickname, group_id) VALUES ('Margarethe', 'zrqd', '3');
+INSERT INTO kids (name, alias, group_id) VALUES ('Matilda', 'h3wc', '3');
+INSERT INTO kids (name, alias, group_id) VALUES ('Johann', 'sdfs', '3');
+INSERT INTO kids (name, alias, group_id) VALUES ('India', 'v2vr', '3');
 
 INSERT INTO domains (title) VALUES ('Personale Kompetenzen');
 INSERT INTO domains (title) VALUES ('Sprachliche Kompetenzen');
@@ -296,6 +294,8 @@ INSERT INTO behaviours (item_id, level, description) VALUES ('1', '3', 'stellt V
 -- INSERT INTO behaviours (item_id, level, description) VALUES ('2', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
 INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz blödes Kribbeln im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich muss mal." (Durchfall)');
 INSERT INTO examples (behaviour_id, description) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');
 INSERT INTO examples (behaviour_id, description) VALUES ('3', 'erzählt, dass es einerseits wütend auf seinen Bruder ist, aber zugleich auch traurig ist wegen des Streits mit ihm.');
 
@@ -327,6 +327,79 @@ CREATE VIEW domain AS
     INNER JOIN items      AS i  ON dd.id=i.subdomain_id
     INNER JOIN behaviours   AS ii ON i.id=ii.item_id
     INNER JOIN examples   AS ex ON ii.id=ex.behaviour_id;
+
+
+/* Resource 1: Categories + Items
+*/
+
+CREATE VIEW item_resources AS
+
+/* domain */
+SELECT array_agg(row_to_json(t)) AS domains
+FROM
+  (SELECT id,
+          title,
+          description,
+
+     /* subdomain */
+     (SELECT array_to_json(array_agg(row_to_json(u)))
+      FROM
+        (SELECT id,
+                title,
+                description,
+
+           /* item */
+           (SELECT array_to_json(array_agg(row_to_json(v)))
+            FROM
+              (SELECT id,
+                      title,
+                      description,
+
+                 /* behaviour */
+                 (SELECT array_to_json(array_agg(row_to_json(w)))
+                  FROM
+                    (SELECT id,
+                            description,
+                            LEVEL,
+
+                       /* example */
+                       (SELECT array_to_json(array_agg(row_to_json(x)))
+                        FROM
+                          (SELECT id,
+                                  description
+                           FROM examples
+                           WHERE behaviours.id = behaviour_id) AS x) AS examples
+                     FROM behaviours
+                     WHERE items.id = item_id) AS w) AS behaviours
+               FROM items
+               WHERE subdomains.id = subdomain_id) AS v) AS items
+         FROM subdomains
+         WHERE domains.id = domain_id) AS u) AS subdomains
+   FROM domains) AS t;
+
+
+
+/* Resource 2: Groups + Kids
+*/
+
+CREATE VIEW kid_resources AS
+
+/* group */
+SELECT array_agg(row_to_json(t)) AS groups
+FROM
+  (SELECT id,
+          name,
+          description,
+
+     /* group */
+     (SELECT array_to_json(array_agg(row_to_json(u)))
+      FROM
+        (SELECT id,
+                name
+         FROM kids
+         WHERE groups.id = group_id) AS u) AS kids
+   FROM groups) AS t;
+
 
 
 -- AUTOMATICALLY UPDATE MODIFIED_AT

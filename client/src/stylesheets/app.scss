@@ -1,17 +1,34 @@
 @import '_color-palette';
 
+$bgc1: color($grey, 50);
+$fgc1: color($grey, 1000);
+$toolbarcolor: color($blue, 500);
+$debugborder: 1px solid color($red, 500);
+
 // reusable spacing for stuff
-@mixin rw-spacing {
+@mixin spacing {
   padding: 24px;
   margin: 16px;
 }
 
+* {
+  font-family: RobotoDraft, Roboto, sans-serif;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
-  font-family: 'RobotoDraft', sans-serif;
+
   font-weight: '300';
-  color: color($grey, 700);
-  background-color: color($grey, 50);
+  // color: color($grey, 700);
+  background-color: $bgc1;
+}
+
+h2 {
+  font-weight: 300;
+}
+
+.breadcrumbs {
+  font-size: 0.7em;
 }
 
 paper-shadow {
@@ -23,12 +40,13 @@ core-header-panel {
 }
 
 .new-resource-form-overlay {
-  @include rw-spacing;
+  @include spacing;
   background-color: #fff;
 }
 
-.item {
-  height: 100px;
+paper-shadow.item {
+  @include spacing;
+  min-height: 100px;
   flex-grow: 1; /* default 0 */
 }
 
@@ -40,19 +58,28 @@ core-header-panel {
 // debug box within pre tag
 .debug {
   background-color: #fff;
-  @include rw-spacing;
+  @include spacing;
   margin-left: 0;
   margin-right: 0;
-  border-top: 1px solid color($red, 500);
+  border-top: $debugborder;
   pre {
-    @include rw-spacing;
+    @include spacing;
   }
+}
+
+.subdomain {
+  padding-bottom: 2px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.item {
+  flex-grow: 1;
 }
 
 /* Polymer: Responsive Side Nav
    https://www.polymer-project.org/docs/elements/layout-elements.html
    ------------------------------------------------------------------ */
-
 body {
   font-family: sans-serif;
 }
@@ -60,10 +87,10 @@ core-header-panel {
   background: white;
 }
 core-toolbar {
-  background-color: color($indigo, 300);
+  background-color: color($blue, 300);
 }
 #navheader {
-  background-color: color($indigo, 500);
+  background-color: color($blue, 500);
 }
 .content {
   padding: 20px;
@@ -76,14 +103,22 @@ core-drawer-panel:not([narrow]) #navicon {
 
 
 
+core-menu {
+  line-height: 24px;
+}
+
+core-item {
+  overflow: visible;
+  left: 0;
+}
+
 
 // .domain,
 // .item,
 // .behaviour,
 // .example {
-//   font-size: 0.9rem;
-//   padding: 1em 2.5em;
-//   margin: 2em 3.5em;
+//   margin-left: 0;
+//   padding-left: 0;
 // }
 
 // .subdomain {

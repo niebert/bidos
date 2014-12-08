@@ -25,8 +25,7 @@
     .then(function authorized(user) {
       console.info('[authCtrl] authorized');
       $rootScope.auth = user;
-      // $state.go('auth.' + user.role) // really?
-      $state.go('auth');
+      $state.go('auth'); // $state.go('auth.' + user.role)
     }, function unauthorized() {
       console.warn('[authCtrl] not authorized');
       $state.go('public.login');
@@ -37,7 +36,7 @@
       UserFactory.login(credentials)
       .then(function authorized(response) {
         $rootScope.auth = response.data;
-        $state.go('auth.items', {'domainId': 0}); // FIXME
+        $state.go('auth');
       }, handleError);
     };
 

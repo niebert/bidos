@@ -1,0 +1,153 @@
+<core-toolbar id="mainheader">
+  <span flex>{{ vm.currentDomain.title }}</span>
+
+  <!-- a button to hide/show the menu on narrow displays (hidden by default) -->
+  <core-icon-button
+    id="navicon" icon="menu">
+  </core-icon-button>
+
+  <!-- a button to show a modal to create a new domain -->
+  <core-overlay ng-opened="newDomainFormOverlay" backdrop>
+    <paper-shadow z="1" class="new-resource-form-overlay">
+      <small>domain</small>
+      <h4>Neuen Kompetenzbereich anlegen</h4>
+      <form novalidate>
+
+        <paper-input-decorator floatingLabel label="Titel">
+          <input type="text" ng-model="domain.title" />
+        </paper-input-decorator>
+
+        <paper-input-decorator label="Beschreibung" floatinglabel layout vertical>
+          <paper-autogrow-textarea maxrows="3">
+            <textarea ng-model="domain.description"></textarea>
+          </paper-autogrow-textarea>
+        </paper-input-decorator>
+
+        <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
+          <core-icon icon="clear" aria-label="clear" role="img"></core-icon> Abbrechen
+        </paper-button>
+        <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
+          <core-icon icon="check" aria-label="check" role="img"></core-icon> Speichern
+        </paper-button>
+
+      </form>
+    </paper-shadow>
+  </core-overlay>
+
+  <core-menu-button>
+    <core-icon-button icon="menu"></core-icon-button>
+    <core-dropdown class="dropdown" layered halign="right" valign="top">
+      <core-menu>
+        <core-item icon="add" ng-click="newDomainFormOverlay=true">Neuen Kompetenzbereich (domain) hinzufügen</core-item>
+        <core-item icon="add" ng-click="newSubdomainFormOverlay=true">Neuen Teilbereich (subdomain) hinzufügen</core-item>
+        <core-item icon="refresh" ng-click="vm.refreshResources()">Aktualisieren</core-item>
+        <core-item icon="edit" ng-click="editCategoriesFormOverlay=true">Kategorien verwalten</core-item>
+      </core-menu>
+    </core-dropdown>
+  </core-menu-button>
+
+</core-toolbar>
+
+<paper-shadow z="1" ng-repeat='subdomain in vm.currentDomain.subdomains'>
+
+  <core-toolbar>
+    <span flex>{{ subdomain.title }}</span>
+
+    <!-- a button to show a modal to create a new subdomain -->
+    <core-icon-button icon="add" ng-click="newSubdomainFormOverlay=true">
+    </core-icon-button>
+
+    <core-overlay ng-opened="newSubdomainFormOverlay" backdrop>
+      <paper-shadow z="1" class="new-resource-form-overlay">
+        <small>subdomain</small>
+        <h4>Neuen Teilbereich anlegen</h4>
+        <form novalidate>
+
+          <paper-input-decorator floatingLabel label="Titel">
+            <input type="text" ng-model="domain.title" />
+          </paper-input-decorator>
+
+          <paper-input-decorator label="Beschreibung" floatinglabel layout vertical>
+            <paper-autogrow-textarea maxrows="3">
+              <textarea ng-model="domain.description"></textarea>
+            </paper-autogrow-textarea>
+          </paper-input-decorator>
+
+          <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
+            <core-icon icon="clear" aria-label="clear" role="img"></core-icon> Abbrechen
+          </paper-button>
+          <paper-button affirmative class="submit-button" ng-click="vm.signup(credentials)">
+            <core-icon icon="check" aria-label="check" role="img"></core-icon> Speichern
+          </paper-button>
+
+        </form>
+      </paper-shadow>
+    </core-overlay>
+
+    <core-overlay ng-opened="editCategoriesFormOverlay" backdrop>
+      <paper-shadow z="1" class="new-resource-form-overlay">
+        <pre>
+          edit:
+          Kompetenzbereiche (domains)
+          Teilbereiche (subdomains)
+          Bausteine (items)
+        </pre>
+      </paper-shadow>
+    </core-overlay>
+
+    <core-menu-button>
+      <core-icon-button icon="menu"></core-icon-button>
+      <core-dropdown class="dropdown" layered halign="right" valign="top">
+        <core-menu>
+          <core-item>Bearbeiten</core-item>
+          <core-item>Löschen</core-item>
+          <core-item>Exportieren</core-item>
+          <core-item>Hilfe</core-item>
+        </core-menu>
+      </core-dropdown>
+    </core-menu-button>
+
+  </core-toolbar>
+
+
+<paper-shadow z="2" class="item">
+  <core-toolbar>
+    <span flex>Niveau 1</span>
+  </core-toolbar>
+</paper-shadow>
+
+
+<paper-shadow z="2" class="item">
+  <core-toolbar>
+    <span flex>Niveau 2</span>
+  </core-toolbar>
+</paper-shadow>
+
+
+<paper-shadow z="2" class="item">
+  <core-toolbar>
+    <span flex>Niveau 2</span>
+  </core-toolbar>
+</paper-shadow>
+
+
+  <div class="content">
+    <table>
+      <thead>
+        <th></th>
+        <th>Niveau 1</th>
+        <th>Niveau 2</th>
+        <th>Niveau 3</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat='item in subdomain.items' class="items">
+          <td>{{ item.title }}</td>
+          <td class="behaviours">{{ item.behaviours[0].description }}</td>
+          <td class="behaviours">{{ item.behaviours[1].description }}</td>
+          <td class="behaviours">{{ item.behaviours[2].description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</paper-shadow>
