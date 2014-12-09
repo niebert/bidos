@@ -11,8 +11,7 @@
     'bidos.resource', // <-- singular
     'ng-polymer-elements',
     'ngMaterial',
-    'ngMessages',
-    'ui.bootstrap'
+    'ngMessages'
   ])
 
   // app wide constants
