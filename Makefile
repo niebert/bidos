@@ -48,10 +48,15 @@ deploy:
 	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
 	@ssh $(REMOTE_HOST)
 
+dball-osx: dbreset-osx dbinit dbsetup
 dball: dbreset dbinit dbsetup
 
 # FIXME: find a better way to do all this w/o sudo and/or drop the whole
 # database. afaict updating a postgres view is not so simple.
+
+dbreset-osx:
+	dropdb bidos_development
+	createdb -O bidos bidos_development
 
 dbreset:
 	sudo -u postgres dropdb bidos_development
