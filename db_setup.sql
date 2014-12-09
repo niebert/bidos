@@ -1,7 +1,7 @@
 
 -- warning! dangerous stuff!
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
+-- DROP SCHEMA public CASCADE;
+-- CREATE SCHEMA public;
 
 /*
 
