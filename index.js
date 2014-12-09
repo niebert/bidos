@@ -32,7 +32,7 @@
 
   // serve static dirs
   app.use(mount('/build', serve(path.join(__dirname, 'client/build'))));
-  app.use(mount('/lib', serve(path.join(__dirname, 'client/vendor'))));
+  app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
   app.use(mount('/', serve(path.join(__dirname, 'client/src'))));
 
   // mount public routes
