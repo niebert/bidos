@@ -35,7 +35,7 @@
         name: 'getAllUsers',
         text: 'SELECT * FROM users'
       });
-      this.body = result.rows;
+      this.body = { users: result.rows };
     })
 
     .get('getUser', '/:id', function *getUser() {

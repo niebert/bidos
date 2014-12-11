@@ -1,0 +1,47 @@
+<core-toolbar id="mainheader">
+  <span flex>Kinder</span>
+
+  <!-- a button to hide/show the menu on narrow displays -->
+  <core-icon-button
+    id="navicon" icon="menu">
+  </core-icon-button>
+
+  <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+  <link rel="import" href="/resources/assets/kid.new-form-overlay.html">
+
+</core-toolbar>
+
+<paper-shadow z="1" ng-repeat='group in vm.data.groups'>
+
+  <core-toolbar>
+    <span flex>{{ group.name }}</span>
+
+    <core-menu-button>
+      <core-icon-button icon="menu"></core-icon-button>
+      <core-dropdown class="dropdown" layered halign="right" valign="top">
+        <core-menu>
+          <core-item>Neuen Kompetenzbereich hinzufügen</core-item>
+          <core-item>Settings</core-item>
+          <core-item>Help</core-item>
+        </core-menu>
+      </core-dropdown>
+    </core-menu-button>
+
+  </core-toolbar>
+
+  <div class="content">
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Items</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="kid in group.kids">
+          <td> {{ kid.name }} </td>
+          <td> {{ kid.items }} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</paper-shadow>

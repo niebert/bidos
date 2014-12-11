@@ -48,8 +48,8 @@ deploy:
 	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
 	@ssh $(REMOTE_HOST)
 
-dball-osx: dbreset-osx dbinit dbsetup
 dball: dbreset dbinit dbsetup
+dball-osx: dbreset-osx dbinit dbsetup
 
 # FIXME: find a better way to do all this w/o sudo and/or drop the whole
 # database. afaict updating a postgres view is not so simple.
@@ -69,9 +69,9 @@ dbinit:
 # TODO: do this via node, i.e. find out how to call my own middleware to create default users
 
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
 	@psql -U bidos -c "UPDATE users SET role_id = 1 WHERE id = 1" $(DATABASE)
 	@psql -U bidos -c "UPDATE users SET role_id = 2 WHERE id = 2" $(DATABASE)
 	@psql -U bidos -c "UPDATE users SET role_id = 3 WHERE id = 2" $(DATABASE)

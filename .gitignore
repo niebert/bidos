@@ -6,3 +6,6 @@ node_modules
 *.sublime-*
 trash
 bower_components
+build
+
+schema.json

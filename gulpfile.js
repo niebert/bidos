@@ -6,6 +6,7 @@
        uglify = require('gulp-uglify'),
        rename = require('gulp-rename'),
        sass = require('gulp-ruby-sass'),
+       chalk = require('chalk'),
        plumber = require('gulp-plumber'),
        nodemon = require('gulp-nodemon'),
        browserify = require('browserify'),
@@ -18,8 +19,8 @@
     console.log(err);
   };
 
-  var sourceDir = 'client/src/';
-  var targetDir = 'client/build/';
+  var sourceDir = 'client/';
+  var targetDir = 'build/';
 
   gulp.task('handleJs', function () {
     var browserified = transform(function(filename) {
@@ -56,7 +57,7 @@
       env: { NODE_ENV: 'development' }, // FIXME deprecated -> yargs, minimist
       nodeArgs: ['--harmony']
     })
-    .on('change', []);
+    .on('change', function() { console.log(chalk.red.bold('>>> server restart ') + chalk.white.bold(new Date())); });
   });
 
   gulp.task('development', ['handleJs', 'handleScss', 'watch', 'serve']);

@@ -23,57 +23,39 @@
 
  */
 
--- TABLE roles
 CREATE TABLE IF NOT EXISTS roles (
   id            SERIAL PRIMARY KEY,
-
-  name          TEXT UNIQUE NOT NULL,
-  description   TEXT,
-
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  name          TEXT UNIQUE NOT NULL
 );
 
--- TABLE groups
 CREATE TABLE IF NOT EXISTS groups (
   id            SERIAL PRIMARY KEY,
 
   name          TEXT UNIQUE NOT NULL,
-  description   TEXT,
-
-  verified      BOOLEAN DEFAULT FALSE,
-  verified_at   TIMESTAMP,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- TABLE users
 CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
 
   email         TEXT UNIQUE NOT NULL,
   username      TEXT UNIQUE NOT NULL,
-  password      TEXT NOT NULL, -- TODO rename to hash or similar
-  name          TEXT,
+  password_hash TEXT NOT NULL,
+  name          TEXT NOT NULL,
 
-  role_id       INT REFERENCES roles(id), -- TODO NOT NULL
-  group_id      INT REFERENCES groups(id), -- TODO NOT NULL
-
-  verified      BOOLEAN DEFAULT FALSE,
-  verified_at   TIMESTAMP,
+  role_id       INT REFERENCES roles(id), -- NOT NULL, FIXME
+  group_id      INT REFERENCES groups(id),
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- TABLE kids
 CREATE TABLE IF NOT EXISTS kids (
   id            SERIAL PRIMARY KEY,
 
   name          TEXT NOT NULL,
-
-  alias      TEXT UNIQUE NOT NULL,
 
   group_id      INT REFERENCES groups(id),
 
@@ -81,72 +63,49 @@ CREATE TABLE IF NOT EXISTS kids (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-/*
-  domains
-  └── subdomains
-      └── items
-          ├── behaviours
-          │   └── examples
-          └── sheets
-              └── ratings
-*/
-
-
--- TABLE domain ("kompetenzbereich")
 CREATE TABLE IF NOT EXISTS domains (
   id            SERIAL PRIMARY KEY,
 
   title         TEXT NOT NULL,
 
-  description   TEXT,
-
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- TABLE subdomain ("teilbereich")
 CREATE TABLE IF NOT EXISTS subdomains (
   id            SERIAL PRIMARY KEY,
 
-  domain_id     INT REFERENCES domains(id) NOT NULL,
   title         TEXT NOT NULL,
 
-  description   TEXT,
+  domain_id     INT REFERENCES domains(id) NOT NULL,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- TABLE items ("bausteine")
 CREATE TABLE IF NOT EXISTS items (
   id            SERIAL PRIMARY KEY,
 
-  subdomain_id  INT REFERENCES subdomains(id) NOT NULL,
   title         TEXT NOT NULL,
-  description   TEXT,
+
+  subdomain_id  INT REFERENCES subdomains(id) NOT NULL,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- TABLE behaviours ("verhaltensbeschreibungen")
 CREATE TABLE IF NOT EXISTS behaviours (
   id            SERIAL PRIMARY KEY,
 
-  item_id       INT REFERENCES items(id) NOT NULL,
-  level         INT NOT NULL, -- 1..3
+  niveau        INT NOT NULL,
   description   TEXT NOT NULL,
+
+  item_id       INT REFERENCES items(id) NOT NULL,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- TABLE examples
 CREATE TABLE IF NOT EXISTS examples (
   id            SERIAL PRIMARY KEY,
 
@@ -158,63 +117,179 @@ CREATE TABLE IF NOT EXISTS examples (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- TABLE answers
-CREATE TABLE IF NOT EXISTS answers (
+-- TABLE observations
+CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
 
-  author_id     INT REFERENCES users(id) NOT NULL,
-  behaviour_id    INT REFERENCES behaviours(id) NOT NULL,
-  selection     INT NOT NULL,
+  rating        INT NOT NULL, /* -2=advanced, -1=notyet, 0=na 1..n=niveau */
 
-  -- TODO use array to allow multiple examples
-  -- create separate (attached) examples and reference them here
-  -- mark the example as verified true/false
+  author_id     INT REFERENCES users(id) NOT NULL,
+  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
   example_id    INT REFERENCES examples(id),
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- -- JUNCTION TABLE roles_users
+-- CREATE TABLE IF NOT EXISTS roles_users (
+--   role_id       INT REFERENCES roles(id),
+--   user_id       INT REFERENCES users(id)
+-- );
+
+-- -- JUNCTION TABLE groups_users
+-- CREATE TABLE IF NOT EXISTS groups_users (
+--   group_id      INT REFERENCES groups(id),
+--   user_id       INT REFERENCES users(id)
+-- );
+
+-- -- JUNCTION TABLE groups_kids
+-- CREATE TABLE IF NOT EXISTS groups_kids (
+--   group_id      INT REFERENCES groups(id),
+--   kid_id        INT REFERENCES kids(id)
+-- );
+
+-- -- JUNCTION TABLE domains_subdomains
+-- CREATE TABLE IF NOT EXISTS domains_subdomains (
+--   domain_id     INT REFERENCES domains(id),
+--   subdomain_id  INT REFERENCES subdomains(id)
+-- );
+
+-- -- JUNCTION TABLE subdomains_items
+-- CREATE TABLE IF NOT EXISTS subdomains_items (
+--   subdomain_id  INT REFERENCES subdomains(id),
+--   item_id       INT REFERENCES items(id)
+-- );
+
+-- -- JUNCTION TABLE items_behaviours
+-- CREATE TABLE IF NOT EXISTS items_behaviours (
+--   item_id       INT REFERENCES items(id),
+--   behaviour_id  INT REFERENCES behaviours(id)
+-- );
+
+-- auth table to run authentication queries against
+CREATE VIEW auth AS
+SELECT users.id,
+       username,
+       roles.name AS role,
+       password_hash
+FROM users
+LEFT JOIN roles ON roles.id=role_id;
+
+-- resource 1: categories + items
+CREATE VIEW item_resources AS
+
+/* domain */
+SELECT array_agg(row_to_json(t)) AS domains
+FROM
+  (SELECT id,
+          title,
+
+     /* subdomain */
+     (SELECT array_to_json(array_agg(row_to_json(u)))
+      FROM
+        (SELECT id,
+                title,
+
+           /* item */
+           (SELECT array_to_json(array_agg(row_to_json(v)))
+            FROM
+              (SELECT id,
+                      title,
+
+                 /* behaviour */
+                 (SELECT array_to_json(array_agg(row_to_json(w)))
+                  FROM
+                    (SELECT id,
+                            description,
+                            niveau,
+
+                       /* example */
+                       (SELECT array_to_json(array_agg(row_to_json(x)))
+                        FROM
+                          (SELECT id,
+                                  description
+                           FROM examples
+                           WHERE behaviours.id = behaviour_id) AS x) AS examples
+                     FROM behaviours
+                     WHERE items.id = item_id) AS w) AS behaviours
+               FROM items
+               WHERE subdomains.id = subdomain_id) AS v) AS items
+         FROM subdomains
+         WHERE domains.id = domain_id) AS u) AS subdomains
+   FROM domains) AS t;
+
+-- resource 2: groups + kids
+CREATE VIEW kid_resources AS
+
+/* group */
+SELECT array_agg(row_to_json(t)) AS groups
+FROM
+  (SELECT id,
+          name,
+
+     /* group */
+     (SELECT array_to_json(array_agg(row_to_json(u)))
+      FROM
+        (SELECT id,
+                name
+         FROM kids
+         WHERE groups.id = group_id) AS u) AS kids
+   FROM groups) AS t;
+
+-- AUTOMATICALLY UPDATE MODIFIED_AT
+-- http://www.revsys.com/blog/2006/aug/04/automatically-updating-a-timestamp-column-in-postgresql/
+
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.modified_at = now();
+  RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_users_modtime BEFORE UPDATE
+ON users FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_kids_modtime BEFORE UPDATE
+ON kids FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_groups_modtime BEFORE UPDATE
+ON groups FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_items_modtime BEFORE UPDATE
+ON items FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_behaviours_modtime BEFORE UPDATE
+ON behaviours FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_observations_modtime BEFORE UPDATE
+ON observations FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_domains_modtime BEFORE UPDATE
+ON domains FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_subdomains_modtime BEFORE UPDATE
+ON subdomains FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
+
+CREATE TRIGGER update_examples_modtime BEFORE UPDATE
+ON examples FOR EACH ROW EXECUTE PROCEDURE
+update_modified_column();
 
 
 
 
--- JUNCTION TABLE roles_users
-CREATE TABLE IF NOT EXISTS roles_users (
-  role_id       INT REFERENCES roles(id),
-  user_id       INT REFERENCES users(id)
-);
 
--- JUNCTION TABLE groups_users
-CREATE TABLE IF NOT EXISTS groups_users (
-  group_id      INT REFERENCES groups(id),
-  user_id       INT REFERENCES users(id)
-);
 
--- JUNCTION TABLE groups_kids
-CREATE TABLE IF NOT EXISTS groups_kids (
-  group_id      INT REFERENCES groups(id),
-  kid_id        INT REFERENCES kids(id)
-);
 
--- JUNCTION TABLE domains_subdomains
-CREATE TABLE IF NOT EXISTS domains_subdomains (
-  domain_id     INT REFERENCES domains(id),
-  subdomain_id  INT REFERENCES subdomains(id)
-);
-
--- JUNCTION TABLE subdomains_items
-CREATE TABLE IF NOT EXISTS subdomains_items (
-  subdomain_id  INT REFERENCES subdomains(id),
-  item_id       INT REFERENCES items(id)
-);
-
--- JUNCTION TABLE items_behaviours
-CREATE TABLE IF NOT EXISTS items_behaviours (
-  item_id       INT REFERENCES items(id),
-  behaviour_id    INT REFERENCES behaviours(id)
-);
 
 
 -- roles
@@ -226,17 +301,17 @@ INSERT INTO groups (name) VALUES ('Rot-1');
 INSERT INTO groups (name) VALUES ('Blau');
 INSERT INTO groups (name) VALUES ('XY');
 
-INSERT INTO kids (name, alias, group_id) VALUES ('Luke Skywalker', 'xcxc', '1');
-INSERT INTO kids (name, alias, group_id) VALUES ('Leia Organa', 'wrgq', '1');
-INSERT INTO kids (name, alias, group_id) VALUES ('Han Solo', 'htej', '1');
+INSERT INTO kids (name, group_id) VALUES ('Luke Skywalker', '1');
+INSERT INTO kids (name, group_id) VALUES ('Leia Organa', '1');
+INSERT INTO kids (name, group_id) VALUES ('Han Solo', '1');
 
-INSERT INTO kids (name, alias, group_id) VALUES ('Emma', 'aefg', '2');
-INSERT INTO kids (name, alias, group_id) VALUES ('Elsa', 'erge', '2');
-INSERT INTO kids (name, alias, group_id) VALUES ('Adam', 'vwwv', '2');
+INSERT INTO kids (name, group_id) VALUES ('Emma', '2');
+INSERT INTO kids (name, group_id) VALUES ('Elsa', '2');
+INSERT INTO kids (name, group_id) VALUES ('Adam', '2');
 
-INSERT INTO kids (name, alias, group_id) VALUES ('Matilda', 'h3wc', '3');
-INSERT INTO kids (name, alias, group_id) VALUES ('Johann', 'sdfs', '3');
-INSERT INTO kids (name, alias, group_id) VALUES ('India', 'v2vr', '3');
+INSERT INTO kids (name, group_id) VALUES ('Matilda', '3');
+INSERT INTO kids (name, group_id) VALUES ('Johann', '3');
+INSERT INTO kids (name, group_id) VALUES ('India', '3');
 
 INSERT INTO domains (title) VALUES ('Personale Kompetenzen');
 INSERT INTO domains (title) VALUES ('Sprachliche Kompetenzen');
@@ -285,13 +360,13 @@ INSERT INTO items (subdomain_id, title) VALUES ('4', 'Ausdauer');
 INSERT INTO items (subdomain_id, title) VALUES ('4', 'Explorations- und Lernfreude');
 INSERT INTO items (subdomain_id, title) VALUES ('4', 'Fachsprache');
 
-INSERT INTO behaviours (item_id, level, description) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
-INSERT INTO behaviours (item_id, level, description) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');
-INSERT INTO behaviours (item_id, level, description) VALUES ('1', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
--- INSERT INTO behaviours (item_id, level, description) VALUES ('2', '1', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
--- INSERT INTO behaviours (item_id, level, description) VALUES ('2', '2', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
--- INSERT INTO behaviours (item_id, level, description) VALUES ('2', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+-- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+-- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+-- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
 INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
 INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz blödes Kribbeln im Bauch." (Vorfreude)');
@@ -303,130 +378,5 @@ INSERT INTO examples (behaviour_id, description) VALUES ('3', 'erzählt, dass es
 -- INSERT INTO examples (behaviour_id, description) VALUES ('5', '(er-)kennt unterschiedliche Ursachen und/oder Wirkungen von eigenen Emotionen');
 -- INSERT INTO examples (behaviour_id, description) VALUES ('6', '(er-)kennt unterschiedliche Ursachen und Wir- kungen von komplexen eigenen Emotionen');
 
-
--- auth table to run authentication queries against
--- return value will be the clients user obj encoded in the jwt token
-CREATE VIEW auth AS
-  SELECT id, username, password from users;
--- CREATE VIEW auth AS
---   SELECT users.id, username, roles.name as role, email, password FROM users
---   INNER JOIN roles ON users.role_id = roles.id;
-
--- everything thats needed to construct a leistungsbogen
-CREATE VIEW domain AS
-  SELECT
-    d.id    AS domain_id,
-    dd.id   AS subdomain_id,
-    i.id    AS item_id,
-    ii.id   AS behaviour_id,
-    ex.id   AS example_id,
-    ii.description AS behaviour_description,
-    ex.description AS example_description
-  FROM domains AS d
-    INNER JOIN subdomains AS dd ON d.id=dd.domain_id
-    INNER JOIN items      AS i  ON dd.id=i.subdomain_id
-    INNER JOIN behaviours   AS ii ON i.id=ii.item_id
-    INNER JOIN examples   AS ex ON ii.id=ex.behaviour_id;
-
-
-/* Resource 1: Categories + Items
-*/
-
-CREATE VIEW item_resources AS
-
-/* domain */
-SELECT array_agg(row_to_json(t)) AS domains
-FROM
-  (SELECT id,
-          title,
-          description,
-
-     /* subdomain */
-     (SELECT array_to_json(array_agg(row_to_json(u)))
-      FROM
-        (SELECT id,
-                title,
-                description,
-
-           /* item */
-           (SELECT array_to_json(array_agg(row_to_json(v)))
-            FROM
-              (SELECT id,
-                      title,
-                      description,
-
-                 /* behaviour */
-                 (SELECT array_to_json(array_agg(row_to_json(w)))
-                  FROM
-                    (SELECT id,
-                            description,
-                            LEVEL,
-
-                       /* example */
-                       (SELECT array_to_json(array_agg(row_to_json(x)))
-                        FROM
-                          (SELECT id,
-                                  description
-                           FROM examples
-                           WHERE behaviours.id = behaviour_id) AS x) AS examples
-                     FROM behaviours
-                     WHERE items.id = item_id) AS w) AS behaviours
-               FROM items
-               WHERE subdomains.id = subdomain_id) AS v) AS items
-         FROM subdomains
-         WHERE domains.id = domain_id) AS u) AS subdomains
-   FROM domains) AS t;
-
-
-
-/* Resource 2: Groups + Kids
-*/
-
-CREATE VIEW kid_resources AS
-
-/* group */
-SELECT array_agg(row_to_json(t)) AS groups
-FROM
-  (SELECT id,
-          name,
-          description,
-
-     /* group */
-     (SELECT array_to_json(array_agg(row_to_json(u)))
-      FROM
-        (SELECT id,
-                name
-         FROM kids
-         WHERE groups.id = group_id) AS u) AS kids
-   FROM groups) AS t;
-
-
-
--- AUTOMATICALLY UPDATE MODIFIED_AT
--- http://www.revsys.com/blog/2006/aug/04/automatically-updating-a-timestamp-column-in-postgresql/
-
-CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.modified_at = now();
-  RETURN NEW;
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER update_users_modtime BEFORE UPDATE
-ON users FOR EACH ROW EXECUTE PROCEDURE
-update_modified_column();
-
-CREATE TRIGGER update_kids_modtime BEFORE UPDATE
-ON kids FOR EACH ROW EXECUTE PROCEDURE
-update_modified_column();
-
-CREATE TRIGGER update_groups_modtime BEFORE UPDATE
-ON groups FOR EACH ROW EXECUTE PROCEDURE
-update_modified_column();
-
-CREATE TRIGGER update_items_modtime BEFORE UPDATE
-ON items FOR EACH ROW EXECUTE PROCEDURE
-update_modified_column();
-
 -- EOF
+

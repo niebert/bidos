@@ -1,0 +1,26 @@
+<core-toolbar id="mainheader" class="medium-tall">
+  <span flex>{{ vm.sel.kid.name }}</span>
+
+  <!-- a button to hide/show the menu on narrow displays -->
+  <core-icon-button
+    id="navicon" icon="menu">
+  </core-icon-button>
+
+  <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+  <link rel="import" href="/resources/assets/kid.new-form-overlay.html">
+
+</core-toolbar>
+
+<paper-shadow z="1">
+  <div class="content">
+	<h2>{{ vm.sel.kid.name }}</h2>
+  </div>
+</paper-shadow>
+
+<!-- left align for proper indent -->
+<paper-shadow z="1">
+<div class="debug">
+<strong>vm.sel</strong>
+<pre>{{ vm.sel | json }}</pre>
+</div>
+</paper-shadow>

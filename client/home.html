@@ -1,0 +1,35 @@
+<core-toolbar id="mainheader" class="medium-tall">
+  <span flex>
+    HOME
+  </span>
+
+    <core-menu-button>
+      <core-icon-button icon="more-vert"></core-icon-button>
+      <core-dropdown class="dropdown" layered halign="right" valign="top">
+        <core-menu>
+          <core-item>Bearbeiten</core-item>
+          <core-item>Löschen</core-item>
+          <core-item>Exportieren</core-item>
+          <core-item>Hilfe</core-item>
+        </core-menu>
+      </core-dropdown>
+    </core-menu-button>
+
+  <core-icon-button id="navicon" icon="menu">
+  </core-icon-button>
+  <div class="bottom">
+  <small>
+  {{ vm.selection.domain.title }} :: {{ vm.selection.subdomain.title }}
+</small>
+  </div>
+</core-toolbar>
+
+<!-- left align for proper indent -->
+<div class="debug">
+<strong>vm.sel</strong>
+<pre>{{ vm.sel | json }}</pre>
+<strong>vm.params</strong>
+<pre>{{ vm.params | json }}</pre>
+<strong>vm.data</strong>
+<pre>{{ vm.data | json }}</pre>
+</div>

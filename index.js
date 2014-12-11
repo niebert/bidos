@@ -13,6 +13,10 @@
   // koa itself
   var app = require('koa')();
 
+  // colors! ^^
+  var chalk = require('chalk');
+  var columnify = require('columnify');
+
   // authentication
   var jwt = require('koa-jwt');
 
@@ -31,12 +35,20 @@
   app.use(require('koa-pg')(config.db.postgres.url));
 
   // serve static dirs
-  app.use(mount('/build', serve(path.join(__dirname, 'client/build'))));
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
-  app.use(mount('/', serve(path.join(__dirname, 'client/src'))));
+  app.use(mount('/build', serve(path.join(__dirname, 'build'))));
+  app.use(mount('/', serve(path.join(__dirname, 'client')))); // FIXME: .html only
+
+  // fancy console output
+  console.log('\n' + chalk.cyan('>> public routes'));
+  console.log(columnify(_.map(routes.public, function(d,i) { return {'PATH': '/' + i, 'request method': _(d.methods).map().tail().join(' ') }; } ), {
+    columnSplitter: ' | '
+  }));
 
   // mount public routes
-  app.use(mount('/', routes.auth.middleware()));
+  _.each(routes.public, function(d,i) {
+    app.use(mount('/' + i, d.middleware()));
+  });
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
@@ -60,34 +72,20 @@
   // catch that error and send back status 401 and redirect to /login.
   // app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
+  // fancy console output
+  console.log('\n' + chalk.cyan('>> private routes'));
+    console.log(columnify(_.map(routes.private, function(d,i) { return {'PATH': '/v1/' + i, 'request method': _(d.methods).map().tail().join(' ') }; } ), {
+    columnSplitter: ' | '
+  }));
+
   // secured routes
-  app.use(mount('/v1/user', routes.user.middleware()));
-
-  // TODO: bundle and abstract resources to provide fewer entry points
-
-  // resource: subjects
-  app.use(mount('/v1/group', routes.group.middleware()));
-  app.use(mount('/v1/kid', routes.kid.middleware()));
-
-  // resource: categories
-  app.use(mount('/v1/domain', routes.domain.middleware()));
-  app.use(mount('/v1/subdomain', routes.subdomain.middleware()));
-  app.use(mount('/v1/item', routes.item.middleware()));
-
-  // resource: items
-  app.use(mount('/v1/behaviour', routes.behaviour.middleware()));
-  app.use(mount('/v1/example', routes.example.middleware()));
-
-  // resource: surveys
-  app.use(mount('/v1/rating', routes.rating.middleware()));
-  app.use(mount('/v1/sheet', routes.sheet.middleware()));
-
-  // full resources (get all only, for sync to client)
-  app.use(mount('/v1/resources', routes.resources.middleware()));
+  _.each(routes.private, function(d,i) {
+    app.use(mount('/v1/' + i, d.middleware()));
+  });
 
   // main
   var listen = function(port) {
-    console.log('api accessible on port ' + (port || config.app.port));
+    console.log(chalk.green('>> api accessible on port ' + (port || config.app.port)));
     app.listen(port || config.app.port);
   };
 
