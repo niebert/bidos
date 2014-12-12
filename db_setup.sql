@@ -297,21 +297,114 @@ INSERT INTO roles (name) VALUES ('admin');
 INSERT INTO roles (name) VALUES ('practitioner');
 INSERT INTO roles (name) VALUES ('scientist');
 
-INSERT INTO groups (name) VALUES ('Rot-1');
-INSERT INTO groups (name) VALUES ('Blau');
-INSERT INTO groups (name) VALUES ('XY');
+INSERT INTO groups (name) VALUES ('Fuchsia.io');
+INSERT INTO groups (name) VALUES ('Polymer Industries');
+INSERT INTO groups (name) VALUES ('Aperture Labs');
+INSERT INTO groups (name) VALUES ('Fracture.org');
 
-INSERT INTO kids (name, group_id) VALUES ('Luke Skywalker', '1');
-INSERT INTO kids (name, group_id) VALUES ('Leia Organa', '1');
-INSERT INTO kids (name, group_id) VALUES ('Han Solo', '1');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Wolf Prantl');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Heinrich Rothmann');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Joseph Priesner');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Helmina Rommel');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Hannah Boll');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Cecilia Wolff');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Fabian Bormann');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Detlev Haeberle');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Erik Eugster');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Cecilia Rabe');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Hildegard Lobe');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Eckhardt Drexler');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Alfons Heider');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Ben Stellwagen');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Nico Glas');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Willi Fähnrich');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Elisa Braunlich');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Hedwig Wintsch');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Johanna Rehder');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Christopher Huppert');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Brigitte Pichler');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Adam Josten');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Emma Uffermann');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Friedrich Brauner');
+INSERT INTO kids (group_id, name) VALUES ('1', 'Hanns Faerber');
 
-INSERT INTO kids (name, group_id) VALUES ('Emma', '2');
-INSERT INTO kids (name, group_id) VALUES ('Elsa', '2');
-INSERT INTO kids (name, group_id) VALUES ('Adam', '2');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Albuin Christmann');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Felizitas Baader');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Elena Reger');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Frank Uffermann');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Christiane Tisch');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Johann Dillinger');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Johanne Veil');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Jonathan Deichgräber');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Kilian Macher');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Justin Korsch');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Felizia Holz');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Erica Reimold');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Alexandra Wendlinger');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Ingrid Berlepsch');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Niklas Hopfer');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Florentine Käutner');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Meike Kindler');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Beatrix Marks');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Heike Hesse');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Lili Imhoff');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Yannik Rothenstein');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Thomas Lemmer');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Marko Honigsmann');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Veit Pfisterer');
+INSERT INTO kids (group_id, name) VALUES ('2', 'Philip Tegeler');
 
-INSERT INTO kids (name, group_id) VALUES ('Matilda', '3');
-INSERT INTO kids (name, group_id) VALUES ('Johann', '3');
-INSERT INTO kids (name, group_id) VALUES ('India', '3');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Patrizia Eichenberg');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Eckart Scherrer');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Hannelore Wallmann');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Evelyn Lauterbach');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Valentina Curschmann');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Angelina Bierbaum');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Linus Lobe');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Catrin Degener');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Gregor Kestenbaum');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Volker Kaulen');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Reinhold Balmer');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Elli Tausch');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Florentina Wilpert');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Walpurgis Hengsbach');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Walburg Wandesleben');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Marion Hammesfahr');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Beate Engel');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Marina Sehlmann');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Ben Achleitner');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Marie Seidl');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Asser Bleich');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Helge Wittgenstein');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Clara Braunlich');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Maja Härig');
+INSERT INTO kids (group_id, name) VALUES ('3', 'Paula Hengstler');
+
+INSERT INTO kids (group_id, name) VALUES ('4', 'Per Von Hardenberg');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Ingeborg Fincke');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Laura Feuerstein');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Adalger Himmler');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Gerwald Denker');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Koloman Goethe');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Hannes Seeliger');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Rupprecht Dreyfuss');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Theresia Neufeld');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Raimund Oppolzer');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Angelo Krist');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Klemens Augenstein');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Ottilie Strecker');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Oscar Grau');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Therese Stuhr');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Lea Hönigswald');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Erik Becken');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Andreas Tugendhat');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Eckhart Mertz');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Helge Gustloff');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Maja Heldmann');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Magdalena Eichinger');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Hartmut Landsberg');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Katja Niedenthal');
+INSERT INTO kids (group_id, name) VALUES ('4', 'Emily Riedel');
 
 INSERT INTO domains (title) VALUES ('Personale Kompetenzen');
 INSERT INTO domains (title) VALUES ('Sprachliche Kompetenzen');
@@ -360,23 +453,96 @@ INSERT INTO items (subdomain_id, title) VALUES ('4', 'Ausdauer');
 INSERT INTO items (subdomain_id, title) VALUES ('4', 'Explorations- und Lernfreude');
 INSERT INTO items (subdomain_id, title) VALUES ('4', 'Fachsprache');
 
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören I');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören II');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören III');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Struktur des Erzählens');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Form des Erzählens');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Beschreiben');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Erklären');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Passiv — Konjunktiv');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Nebensätze');
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Gesprächsbeteiligung');
+
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Schreibfertigkeit');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Wörter schreiben');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Texte verfassen');
+
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Lesefertigkeit I');
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Lesefertigkeit II');
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Leseverständnis');
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Umgang mit Text und Medien');
+
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Phonologische Bewusstheit I');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Phonologische Bewusstheit II');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Fehler korrigieren');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Situationsangemessenheit');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Mehrsprachigkeit');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Fachsprache');
+
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Initiierung sozialer Kontakte');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Gezielte Wahl von Spiel- und Arbeitspartnern');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Gestaltung von freundschaftlichen Beziehungen');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Sprache zur Kontaktaufnahme und –aufrechterhaltung');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Andere verstehen');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Sich selbst Anderen gegenüber verständlich machen');
+
+INSERT INTO items (subdomain_id, title) VALUES ('10', 'Beteiligung an sozialen Gruppenaktivitäten');
+INSERT INTO items (subdomain_id, title) VALUES ('10', 'Beachtung sozialer (Spiel-)Regeln');
+INSERT INTO items (subdomain_id, title) VALUES ('10', 'Gemeinsame Bewältigung von Kooperationsaufgaben');
+
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konflikte bewältigen I');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konflikte bewältigen II');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konfliktanlässe und –wirkungen erkennen');
+
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Empathie');
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Wahrnehmung der Subjektivität von Perspektiven');
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Koordination von Perspektiven');
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Fachsprache');
+
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen I');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen II');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen III');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen IV');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen I');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen II');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen III');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Symbole');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Operationen I');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Operationen II');
+
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Raum und Form I');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Raum und Form II');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Flächenformen I');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Flächenformen II');
+
+INSERT INTO items (subdomain_id, title) VALUES ('15', 'Muster und Strukturen');
+
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen I');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen II');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen III');
+
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit I');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit II');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit III');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Fachsprache');
+
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', '(er-)kennt Ursachen von eigenen Emotionen');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', '(er-)kennt unterschiedliche Ursachen und/oder Wirkungen von eigenen Emotionen');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', '(er-)kennt unterschiedliche Ursachen und Wirkungen von komplexen eigenen Emotionen');
 
 -- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 -- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 -- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
 INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
-INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz blödes Kribbeln im Bauch." (Vorfreude)');
-INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich muss mal." (Durchfall)');
 INSERT INTO examples (behaviour_id, description) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');
 INSERT INTO examples (behaviour_id, description) VALUES ('3', 'erzählt, dass es einerseits wütend auf seinen Bruder ist, aber zugleich auch traurig ist wegen des Streits mit ihm.');
 
--- INSERT INTO examples (behaviour_id, description) VALUES ('4', '(er-)kennt Ursachen von eigenen Emotionen');
--- INSERT INTO examples (behaviour_id, description) VALUES ('5', '(er-)kennt unterschiedliche Ursachen und/oder Wirkungen von eigenen Emotionen');
--- INSERT INTO examples (behaviour_id, description) VALUES ('6', '(er-)kennt unterschiedliche Ursachen und Wir- kungen von komplexen eigenen Emotionen');
 
 -- EOF
 
