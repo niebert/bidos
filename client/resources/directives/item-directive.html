@@ -1,0 +1,103 @@
+<paper-shadow z="1" ng-show="vm.selected.kid" ng-hide="vm.selected.item">
+    <core-toolbar style="background-color:white">
+        <span flex>Bitte wählen Sie ein Item aus</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Alle Items anzeigen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="content">
+        <core-menu>
+            <core-submenu label="Item auswählen" ng-show="vm.selected.kid">
+
+                <!-- domains -->
+                <core-submenu label="{{domain.title}}" ng-repeat="domain in vm.data.resources.domains" class="domain">
+
+                    <!-- subdomains -->
+                    <core-submenu label="{{subdomain.title}}" ng-repeat="subdomain in domain.subdomains" class="subdomain">
+
+                        <!-- items -->
+                        <core-item label="{{item.title}}" ng-click="vm.selectItem(item)" ng-repeat="item in subdomain.items" class="item">
+                        </core-item>
+
+                    </core-submenu>
+                </core-submenu>
+            </core-submenu>
+        </core-menu>
+    </div>
+
+</paper-shadow>
+
+<paper-shadow z="1" ng-show="vm.selected.item">
+    <core-toolbar style="background-color:white" style="position: absolute;">
+        <span flex>
+				{{ vm.selected.domain.title }} :: {{ vm.selected.subdomain.title }}
+		</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Details anzeigen</core-item>
+                    <hr>
+                    <core-item>Item bearbeiten</core-item>
+                    <core-item>Item löschen</core-item>
+                    <core-item>Beispiel hinzufügen</core-item>
+                    <core-item>Beispiel hinzufügen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+        <core-menu-button>
+            <core-icon-button icon="clear" ng-click="vm.selectItem(null)"></core-icon-button>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="content" style="padding-top:0">
+        <paper-shadow z <h2 ng-click="dialog=!dialog">{{ vm.selected.item.title }}</h2>
+            <div class="behaviours content card-container">
+                <paper-shadow z="2" class="card behaviour-card" id="el" ng-repeat="behaviour in vm.selected.item.behaviours" ng-click="vm.selected.behaviour = behaviour">
+
+                    <core-toolbar>
+                        <span flex>Niveau {{ behaviour.niveau }}</span>
+                    </core-toolbar>
+
+                    <div ng-hide="vm.selected.behaviour">
+                        <div class="behaviour-description">
+                            {{ behaviour.description }}
+                        </div>
+                        <hr>
+                        <div class="examples">
+                            <div class="example" ng-repeat="example in behaviour.examples">
+                                {{ example.description }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="vm.selected.behaviour==behaviour" layout vertical>
+                        <div class="with-help" ng-click="vm.observation({behaviourId:behaviour.id,help:true})">
+                            mit Hilfe
+                        </div>
+
+                        <div class="without-help" ng-click="vm.observation({behaviour:behaviour.id,help:false})">
+                            ohne Hilfe
+                        </div>
+
+                    </div>
+                </paper-shadow>
+
+                <div horizontal layout reverse>
+                    <paper-button raised noink class="save-button" role="button" tabindex="0">speichern</paper-button>
+                    <paper-button raised role="button" tabindex="1">mehr</paper-button>
+                    <paper-button raised role="button" tabindex="2">weniger</paper-button>
+                    <paper-button raised role="button" tabindex="3">kein</paper-button>
+                </div>
+            </div>
+        </paper-shadow>
+    </div>
+</paper-shadow>

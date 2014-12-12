@@ -1,0 +1,51 @@
+<paper-shadow z="1" ng-hide="vm.selected.kid">
+    <core-toolbar style="background-color:white">
+        <span flex>Bitte wählen Sie ein Kind aus</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Alle Kinder anzeigen</core-item>
+                    <core-item>Alle Gruppen anzeigen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="content">
+        <core-menu>
+            <core-submenu label="Kind auswählen" ng-hide="vm.selected.kid">
+
+                <!-- groups -->
+                <core-submenu ng-repeat="group in vm.data.resources.groups" label="{{group.name}}">
+
+                    <!-- children -->
+                    <core-item ng-repeat="kid in group.kids" ng-click="vm.selectKid(kid)" label="{{kid.id}} {{kid.name}}" </core-item>
+
+                </core-submenu>
+            </core-submenu>
+        </core-menu>
+    </div>
+</paper-shadow>
+
+<paper-shadow z="1" ng-show="vm.selected.kid">
+    <core-toolbar style="background-color:white">
+        <span flex ng-show="vm.selected.kid">{{ vm.selected.kid.name }}</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Details anzeigen</core-item>
+                    <hr>
+                    <core-item>Kind bearbeiten</core-item>
+                    <core-item>Kind löschen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+        <core-menu-button>
+            <core-icon-button icon="clear" ng-click="vm.selectKid(null)"></core-icon-button>
+        </core-menu-button>
+    </core-toolbar>
+</paper-shadow>
