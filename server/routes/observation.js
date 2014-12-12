@@ -16,44 +16,45 @@
 
   module.exports = exports = new Router()
 
-    .get('getAllSheets', '/', function *getAllSheets() {
+    .get('getAllObservations', '/', function *getAllObservations() {
       var result = yield this.pg.db.client.query_({
-        name: 'getAllSheets',
-        text: 'SELECT * FROM sheets'
+        name: 'getAllObservations',
+        text: 'SELECT * FROM observations'
       });
-      this.body = result.rows;
+      this.body = { observations: result.rows };
     })
 
-    .get('getSheet', '/:id', function *getSheet() {
+    .get('getObservation', '/:id', function *getObservation() {
       var result = yield this.pg.db.client.query_({
-        name: 'getSheet',
-        text: 'SELECT * FROM sheets WHERE id=$1',
+        name: 'getObservation',
+        text: 'SELECT * FROM observations WHERE id=$1',
         values: [this.params.id]
       });
       this.body = result.rows;
     })
 
-    .post('createSheet', '/', function *createSheet() {
+    .post('createObservation', '/', function *createObservation() {
+      console.log(this.request.body);
       var result = yield this.pg.db.client.query_({
-        name: 'createSheet',
-        text: 'INSERT INTO sheets (title, description) VALUES ($1, $2) RETURNING *',
+        name: 'createObservation',
+        text: 'INSERT INTO observations (author_id, behaviour_id) VALUES ($1, $2) RETURNING *',
         values: _.map(this.request.body)
       });
       this.body = result.rows;
     })
 
-    .patch('updateSheet', '/:id', function *updateSheet() {
+    .patch('updateObservation', '/:id', function *updateObservation() {
       var p = parameterizedQuery(this.request.body, this.params.id);
       var result = yield this.pg.db.client.query_(
-        'UPDATE sheets SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values
+        'UPDATE observations SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values
       );
       this.body = result.rows;
     })
 
-    .delete('deleteSheet', '/:id', function *deleteSheet() {
+    .delete('deleteObservation', '/:id', function *deleteObservation() {
       var result = yield this.pg.db.client.query_({
-        name: 'deleteSheet',
-        text: 'DELETE FROM sheets WHERE id=$1',
+        name: 'deleteObservation',
+        text: 'DELETE FROM observations WHERE id=$1',
         values: [this.params.id]
       });
       this.body = result.rows;

@@ -21,7 +21,7 @@
         name: 'getAllSubdomains',
         text: 'SELECT * FROM subdomains'
       });
-      this.body = result.rows;
+      this.body = { subdomains: result.rows };
     })
 
     .get('getSubdomain', '/:id', function *getSubdomain() {

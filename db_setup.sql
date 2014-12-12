@@ -121,11 +121,11 @@ CREATE TABLE IF NOT EXISTS examples (
 CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
 
-  rating        INT NOT NULL, /* -2=advanced, -1=notyet, 0=na 1..n=niveau */
+  flag          INT, -- -1=notyet 0=na 1=advanced
+  help          BOOLEAN DEFAULT false,
 
   author_id     INT REFERENCES users(id) NOT NULL,
   behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
-  example_id    INT REFERENCES examples(id),
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -287,6 +287,82 @@ update_modified_column();
 CREATE TRIGGER update_examples_modtime BEFORE UPDATE
 ON examples FOR EACH ROW EXECUTE PROCEDURE
 update_modified_column();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

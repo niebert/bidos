@@ -21,7 +21,7 @@
         name: 'getAllItems',
         text: 'SELECT * FROM items'
       });
-      this.body = result.rows;
+      this.body = { items: result.rows };
     })
 
     .get('getItem', '/:id', function *getItem() {

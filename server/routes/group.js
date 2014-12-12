@@ -21,16 +21,16 @@
         name: 'getAllGroups',
         text: 'SELECT * FROM groups'
       });
-      this.body = result.rows;
+      this.body = { groups: result.rows };
     })
 
-    .get('getUser', '/:id', function *getUser() {
+    .get('getGroup', '/:id', function *getGroup() {
       var result = yield this.pg.db.client.query_({
         name: 'getGroup',
         text: 'SELECT * FROM groups WHERE id=$1',
         values: [this.params.id]
       });
-      this.body = result.rows;
+      this.body = { group: result.rows };
     })
 
     .post('createGroup', '/', function *createGroup() {

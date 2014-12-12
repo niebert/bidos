@@ -1,72 +1,76 @@
 <!-- MAIN RESOURCE CONTROLLER -->
-<core-drawer-panel drawerWidth="384px" ng-controller="ResourceController as vm" id="drawerPanel">
+<core-drawer-panel ng-controller="ResourceController as vm" id="drawerPanel">
 
-    <core-header-panel drawer>
-        <core-toolbar id="navheader" class="medium-tall">
-            <span flex ui-sref="auth.home">BiDoS</span>
-        </core-toolbar>
+	<core-header-panel drawer>
+		<core-toolbar id="navheader" class="">
+			<span flex ui-sref="auth.home">BiDoS</span>
+		</core-toolbar>
 
-        <core-menu>
-            <core-submenu label="Gruppen">
+		<core-menu>
+
+
+			<core-submenu label="Kind auswählen">
 
 				<!-- groups -->
-                <core-submenu
-                ng-repeat="group in vm.data.groups"
-                label="{{group.name}}">
+				<core-submenu
+				ng-repeat="group in vm.data.resources.groups"
+				label="{{group.name}}">
 
 					<!-- children -->
-                    <core-item
-                    label="{{kid.name}}"
-		            ng-click="vm.selectKid(kid.id)"
-                    ng-repeat="kid in group.kids"
-                    ui-sref="auth.kid({id: kid.id})">
-                    </core-item>
+					<core-item
+					ng-repeat="kid in group.kids"
+					ng-click="vm.selectKid(kid)"
+					label="{{kid.id}} {{kid.name}}"
+					</core-item>
 
-                </core-submenu>
-            </core-submenu>
-            <hr>
+				</core-submenu>
+			</core-submenu>
 
-            <core-submenu
-            label="{{domain.title}}"
-            ng-repeat="domain in vm.data.domains"
-            class="domain">
+			<core-submenu label="Item auswählen" ng-show="vm.selected.kid">
 
-                <core-submenu
-                label="{{subdomain.title}}"
-                ng-repeat="subdomain in domain.subdomains"
-                class="subdomain">
+				<!-- domains -->
+				<core-submenu
+				label="{{domain.title}}"
+				ng-repeat="domain in vm.data.resources.domains"
+				class="domain">
 
-                    <core-item
-                    label="{{item.title}}"
-                    ng-click="vm.selectItem({id:item.id})"
-                    ng-repeat="item in subdomain.items"
-                    ui-sref="auth.item.do({id:item.id})"
-                    class="item">
-                    </core-item>
+					<!-- subdomains -->
+					<core-submenu
+					label="{{subdomain.title}}"
+					ng-repeat="subdomain in domain.subdomains"
+					class="subdomain">
 
-                </core-submenu>
-            </core-submenu>
+						<!-- items -->
+						<core-item
+						label="{{item.title}}"
+						ng-click="vm.selectItem(item)"
+						ng-repeat="item in subdomain.items"
+						class="item">
+						</core-item>
 
-            <hr>
+					</core-submenu>
+				</core-submenu>
+			</core-submenu>
+<!--
 
-            <core-submenu label="Assets">
-                <core-item ui-sref="auth.domain" label="Domains"></core-item>
-                <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item>
-                <core-item ui-sref="auth.item" label="Items"></core-item>
-                <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item>
-                <core-item ui-sref="auth.example" label="Examples"></core-item>
-                <core-item ui-sref="auth.observation" label="Observations"></core-item>
-                <core-item ui-sref="auth.kid" label="Kids"></core-item>
-                <core-item ui-sref="auth.group" label="Groups"></core-item>
-                <core-item ui-sref="auth.user" label="Users"></core-item>
-            </core-submenu>
+			<hr>
+			<core-submenu label="Assets">
+				<core-item ui-sref="auth.domain" label="Domains"></core-item>
+				<core-item ui-sref="auth.subdomain" label="Subdomains"></core-item>
+				<core-item ui-sref="auth.item.table" label="Items"></core-item>
+				<core-item ui-sref="auth.behaviour" label="Behaviours"></core-item>
+				<core-item ui-sref="auth.example" label="Examples"></core-item>
+				<core-item ui-sref="auth.observation" label="Observations"></core-item>
+				<core-item ui-sref="auth.kid" label="Kids"></core-item>
+				<core-item ui-sref="auth.group" label="Groups"></core-item>
+				<core-item ui-sref="auth.user" label="Users"></core-item>
+			</core-submenu>
+ -->
+		</core-menu>
 
-        </core-menu>
+	</core-header-panel>
 
-    </core-header-panel>
-
-    <!-- MAIN CONTENT -->
-    <core-header-panel main ui-view="main">
-    </core-header-panel>
-
+	<!-- MAIN CONTENT -->
+	<core-header-panel main ui-view="main">
+	</core-header-panel>
 </core-drawer-panel>

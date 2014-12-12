@@ -21,7 +21,7 @@
         name: 'getAllBehaviours',
         text: 'SELECT * FROM behaviours'
       });
-      this.body = result.rows;
+      this.body = { behaviours: result.rows };
     })
 
     .get('getBehaviour', '/:id', function *getBehaviour() {

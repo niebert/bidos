@@ -1,26 +1,200 @@
-<core-toolbar id="mainheader" class="medium-tall">
-  <span flex>{{ vm.sel.kid.name }}</span>
+<!--
 
-  <!-- a button to hide/show the menu on narrow displays -->
-  <core-icon-button
-    id="navicon" icon="menu">
-  </core-icon-button>
+		MAJOR STUFF
 
-  <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
-  <link rel="import" href="/resources/assets/kid.new-form-overlay.html">
+ -->
+
+<core-toolbar id="mainheader" class="">
+    <span flex>{{ vm.selected.kid.name }}</span>
+
+    <!-- a button to hide/show the menu on narrow displays -->
+    <core-icon-button id="navicon" icon="menu">
+    </core-icon-button>
+
+    <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+    <link rel="import" href="/resources/assets/kid.new-form-overlay.html">
 
 </core-toolbar>
 
-<paper-shadow z="1">
-  <div class="content">
-	<h2>{{ vm.sel.kid.name }}</h2>
-  </div>
+<paper-shadow z="1" ng-hide="vm.selected.kid">
+    <core-toolbar style="background-color:white">
+        <span flex>Bitte wählen Sie ein Kind aus</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Alle Kinder anzeigen</core-item>
+                    <core-item>Alle Gruppen anzeigen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="">
+    </div>
+</paper-shadow>
+
+<paper-shadow z="1" ng-show="vm.selected.kid">
+    <core-toolbar style="background-color:white">
+        <span flex ng-show="vm.selected.kid">{{ vm.selected.kid.name }}</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Details anzeigen</core-item>
+                    <hr>
+                    <core-item>Kind bearbeiten</core-item>
+                    <core-item>Kind löschen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+        <core-menu-button>
+            <core-icon-button icon="clear" ng-click="vm.selectKid(null)"></core-icon-button>
+        </core-menu-button>
+    </core-toolbar>
+</paper-shadow>
+
+<paper-shadow z="1" ng-hide="vm.selected.item">
+    <core-toolbar style="background-color:white">
+        <span flex>Bitte wählen Sie ein Item aus</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Alle Items anzeigen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="">
+    </div>
+</paper-shadow>
+
+<!--
+<paper-shadow z="1" ng-show="vm.selected.item">
+    <core-toolbar style="background-color:white">
+        <span flex ng-show="vm.selected.item"><small>{{ vm.selected.domain.title }} &rarr; {{ vm.selected.subdomain.title }}</small><br>{{ vm.selected.item.title }}</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Details anzeigen</core-item>
+                    <hr>
+                    <core-item>Kind bearbeiten</core-item>
+                    <core-item>Kind löschen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+        <core-menu-button>
+            <core-icon-button icon="clear" ng-click="vm.selectItem(null)"></core-icon-button>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="">
+    </div>
+</paper-shadow>
+ -->
+<paper-shadow z="1" ng-show="vm.selected.item">
+    <core-toolbar style="background-color:white">
+        <span flex><small>{{ vm.selected.domain.title }} :: {{ vm.selected.subdomain.title }}</small></span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu z="1">
+                    <core-item>Details anzeigen</core-item>
+                    <hr>
+                    <core-item>Kind bearbeiten</core-item>
+                    <core-item>Kind löschen</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+        <core-menu-button>
+            <core-icon-button icon="clear" ng-click="vm.selectItem(null)"></core-icon-button>
+        </core-menu-button>
+    </core-toolbar>
+
+    <div class="content" style="padding-top:0">
+		<paper-shadow z="0">
+			<h2>{{ vm.selected.item.title }}</h2>
+			<div class="behaviours content sheet">
+		        <paper-shadow z="1" class="sheet-card" ng-click="vm.selectBehaviour(vm.selected.item.behaviours[0])">
+		            <core-toolbar>
+		                <span flex>Niveau 1</span>
+		            </core-toolbar>
+		            <div class="behaviour-description">
+		                {{ vm.selected.item.behaviours[0].description }}
+		            </div>
+		            <hr>
+		            <div class="examples">
+		                <div class="example" ng-repeat="example in vm.selected.item.behaviours[0].examples">
+		                    {{ example.description }}
+		                </div>
+		            </div>
+		        </paper-shadow>
+
+		        <paper-shadow z="1" class="sheet-card" ng-click="vm.selectBehaviour(vm.selected.item.behaviours[1])">
+		            <core-toolbar>
+		                <span flex>Niveau 2</span>
+		            </core-toolbar>
+		            <div class="behaviour-description">
+		                {{ vm.selected.item.behaviours[1].description }}
+		            </div>
+		            <hr>
+		            <div class="examples">
+		                <div class="example" ng-repeat="example in vm.selected.item.behaviours[1].examples">
+		                    {{ example.description }}
+		                </div>
+		            </div>
+		        </paper-shadow>
+
+		        <paper-shadow z="1" class="sheet-card" ng-click="vm.selectBehaviour(vm.selected.item.behaviours[2])">
+		            <core-toolbar>
+		                <span flex>Niveau 3</span>
+		            </core-toolbar>
+		            <div class="behaviour-description">
+		                {{ vm.selected.item.behaviours[2].description }}
+		            </div>
+		            <hr>
+		            <div class="examples">
+		                <div class="example" ng-repeat="example in vm.selected.item.behaviours[2].examples">
+		                    {{ example.description }}
+		                </div>
+		            </div>
+		        </paper-shadow>
+
+		        <paper-shadow z="1" class="sheet-card">
+		            <core-toolbar>
+		                <span flex>Noch nicht so weit</span>
+		            </core-toolbar>
+		        </paper-shadow>
+
+		        <paper-shadow z="1" class="sheet-card">
+		            <core-toolbar>
+		                <span flex>Konnte nicht beobachtet werden</span>
+		            </core-toolbar>
+		        </paper-shadow>
+
+		        <paper-shadow z="1" class="sheet-card">
+		            <core-toolbar>
+		                <span flex>Fortgeschritten</span>
+		            </core-toolbar>
+		        </paper-shadow>
+
+			</div>
+		</paper-shadow>
+    </div>
 </paper-shadow>
 
 <!-- left align for proper indent -->
 <paper-shadow z="1">
-<div class="debug">
-<strong>vm.sel</strong>
-<pre>{{ vm.sel | json }}</pre>
-</div>
+    <div class="debug">
+        <strong>vm.selected</strong>
+        <pre>{{ vm.selected | json }}</pre>
+    </div>
 </paper-shadow>

@@ -1,0 +1,33 @@
+<core-toolbar id="mainheader" class="">
+    <span flex>{{ vm.sel.kid.name }}</span>
+
+    <!-- a button to hide/show the menu on narrow displays -->
+    <core-icon-button id="navicon" icon="menu">
+    </core-icon-button>
+
+    <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+    <link rel="import" href="/resources/assets/group.new-form-overlay.html">
+
+</core-toolbar>
+
+<paper-shadow z="1">
+
+    <core-toolbar>
+        <span flex>{{ vm.sel.item.title }}</span>
+
+        <core-menu-button>
+            <core-icon-button icon="menu"></core-icon-button>
+            <core-dropdown class="dropdown" layered halign="right" valign="top">
+                <core-menu>
+                    <core-item>Neuen Kompetenzbereich hinzufügen</core-item>
+                    <core-item>Settings</core-item>
+                    <core-item>Help</core-item>
+                </core-menu>
+            </core-dropdown>
+        </core-menu-button>
+
+    </core-toolbar>
+
+    <d
+
+</paper-shadow>

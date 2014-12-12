@@ -21,7 +21,7 @@
         name: 'getAllKids',
         text: 'SELECT * FROM kids'
       });
-      this.body = result.rows;
+      this.body = { kids: result.rows };
     })
 
     .get('getKid', '/:id', function *getKid() {
@@ -30,7 +30,7 @@
         text: 'SELECT * FROM kids WHERE id=$1',
         values: [this.params.id]
       });
-      this.body = result.rows;
+      this.body = { kid: result.rows };
     })
 
     .post('createKid', '/', function *createKid() {

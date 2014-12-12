@@ -21,7 +21,7 @@
         name: 'getAllExamples',
         text: 'SELECT * FROM examples'
       });
-      this.body = result.rows;
+      this.body = { examples: result.rows };
     })
 
     .get('getExample', '/:id', function *getExample() {

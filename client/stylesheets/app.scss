@@ -24,12 +24,22 @@ body {
   background-color: $bgc1;
 }
 
-h2 {
-  font-weight: 300;
+.yes {
+  background-color: color($green, 100);
 }
 
-.sheet {
+.no {
+  background-color: color($red, 100);
+}
 
+.save-button {
+  background-color: color($blue, 400);
+  color: white;
+  font-weight: 400;
+}
+
+h2 {
+  font-weight: 400;
 }
 
 .breadcrumbs {
@@ -44,6 +54,10 @@ core-header-panel {
   background-color: #333;
 }
 
+core-tooltip::shadow #tooltip {
+  z-index: 5;
+}
+
 .new-resource-form-overlay {
   @include spacing;
   background-color: #fff;
@@ -52,6 +66,10 @@ core-header-panel {
 paper-shadow.item {
   min-height: 100px;
   flex-grow: 1; /* default 0 */
+}
+
+.yesno {
+  text-align: center;
 }
 
 .unauthorized {
@@ -65,23 +83,32 @@ paper-shadow.item {
   @include spacing;
   margin-left: 0;
   margin-right: 0;
+  margin-top: 256px;
   border-top: $debugborder;
   pre {
     @include spacing;
   }
 }
 
-.sheet {
+.card-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-content: center;
 }
 
-.sheet-card {
-  min-width: 33%;
+.card {
+  flex-grow: 1;
+  min-width: 28%;
   flex: 1;
-  margin: 20px
+}
+
+.behaviour-card {
+
+}
+
+.behaviour-card-active {
+
 }
 
 .behaviour-description {
@@ -104,6 +131,11 @@ paper-shadow.item {
   flex-grow: 1;
 }
 
+.example {
+  padding: 8px;
+  font-size: 0.8em;
+  background-color: color($grey, 50);
+}
 
 /* Polymer: Responsive Side Nav
    https://www.polymer-project.org/docs/elements/layout-elements.html
@@ -385,3 +417,66 @@ td.del:hover {
 // //   order: 1;
 // //   flex: 0 1 auto;
 // // }
+
+
+
+/*
+  We're using CSS transitions for when
+  the enter and move events are triggered
+  for the element that has the .repeated-item
+  class
+*/
+.repeated-item.ng-enter, .repeated-item.ng-move {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  opacity:0;
+}
+
+/*
+ The ng-enter-active and ng-move-active
+ are where the transition destination properties
+ are set so that the animation knows what to
+ animate.
+*/
+.repeated-item.ng-enter.ng-enter-active,
+.repeated-item.ng-move.ng-move-active {
+  opacity:1;
+}
+
+/*
+  We're using CSS keyframe animations for when
+  the leave event is triggered for the element
+  that has the .repeated-item class
+*/
+.repeated-item.ng-leave {
+  -webkit-animation:0.5s my_animation;
+  -moz-animation:0.5s my_animation;
+  -o-animation:0.5s my_animation;
+  animation:0.5s my_animation;
+}
+
+@keyframes my_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+/*
+  Unfortunately each browser vendor requires
+  its own definition of keyframe animation code...
+*/
+@-webkit-keyframes my_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-moz-keyframes my_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-o-keyframes my_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}

@@ -16,22 +16,12 @@
 
   module.exports = exports = new Router()
 
-    .get('getStuff', '/domain/:id', function *getStuff() {
-      var result = yield this.pg.db.client.query_({
-        name: 'getStuff',
-        // text: 'SELECT * FROM domain WHERE domain_id=$1',
-        text: 'SELECT row_to_json(dd.*) FROM domain dd WHERE domain_id=$1;',
-        values: [this.params.id]
-      });
-      this.body = result.rows;
-    })
-
     .get('getAllDomains', '/', function *getAllDomains() {
       var result = yield this.pg.db.client.query_({
         name: 'getAllDomains',
         text: 'SELECT * FROM domains'
       });
-      this.body = result.rows;
+      this.body = { domains: result.rows };
     })
 
     .get('getDomain', '/:id', function *getDomain() {

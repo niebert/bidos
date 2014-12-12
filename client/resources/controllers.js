@@ -13,13 +13,13 @@
     ]).controller('ResourceController', ResourceController);
 
   function ResourceController($scope, $rootScope, resourceService, $state, $stateParams, $location) {
-    console.info('[ResourceController] $rootScope.auth', $rootScope.auth);
+    console.info('[$rootScope.auth]', $rootScope.auth);
 
-    var vm = this; // view model, available as vm in all views
+    // view model, available as vm in all views
+    var vm = _.merge(this, {data:{}, selected:{}});
 
-    vm.data = {};
-    vm.selection = {};
-    vm.sel = {};
+    // vm.data = {}; // data model copy via service
+    // vm.sel = {}; // selection: { kid: {/*...*/}, item: {/*...*/} }
 
     // if (!vm.selection.kid) {
     //   console.warn('no kid selected, go to kid');
@@ -30,57 +30,74 @@
     //   console.warn('no subdomain selected, go to subdomain list');
     // }
 
-    console.info('[ResourceController] $stateParams', $stateParams);
+    console.info('[vm] $stateParams', $stateParams);
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       vm.params = toParams;
-      if (toParams.itemId) {}
+      if (toParams.kidId) {
+        vm.selected.kid = _.select(vm.data.kids, ({id:+toParams.kidId}));
+      }
     });
 
-    // if (!vm.data.items && vm.data.domains) {
-    // }
+    vm.selectKid = function(kid) {
+      if (!kid) {
+        delete(vm.selected.kid);
+        return;
+      }
 
+      // $state.transitionTo('auth.home', {id: kid.id}, { location: true, inherit: true, relative: $state.$current, notify: false });
+      // $state.go('auth.home', {kidId: kid.id});
 
-    vm.selectItem = function(item) {
-      if (!item) { return; }
-      vm.sel.item = _.chain(vm.data.items).filter().select(item).first().value();
-      console.info(vm.sel.item);
+      // get selected kid from nested resource tree
+      vm.selected.kid = _.chain(vm.data.resources.groups).map('kids').flatten().select(kid).first().value();
+      console.log(vm.selected.kid);
     };
 
-    vm.selectKid = function(kidId) {
-      if (!kidId) { return; }
-      vm.sel.kid = _.chain(vm.data.groups).map('kids').flatten().select({id:kidId}).first().value();
+    vm.selectItem = function(item) {
+      if (!item) {
+        delete(vm.selected.item);
+        delete(vm.selected.subdomain);
+        delete(vm.selected.domain);
+        return;
+      }
+      vm.selected.item = item;
+      vm.selected.subdomain = _.select(vm.data.subdomains, {id: item.subdomain_id})[0];
+      vm.selected.domain = _.select(vm.data.domains, {id: vm.selected.subdomain.domain_id})[0];
+    };
+
+    vm.observation = function(observation) {
+      if (observation.examples) {
+        // save examples marked as draft
+      }
+
+      resourceService.post('observation', {
+        item_id: observation.itemId,
+        author_id: $rootScope.auth.id,
+        behaviour_id: observation.behaviourId
+      });
     };
 
     vm.getData = function(role) {
-      // everybody needs resources
-      resourceService.getResources().then(function (response) {
-        _.merge(vm.data, response);
-
-        // separate items object
-        vm.data.items = _.chain(vm.data.domains).map('subdomains').flatten().map('items').flatten().value();
-
-        console.info('[ResourceController] Resource Data (vm):', vm);
-      }, function failure(response) {
-        console.warn('[ResourceController] Resource Data Error:', response.data);
-      });
+      var resources = ['resources', 'kid', 'group', 'domain', 'subdomain', 'item'];
 
       // only admin needs users
       // XXX backend should respond w/ 5xx if we're not admin
       if (role === 'admin') {
-        resourceService.get('user').then(function (response) {
-        _.merge(vm.data, response.data);
-          console.info('[ResourceController] Admin Data (vm):', vm);
-        }, function failure(response) {
-          console.warn('[ResourceController] Admin Data Error:', response.data);
-        });
+        resources.concat(['user']);
       }
+
+      resourceService.get(resources).then(function (response) {
+        _.merge(vm.data, response); // response == data model
+        console.info('[vm]', vm);
+      }, function failure(response) {
+        console.error('[vm]', response.data);
+      });
+
     };
 
     if ($rootScope.auth) {
       vm.getData($rootScope.auth.role);
-      // $state.go('auth.home'); // FIXME
     } else {
       vm = void 0; // delete view model
       $state.go('public.login');

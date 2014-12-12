@@ -12,25 +12,28 @@
     // the back end will authenticate the user, check for it's group and
     // respond with the correct resource object the user is allowed to get
 
-    var resources = {}; // resource data model
+    var dm = {};
 
     return {
 
-      getResources: function() {
-        var deferred = $q.defer();
+      // resource can be an array or a string
+      get: function(resource) {
+        var deferred  = $q.defer(),
+            resources = [].concat(resource),
+            queries = _.map(resources, function(resource) {
+              return $http.get(API_URL + '/v1/' + resource);
+            });
 
-        $http.get(API_URL + '/v1/resources')
-        .then(function(response) {
-          _.merge(resources, response.data);
-          resources.updatedAt = Date.now();
-          deferred.resolve(resources);
+        $q.all(queries).then(function(responses) {
+          _.chain(responses).map('data').each(function(response) {
+            console.info('[dm]', response);
+            _.merge(dm, response);
+          });
+          deferred.resolve(dm);
         });
 
+        dm.updatedAt = Date.now();
         return deferred.promise;
-      },
-
-      get: function(resource) {
-        return $http.get(API_URL + '/v1/' + resource);
       },
 
       create: function(resource, formData) {
