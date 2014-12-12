@@ -3,14 +3,9 @@
 (function() {
   'use strict';
 
-  require('./constants');
-
   angular.module('auth.services', [
-    'auth.constants',
     'angular-jwt', // json web token
     ])
-
-  .constant('API_URL', 'http://192.168.1.7:3000') // FIXME
 
   .factory('UserFactory',
     ['$http', 'AuthTokenFactory', 'API_URL',
