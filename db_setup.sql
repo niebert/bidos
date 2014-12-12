@@ -189,18 +189,21 @@ FROM
      (SELECT array_to_json(array_agg(row_to_json(u)))
       FROM
         (SELECT id,
+                domain_id,
                 title,
 
            /* item */
            (SELECT array_to_json(array_agg(row_to_json(v)))
             FROM
               (SELECT id,
+                      subdomain_id,
                       title,
 
                  /* behaviour */
                  (SELECT array_to_json(array_agg(row_to_json(w)))
                   FROM
                     (SELECT id,
+                            item_id,
                             description,
                             niveau,
 
@@ -208,6 +211,7 @@ FROM
                        (SELECT array_to_json(array_agg(row_to_json(x)))
                         FROM
                           (SELECT id,
+                                  behaviour_id,
                                   description
                            FROM examples
                            WHERE behaviours.id = behaviour_id) AS x) AS examples
