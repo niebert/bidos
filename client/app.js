@@ -15,6 +15,7 @@
   ])
 
   .constant('API_URL', 'http://192.168.1.7:3000');
+  // .constant('API_URL', 'http://bidos.sci-hub.ir:3000');
 
   // app.run(function($rootScope) {
   //   $rootScope.$on('$routeChangeSuccess', function(ev,data) {
