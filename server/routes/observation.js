@@ -37,7 +37,7 @@
       console.log(this.request.body);
       var result = yield this.pg.db.client.query_({
         name: 'createObservation',
-        text: 'INSERT INTO observations (author_id, behaviour_id) VALUES ($1, $2) RETURNING *',
+        text: 'INSERT INTO observations (author_id, item_id, value, help) VALUES ($1, $2, $3, $4) RETURNING *',
         values: _.map(this.request.body)
       });
       this.body = result.rows;

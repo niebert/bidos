@@ -121,11 +121,11 @@ CREATE TABLE IF NOT EXISTS examples (
 CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
 
-  flag          INT, -- -1=notyet 0=na 1=advanced
+  value         INT NOT NULL, -- -2=advanced -1=notyet 0=na 1,2,3=niveau
   help          BOOLEAN DEFAULT false,
 
+  item_id       INT REFERENCES behaviours(id) NOT NULL,
   author_id     INT REFERENCES users(id) NOT NULL,
-  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP

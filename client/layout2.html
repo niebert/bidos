@@ -7,7 +7,37 @@
         </core-toolbar>
 
         <core-menu>
-            <core-submenu class="drawer-menu" label="Assets">
+
+            <core-submenu label="Kind auswählen">
+
+                <!-- groups -->
+                <core-submenu ng-repeat="group in vm.data.resources.groups" label="{{group.name}}">
+
+                    <!-- children -->
+                    <core-item ng-repeat="kid in group.kids" ng-click="vm.selectKid(kid)" label="{{kid.id}} {{kid.name}}"> </core-item>
+
+                </core-submenu>
+            </core-submenu>
+
+            <core-submenu label="Item auswählen" ng-show="vm.selected.kid">
+
+                <!-- domains -->
+                <core-submenu label="{{domain.title}}" ng-repeat="domain in vm.data.resources.domains" class="domain">
+
+                    <!-- subdomains -->
+                    <core-submenu label="{{subdomain.title}}" ng-repeat="subdomain in domain.subdomains" class="subdomain">
+
+                        <!-- items -->
+                        <core-item label="{{item.title}}" ng-click="vm.selectItem(item)" ng-repeat="item in subdomain.items" class="item">
+                        </core-item>
+
+                    </core-submenu>
+                </core-submenu>
+            </core-submenu>
+
+            <hr>
+
+            <core-submenu label="Assets">
                 <core-item ui-sref="auth.domain" label="Domains"></core-item>
                 <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item>
                 <core-item ui-sref="auth.item.table" label="Items"></core-item>

@@ -41,9 +41,11 @@
 
   // fancy console output
   console.log('\n' + chalk.cyan('>> public routes'));
-  console.log(columnify(_.map(routes.public, function(d,i) { return {'PATH': '/' + i, 'request method': _(d.methods).map().tail().join(' ') }; } ), {
-    columnSplitter: ' | '
-  }));
+  console.log(columnify(_.map(routes.public, function(d,i) {
+		return {
+			'PATH': '/' + i,
+			'request method': _(d.methods).map().tail().join(' ') };
+		}), { columnSplitter: ' | ' }));
 
   // mount public routes
   _.each(routes.public, function(d,i) {
@@ -66,17 +68,20 @@
     }
   });
 
-  // routes below the next loc are only accessible to authenticated clients.
-  // if the authorization succeeds, next is yielded and the following routes
-  // are reached. if it fails, it throws and the previous middleware will
-  // catch that error and send back status 401 and redirect to /login.
+	// routes below the next loc are only accessible to authenticated clients.
+	// if the authorization succeeds, next is yielded and the following routes
+	// are reached. if it fails, it throws and the previous middleware will catch
+	// that error and send back status 401 and redirect to /login.
+
   // app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
   // fancy console output
   console.log('\n' + chalk.cyan('>> private routes'));
-    console.log(columnify(_.map(routes.private, function(d,i) { return {'PATH': '/v1/' + i, 'request method': _(d.methods).map().tail().join(' ') }; } ), {
-    columnSplitter: ' | '
-  }));
+	console.log(columnify(_.map(routes.private, function(d,i) {
+		return {
+			'PATH': '/v1/' + i,
+			'request method': _(d.methods).map().tail().join(' ') };
+		}), { columnSplitter: ' | ' }));
 
   // secured routes
   _.each(routes.private, function(d,i) {

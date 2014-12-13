@@ -6,15 +6,15 @@
   require('./auth');
   require('./resources');
 
-  angular.module('bidos', [
+  var app = angular.module('bidos', [
     'auth',
     'bidos.resource', // <-- singular
     'ng-polymer-elements',
     'ngMaterial',
     'ngMessages'
-  ])
+  ]);
 
-  .constant('API_URL', 'http://192.168.1.7:3000');
+  app.constant('API_URL', 'http://192.168.1.7:3000');
   // .constant('API_URL', 'http://bidos.sci-hub.ir:3000');
 
   // app.run(function($rootScope) {
@@ -31,5 +31,18 @@
   //     // select domain/subdomain/item here based on toParams obj
   //   });
   // }
+
+app.config(function($logProvider) {
+    $logProvider.debugEnabled(false);
+});
+
+app.run(function($rootScope, $log) {
+    $rootScope.$log = $log;
+});
+
+app.controller("foo", function($scope) {
+  $scope.myFunc = function(ev) {
+  }
+});
 
 }());

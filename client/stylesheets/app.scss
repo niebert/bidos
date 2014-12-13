@@ -12,6 +12,32 @@ $debugborder: 1px solid color($red, 500);
   margin: 16px;
 }
 
+core-toolbar {
+  background-color: #fff;
+}
+
+.attention-toolbar {
+  background-color: color($red, 300);
+}
+
+// .child-toolbar {
+//   background-color: color($green, 200);
+// }
+
+.item-toolbar {
+  background-color: color($grey, 0);
+}
+
+.edit-form-field {
+  margin-bottom: 24px;
+}
+
+.form-error {
+  color: color($red, 500);
+  font-size: 0.8em;
+  line-height: 90%;
+}
+
 * {
   font-family: RobotoDraft, Roboto, sans-serif;
 }
@@ -47,7 +73,11 @@ h2 {
 }
 
 paper-shadow {
-  margin: 20px;
+  // margin: 20px;
+}
+
+core-toolbar {
+  background-color: #fff;
 }
 
 core-header-panel {
@@ -77,17 +107,33 @@ paper-shadow.item {
   padding: 120px;
 }
 
+.item-container-sheet {
+  min-height: 100vh;
+}
+
+.select-item:hover {
+  color: color($indigo, a400);
+}
+
 // debug box within pre tag
 .debug {
   background-color: #fff;
   @include spacing;
   margin-left: 0;
   margin-right: 0;
-  margin-top: 256px;
+  // margin-top: 256px;
   border-top: $debugborder;
   pre {
     @include spacing;
   }
+}
+
+.editMode {
+  color: color($red, a400);
+}
+
+.selected-behaviour-toolbar {
+  background-color: color($pink, a400) !important;
 }
 
 .card-container {
@@ -99,21 +145,29 @@ paper-shadow.item {
 
 .card {
   flex-grow: 1;
-  min-width: 28%;
+  min-width: 23%;
   flex: 1;
+  margin: 12px;
 }
 
-.behaviour-card {
-
+.card-small {
+  flex-grow: 1;
+  flex: 1;
+  margin: 12px;
 }
 
-.behaviour-card-active {
+// .behaviour {
+//   min-height: 200px;
+//   margin: 12px;
+// }
 
-}
+// .behaviour-card-active {
 
-.behaviour-description {
-  @include spacing;
-}
+// }
+
+// .behaviour-description {
+//   @include spacing;
+// }
 
 .example-description {
   padding: 24px;
@@ -131,10 +185,27 @@ paper-shadow.item {
   flex-grow: 1;
 }
 
-.example {
-  padding: 8px;
-  font-size: 0.8em;
-  background-color: color($grey, 50);
+core-item.example {
+  padding-left: 32px;
+  margin-left: 32px;
+}
+
+.behaviour p {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.example > p {
+  padding-left: 16px;
+  font-weight: 500;
+}
+
+core-toolbar.behaviour {
+  background-color: color($green, 200);
+}
+
+core-submenu.drawer-menu::shadow #submenu {
+  margin-left: 20px;
 }
 
 /* Polymer: Responsive Side Nav
@@ -146,9 +217,9 @@ body {
 core-header-panel {
   background: white;
 }
-core-toolbar {
-  background-color: color($pink, 300);
-}
+// core-toolbar {
+//   background-color: color($pink, 300);
+// }
 #navheader {
   background-color: color($pink, 500);
 }

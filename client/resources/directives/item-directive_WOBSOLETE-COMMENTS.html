@@ -1,0 +1,186 @@
+<div class="" ng-hide="vm.selected.item">
+
+    <!-- tree menu -->
+    <core-menu ng-hide="vm.selected.item">
+        <core-submenu label="Item auswählen">
+
+            <!-- domains -->
+            <core-submenu label="{{domain.title}}" ng-repeat="domain in vm.data.resources.domains" class="domain">
+
+                <!-- subdomains -->
+                <core-submenu label="{{subdomain.title}}" ng-repeat="subdomain in domain.subdomains" class="subdomain">
+
+                    <!-- items -->
+                    <core-item label="{{item.title}}" ng-click="vm.selectItem(item)" ng-repeat="item in subdomain.items" class="select-item">
+                    </core-item>
+
+                </core-submenu>
+            </core-submenu>
+        </core-submenu>
+    </core-menu>
+</div>
+
+<paper-shadow z="0" ng-show="vm.selected.item" class="item-container-sheet">
+    <core-toolbar ng-class="{'item-toolbar': vm.selected.item}">
+
+        <!-- header: hide when no item selected  -->
+        <!-- <span flex ng-hide="vm.selected.item">Bitte wählen Sie ein Item aus</span> -->
+        <span flex ng-show="vm.selected.item" ng-click="itemMenu=!itemMenu">{{ vm.selected.domain.title }} • {{ vm.selected.subdomain.title }}</span>
+
+        <!-- buttons -->
+        <div ng-show="vm.selected.item">
+            <core-icon-button icon="chevron-left" ng-click="vm.selectItem(vm.selected.item.id - 1)"></core-icon-button>
+            <core-icon-button icon="chevron-right" ng-click="vm.selectItem(vm.selected.item.id + 1)"></core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.selectItem(null)"></core-icon-button>
+        </div>
+
+    </core-toolbar>
+
+    <div class="content">
+
+
+        <paper-shadow z="1" ng-click="dialog=!dialog" ng-show="vm.selected.item" class="content">
+            <core-toolbar class="white-toolbar">
+
+                <!-- header -->
+                <span flex>{{ vm.selected.item.title }}</span>
+
+                <!-- buttons -->
+                <core-icon-button icon="editor:mode-edit" ng-click="itemEditForm=!itemEditForm"></core-icon-button>
+                <core-icon-button icon="more-vert" ng-click="alert('more vert')"></core-icon-button>
+
+            </core-toolbar>
+
+            <!-- edit item form -->
+            <div class="content" ng-show="itemEditForm">
+                <form name="itemEditForm" class="" novalidate>
+
+                    <!-- TODO: select subdomain/domain -->
+
+                    <!-- item title -->
+                    <!--                     <div class="edit-form-field">
+                        <paper-input-decorator floatingLabel label="Bezeichnung">
+                            <input name="_title" id="title" type="text" ng-model="vm.selected.item.title" required pattern=".*" />
+                        </paper-input-decorator>
+
+                        <div ng-if="itemEditForm._title.$touched || !itemEditForm._title.$invalid" ng-messages="itemEditForm._title.$error">
+                            <div ng-message="required" class="form-error">Geben Sie eine Bezeichnung für das Item an</div>
+                        </div>
+                    </div> -->
+
+                    <!-- behaviours -->
+                    <paper-shadow z="1" class="edit-form-field" ng-repeat="behaviour in vm.selected.item.behaviours | orderBy:niveau">
+                        <core-toolbar class="behaviour">
+<!--                             <core-menu-button>
+                                <paper-button icon="menu" role="button" tabindex="1">Niveau {{ $index+1 }}</paper-button>
+                                <core-dropdown class="dropdown">
+                                    <core-menu class="menu">
+                                        <core-item>Share</core-item>
+                                        <core-item>Settings</core-item>
+                                        <core-item>Help</core-item>
+                                    </core-menu>
+                                </core-dropdown>
+                            </core-menu-button> -->
+
+                            <!-- header -->
+                            <span flex>Niveau {{ $index+1 }}</span>
+
+                            <!-- buttons -->
+                            <core-icon-button icon="more-vert" ng-click="alert('more vert')"></core-icon-button>
+
+                        </core-toolbar>
+
+<!--                         <core-item class="behaviour">
+                        </core-item>
+
+ -->
+                            <!-- <paper-button raised role="button" tabindex="1">Niveau {{ $index+1 }}</paper-button> -->
+
+                            <!-- <paper-fab mini icon="label" ng-click="vm.addExample(behaviour)"></paper-fab> -->
+	<div class="content">
+                            <span flex class="content">{{behaviour.description}} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos voluptate minima repudiandae optio, perspiciatis, quasi ea rerum. Voluptatem facere, distinctio harum quibusdam unde, amet, cum accusantium facilis reiciendis aut eos!</p>
+	</div>
+
+
+                        <!--                         <paper-input-decorator floatingLabel label="Niveau {{ $index + 1 }}">
+                            <input name="_behaviour{{ $index + 1 }}" id="behaviour{{ $index + 1 }}" type="text" ng-model="behaviour.description" minlength="5" />
+                        </paper-input-decorator> -->
+
+                        <div class="content" ng-repeat="example in behaviour.examples">
+                                <span flex class="content">{{example.description}}</p>
+
+<!--                             <core-item class="example">
+                                <core-icon icon="label-outline" ng-click="vm.addExample(behaviour)"></core-icon>
+                                <p flex>{{example.description}}</p>
+                            </core-item>
+
+ -->                            <!--                             <paper-input-decorator floatingLabel label="Beispiel {{ $index + 1 }}">
+                                <input name="_example{{ $index + 1 }}" id="example{{ $index + 1 }}" type="text" ng-model="example.description" minlength="5" />
+                            </paper-input-decorator> -->
+
+                            <!--                        <core-field>
+                                <core-icon icon="description"></core-icon>
+                                <label>Beispiel {{ $index + 1 }}</label>
+                                <input placeholder="Geben Sie hier Ihr Beispiel ein" committedValue="{{example.description}}" flex>
+                            </core-field> -->
+
+                        </div>
+                        <!--
+                        <core-field>
+                            <core-icon icon="note-add"></core-icon>
+                            <label>Neues Beispiel hinzufügen</label>
+                            <input placeholder="Geben Sie hier Ihr Beispiel ein" flex>
+                        </core-field>
+ -->
+                        <!-- <paper-fab mini icon="add" ng-click="vm.addExample(behaviour)"></paper-fab> -->
+                        <!-- <paper-fab mini icon="trash" ng-click="vm.removeExample(behaviour)"></paper-fab> -->
+                    </paper-shadow>
+
+                    <!-- Submit Button -->
+                    <paper-button affirmative ng-disabled="itemEditForm.$invalid" class="submit-button" ng-click="vm.createUser(newUser)">
+                        Benutzer erstellen
+                    </paper-button>
+                </form>
+            </div>
+
+            <div class="behaviours content card-container" ng-hide="itemEditForm">
+                <paper-shadow z="2" class="card behaviour-card" ng-repeat="behaviour in vm.selected.item.behaviours" ng-click="vm.selected.behaviour = behaviour">
+
+                    <core-toolbar>
+                        <span flex>Niveau {{ behaviour.niveau }}</span>
+                    </core-toolbar>
+
+                    <div ng-hide="vm.selected.behaviour">
+                        <div class="behaviour-description">
+                            {{ behaviour.description }}
+                        </div>
+                        <hr>
+                        <div class="examples">
+                            <div class="example" ng-repeat="example in behaviour.examples">
+                                {{ example.description }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="vm.selected.behaviour==behaviour" layout vertical>
+                        <div class="with-help" ng-click="vm.observation({behaviourId:behaviour.id,help:true})">
+                            mit Hilfe
+                        </div>
+
+                        <div class="without-help" ng-click="vm.observation({behaviour:behaviour.id,help:false})">
+                            ohne Hilfe
+                        </div>
+
+                    </div>
+                </paper-shadow>
+
+                <div horizontal layout reverse>
+                    <paper-button raised noink class="save-button" role="button" tabindex="0">speichern</paper-button>
+                    <paper-button raised role="button" tabindex="1">mehr</paper-button>
+                    <paper-button raised role="button" tabindex="2">weniger</paper-button>
+                    <paper-button raised role="button" tabindex="3">kein</paper-button>
+                </div>
+            </div>
+        </paper-shadow>
+    </div>
+</paper-shadow>

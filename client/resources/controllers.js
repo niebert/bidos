@@ -46,40 +46,72 @@
         return;
       }
 
-      // $state.transitionTo('auth.home', {id: kid.id}, { location: true, inherit: true, relative: $state.$current, notify: false });
-      // $state.go('auth.home', {kidId: kid.id});
+      if (typeof kid === 'number') {
+        kid = _.chain(vm.data.resources.groups).map('kids').flatten().select({id:kid}).first().value();
+      }
 
       // get selected kid from nested resource tree
-      vm.selected.kid = _.chain(vm.data.resources.groups).map('kids').flatten().select(kid).first().value();
+      vm.selected.kid = kid;
       console.log(vm.selected.kid);
     };
 
     vm.selectItem = function(item) {
       if (!item) {
+        delete(vm.selected.observation);
         delete(vm.selected.item);
         delete(vm.selected.subdomain);
         delete(vm.selected.domain);
         return;
       }
+
+      if (typeof item === 'number') {
+        item = _.chain(vm.data.resources.domains).map('subdomains').flatten().map('items').flatten().select({id:item}).first().value();
+      }
+
       vm.selected.item = item;
       vm.selected.subdomain = _.select(vm.data.subdomains, {id: item.subdomain_id})[0];
       vm.selected.domain = _.select(vm.data.domains, {id: vm.selected.subdomain.domain_id})[0];
     };
 
-    vm.observation = function(observation) {
-      if (observation.examples) {
-        // save examples marked as draft
+    // author_id, item_id, value, help
+    vm.makeObservation = function(observation) {
+      if (observation.value <= 0) {
+        delete(vm.selected.behaviour);
       }
 
-      resourceService.post('observation', {
+      console.info(observation);
+      resourceService.create('observation', {
         item_id: observation.itemId,
         author_id: $rootScope.auth.id,
-        behaviour_id: observation.behaviourId
+        value: observation.value,
+        help: observation.help || null
+      });
+    };
+
+    vm.selectBehaviour = function(behaviour) {
+      if (!behaviour) {
+        delete(vm.selected.behaviour);
+        return;
+      }
+
+      vm.selected.behaviour = behaviour;
+      console.log(behaviour);
+    };
+
+    vm.addExample = function(behaviour) {
+      behaviour.push({
+        behaviour_id: behaviour.id
+      });
+    };
+
+    vm.removeExample = function(example) {
+      vm.data.examples.behaviour.push({
+        behaviour_id: behaviour.id
       });
     };
 
     vm.getData = function(role) {
-      var resources = ['resources', 'kid', 'group', 'domain', 'subdomain', 'item'];
+      var resources = ['resources', 'kid', 'group', 'domain', 'subdomain', 'item', 'example', 'behaviour'];
 
       // only admin needs users
       // XXX backend should respond w/ 5xx if we're not admin

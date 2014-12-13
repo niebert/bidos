@@ -6,10 +6,9 @@
   .directive('bidosKid', [function () {
     return {
       restrict: 'E',
-      scope: { kid: '@' },
+      scope: { vm: '=' },
       templateUrl: 'resources/directives/kid-directive.html',
       link: function (scope, element, attributes) {
-        debugger
       }
     };
   }]);

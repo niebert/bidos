@@ -1,27 +1,20 @@
-<core-toolbar id="mainheader" class="">
-    <!-- <span flex ng-hide="vm.selected.kid">Bitte wählen Sie ein Kind aus</span> -->
-    <!-- <span flex ng-show="vm.selected.kid" ng-hide="vm.selected.item">Bitte wählen Sie ein Item aus</span> -->
+<core-toolbar ng-class="{'child-toolbar': vm.selected.kid}">
 
-    <!-- a button to hide/show the menu on narrow displays -->
-    <core-icon-button id="navicon" icon="menu">
-    </core-icon-button>
+    <!-- header -->
+    <span flex ng-hide="vm.selected.kid">Bitte wählen Sie ein Kind aus</span>
+    <span flex ng-show="vm.selected.kid" ng-click="kidMenu=!kidMenu">{{ vm.selected.kid.name }}</span>
 
-    <core-menu-button>
+    <!-- buttons -->
+    <div ng-show="vm.selected.kid">
         <core-icon-button icon="menu"></core-icon-button>
-        <core-dropdown class="dropdown" layered halign="right" valign="top">
-            <core-menu z="1">
-                <core-item>Alle Kinder anzeigen</core-item>
-                <core-item>Alle Gruppen anzeigen</core-item>
-            </core-menu>
-        </core-dropdown>
-    </core-menu-button>
-
-    <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
-    <link rel="import" href="/resources/assets/kid.new-form-overlay.html">
+        <core-icon-button icon="chevron-left" ng-click="vm.selectKid(vm.selected.kid.id - 1)"></core-icon-button>
+        <core-icon-button icon="chevron-right" ng-click="vm.selectKid(vm.selected.kid.id + 1)"></core-icon-button>
+        <core-icon-button icon="clear" ng-click="vm.selectKid(null)"></core-icon-button>
+    </div>
 
 </core-toolbar>
 
-<bidos-kid kid="vm.selected.kid"></bidos-kid>
-<bidos-item item="vm.selected.item"></bidos-item>
+<bidos-kid vm="vm"></bidos-kid>
+<bidos-item vm="vm"></bidos-item>
 
-<bidos-debug></bidos-debug>
+<!-- <bidos-debug></bidos-debug> -->
