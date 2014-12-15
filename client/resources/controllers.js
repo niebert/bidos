@@ -35,9 +35,6 @@
       updateResource: updateResource,
       destroyResource: destroyResource,
 
-      addExampleToBehaviour: addExampleToBehaviour,
-      removeExampleFromBehaviour: removeExampleFromBehaviour,
-
       createRandomKid: createRandomKid,
 
       newItem: newItem,
@@ -224,15 +221,75 @@
 
 
 
-    var Behaviour = function (formDataBehaviourObject) {
+    var Example = function () {
+      this.behaviour_id = null;
+      this.description = null;
 
-      var fdbo = formDataBehaviourObject;
+      this.save = function(behaviourId) {
+        createResource('example', {
+          behaviour_id: behaviourId,
+          description: this.description
+        }).then(function(example) {
+          console.log('example created', example);
+        });
+      };
 
-      this.niveau = fdbo.niveau;
+      this.check = function() {
 
-      this.addExample = function(example) {
-        this.examples.push(example);
-        return this.examples;
+        if (!this.description) {
+          console.warn('example check: no description');
+          return false;
+        }
+
+        if (!this.behaviour_id) {
+          console.warn('example check: no behaviour_id');
+          return false;
+        }
+
+        console.info('example checks passed', this.niveau, this.behaviour_id);
+        return true;
+
+      }.bind(this);
+    };
+
+
+
+    var Behaviour = function (niveau) {
+      this.niveau = niveau;
+      this.examples = [];
+      this.description = null;
+      this.item_id = null;
+
+      this.save = function(itemId) {
+        createResource('behaviour', {
+          item_id: itemId,
+          niveau: this.niveau,
+          description: this.description
+        }).then(function(behaviour) {
+
+          console.info('new behaviour arrived');
+
+          var queries = _.map(this.examples, function(example) {
+            return $q(function(resolve, reject) {
+              resolve(example.save(behaviour.id));
+            });
+          });
+
+          if (!_.all(queries)) {
+            console.warn('behaviour checks failed');
+            return false;
+          } else {
+            $q.all(queries).then(function(response) {
+              console.info('all examples created');
+              vm.data.examples.concat(response.data);
+            });
+          }
+
+        }.bind(this));
+      }.bind(this);
+
+      this.addExample = function() {
+        this.examples.push(new Example());
       }.bind(this);
 
       this.check = function() {
@@ -273,10 +330,7 @@
       this.title = null;
       this.subdomain_id = null;
       this.behaviours = Array.apply(0, new Array(ITEM_BEHAVIOUR_COUNT)).map(function(d, i) {
-        return new Behaviour({
-          niveau: i + 1,
-          description: null
-        });
+        return new Behaviour(i + 1);
       });
 
 
@@ -320,18 +374,10 @@
             console.info('new item arrived');
 
             var queries = _.map(this.behaviours, function(behaviour) {
-              console.log('creating behaviour');
-              behaviour.item_id = item.id;
-              behaviour.description = "asdfblaqwer";
-
-              if (behaviour.check()) {
-                return createResource('behaviour', behaviour);
-              } else {
-                return false;
-              }
+              return $q(function(resolve, reject) {
+                resolve(behaviour.save(item.id));
+              });
             });
-
-
 
             if (!_.all(queries)) {
               console.warn('behaviour checks failed');
@@ -349,21 +395,6 @@
         }
       }.bind(this);
     };
-
-
-
-
-
-    function addExampleToBehaviour(behaviour) {
-      behaviour.addExample("blablabla");
-    }
-
-
-
-
-
-    function removeExampleFromBehaviour(behaviour) {
-    }
 
 
 

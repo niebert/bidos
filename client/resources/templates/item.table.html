@@ -21,51 +21,48 @@
 <div class="new-card" ng-show="vm.new.item">
     <paper-shadow z="3" class="">
 
-        <pre class="debug">{{ vm.new.item | json }}</pre>
-
         <core-toolbar style="background-color: #88a8fb;">
             <span flex>{{ vm.new.item.name }}</span>
             <core-icon-button icon="save" ng-click="vm.saveItem()"> </core-icon-button>
             <core-icon-button icon="clear" ng-click="vm.new.item=false"> </core-icon-button>
         </core-toolbar>
 
-        <div class="content">
+        <md-content layout="row">
 
-            <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
-            </div>
-
-            <div class="content"><span class="header">Kompetenzbereich:</span> {{vm.new.item | domain}}
-                <div class="content"><span class="header">Teilbereich:</span> {{vm.new.item | subdomain}}
-                    <div class="content"><span class="header">Kompetenz:</span> {{vm.new.item.title}}
-                    </div>
+            <div flex="33" class="content">
+                <span class="header">Kompetenzbereich:</span> {{vm.new.item | domain}}
+                <div class="content">
+                    <span class="header">Teilbereich:</span> {{vm.new.item | subdomain}}
                 </div>
             </div>
 
-            <md-content>
-                <form>
+            <div flex="66">
 
-                    <div class="row">
-                        <md-text-float label="Titel" ng-model="vm.new.item.title"></md-text-float>
-                    </div>
+                <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
+                </div>
 
-                    <select ng-model="vm.new.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
-                    </select>
+                <md-text-float label="Titel" ng-model="vm.new.item.title"></md-text-float>
 
-                </form>
-            </md-content>
+                <select ng-model="vm.new.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                </select>
+            </div>
 
-            <hr>
-            <md-content>
+        </md-content>
 
-                <md-text-float ng-repeat="behaviour in vm.new.item.behaviours" label="Niveau {{behaviour.niveau}}" ng-model="behaviour.description"></md-text-float>
+        <hr>
 
-                <md-button ng-disabled="isDisabled" class="md-primary" ng-click="vm.addExampleToBehaviour">Add Example</md-button>
+        <md-content layout="row">
+            <div flex="66" ng-repeat="behaviour in vm.new.item.behaviours">
+                <md-text-float label="Niveau {{behaviour.niveau}}" ng-model="behaviour.description"></md-text-float>
+                <md-button class="" ng-click="behaviour.addExample()">Add Example</md-button>
 
+                <div ng-repeat="example in behaviour.examples">
+                    <md-text-float label="Beispiel {{ $index + 1 }}" ng-model="example.description"></md-text-float>
+                    <md-button class="" ng-click="behaviour.examples.splice($index, 1)">Remove Example</md-button>
+                </div>
+            </div>
+        </md-content>
 
-
-
-            </md-content>
-        </div>
     </paper-shadow>
 </div>
 
@@ -137,8 +134,10 @@
 
 
 
+
 <!-- TABLE -->
 <paper-shadow z="1">
+    <pre class="debug">{{ vm.new.item | json }}</pre>
     <div class="content">
         <table>
             <thead>

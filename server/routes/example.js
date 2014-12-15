@@ -24,6 +24,11 @@
       this.body = { examples: result.rows };
     })
 
+
+
+
+
+
     .get('getExample', '/:id', function *getExample() {
       var result = yield this.pg.db.client.query_({
         name: 'getExample',
@@ -33,14 +38,49 @@
       this.body = result.rows;
     })
 
+
+
+
+
+
+
+
     .post('createExample', '/', function *createExample() {
-      var result = yield this.pg.db.client.query_({
-        name: 'createExample',
-        text: 'INSERT INTO examples (title, description) VALUES ($1, $2) RETURNING *',
-        values: _.map(this.request.body)
-      });
-      this.body = result.rows;
+      if (!_.size(this.request.body)) {
+
+        console.log('[route failure] createExample: this.request.body is empty');
+        this.status = 500;
+
+      } else {
+
+        var keys = _.keys(this.request.body),
+            values = _.values(this.request.body),
+            indices = Array.apply(0, Array(keys.length)).map(function(d, i) { return '$' + (i + 1); }); // <3
+
+        try {
+
+          var result = yield this.pg.db.client.query_({
+            name: 'createExample',
+            text: 'INSERT INTO examples (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+          this.body = result.rows;
+
+        } catch (err) {
+
+          this.status = 500;
+          this.body = { dberror: { err: err, message: err.message }}; // FIXME
+
+        }
+      }
     })
+
+
+
+
+
+
 
     .patch('updateExample', '/:id', function *updateExample() {
       var p = parameterizedQuery(this.request.body, this.params.id);
@@ -49,6 +89,11 @@
       );
       this.body = result.rows;
     })
+
+
+
+
+
 
     .delete('deleteExample', '/:id', function *deleteExample() {
       var result = yield this.pg.db.client.query_({
