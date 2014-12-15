@@ -34,15 +34,21 @@
     })
 
     .post('createKid', '/', function *createKid() {
+
+      // TODO!! make this more dynamic w/o hardcoded values
+
       var result = yield this.pg.db.client.query_({
         name: 'createKid',
-        text: 'INSERT INTO kids (title, description) VALUES ($1, $2) RETURNING *',
+        text: 'INSERT INTO kids (name, age, sex, group_id) VALUES ($1, $2, $3, $4) RETURNING *',
         values: _.map(this.request.body)
       });
       this.body = result.rows;
     })
 
     .patch('updateKid', '/:id', function *updateKid() {
+      debugger
+      console.log('UPDATE KID');
+      console.log(this.request.body);
       var p = parameterizedQuery(this.request.body, this.params.id);
       var result = yield this.pg.db.client.query_(
         'UPDATE kids SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values

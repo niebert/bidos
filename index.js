@@ -26,6 +26,7 @@
 
   app.use(require('koa-bodyparser')());
   app.use(require('koa-compress')());
+  app.use(require('koa-validate')());
 
   if (require.main === module) {
     app.use(require('koa-logger')());

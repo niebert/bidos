@@ -1,0 +1,15 @@
+<core-toolbar>
+
+    <core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();">
+    </core-icon-button>
+
+    <!-- header -->
+    <span flex>Dashboard</span>
+
+    <!-- buttons -->
+    <div ng-show="vm.selected.kid">
+        <core-icon-button icon="menu"></core-icon-button>
+    </div>
+
+</core-toolbar>
+

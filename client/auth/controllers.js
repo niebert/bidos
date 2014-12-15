@@ -20,11 +20,11 @@
     // init: decrypt auth token and check if we're authenticated
     UserFactory.getUser()
     .then(function authorized(user) {
-      console.info('[AuthController] authorized');
+      console.log("%cAUTHORIZED", "color: green; font-size: 1.2em", user);
       $rootScope.auth = user;
       $state.go('auth.home');
     }, function unauthorized() {
-      console.warn('[AuthController] not authorized');
+      console.log("%cNOT AUTHORIZED", "color: green; font-size: 1.2em, padding: 16px;");
       $state.go('public.login');
     });
 

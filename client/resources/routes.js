@@ -23,10 +23,67 @@
         }
       })
 
+
+      // most of practitioners stuff happens here
+      .state('auth.dashboard', {
+        url: '/dashboard/kid=:kidId&item=:itemId',
+        views: {
+          main: { templateUrl: 'dashboard.html' }
+        }
+      })
+
+
+      /* Kid
+         --------------------------------------------------------*/
+
+      .state('auth.kid', {
+        url: '/kid',
+        views: {
+          main: { templateUrl: 'resources/templates/kid.table.html' }
+        }
+      })
+
+
+      /* Item
+         --------------------------------------------------------*/
+
+      .state('auth.item', {
+        url: '/item',
+        views: {
+          main: { templateUrl: 'resources/templates/item.table.html' }
+        }
+      })
+
+
+      /* Observation
+         --------------------------------------------------------*/
+
+      .state('auth.observation', {
+        url: '/observation',
+        views: {
+          main: { templateUrl: 'resources/templates/observation.table.html' }
+        }
+      })
+
+
+      /* User
+         --------------------------------------------------------*/
+
       .state('auth.user', {
         url: '/user',
         views: {
-          main: { templateUrl: 'resources/assets/user.table.html' }
+          main: { templateUrl: 'resources/templates/user.table.html' }
+        }
+      })
+
+
+      /* Group
+         --------------------------------------------------------*/
+
+      .state('auth.group', {
+        url: '/group',
+        views: {
+          main: { templateUrl: 'resources/assets/group.table.html' }
         }
       })
 
@@ -74,19 +131,6 @@
       //   }
       // })
 
-      .state('auth.group', {
-        url: '/',
-        views: {
-          main: { templateUrl: 'resources/assets/group.table.html' }
-        }
-      })
-
-      .state('auth.group.show', {
-        url: ':groupId/details',
-        views: {
-          main: { templateUrl: 'resources/assets/group.show.html' }
-        }
-      })
 
       ;
 

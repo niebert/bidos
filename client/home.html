@@ -1,5 +1,8 @@
 <core-toolbar ng-class="{'child-toolbar': vm.selected.kid}">
 
+    <core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();">
+    </core-icon-button>
+
     <!-- header -->
     <span flex ng-hide="vm.selected.kid">Bitte wählen Sie ein Kind aus</span>
     <span flex ng-show="vm.selected.kid" ng-click="kidMenu=!kidMenu">{{ vm.selected.kid.name }}</span>

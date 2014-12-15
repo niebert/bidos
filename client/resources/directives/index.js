@@ -4,12 +4,9 @@
 (function() {
   'use strict';
 
-  var _ = require('lodash');
-
-  require('./services');
-  require('./directives/item-directive');
-  require('./directives/kid-directive');
-  require('./directives/debug-directive');
+  require('./item-directive');
+  require('./kid-directive');
+  require('./debug-directive');
 
   angular.module('bidos.resource.directives', [
     'bidos.item-directive',

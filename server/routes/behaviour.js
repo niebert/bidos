@@ -24,6 +24,10 @@
       this.body = { behaviours: result.rows };
     })
 
+
+
+
+
     .get('getBehaviour', '/:id', function *getBehaviour() {
       var result = yield this.pg.db.client.query_({
         name: 'getBehaviour',
@@ -33,14 +37,50 @@
       this.body = result.rows;
     })
 
+
+
+
+
+
+
+
     .post('createBehaviour', '/', function *createBehaviour() {
-      var result = yield this.pg.db.client.query_({
-        name: 'createBehaviour',
-        text: 'INSERT INTO behaviours (title, description) VALUES ($1, $2) RETURNING *',
-        values: _.map(this.request.body)
-      });
-      this.body = result.rows;
+      if (!_.size(this.request.body)) {
+
+        console.log('[route failure] createBehaviour: this.request.body is empty');
+        this.status = 500;
+
+      } else {
+
+        var keys = _.keys(this.request.body),
+            values = _.values(this.request.body),
+            indices = Array.apply(0, Array(keys.length)).map(function(d, i) { return '$' + (i + 1); }); // <3
+
+        try {
+
+          var result = yield this.pg.db.client.query_({
+            name: 'createBehaviour',
+            text: 'INSERT INTO behaviours (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+          this.body = result.rows;
+
+        } catch (err) {
+
+          this.status = 500;
+          this.body = { dberror: { err: err, message: err.message }}; // FIXME
+
+        }
+      }
     })
+
+
+
+
+
+
+
 
     .patch('updateBehaviour', '/:id', function *updateBehaviour() {
       var p = parameterizedQuery(this.request.body, this.params.id);
@@ -49,6 +89,10 @@
       );
       this.body = result.rows;
     })
+
+
+
+
 
     .delete('deleteBehaviour', '/:id', function *deleteBehaviour() {
       var result = yield this.pg.db.client.query_({

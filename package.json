@@ -19,6 +19,7 @@
     "koa-pg": "^0.23.0",
     "koa-router": "^3.7.0",
     "koa-static": "^1.4.7",
+    "koa-validate": "^0.2.5",
     "lodash": "^2.4.1"
   },
   "devDependencies": {

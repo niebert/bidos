@@ -52,6 +52,10 @@
         this.request.body.username = generateUsername(this.request.body.name);
       }
 
+
+      // TODO you can't just insert the password... create new users by
+      // letting them sign up for now
+
       var result = yield this.pg.db.client.query_({
         name: 'createUser',
         text: 'INSERT INTO users (name, email, password, username) VALUES ($1, $2, $3, $4) RETURNING *',

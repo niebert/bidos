@@ -57,6 +57,12 @@ CREATE TABLE IF NOT EXISTS kids (
 
   name          TEXT NOT NULL,
 
+  ethnicity     TEXT,
+  hair          TEXT,
+  eyes          TEXT,
+  age           INT,
+  sex           INT,
+
   group_id      INT REFERENCES groups(id),
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -100,7 +106,7 @@ CREATE TABLE IF NOT EXISTS behaviours (
   niveau        INT NOT NULL,
   description   TEXT NOT NULL,
 
-  item_id       INT REFERENCES items(id) NOT NULL,
+  item_id       INT REFERENCES items(id), -- TODO NOT NULL
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -109,7 +115,7 @@ CREATE TABLE IF NOT EXISTS behaviours (
 CREATE TABLE IF NOT EXISTS examples (
   id            SERIAL PRIMARY KEY,
 
-  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
+  behaviour_id  INT REFERENCES behaviours(id), -- TODO NOT NULL
   description   TEXT NOT NULL,
 
   verified      BOOLEAN DEFAULT FALSE,
@@ -167,7 +173,7 @@ CREATE TABLE IF NOT EXISTS observations (
 --   behaviour_id  INT REFERENCES behaviours(id)
 -- );
 
--- auth table to run authentication queries against
+-- auth table to run authentication queries against (back end only!)
 CREATE VIEW auth AS
 SELECT users.id,
        username,
@@ -175,6 +181,10 @@ SELECT users.id,
        password_hash
 FROM users
 LEFT JOIN roles ON roles.id=role_id;
+
+-- auth table to run authentication queries against
+CREATE VIEW usernames AS
+SELECT username FROM users;
 
 -- resource 1: categories + items
 CREATE VIEW item_resources AS
@@ -381,110 +391,6 @@ INSERT INTO groups (name) VALUES ('Fuchsia.io');
 INSERT INTO groups (name) VALUES ('Polymer Industries');
 INSERT INTO groups (name) VALUES ('Aperture Labs');
 INSERT INTO groups (name) VALUES ('Fracture.org');
-
-INSERT INTO kids (group_id, name) VALUES ('1', 'Wolf Prantl');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Heinrich Rothmann');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Joseph Priesner');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Helmina Rommel');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Hannah Boll');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Cecilia Wolff');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Fabian Bormann');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Detlev Haeberle');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Erik Eugster');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Cecilia Rabe');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Hildegard Lobe');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Eckhardt Drexler');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Alfons Heider');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Ben Stellwagen');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Nico Glas');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Willi Fähnrich');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Elisa Braunlich');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Hedwig Wintsch');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Johanna Rehder');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Christopher Huppert');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Brigitte Pichler');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Adam Josten');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Emma Uffermann');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Friedrich Brauner');
-INSERT INTO kids (group_id, name) VALUES ('1', 'Hanns Faerber');
-
-INSERT INTO kids (group_id, name) VALUES ('2', 'Albuin Christmann');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Felizitas Baader');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Elena Reger');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Frank Uffermann');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Christiane Tisch');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Johann Dillinger');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Johanne Veil');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Jonathan Deichgräber');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Kilian Macher');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Justin Korsch');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Felizia Holz');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Erica Reimold');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Alexandra Wendlinger');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Ingrid Berlepsch');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Niklas Hopfer');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Florentine Käutner');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Meike Kindler');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Beatrix Marks');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Heike Hesse');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Lili Imhoff');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Yannik Rothenstein');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Thomas Lemmer');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Marko Honigsmann');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Veit Pfisterer');
-INSERT INTO kids (group_id, name) VALUES ('2', 'Philip Tegeler');
-
-INSERT INTO kids (group_id, name) VALUES ('3', 'Patrizia Eichenberg');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Eckart Scherrer');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Hannelore Wallmann');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Evelyn Lauterbach');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Valentina Curschmann');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Angelina Bierbaum');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Linus Lobe');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Catrin Degener');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Gregor Kestenbaum');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Volker Kaulen');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Reinhold Balmer');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Elli Tausch');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Florentina Wilpert');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Walpurgis Hengsbach');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Walburg Wandesleben');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Marion Hammesfahr');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Beate Engel');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Marina Sehlmann');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Ben Achleitner');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Marie Seidl');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Asser Bleich');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Helge Wittgenstein');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Clara Braunlich');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Maja Härig');
-INSERT INTO kids (group_id, name) VALUES ('3', 'Paula Hengstler');
-
-INSERT INTO kids (group_id, name) VALUES ('4', 'Per Von Hardenberg');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Ingeborg Fincke');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Laura Feuerstein');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Adalger Himmler');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Gerwald Denker');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Koloman Goethe');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Hannes Seeliger');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Rupprecht Dreyfuss');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Theresia Neufeld');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Raimund Oppolzer');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Angelo Krist');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Klemens Augenstein');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Ottilie Strecker');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Oscar Grau');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Therese Stuhr');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Lea Hönigswald');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Erik Becken');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Andreas Tugendhat');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Eckhart Mertz');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Helge Gustloff');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Maja Heldmann');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Magdalena Eichinger');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Hartmut Landsberg');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Katja Niedenthal');
-INSERT INTO kids (group_id, name) VALUES ('4', 'Emily Riedel');
 
 INSERT INTO domains (title) VALUES ('Personale Kompetenzen');
 INSERT INTO domains (title) VALUES ('Sprachliche Kompetenzen');

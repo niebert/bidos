@@ -1,28 +1,30 @@
 <!-- MAIN RESOURCE CONTROLLER -->
-<core-drawer-panel ng-controller="ResourceController as vm" id="drawerPanel">
-
+<core-drawer-panel responsiveWidth="900em" ng-controller="ResourceController as vm" id="drawerPanel">
     <core-header-panel drawer>
         <core-toolbar id="navheader" class="">
             <span flex ui-sref="auth.home">BiDoS</span>
         </core-toolbar>
 
+        <core-item ui-sref="auth.dashboard" label="Dashboard"></core-item>
+        <core-item ui-sref="auth.home" label="Neue Beobachtung"></core-item>
+
         <core-menu>
-            <core-submenu class="drawer-menu" label="Assets">
-                <core-item ui-sref="auth.domain" label="Domains"></core-item>
-                <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item>
-                <core-item ui-sref="auth.item.table" label="Items"></core-item>
-                <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item>
-                <core-item ui-sref="auth.example" label="Examples"></core-item>
-                <core-item ui-sref="auth.observation" label="Observations"></core-item>
-                <core-item ui-sref="auth.kid" label="Kids"></core-item>
-                <core-item ui-sref="auth.group" label="Groups"></core-item>
-                <core-item ui-sref="auth.user" label="Users"></core-item>
-            </core-submenu>
+            <!-- <core-submenu class="drawer-menu" label="Ressourcen"> -->
+                <!-- <core-item ui-sref="auth.domain" label="Domains"></core-item> -->
+                <!-- <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item> -->
+                <core-item ui-sref="auth.item" label="Items"></core-item>
+                <!-- <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item> -->
+                <!-- <core-item ui-sref="auth.example" label="Examples"></core-item> -->
+                <core-item ui-sref="auth.observation" label="Beobachtungen"></core-item>
+                <core-item ui-sref="auth.kid" label="Kinder"></core-item>
+                <!-- <core-item ui-sref="auth.group" label="Groups"></core-item> -->
+                <core-item ui-sref="auth.user" label="Benutzer"></core-item>
+            <!-- </core-submenu> -->
         </core-menu>
 
     </core-header-panel>
 
     <!-- MAIN CONTENT -->
-    <core-header-panel main ui-view="main">
+    <core-header-panel main ui-view="main" id="main">
     </core-header-panel>
 </core-drawer-panel>

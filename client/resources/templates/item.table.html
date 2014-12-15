@@ -1,0 +1,164 @@
+<!-- TOOLBAR -->
+<core-toolbar id="mainheader">
+
+    <core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
+
+    <span flex ng-hide="vm.edit.item">Items ({{ vm.data.items.length }})</span>
+    <span flex ng-show="vm.edit.item">Item bearbeiten</span>
+    <span flex ng-show="vm.new.item">Item erstellen</span>
+
+    <core-icon-button icon="add-circle" ng-click="vm.newItem()"></core-icon-button>
+
+    <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+    <!-- <link rel="import" href="/resources/templates/item.form-overlay.html"> -->
+</core-toolbar>
+
+
+
+
+
+<!-- NEW CARD -->
+<div class="new-card" ng-show="vm.new.item">
+    <paper-shadow z="3" class="">
+
+        <pre class="debug">{{ vm.new.item | json }}</pre>
+
+        <core-toolbar style="background-color: #88a8fb;">
+            <span flex>{{ vm.new.item.name }}</span>
+            <core-icon-button icon="save" ng-click="vm.saveItem()"> </core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.new.item=false"> </core-icon-button>
+        </core-toolbar>
+
+        <div class="content">
+
+            <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
+            </div>
+
+            <div class="content"><span class="header">Kompetenzbereich:</span> {{vm.new.item | domain}}
+                <div class="content"><span class="header">Teilbereich:</span> {{vm.new.item | subdomain}}
+                    <div class="content"><span class="header">Kompetenz:</span> {{vm.new.item.title}}
+                    </div>
+                </div>
+            </div>
+
+            <md-content>
+                <form>
+
+                    <div class="row">
+                        <md-text-float label="Titel" ng-model="vm.new.item.title"></md-text-float>
+                    </div>
+
+                    <select ng-model="vm.new.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                    </select>
+
+                </form>
+            </md-content>
+
+            <hr>
+            <md-content>
+
+                <md-text-float ng-repeat="behaviour in vm.new.item.behaviours" label="Niveau {{behaviour.niveau}}" ng-model="behaviour.description"></md-text-float>
+
+                <md-button ng-disabled="isDisabled" class="md-primary" ng-click="vm.addExampleToBehaviour">Add Example</md-button>
+
+
+
+
+            </md-content>
+        </div>
+    </paper-shadow>
+</div>
+
+
+
+<!-- EDIT CARD -->
+<div class="edit-card" ng-show="vm.edit.item">
+    <paper-shadow z="3" class="">
+        <core-toolbar style="background-color: #fc9999;">
+
+            <span flex>{{ vm.selected.item.title }}</span>
+
+            <core-icon-button icon="save" ng-click="vm.updateResource('item', vm.edit.item)"> </core-icon-button>
+            <core-icon-button icon="delete" ng-click="vm.destroyResource('item', vm.edit.item)"> </core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.edit.item=false"> </core-icon-button>
+
+        </core-toolbar>
+        <div class="content">
+
+            <div class="content"><span class="header">Kompetenzbereich:</span> {{vm.edit.item | domain}}
+                <div class="content"><span class="header">Teilbereich:</span> {{vm.edit.item | subdomain}}
+                    <div class="content"><span class="header">Kompetenz:</span> {{vm.edit.item.title}}
+                    </div>
+                </div>
+            </div>
+
+            <md-content>
+                <form>
+
+                    <div class="row">
+                        <md-text-float label="Titel" ng-model="vm.edit.item.title"></md-text-float>
+                    </div>
+
+                    <select ng-model="vm.edit.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                    </select>
+
+                </form>
+            </md-content>
+
+        </div>
+    </paper-shadow>
+</div>
+
+
+
+
+<!-- DETAIL CARD -->
+<div class="detail-card" ng-show="vm.selected.item">
+    <paper-shadow z="3" class="">
+        <core-toolbar style="background-color: {{vm.selected.item.hair}};">
+
+            <span flex>{{ vm.selected.item.title }}</span>
+
+            <core-icon-button icon="create" ng-click="vm.editResource('item', vm.selected.item)"> </core-icon-button>
+            <core-icon-button icon="delete" ng-click="vm.destroyResource('item', vm.selected.item)"> </core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.selectResource('item', null)"> </core-icon-button>
+
+        </core-toolbar>
+        <div class="content">
+
+            <div class="detail">
+                <pre>{{ vm.selected.item | json }}</pre>
+            </div>
+
+        </div>
+    </paper-shadow>
+</div>
+
+
+
+
+<!-- TABLE -->
+<paper-shadow z="1">
+    <div class="content">
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Titel</th>
+                <th>Subdomain</th>
+                <th>Domain</th>
+                <th>Erstellt am</th>
+                <th>Bearbeitet am</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in vm.data.items | orderBy:id" ng-click="vm.selectResource('item', item)">
+                    <td> {{ item.id }} </td>
+                    <td> {{ item.title }} </td>
+                    <td> {{ item | subdomain }} </td>
+                    <td> {{ item | domain }} </td>
+                    <td> {{ item.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+                    <td> {{ item.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</paper-shadow>

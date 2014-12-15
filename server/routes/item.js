@@ -5,6 +5,7 @@
 
   var Router = require('koa-router');
   var _ = require('lodash');
+  var humps = require('humps');
 
   function parameterizedQuery(requestBody, id) {
     return {
@@ -33,20 +34,45 @@
       this.body = result.rows;
     })
 
+
+
+
+
     .post('createItem', '/', function *createItem() {
-      var result = yield this.pg.db.client.query_({
-        name: 'createItem',
-        text: 'INSERT INTO items (title, description) VALUES ($1, $2) RETURNING *',
-        values: _.map(this.request.body)
-      });
-      this.body = result.rows;
+      if (!_.size(this.request.body)) {
+        console.log('[route failure] createItem: this.request.body is empty');
+        this.status = 500;
+      } else {
+        var keys = _.keys(this.request.body),
+            values = _.values(this.request.body),
+            indices = Array.apply(0, Array(keys.length)).map(function(d, i) { return '$' + (i + 1); }); // <3
+
+        try {
+          var result = yield this.pg.db.client.query_({
+            name: 'createItem',
+            text: 'INSERT INTO items (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+          this.body = result.rows;
+        } catch (err) {
+          this.status = 500;
+          this.body = { dberror: { err: err, message: err.message }}; // FIXME
+        }
+      }
     })
+
+
+
+
+
 
     .patch('updateItem', '/:id', function *updateItem() {
       var p = parameterizedQuery(this.request.body, this.params.id);
       var result = yield this.pg.db.client.query_(
         'UPDATE items SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values
       );
+
       this.body = result.rows;
     })
 

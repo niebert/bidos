@@ -1,0 +1,103 @@
+<!-- TOOLBAR -->
+<core-toolbar id="mainheader">
+
+	<core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
+
+	<span flex ng-hide="vm.editMode">Benutzer ({{ vm.data.users.length }})</span>
+	<span flex ng-show="vm.editMode">Benutzer bearbeiten</span>
+	<span flex ng-show="vm.newMode">Benutzer erstellen</span>
+
+	<!-- INCLUDE FORM OVERLAY BUTTON HERE -->
+	<!-- <link rel="import" href="/resources/templates/user.form-overlay.html"> -->
+</core-toolbar>
+
+
+
+
+<!-- EDIT CARD -->
+<div class="edit-card" ng-show="vm.editMode">
+	<paper-shadow z="3" class="">
+		<core-toolbar style="background-color: #fc9999;">
+			<span flex>{{ vm.selected.user.name }}</span>
+			<core-icon-button icon="save" ng-click="vm.updateResource('user', vm.edit.user.id, vm.edit.user)"> </core-icon-button>
+			<core-icon-button icon="delete" ng-click="vm.destroyResource('user', vm.edit.user.id)"> </core-icon-button>
+			<core-icon-button icon="clear" ng-click="vm.editMode=false"> </core-icon-button>
+		</core-toolbar>
+		<div class="content">
+
+			<md-content>
+			  <form>
+				<div class="row">
+				  <md-text-float label="Name" ng-model="vm.edit.user.name"></md-text-float>
+				  <md-text-float label="Benutzername" ng-model="vm.edit.user.username"></md-text-float>
+				  <md-text-float label="E-Mail" ng-model="vm.edit.user.email"></md-text-float>
+
+					<h2>Gruppe:</h2>
+				  <md-radio-group ng-model="vm.edit.user.group_id">
+					  <md-radio-button ng-repeat="group in vm.data.groups" value="{{group.id}}" aria-label="group">{{group.name}}</md-radio-button>
+				  </md-radio-group>
+
+					<h2>Rolle:</h2>
+				  <md-radio-group ng-model="vm.edit.user.role_id">
+					  <md-radio-button value="1" aria-label="role">Administrator</md-radio-button>
+					  <md-radio-button value="2" aria-label="role">Practitioner</md-radio-button>
+					  <md-radio-button value="3" aria-label="role">Scientist</md-radio-button>
+				  </md-radio-group>
+				</div>
+			  </form>
+			</md-content>
+
+		</div>
+	</paper-shadow>
+</div>
+
+
+
+
+<!-- DETAIL CARD -->
+<div class="detail-card" ng-show="vm.selected.user">
+	<paper-shadow z="3" class="">
+		<core-toolbar style="background-color: {{vm.selected.user.hair}};">
+			<span flex>{{ vm.selected.user.name }}</span>
+			<!-- <core-icon-button icon="chevron-left" ng-click="vm.selectResource('user', {id:vm.selected.user.id-1})"> </core-icon-button> -->
+			<!-- <core-icon-button icon="chevron-right" ng-click="vm.selectResource('user', {id:vm.selected.user.id+1})"> </core-icon-button> -->
+			<core-icon-button icon="create" ng-click="vm.editResource('user', vm.selected.user)"> </core-icon-button>
+			<core-icon-button icon="delete" ng-click="vm.destroyResource('user', vm.selected.user)"> </core-icon-button>
+			<core-icon-button icon="clear" ng-click="vm.selectResource('user', null)"> </core-icon-button>
+		</core-toolbar>
+		<div class="content">
+			<div class="detail">
+<pre>{{ vm.selected.user | json }}</pre>
+			</div>
+		</div>
+	</paper-shadow>
+</div>
+
+
+
+
+<!-- TABLE -->
+<paper-shadow z="1">
+	<div class="content">
+		<table>
+			<thead>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Benutzername</th>
+				<th>E-Mail</th>
+				<th>Gruppe</th>
+				<th>Rolle</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="user in vm.data.users | orderBy:name" ng-click="vm.selectResource('user', user)">
+					<td> {{ user.id }} </td>
+					<td> {{ user.name }} </td>
+					<td> {{ user.username }} </td>
+					<td> {{ user.email }} </td>
+					<td> {{ user | groupName }} </td>
+					<td> {{ user.role_id | toRoleName }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</paper-shadow>
