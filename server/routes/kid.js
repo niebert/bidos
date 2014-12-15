@@ -24,6 +24,10 @@
       this.body = { kids: result.rows };
     })
 
+
+
+
+
     .get('getKid', '/:id', function *getKid() {
       var result = yield this.pg.db.client.query_({
         name: 'getKid',
@@ -33,17 +37,53 @@
       this.body = { kid: result.rows };
     })
 
+
+
+
+
+
+
+
+
     .post('createKid', '/', function *createKid() {
+      if (!_.size(this.request.body)) {
 
-      // TODO!! make this more dynamic w/o hardcoded values
+        console.log('[route failure] createKid: this.request.body is empty');
+        this.status = 500;
 
-      var result = yield this.pg.db.client.query_({
-        name: 'createKid',
-        text: 'INSERT INTO kids (name, age, sex, group_id) VALUES ($1, $2, $3, $4) RETURNING *',
-        values: _.map(this.request.body)
-      });
-      this.body = result.rows;
+      } else {
+
+        console.log(this.request.body);
+
+        var keys = _.keys(this.request.body),
+            values = _.values(this.request.body),
+            indices = Array.apply(0, Array(keys.length)).map(function(d, i) { return '$' + (i + 1); }); // <3
+
+        try {
+
+          var result = yield this.pg.db.client.query_({
+            name: 'createKid',
+            text: 'INSERT INTO kids (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+          this.body = result.rows;
+
+        } catch (err) {
+
+          this.status = 500;
+          this.body = { dberror: { err: err, message: err.message }}; // FIXME
+
+        }
+      }
     })
+
+
+
+
+
+
+
 
     .patch('updateKid', '/:id', function *updateKid() {
       debugger

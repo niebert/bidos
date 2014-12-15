@@ -1,138 +1,161 @@
-<!-- KID TABLE -->
-
+<!-- TOOLBAR -->
 <core-toolbar id="mainheader">
 
-    <core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();">
-    </core-icon-button>
+    <core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
 
-    <span flex ng-hide="editMode">Beobachtungen ({{ vm.data.observation.length }})</span>
-    <span flex ng-show="editMode">Beobachtunge bearbeiten</span>
-    <span flex ng-show="newMode">Beobachtunge erstellen</span>
+    <span flex ng-hide="vm.edit.observation">Beobachtungen ({{ vm.data.observations.length }})</span>
+    <span flex ng-show="vm.edit.observation">Beobachtung bearbeiten</span>
+    <span flex ng-show="vm.new.observation">Beobachtung erstellen</span>
 
-    <core-icon-button icon="add-circle" ng-click="newMode=true">
-    </core-icon-button>
-    <core-icon-button icon="add" ng-click="vm.createRandomObservation()">
-    </core-icon-button>
-
-    <!-- INCLUDE FORM OVERLAY BUTTON HERE -->
-    <!-- <link rel="import" href="/resources/templates/observation.form-overlay.html"> -->
+    <core-icon-button icon="add-circle" ng-click="vm.newObservation()"></core-icon-button>
 
 </core-toolbar>
 
-<div class="new-card" ng-show="newMode">
+
+
+
+
+<!-- NEW CARD -->
+<div class="new-card" ng-show="vm.new.observation">
     <paper-shadow z="3" class="">
+
         <core-toolbar style="background-color: #88a8fb;">
-            <span flex>{{ newObservation.name }}</span>
-		    <core-icon-button icon="save" ng-click="vm.createResource('observation', newObservation)"> </core-icon-button>
-            <core-icon-button icon="clear" ng-click="newMode=false"> </core-icon-button>
+            <span flex>{{ vm.new.observation.name }}</span>
+            <core-icon-button icon="save" ng-click="vm.saveObservation()"> </core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.new.observation=false"> </core-icon-button>
         </core-toolbar>
-        <div class="content">
 
-			<md-content>
-			  <form>
-			    <div class="row">
-			      <md-text-float label="Titel" ng-model="newObservation.name"></md-text-float>
-			      <md-text-float label="Niveau 1" ng-model="newObservation.niveau1"></md-text-float>
-			      <md-text-float label="Niveau 2" ng-model="newObservation.niveau2"></md-text-float>
-			      <md-text-float label="Niveau 3" ng-model="newObservation.niveau3"></md-text-float>
-			      <md-text-float label="Beispiel 1.1" ng-model="newObservation.niveau1-example1"></md-text-float>
-			      <md-text-float label="Beispiel 1.2" ng-model="newObservation.niveau1-example2"></md-text-float>
-			      <md-text-float label="Beispiel 1.3" ng-model="newObservation.niveau1-example3"></md-text-float>
-			      <md-text-float label="Beispiel 2.1" ng-model="newObservation.niveau2-example1"></md-text-float>
-			      <md-text-float label="Beispiel 2.2" ng-model="newObservation.niveau2-example2"></md-text-float>
-			      <md-text-float label="Beispiel 3.1" ng-model="newObservation.niveau3-example1"></md-text-float>
+        <md-content layout="row">
 
-<!--
-				<md-radio-group ng-model="vm.data.subdomain">
-				    <md-radio-button ng-repeat="subdomain in vm.data.subdomain">
-				        {{ subdomain.title }}
-				    </md-radio-button>
-				</md-radio-group>
- -->
-			    </div>
-			  </form>
-			</md-content>
+            <div flex="33" class="content">
+                <span class="header">Kompetenzbereich:</span> {{vm.new.observation | domain}}
+                <div class="content">
+                    <span class="header">Teilbereich:</span> {{vm.new.observation | subdomain}}
+                </div>
+            </div>
 
-        </div>
+            <div flex="66">
+
+                <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
+                </div>
+
+                <md-text-float label="Titel" ng-model="vm.new.observation.title"></md-text-float>
+
+                <select ng-model="vm.new.observation.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                </select>
+            </div>
+
+        </md-content>
+
+        <hr>
+
+        <md-content layout="row">
+            <div flex="66" ng-repeat="behaviour in vm.new.observation.behaviours">
+                <md-text-float label="Niveau {{behaviour.niveau}}" ng-model="behaviour.description"></md-text-float>
+                <md-button class="" ng-click="behaviour.addExample()">Add Example</md-button>
+
+                <div ng-repeat="example in behaviour.examples">
+                    <md-text-float label="Beispiel {{ $index + 1 }}" ng-model="example.description"></md-text-float>
+                    <md-button class="" ng-click="behaviour.examples.splice($index, 1)">Remove Example</md-button>
+                </div>
+            </div>
+        </md-content>
+
     </paper-shadow>
 </div>
 
-<div class="edit-card" ng-show="editMode">
+
+
+<!-- EDIT CARD -->
+<div class="edit-card" ng-show="vm.edit.observation">
     <paper-shadow z="3" class="">
         <core-toolbar style="background-color: #fc9999;">
-            <span flex>{{ vm.selected.observation.name }}</span>
-		    <core-icon-button icon="save" ng-click="editMode=false && vm.updateResource('observation', vm.selected.observation)"> </core-icon-button>
-            <core-icon-button icon="delete" ng-click="editMode=false && vm.destroyResource('observation', vm.selected.observation.id)"> </core-icon-button>
-            <core-icon-button icon="clear" ng-click="editMode=false"> </core-icon-button>
+
+            <span flex>{{ vm.selected.observation.title }}</span>
+
+            <core-icon-button icon="save" ng-click="vm.updateResource('observation', vm.edit.observation)"> </core-icon-button>
+            <core-icon-button icon="delete" ng-click="vm.destroyResource('observation', vm.edit.observation)"> </core-icon-button>
+            <core-icon-button icon="clear" ng-click="vm.edit.observation=false"> </core-icon-button>
+
         </core-toolbar>
         <div class="content">
 
-			<md-content>
-			  <form>
-			    <div class="row">
-			      <md-text-float label="Name" ng-model="vm.selected.observation.name"></md-text-float>
-			      <md-text-float label="Alter" ng-model="vm.selected.observation.age"></md-text-float>
-			      <md-text-float label="Geschlecht" ng-model="vm.selected.observation.sex"></md-text-float>
-			      <md-text-float label="Ethnizität" ng-model="vm.selected.observation.ethnicity"></md-text-float>
-			      <md-text-float label="Haarfarbe" ng-model="vm.selected.observation.hair"></md-text-float>
-			      <md-text-float label="Augenfarbe" ng-model="vm.selected.observation.eyes"></md-text-float>
-			      <md-text-float label="Gruppe" ng-model="vm.selected.observation.group_id"></md-text-float>
-			    </div>
-			  </form>
-			</md-content>
+            <div class="content"><span class="header">Kompetenzbereich:</span> {{vm.edit.observation | domain}}
+                <div class="content"><span class="header">Teilbereich:</span> {{vm.edit.observation | subdomain}}
+                    <div class="content"><span class="header">Kompetenz:</span> {{vm.edit.observation.title}}
+                    </div>
+                </div>
+            </div>
+
+            <md-content>
+                <form>
+
+                    <div class="row">
+                        <md-text-float label="Titel" ng-model="vm.edit.observation.title"></md-text-float>
+                    </div>
+
+                    <select ng-model="vm.edit.observation.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                    </select>
+
+                </form>
+            </md-content>
 
         </div>
     </paper-shadow>
 </div>
 
-<div class="detail-card" ng-show="vm.selected.observation && !editMode">
+
+
+
+<!-- DETAIL CARD -->
+<div class="detail-card" ng-show="vm.selected.observation">
     <paper-shadow z="3" class="">
         <core-toolbar style="background-color: {{vm.selected.observation.hair}};">
-            <span flex>{{ vm.selected.observation.name }}</span>
-            <core-icon-button icon="chevron-left" ng-click="vm.selectResource('observation', {id:vm.selected.observation.id-1})"> </core-icon-button>
-            <core-icon-button icon="chevron-right" ng-click="vm.selectResource('observation', {id:vm.selected.observation.id+1})"> </core-icon-button>
-		    <core-icon-button icon="create" ng-click="editMode=true"> </core-icon-button>
-            <core-icon-button icon="delete" ng-click="vm.destroyResource('observation', vm.selected.observation.id)"> </core-icon-button>
+
+            <span flex>{{ vm.selected.observation.title }}</span>
+
+            <core-icon-button icon="create" ng-click="vm.editResource('observation', vm.selected.observation)"> </core-icon-button>
+            <core-icon-button icon="delete" ng-click="vm.destroyResource('observation', vm.selected.observation)"> </core-icon-button>
             <core-icon-button icon="clear" ng-click="vm.selectResource('observation', null)"> </core-icon-button>
+
         </core-toolbar>
         <div class="content">
+
             <div class="detail">
-<pre>{{ vm.selected.observation | json }}</pre>
+                <pre>{{ vm.selected.observation | json }}</pre>
             </div>
+
         </div>
     </paper-shadow>
 </div>
 
-<paper-shadow z="1">
 
+
+
+
+<!-- TABLE -->
+<paper-shadow z="1">
+    <pre class="debug">{{ vm.new.observation | json }}</pre>
     <div class="content">
         <table>
             <thead>
                 <th>ID</th>
+                <th>Titel</th>
+                <th>Subdomain</th>
                 <th>Domain</th>
-                <th>Subdomainr</th>
-                <th>Verhalten</th>
-                <th>Niveau/Wert</th>
-                <th>Kind</th>
-                <th>Benutzer</th>
+                <th>Erstellt am</th>
+                <th>Bearbeitet am</th>
             </thead>
             <tbody>
-                <tr ng-repeat="observation in vm.data.observation" ng-click="vm.selectResource('observation', {id:observation.id})">
+                <tr ng-repeat="observation in vm.data.observations | orderBy:id" ng-click="vm.selectResource('observation', observation)">
                     <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <td> {{ observation.id }} </td>
-                    <!-- <td> {{ vm.data.subdomains | filter:{id:observation.behaviour_id}} </td> -->
-                    <!-- <td> {{ vm.data.behaviour | filter:{id:observation.behaviour_id} | behaviourDescription }} </td> -->
-                    <!-- <td> {{ observation.value }} </td> -->
-                    <!-- <td> {{ vm.data.kid | filter:{id:observation.kid_id} | kidName }} </td> -->
-                    <!-- <td> {{ vm.data.group | filter:{id:item.group_id} | groupName }} </td> -->
+                    <td> {{ observation.title }} </td>
+                    <td> {{ observation | subdomain }} </td>
+                    <td> {{ observation | domain }} </td>
+                    <td> {{ observation.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+                    <td> {{ observation.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 </paper-shadow>

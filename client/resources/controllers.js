@@ -37,6 +37,7 @@
 
       createRandomKid: createRandomKid,
 
+      newObservation: newObservation,
       newItem: newItem,
       saveItem: saveItem,
 
@@ -203,21 +204,30 @@
     }
 
 
+
+
+
     const ITEM_BEHAVIOUR_COUNT = 3;
 
-    function newItem() {
+    function newObservation() {
+      if (vm.new.observation) {
+        console.warn('%cATTENTION ATTENTION! OVERWRITING OLD ITEM!', 'color: #e53c14; font-size: 1.6em');
+      }
+      vm.new.observation = new Observation();
+    }
 
+    function newItem() {
       if (vm.new.item) {
         console.warn('%cATTENTION ATTENTION! OVERWRITING OLD ITEM!', 'color: #e53c14; font-size: 1.6em');
       }
-
       vm.new.item = new Item();
     }
 
-
     function saveItem() {
-      vm.new.item.save();
+      vm.new.item.save(); // TODO
     }
+
+
 
 
 
@@ -251,6 +261,8 @@
 
       }.bind(this);
     };
+
+
 
 
 
@@ -315,11 +327,6 @@
       }.bind(this);
 
     };
-
-
-
-
-
 
 
 
@@ -394,6 +401,49 @@
           }.bind(this));
         }
       }.bind(this);
+    };
+
+
+
+
+
+    var Observation = function() {
+      this.value = null;
+      this.help = false;
+      this.behaviour_id = null;
+      this.author_id = null;
+      this.examples = []; // do not pass
+
+      this.save = function(behaviourId) {
+        createResource('observation', {
+          value: null,
+          help: false,
+          behaviour_id: null,
+          author_id: null
+        }).then(function(observation) {
+          console.log('observation created', observation);
+          console.info('new observation arrived');
+
+          var queries = _.map(this.examples, function(example) {
+            return $q(function(resolve, reject) {
+              resolve(example.save(behaviourId));
+            });
+          });
+
+          if (!_.all(queries)) {
+            console.warn('example checks failed');
+            return false;
+          } else {
+            $q.all(queries).then(function(response) {
+              console.info('all examples created');
+              vm.data.examples.concat(response.data);
+            });
+          }
+        }.bind(this));
+      }.bind(this);
+
+      this.check = function() {
+      };
     };
 
 

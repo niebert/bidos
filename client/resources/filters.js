@@ -14,7 +14,12 @@
       if (!resource || !resource.hasOwnProperty('group_id')) {
         return false;
       }
-      return _.select(resourceService.read().groups, {id:+resource.group_id})[0].name || 'keine';
+
+      if (resource.group_id) {
+        return _.select(resourceService.read().groups, {id:+resource.group_id})[0].name;
+      } else {
+        return 'keine';
+      }
     };
   });
 
@@ -47,7 +52,7 @@
       var subdomain = _.select(resourceService.read().subdomains, {id:+resource.subdomain_id})[0];
       var domain = _.select(resourceService.read().domains, {id:+subdomain.domain_id})[0];
 
-      return domain.title || 'nope!'
+      return domain.title || 'nope!';
     };
   });
 
