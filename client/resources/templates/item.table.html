@@ -29,13 +29,13 @@
 
         <md-content layout="row">
 
-            <div flex="33" class="content">
+<!--             <div flex="33" class="content">
                 <span class="header">Kompetenzbereich:</span> {{vm.new.item | domain}}
                 <div class="content">
                     <span class="header">Teilbereich:</span> {{vm.new.item | subdomain}}
                 </div>
             </div>
-
+ -->
             <div flex="66">
 
                 <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
@@ -71,40 +71,49 @@
 <!-- EDIT CARD -->
 <div class="edit-card" ng-show="vm.edit.item">
     <paper-shadow z="3" class="">
-        <core-toolbar style="background-color: #fc9999;">
 
-            <span flex>{{ vm.selected.item.title }}</span>
-
-            <core-icon-button icon="save" ng-click="vm.updateResource('item', vm.edit.item)"> </core-icon-button>
-            <core-icon-button icon="delete" ng-click="vm.destroyResource('item', vm.edit.item)"> </core-icon-button>
+        <core-toolbar style="background-color: #88a8fb;">
+            <span flex>{{ vm.edit.item.name }}</span>
+            <core-icon-button icon="save" ng-click="vm.saveItem()"> </core-icon-button>
             <core-icon-button icon="clear" ng-click="vm.edit.item=false"> </core-icon-button>
-
         </core-toolbar>
-        <div class="content">
 
-            <div class="content"><span class="header">Kompetenzbereich:</span> {{vm.edit.item | domain}}
-                <div class="content"><span class="header">Teilbereich:</span> {{vm.edit.item | subdomain}}
-                    <div class="content"><span class="header">Kompetenz:</span> {{vm.edit.item.title}}
-                    </div>
+        <md-content layout="row">
+            <div flex="33" class="content">
+                <span class="header">Kompetenzbereich:</span> {{ vm.edit.item.domain.title }}
+                <div class="content">
+                    <span class="header">Teilbereich:</span> {{ vm.edit.item.subdomain.title }}
                 </div>
             </div>
 
-            <md-content>
-                <form>
+            <div flex="66">
+                <div ng-show="vm.dberror"><pre class="error">DATABASE FAILURE: {{ vm.dberror }}</pre>
+                </div>
 
-                    <div class="row">
-                        <md-text-float label="Titel" ng-model="vm.edit.item.title"></md-text-float>
-                    </div>
+                <md-text-float label="Titel" ng-model="vm.edit.item.title"></md-text-float>
 
-                    <select ng-model="vm.edit.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
-                    </select>
+                <select ng-model="vm.edit.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vm.getDomainTitle(subdomain.domain_id) for subdomain in vm.data.subdomains">
+                </select>
+            </div>
+        </md-content>
 
-                </form>
-            </md-content>
+        <hr>
 
-        </div>
+        <md-content layout="row">
+            <div flex="66" ng-repeat="behaviour in vm.selected.item.behaviours">
+                <md-text-float label="Niveau {{behaviour.niveau}}" ng-model="behaviour.description"></md-text-float>
+                <md-button class="" ng-click="behaviour.addExample()">Add Example</md-button>
+
+                <div ng-repeat="example in behaviour.examples">
+                    <md-text-float label="Beispiel {{ $index + 1 }}" ng-model="example.description"></md-text-float>
+                    <md-button class="" ng-click="behaviour.examples.splice($index, 1)">Remove Example</md-button>
+                </div>
+            </div>
+        </md-content>
+
     </paper-shadow>
 </div>
+
 
 
 
@@ -149,11 +158,11 @@
                 <th>Bearbeitet am</th>
             </thead>
             <tbody>
-                <tr ng-repeat="item in vm.data.items | orderBy:id" ng-click="vm.selectResource('item', item)">
+                <tr ng-repeat="item in vm.data.items | orderBy:id" ng-click="vm.selectItem(item)">
                     <td> {{ item.id }} </td>
                     <td> {{ item.title }} </td>
-                    <td> {{ item | subdomain }} </td>
-                    <td> {{ item | domain }} </td>
+                    <td> {{ item.subdomain.title }} </td>
+                    <td> {{ item.domain.title }} </td>
                     <td> {{ item.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
                     <td> {{ item.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
                 </tr>

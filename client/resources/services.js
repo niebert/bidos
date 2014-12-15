@@ -16,7 +16,14 @@
 
     return {
 
-      read: function(resource) {
+      getSubdomain: function(resourceObject) {
+        debugger
+        if (resourceObject.hasOwnProperty('subdomain_id')) {
+          return _.select(dm.subdomains, {id:resourceObject.subdomain_idt});
+        }
+      },
+
+      read: function() {
         return dm;
       },
 

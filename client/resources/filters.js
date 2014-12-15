@@ -9,58 +9,28 @@
     'bidos.resource.services'
   ]);
 
+
+
+
+
+  // [1,2] -> [male,female]
   app.filter('groupName', function(resourceService) {
-    return function(resource) {
-      if (!resource || !resource.hasOwnProperty('group_id')) {
-        return false;
-      }
-
-      if (resource.group_id) {
-        return _.select(resourceService.read().groups, {id:+resource.group_id})[0].name;
-      } else {
-        return 'keine';
-      }
+    return function(user) {
+      return _.select(resourceService.get().users, {id:user.group_id})[0];
     };
   });
 
-  app.filter('subdomainName', function() {
-    return function(subdomain) {
-      return subdomain[0].title;
-    };
-  });
 
-  // item -> subdomain.title
-  app.filter('subdomain', function(resourceService) {
-    return function(resource) {
-      if (!resource || !resource.hasOwnProperty('subdomain_id')) {
-        // console.warn('%cFILTER FAILED!', 'color: #e53c14; font-size: 1.6em');
-        return false;
-      }
 
-      return _.select(resourceService.read().subdomains, {id:+resource.subdomain_id})[0].title || 'keine';
-    };
-  });
 
-  // item -> domain.title
-  app.filter('domain', function(resourceService) {
-    return function(resource) {
-      if (!resource || !resource.hasOwnProperty('subdomain_id')) {
-        // console.warn('%cFILTER FAILED!', 'color: #e53c14; font-size: 1.6em');
-        return false;
-      }
-
-      var subdomain = _.select(resourceService.read().subdomains, {id:+resource.subdomain_id})[0];
-      var domain = _.select(resourceService.read().domains, {id:+subdomain.domain_id})[0];
-
-      return domain.title || 'nope!';
-    };
-  });
-
+  // [1,2] -> [male,female]
   app.filter('sexName', function() {
     return function(sex) {
       return sex === 1 ? 'männlich' : 'weiblich';
     };
   });
+
+
 
   app.filter('toRoleName', function() {
     return function(role) {

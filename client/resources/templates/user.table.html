@@ -3,9 +3,9 @@
 
 	<core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
 
-	<span flex ng-hide="vm.editMode">Benutzer ({{ vm.data.users.length }})</span>
-	<span flex ng-show="vm.editMode">Benutzer bearbeiten</span>
-	<span flex ng-show="vm.newMode">Benutzer erstellen</span>
+	<span flex ng-hide="vm.edit.user">Benutzer ({{ vm.data.users.length }})</span>
+	<span flex ng-show="vm.edit.user">Benutzer bearbeiten</span>
+	<span flex ng-show="vm.new.user">Benutzer erstellen</span>
 
 	<!-- INCLUDE FORM OVERLAY BUTTON HERE -->
 	<!-- <link rel="import" href="/resources/templates/user.form-overlay.html"> -->
@@ -15,13 +15,13 @@
 
 
 <!-- EDIT CARD -->
-<div class="edit-card" ng-show="vm.editMode">
+<div class="edit-card" ng-show="vm.edit.user">
 	<paper-shadow z="3" class="">
 		<core-toolbar style="background-color: #fc9999;">
 			<span flex>{{ vm.selected.user.name }}</span>
 			<core-icon-button icon="save" ng-click="vm.updateResource('user', vm.edit.user.id, vm.edit.user)"> </core-icon-button>
 			<core-icon-button icon="delete" ng-click="vm.destroyResource('user', vm.edit.user.id)"> </core-icon-button>
-			<core-icon-button icon="clear" ng-click="vm.editMode=false"> </core-icon-button>
+			<core-icon-button icon="clear" ng-click="vm.edit.user=false"> </core-icon-button>
 		</core-toolbar>
 		<div class="content">
 

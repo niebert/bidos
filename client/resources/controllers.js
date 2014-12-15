@@ -17,12 +17,14 @@
 
 
 
-  function ResourceController($scope, $rootScope, resourceService, $state, $stateParams, $filter, $q) {
+  function ResourceController($scope, $rootScope, resourceService, $state, $stateParams, $q) {
 
     // view model, available as vm in all views
     var vm = _.merge(this, {
       data: {},
+
       selected: {},
+
       new: {},
       edit: {},
 
@@ -35,13 +37,13 @@
       updateResource: updateResource,
       destroyResource: destroyResource,
 
+      // random resource generators
       createRandomKid: createRandomKid,
 
+      // generic resource classes
       newObservation: newObservation,
       newItem: newItem,
-      saveItem: saveItem,
-
-      getDomainId: getDomainId
+      newResource: newResource
     });
 
     console.log('%cSTATE', 'color: #fd801e; font-size: 1.2em', $state);
@@ -80,6 +82,16 @@
       resourceService.get().then(function (response) {
         _.merge(vm.data, response); // response == data model
         console.info('[vm]', vm);
+
+        _.each(vm.data.kids, function(kid) {
+          assembleKid(kid);
+        });
+
+
+        _.each(vm.data.items, function(item) {
+          assembleItem(item);
+        });
+
       }, function getResourceFailure(response) {
         console.error('[vm]', response.data);
       });
@@ -96,6 +108,12 @@
       return $q(function(resolve, reject) {
         resourceService.create(resource, formData).then(function (response) {
 
+          // HACK!
+          switch(resource) {
+            case 'kid': delete formData.group;
+          }
+
+
           // clean up
           delete vm.new[resource];
 
@@ -109,7 +127,7 @@
           // respond with the server's reply
           resolve(d);
 
-          console.log('%cCREATED RESOURCE', 'color: #e53c14; font-size: 1.2em', d);
+          console.log('%cCREATED RESOURCE: ' + resource, 'color: #51c355; font-size: 1.2em', d);
         }, function createResourceFailure(response) {
 
           if (response.data.dberror) {
@@ -129,6 +147,11 @@
 
     function selectResource(resource, resourceObject) {
 
+      switch (resource) {
+        case 'item': vm.selected.item = assembleItem(resourceObject); break;
+        case 'kid':  vm.selected.kid = assembleKid(resourceObject); break;
+      }
+
       // unselect resource by passing null as resourceObject
 
       if (resourceObject === null) {
@@ -136,7 +159,7 @@
           delete(vm.selected[resource]);
           return;
         } else {
-          console.warn('%cCOULD NOT FIND SELECTED RESOURCE', 'color: #e53c14; font-size: 1.2em');
+          console.warn('%cCOULD NOT UNSELECT RESOURCE', 'color: #e53c14; font-size: 1.2em', resource, resourceObject);
         }
       }
 
@@ -145,12 +168,18 @@
 
       vm.selected[resource] = _.select(vm.data[resource + 's'], {id: resourceObject.id})[0];
 
-      console.log('%cSELECTED RESOURCE', 'color: #53db5d; font-size: 1.2em', vm.selected[resource]);
+      console.log('%cSELECTED RESOURCE: ' + resource, 'color: #53db5d; font-size: 1.2em', vm.selected[resource]);
     }
 
 
 
-
+    function newResource(resource) {
+      switch (resource) {
+        case 'item': vm.new.item = new Item();
+        case 'observation':  vm.new.observation  = new Observation();
+        case 'kid':  vm.new.kid  = {};
+      }
+    }
 
     function destroyResource(resource, resourceObject) {
 
@@ -175,20 +204,32 @@
     }
 
 
-    function getDomainId(subdomain_id) {
+
+
+
+    function getDomainTitle(subdomain_id) {
       return _.select(vm.data.domains, {id:subdomain_id})[0].title;
     }
 
 
+
+
+
     function updateResource(resource, editedResourceObject) {
+
+      // HACK!
+      switch(resource) {
+        case 'kid': delete editedResourceObject.group;
+      }
+
       resourceService.update(resource, editedResourceObject).then(function(response) {
         console.log('%cRECEIVED UPDATED RESOURCE', 'color: #e53c14; font-size: 1.2em', response.data[0]);
 
-        if (vm.edit[resource] === editedResourceObject) {
-          delete vm.edit[resource];
-        }
+        // if (vm.edit[resource] === editedResourceObject) {
+        //   delete vm.edit[resource];
+        // }
 
-        // delete the resource object we've cloned for editing
+        // delete the resource object we cloned for editing
         delete vm.edit[resource];
 
         // TODO please refactor these variables
@@ -207,7 +248,7 @@
 
 
 
-    const ITEM_BEHAVIOUR_COUNT = 3;
+    var ITEM_BEHAVIOUR_COUNT = 3;
 
     function newObservation() {
       if (vm.new.observation) {
@@ -448,14 +489,40 @@
 
 
 
-
-
     function editResource(resource, resourceObject) {
       vm.edit[resource] = _.cloneDeep(resourceObject);
       console.log('%cCLONED RESOURCE FOR EDITING', 'color: #e53c14; font-size: 1.2em', vm.edit[resource]);
     }
 
 
+
+
+    function assembleItem(item) {
+      item.subdomain = _.select(vm.data.subdomains, {id:item.subdomain_id})[0];
+      item.domain = _.select(vm.data.domains, {id:item.subdomain.id})[0];
+
+      item.behaviours = _.select(vm.data.behaviours, {item_id:item.id});
+
+      _.each(item.behaviours, function(behaviour) {
+        item.examples = _.select(vm.data.examples, {behaviour_id:behaviour.id});
+        item.observations = _.select(vm.data.observations, {behaviour_id:behaviour.id});
+      });
+
+      return item;
+    }
+
+
+
+    function assembleKid(kid) {
+      kid.group = _.select(vm.data.groups, {id:kid.group_id})[0];
+
+      // select observations -> behaviours -> items
+      // kid.items = _.chain(vm.data.observations).select({kid_id:kid.id});
+      // debugger
+
+
+      return kid;
+    }
 
 
 
@@ -472,25 +539,6 @@
         vm.data.kids.push(response.data[0]);
       });
     }
-
-
-
-
-
-    // author_id, item_id, value, help
-    vm.makeObservation = function(observation) {
-      if (observation.value <= 0) {
-        delete(vm.selected.behaviour);
-      }
-
-      console.info(observation);
-      resourceService.create('observation', {
-        item_id: observation.itemId,
-        author_id: $rootScope.auth.id,
-        value: observation.value,
-        help: observation.help || null
-      });
-    };
 
   }
 }());

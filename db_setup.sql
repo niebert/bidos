@@ -23,10 +23,19 @@
 
  */
 
+
+
+
+-- untouched, unsynced
 CREATE TABLE IF NOT EXISTS roles (
   id            SERIAL PRIMARY KEY,
   name          TEXT UNIQUE NOT NULL
 );
+
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS groups (
   id            SERIAL PRIMARY KEY,
@@ -36,6 +45,10 @@ CREATE TABLE IF NOT EXISTS groups (
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
@@ -51,6 +64,10 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS kids (
   id            SERIAL PRIMARY KEY,
@@ -69,6 +86,10 @@ CREATE TABLE IF NOT EXISTS kids (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+
+
 CREATE TABLE IF NOT EXISTS domains (
   id            SERIAL PRIMARY KEY,
 
@@ -77,6 +98,10 @@ CREATE TABLE IF NOT EXISTS domains (
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS subdomains (
   id            SERIAL PRIMARY KEY,
@@ -89,6 +114,10 @@ CREATE TABLE IF NOT EXISTS subdomains (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+
+
 CREATE TABLE IF NOT EXISTS items (
   id            SERIAL PRIMARY KEY,
 
@@ -99,6 +128,10 @@ CREATE TABLE IF NOT EXISTS items (
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS behaviours (
   id            SERIAL PRIMARY KEY,
@@ -112,6 +145,10 @@ CREATE TABLE IF NOT EXISTS behaviours (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+
+
 CREATE TABLE IF NOT EXISTS examples (
   id            SERIAL PRIMARY KEY,
 
@@ -123,6 +160,10 @@ CREATE TABLE IF NOT EXISTS examples (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+
+
 -- TABLE observations
 CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
@@ -130,12 +171,17 @@ CREATE TABLE IF NOT EXISTS observations (
   value         INT NOT NULL, -- -2=advanced -1=notyet 0=na 1,2,3=niveau
   help          BOOLEAN DEFAULT false,
 
-  item_id       INT REFERENCES behaviours(id) NOT NULL,
+  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
   author_id     INT REFERENCES users(id) NOT NULL,
+  kid_id        INT REFERENCES kids(id) NOT NULL,
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
 
 -- -- JUNCTION TABLE roles_users
 -- CREATE TABLE IF NOT EXISTS roles_users (
@@ -520,10 +566,6 @@ INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '3', 'stellt 
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', '(er-)kennt Ursachen von eigenen Emotionen');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', '(er-)kennt unterschiedliche Ursachen und/oder Wirkungen von eigenen Emotionen');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', '(er-)kennt unterschiedliche Ursachen und Wirkungen von komplexen eigenen Emotionen');
-
--- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
--- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
--- INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
 INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
 INSERT INTO examples (behaviour_id, description) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');

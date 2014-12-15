@@ -47,10 +47,64 @@
       this.body = result.rows;
     })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     .post('createUser', '/', function *createUser() {
-      if (!this.request.body.username) {
-        this.request.body.username = generateUsername(this.request.body.name);
+      if (!_.size(this.request.body)) {
+        console.log('[route failure] createUser: this.request.body is empty');
+        this.status = 500;
+      } else {
+        if (!this.request.body.username) {
+          this.request.body.username = generateUsername(this.request.body.name);
+        }
+
+        var keys = _.keys(this.request.body),
+            values = _.values(this.request.body),
+            indices = Array.apply(0, Array(keys.length)).map(function(d, i) { return '$' + (i + 1); }); // <3
+
+        try {
+          var result = yield this.pg.db.client.query_({
+            name: 'createUser',
+            text: 'INSERT INTO users (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+          this.body = result.rows;
+        } catch (err) {
+          this.status = 500;
+          this.body = { dberror: { err: err, message: err.message }}; // FIXME
+        }
       }
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .post('createUser', '/', function *createUser() {
+
 
 
       // TODO you can't just insert the password... create new users by
