@@ -8,7 +8,10 @@
   require('./kid-directive');
   require('./debug-directive');
 
+  require('./bidos-observe/bidos-observe');
+
   angular.module('bidos.resource.directives', [
+    'bidos.observe',
     'bidos.item-directive',
     'bidos.kid-directive',
     'bidos.debug-directive'
