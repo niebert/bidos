@@ -14,6 +14,7 @@
   function *authenticate(next) {
     var bcrypt = require('co-bcrypt');
 
+
     var result = yield this.pg.db.client.query_({
       name: 'readUser',
       text: 'SELECT * FROM auth WHERE username = $1'
@@ -25,7 +26,8 @@
     } else {
 
       user = result.rows[0];
-      console.log(this.request.body);
+      console.log(this.request.body, user);
+      debugger
       if (yield bcrypt.compare(this.request.body.password, user.password_hash)) {
         yield next;
       } else {
@@ -88,25 +90,44 @@
     var bcrypt = require('co-bcrypt');
 
     _.merge(this.request.body, {
-      password: yield bcrypt.hash(this.request.body.password, yield bcrypt.genSalt(10))
+      password_hash: yield bcrypt.hash(this.request.body.password, yield bcrypt.genSalt(10))
     });
 
-    try {
-      // TODO: should utilize the route stored in ./user
 
-      var result = yield this.pg.db.client.query_({
-        name: 'createUser',
-        text: 'INSERT INTO users (name, email, password_hash, username) VALUES ($1, $2, $3, $4) RETURNING *',
-        values: _.map(this.request.body)
-      });
+    delete this.request.body.password;
 
-      console.info(result.rows);
+
+    if (!_.size(this.request.body)) {
+      console.log('[route failure] updateItem: this.request.body is empty');
+      this.status = 500;
+    } else {
+
+      var keys = _.keys(this.request.body),
+        values = _.values(this.request.body);
+
+      var indices = Array.apply(0, new Array(keys.length)).map(function(d, i) {
+        return '$' + (i + 1);
+      }); // <3
+
+
+      var query = {
+        name: 'updateItem',
+        text: 'INSERT INTO users (' + keys + ') VALUES (' + indices + ') RETURNING *',
+        values: values
+      };
+
+      console.log(query);
+      var result =
+        yield this.pg.db.client.query_(query);
+
       this.body = result.rows;
-      this.status = 201;
-    } catch (err) {
-      this.body = { error: err.detail };
-      this.status = 422;
     }
+
+
+
+
+
+
   }
 
   // logging out is done on the clients side by deleting the token.

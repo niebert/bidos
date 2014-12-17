@@ -41,16 +41,17 @@
       console.log('[AuthController] $scope.logout');
       UserFactory.logout()
       .then(function() {
-        $state.go('public.goodbye');
+        $state.go('auth.observation'); // TODO thankyou/goodbye
         $rootScope.auth = null;
       }, handleError);
     };
 
     $scope.signup = function(formData) {
       console.log('[AuthController] $scope.signup', formData);
+      // formData.password_hash = formData.password;
       UserFactory.signup(formData)
       .then(function(response) {
-        $state.go('public.thankyou');
+        $state.go('auth.observation'); // TODO thankyou/goodbye
       }, handleError);
     };
 

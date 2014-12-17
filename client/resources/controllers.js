@@ -53,6 +53,7 @@
     function logout() {
       // $window.localStorage.getItem('auth_token');
       $window.localStorage.clear();
+      $state.go('public.login');
     }
 
     console.log('%cSTATE', 'color: #fd801e; font-size: 1.2em', $state);

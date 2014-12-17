@@ -389,11 +389,11 @@ core-drawer-panel:not([narrow]) #navicon {
 
 // // // custom
 
-// .submit-button {
-//   color: color($indigo, 500);
-//   // float: right;
-//   // margin-top: 12px;
-// }
+.submit-button {
+  color: color($indigo, 500);
+  float: right;
+  margin-top: 24px;
+}
 
 // .cancel-button:hover {
 //   color: color($red, 500);
@@ -493,6 +493,10 @@ th.del {
 td.del:hover {
   background-color: color($red, 400);
   color: white;
+}
+
+.auth {
+  background-color: $bgc1;
 }
 
 #main {
