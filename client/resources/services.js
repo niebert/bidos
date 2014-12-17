@@ -47,11 +47,7 @@
             _.merge(dm, response);
           });
 
-          // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-          // TODO CREATE NESTED AND REFERENCED DATA MODEL TREE <3
-          // the old data tree was not referenced, but plain json
-          // create a referenced & nested data model for groups/users
-          // create a referenced & nested data model for domains/subdomains/items/behaviours/examples
+          // TODO create nested and referenced jsobj (not json!) data model tree <3
 
           deferred.resolve(dm);
         });
@@ -64,12 +60,13 @@
         return $http.post(API_URL + '/v1/' + resource, resourceObject);
       },
 
-      update: function(resource, editedResourceObject) {
-        return $http.patch(API_URL + '/v1/' + resource + '/' + editedResourceObject.id, editedResourceObject);
+      update: function(resource, id, resourceObject) {
+        if (!id) { debugger }
+        return $http.patch(API_URL + '/v1/' + resource + '/' + id, resourceObject);
       },
 
-      destroy: function(resource, resourceObject) {
-        return $http.delete(API_URL + '/v1/' + resource + '/' + resourceObject.id);
+      destroy: function(resource, id) {
+        return $http.delete(API_URL + '/v1/' + resource + '/' + id);
       }
     };
 

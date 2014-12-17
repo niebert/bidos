@@ -1,16 +1,16 @@
 <div class="" ng-hide="vm.selected.kid">
 
-    <!-- tree menu -->
-    <core-menu>
-        <core-submenu label="Kind auswählen">
+	<!-- tree menu -->
+	<core-menu>
+		<core-submenu label="Kind auswählen">
 
-            <!-- groups -->
-            <core-submenu ng-repeat="group in vm.data.group" label="{{group.name}}">
+			<!-- groups -->
+			<core-submenu ng-repeat="group in vm.data.groups" label="{{group.name}}">
 
-                <!-- children -->
-                <core-item ng-repeat="kid in vm.data.kid | filter:{group_id:group.id}" ng-click="vm.selectResource('kid', {id:kid.id})" label="{{kid.id}} {{kid.name}}"> </core-item>
+				<!-- children -->
+				<core-item ng-repeat="kid in vm.data.kids | filter:{group_id:group.id}" label="{{kid.id}} {{kid.name}}" ng-click="vm.selectResource('kid', {id:kid.id})"> </core-item>
 
-            </core-submenu>
-        </core-submenu>
-    </core-menu>
+			</core-submenu>
+		</core-submenu>
+	</core-menu>
 </div>

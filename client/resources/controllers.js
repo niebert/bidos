@@ -43,13 +43,21 @@
       // generic resource classes
       newObservation: newObservation,
       newItem: newItem,
-      newResource: newResource
+      saveItem: saveItem,
+      newResource: newResource,
+      getDomainTitle: getDomainTitle,
+      getGroupName: getGroupName
     });
 
     console.log('%cSTATE', 'color: #fd801e; font-size: 1.2em', $state);
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
+      if (!vm) {
+        return;
+      }
+
       vm.params = toParams;
       if (toParams.kidId) {
         selectResource('kid', ({id:+toParams.kidId}));
@@ -69,12 +77,8 @@
     }
 
 
-
-
-
     // get/update vm.data: the back end responds with a resource object
     // appropiate to the role we are authenticated as
-
     function getResources() {
 
       // resources can be an array or a string
@@ -83,14 +87,16 @@
         _.merge(vm.data, response); // response == data model
         console.info('[vm]', vm);
 
-        _.each(vm.data.kids, function(kid) {
-          assembleKid(kid);
-        });
+        // cant do that! the service will try to save every key/value to the
+        // db, even the _assembled_ ones oO ... ugly sob
 
+        // _.each(vm.data.kids, function(kid) {
+        //   assembleKid(kid);
+        // });
 
-        _.each(vm.data.items, function(item) {
-          assembleItem(item);
-        });
+        // _.each(vm.data.items, function(item) {
+        //   assembleItem(item);
+        // });
 
       }, function getResourceFailure(response) {
         console.error('[vm]', response.data);
@@ -98,7 +104,121 @@
     }
 
 
+    // reference resource from vm.data to vm.selected
+    function selectResource(resource, resourceObject) {
 
+      // unselect resource by passing null as resourceObject
+
+      if (resourceObject === null) {
+        if (vm.selected.hasOwnProperty(resource)) {
+          delete(vm.selected[resource]);
+          return;
+        } else {
+          console.warn('%cCOULD NOT UNSELECT RESOURCE', 'color: #e53c14; font-size: 1.2em', resource, resourceObject);
+          return;
+        }
+      }
+
+      switch (resource) {
+        case 'item': vm.selected.item = assembleItem(resourceObject); break;
+        case 'kid':  vm.selected.kid = assembleKid(resourceObject); break;
+        default: vm.selected[resource] = _.select(vm.data[resource + 's'], {id: resourceObject.id})[0];
+      }
+
+      if (resource === 'item' && vm.new.observation) {
+        vm.new.observation.item_id = vm.selected.item.id;
+      }
+
+
+      if (resource === 'kid' && vm.new.observation) {
+        vm.new.observation.kid_id = vm.selected.kid.id;
+      }
+
+
+      // NOTE: (1) resource object is referenced, **NOT** cloned and (2) it is
+      // selected by id, **NOT** by object comparison
+
+      console.log('%cSELECTED RESOURCE: ' + resource, 'color: #53db5d; font-size: 1.2em', vm.selected[resource]);
+    }
+
+
+    function newResource(resource) {
+      switch (resource) {
+        case 'item': vm.new.item = new Item();
+        case 'observation':  vm.new.observation  = new Observation();
+        case 'kid':  vm.new.kid  = {};
+      }
+    }
+
+
+    function getDomainTitle(subdomain_id) {
+      return _.select(vm.data.domains, {id:subdomain_id})[0].title;
+    }
+
+    function getGroupName(kid_id) {
+      return _.select(vm.data.groups, {id:kid_id})[0].name;
+    }
+
+
+    function destroyResource(resource, resourceObject) {
+      return $q(function(resolve, reject) {
+        resourceService.destroy(resource, resourceObject.id).then(function (response) {
+
+          // clean up
+          delete vm.selected[resource];
+
+          var r = vm.data[resource + 's'],
+              i = _.findIndex(r, {id:resourceObject.id});
+
+          // update: remove the resource from our view model array
+          r.splice(i, 1);
+
+          // resolve the server's reply to the resource instance
+          resolve();
+
+          console.log('%cDESTROYED RESOURCE: ' + resource, 'color: #51c355; font-size: 1.2em');
+        }, function createResourceFailure(response) {
+
+          if (response.data.dberror) {
+            vm.dberror = response.data.dberror.message;
+            console.log('%cFAILED DB REQUEST: ' + response.data.dberror.message, 'color: #e53c14; font-size: 1.6em', response.data.dberror.err);
+          }
+
+          reject('oops');
+        });
+      });
+    }
+
+
+    function updateResource(resource, id, formData) {
+      return $q(function(resolve, reject) {
+        resourceService.update(resource, id, formData).then(function (response) {
+
+          // clean up
+          delete vm.new[resource];
+
+          var r = vm.data[resource + 's'],
+              d = response.data[0],
+              i = _.findIndex(r, {id:d.id});
+
+          // update: replace the resource in our view model array
+          r.splice(i, 1, d);
+
+          // resolve the server's reply to the resource instance
+          resolve(d);
+
+          console.log('%cUPDATED RESOURCE: ' + resource, 'color: #51c355; font-size: 1.2em', d);
+        }, function createResourceFailure(response) {
+
+          if (response.data.dberror) {
+            vm.dberror = response.data.dberror.message;
+            console.log('%cFAILED DB REQUEST: ' + response.data.dberror.message, 'color: #e53c14; font-size: 1.6em', response.data.dberror.err);
+          }
+
+          reject('oops');
+        });
+      });
+    }
 
 
     // get/update vm.data: the back end responds with a resource object
@@ -108,23 +228,16 @@
       return $q(function(resolve, reject) {
         resourceService.create(resource, formData).then(function (response) {
 
-          // HACK!
-          switch(resource) {
-            case 'kid': delete formData.group;
-          }
-
-
           // clean up
           delete vm.new[resource];
 
           var r = vm.data[resource + 's'];
           var d = response.data[0];
 
-          // update view model
+          // update: push the new resource to our view model array
           r.push(d);
 
-          // newItem needs the item_id, so make this whole thing a query and
-          // respond with the server's reply
+          // resolve the server's reply to the resource instance
           resolve(d);
 
           console.log('%cCREATED RESOURCE: ' + resource, 'color: #51c355; font-size: 1.2em', d);
@@ -141,114 +254,11 @@
     }
 
 
-
-
-    // reference resource from vm.data to vm.selected
-
-    function selectResource(resource, resourceObject) {
-
-      switch (resource) {
-        case 'item': vm.selected.item = assembleItem(resourceObject); break;
-        case 'kid':  vm.selected.kid = assembleKid(resourceObject); break;
-      }
-
-      // unselect resource by passing null as resourceObject
-
-      if (resourceObject === null) {
-        if (vm.selected.hasOwnProperty(resource)) {
-          delete(vm.selected[resource]);
-          return;
-        } else {
-          console.warn('%cCOULD NOT UNSELECT RESOURCE', 'color: #e53c14; font-size: 1.2em', resource, resourceObject);
-        }
-      }
-
-      // NOTE: (1) resource object is referenced, **NOT** cloned and (2) it is
-      // selected by id, **NOT** by object comparison
-
-      vm.selected[resource] = _.select(vm.data[resource + 's'], {id: resourceObject.id})[0];
-
-      console.log('%cSELECTED RESOURCE: ' + resource, 'color: #53db5d; font-size: 1.2em', vm.selected[resource]);
-    }
-
-
-
-    function newResource(resource) {
-      switch (resource) {
-        case 'item': vm.new.item = new Item();
-        case 'observation':  vm.new.observation  = new Observation();
-        case 'kid':  vm.new.kid  = {};
-      }
-    }
-
-    function destroyResource(resource, resourceObject) {
-
-      // remove from database
-      resourceService.destroy(resource, resourceObject).then(function(response) {
-
-        // unselect
-        if (vm.selected[resource] === resourceObject) {
-          delete vm.selected[resource];
-        }
-
-        // TODO please refactor these variables
-        var r = vm.data[resource + 's'];
-        var d = resourceObject;
-        var i = _.findIndex(r, {id:d.id});
-
-        // remove from view model
-        r.splice(i, 1);
-
-        console.log('%cDELETED RESOURCE', 'color: #e53c14; font-size: 1.2em', resourceObject);
-      });
-    }
-
-
-
-
-
-    function getDomainTitle(subdomain_id) {
-      return _.select(vm.data.domains, {id:subdomain_id})[0].title;
-    }
-
-
-
-
-
-    function updateResource(resource, editedResourceObject) {
-
-      // HACK!
-      switch(resource) {
-        case 'kid': delete editedResourceObject.group;
-      }
-
-      resourceService.update(resource, editedResourceObject).then(function(response) {
-        console.log('%cRECEIVED UPDATED RESOURCE', 'color: #e53c14; font-size: 1.2em', response.data[0]);
-
-        // if (vm.edit[resource] === editedResourceObject) {
-        //   delete vm.edit[resource];
-        // }
-
-        // delete the resource object we cloned for editing
-        delete vm.edit[resource];
-
-        // TODO please refactor these variables
-        var r = vm.data[resource + 's'];
-        var d = response.data[0];
-        var i = _.findIndex(r, {id:d.id});
-
-        // replace the resource in our view model array
-        r.splice(i, 1, d);
-
-        console.log('%cUPDATED RESOURCE', 'color: #e53c14; font-size: 1.2em', response.data[0]);
-      });
-    }
-
-
-
-
-
     var ITEM_BEHAVIOUR_COUNT = 3;
+
+
+    // FIXME WTF
+
 
     function newObservation() {
       if (vm.new.observation) {
@@ -257,6 +267,7 @@
       vm.new.observation = new Observation();
     }
 
+
     function newItem() {
       if (vm.new.item) {
         console.warn('%cATTENTION ATTENTION! OVERWRITING OLD ITEM!', 'color: #e53c14; font-size: 1.6em');
@@ -264,17 +275,27 @@
       vm.new.item = new Item();
     }
 
+
     function saveItem() {
-      vm.new.item.save(); // TODO
+      if (!vm.edit.item || !vm.new.item) {
+        return;
+      }
+
+      console.log('saving item');
+
+      vm.edit.item.save();
+      vm.new.item.save();
     }
 
 
+    var Example = function (resourceObject) {
 
-
-
-    var Example = function () {
-      this.behaviour_id = null;
-      this.description = null;
+      if (resourceObject) {
+        _.defaults(this, resourceObject);
+      } else {
+        this.behaviour_id = null;
+        this.description = null;
+      }
 
       this.save = function(behaviourId) {
         createResource('example', {
@@ -284,6 +305,19 @@
           console.log('example created', example);
         });
       };
+
+
+
+      this.delete = function() {
+        console.log('DELETING EXAMPLE');
+        // return a promise so we're able to delete all the things in proper
+        // order
+        return destroyResource('example', this);
+
+        // TODO add type key/value to every resourceObject and get rid of
+        // these strings we pass around
+      }.bind(this);
+
 
       this.check = function() {
 
@@ -304,14 +338,19 @@
     };
 
 
+    var Behaviour = function (niveau, resourceObject) {
+     if (resourceObject) {
+        _.defaults(this, resourceObject);
+      } else {
+        this.niveau = niveau;
+        // this.examples = [];
+        // this.description = null;
+        // this.item_id = null;
+      }
 
-
-
-    var Behaviour = function (niveau) {
-      this.niveau = niveau;
       this.examples = [];
-      this.description = null;
-      this.item_id = null;
+
+
 
       this.save = function(itemId) {
         createResource('behaviour', {
@@ -332,7 +371,7 @@
             console.warn('behaviour checks failed');
             return false;
           } else {
-            $q.all(queries).then(function(response) {
+            return $q.all(queries).then(function(response) {
               console.info('all examples created');
               vm.data.examples.concat(response.data);
             });
@@ -341,8 +380,36 @@
         }.bind(this));
       }.bind(this);
 
-      this.addExample = function() {
-        this.examples.push(new Example());
+      this.update = function(itemId) {
+        updateResource('behaviour', this.id, {
+          item_id: itemId,
+          niveau: this.niveau,
+          description: this.description
+        }).then(function(behaviour) {
+
+          console.info('new behaviour arrived');
+
+          var queries = _.map(this.examples, function(example) {
+            return $q(function(resolve, reject) {
+              resolve(example.update(behaviour.id));
+            });
+          });
+
+          if (!_.all(queries)) {
+            console.warn('behaviour checks failed');
+            return false;
+          } else {
+            return $q.all(queries).then(function(response) {
+              console.info('all examples updated');
+              vm.data.examples.concat(response.data);
+            });
+          }
+
+        }.bind(this));
+      }.bind(this);
+
+      this.addExample = function(resourceObject) {
+        this.examples.push(new Example(resourceObject));
       }.bind(this);
 
       this.check = function() {
@@ -367,19 +434,52 @@
 
       }.bind(this);
 
+
+
+      this.delete = function() {
+
+        if (!this.examples) {
+          console.warn('there are no examples to delete');
+        }
+
+        var examplesToDelete = _.map(this.examples, function(example) {
+          return example.delete();
+        }.bind(this));
+
+        return $q.all(examplesToDelete,function success() {
+          console.log('DELETING BEHAVIOUR');
+        }, function failure() {
+          // ...
+        }, function always() {
+          return destroyResource('behaviour', this);
+        }.bind(this));
+      }.bind(this);
     };
 
 
+    var Item = function (resourceObject) {
+      console.log('rrr', resourceObject);
+      if (resourceObject) {
+        _.defaults(this, resourceObject);
+        if (!this.behaviours || this.behaviours.length !== 3) {
 
 
+          // TODO care about non existant behaviours
+          _.chain(vm.data.behaviours).select({item_id:this.id}).map(function(behaviour) {
+            return new Behaviour(behaviour.niveau, behaviour);
+          }).value();
 
-    var Item = function () {
 
-      this.title = null;
-      this.subdomain_id = null;
-      this.behaviours = Array.apply(0, new Array(ITEM_BEHAVIOUR_COUNT)).map(function(d, i) {
-        return new Behaviour(i + 1);
-      });
+        }
+      } else {
+        this.title = null;
+        this.subdomain_id = null;
+          this.behaviours = Array.apply(0, new Array(ITEM_BEHAVIOUR_COUNT)).map(function(d, i) {
+            return new Behaviour(i + 1);
+          });
+
+
+      }
 
 
       this.getDomainName = function() {
@@ -432,7 +532,7 @@
               return false;
             } else {
 
-              $q.all(queries).then(function(response) {
+              return $q.all(queries).then(function(response) {
                 console.info('all behaviours created');
                 vm.data.behaviours.concat(response.data);
               });
@@ -442,25 +542,91 @@
           }.bind(this));
         }
       }.bind(this);
+
+
+      this.update = function() {
+        console.log('saving item');
+        if (this.check()) {
+          console.info('check passed');
+          updateResource('item', this.id, {
+            title: this.title,
+            subdomain_id: this.subdomain_id
+          }).then(function(item) {
+
+            console.info('new item arrived');
+
+            var queries = _.map(this.behaviours, function(behaviour) {
+              return $q(function(resolve, reject) {
+                var b = new Behaviour(behaviour.niveau, behaviour);
+                resolve(b.update(item.id, b)); // weirdo shit, FIXME!!
+              });
+            });
+
+            if (!_.all(queries)) {
+              console.warn('behaviour checks failed');
+              return false;
+            } else {
+
+              return $q.all(queries).then(function(response) {
+                console.info('all behaviours updated');
+                  vm.data.behaviours.concat(response.data);
+              });
+
+            }
+
+          }.bind(this));
+        }
+      }.bind(this);
+
+      this.delete = function() {
+
+        var behaviours = this.behaviours;
+
+        if (behaviours.length > 0) {
+
+          var behavioursToDelete = _.map(this.behaviours, function(behaviour) {
+            return behaviour.delete();
+          });
+
+        }
+
+        return $q.all(behavioursToDelete,
+          function success() {
+            console.log('deleting item');
+            return destroyResource('item', this);
+        }, function failure() {
+
+        }, function always() {
+
+        }.bind(this));
+
+
+
+
+      }.bind(this);
     };
 
 
+    var Observation = function(resourceObject) {
 
-
-
-    var Observation = function() {
-      this.value = null;
-      this.help = false;
-      this.behaviour_id = null;
-      this.author_id = null;
-      this.examples = []; // do not pass
+     if (resourceObject) {
+        _.defaults(this, resourceObject);
+      } else {
+        this.value = null;
+        this.help = false;
+        this.kid_id = null;
+        this.item_id = null;
+        this.author_id = $rootScope.auth.id;
+        this.examples = []; // do not pass
+      }
 
       this.save = function(behaviourId) {
         createResource('observation', {
-          value: null,
-          help: false,
-          behaviour_id: null,
-          author_id: null
+          value: this.value,
+          help: this.help,
+          item_id: this.item_id,
+          author_id: this.author_id,
+          kid_id: this.kid_id
         }).then(function(observation) {
           console.log('observation created', observation);
           console.info('new observation arrived');
@@ -475,7 +641,7 @@
             console.warn('example checks failed');
             return false;
           } else {
-            $q.all(queries).then(function(response) {
+            return $q.all(queries).then(function(response) {
               console.info('all examples created');
               vm.data.examples.concat(response.data);
             });
@@ -483,34 +649,58 @@
         }.bind(this));
       }.bind(this);
 
+      this.addExample = function() {
+        this.examples.push(new Example());
+      };
+
       this.check = function() {
       };
     };
 
 
-
     function editResource(resource, resourceObject) {
-      vm.edit[resource] = _.cloneDeep(resourceObject);
+
+      // i will probably regret this XXX FIXME TODO
+
+      console.log('editResource ', resource);
+
+      switch (resource) {
+        case 'item':
+          vm.edit[resource] = new Item(resourceObject);
+          console.log('%ccreated new item object from existing', 'color: #e53c14; font-size: 1.2em', vm.edit[resource]);
+          break;
+        default:
+        vm.edit[resource] = _.cloneDeep(resourceObject);
       console.log('%cCLONED RESOURCE FOR EDITING', 'color: #e53c14; font-size: 1.2em', vm.edit[resource]);
+
+      }
     }
 
 
-
-
     function assembleItem(item) {
+      item = new Item(item); // omg sorry!!1 FIXME
+
       item.subdomain = _.select(vm.data.subdomains, {id:item.subdomain_id})[0];
       item.domain = _.select(vm.data.domains, {id:item.subdomain.id})[0];
 
-      item.behaviours = _.select(vm.data.behaviours, {item_id:item.id});
+      item.behaviours = _.chain(vm.data.behaviours).select({item_id:item.id}).map(function(behaviour) {
+        return new Behaviour(behaviour.niveau, behaviour);
+      }).value();
 
       _.each(item.behaviours, function(behaviour) {
-        item.examples = _.select(vm.data.examples, {behaviour_id:behaviour.id});
-        item.observations = _.select(vm.data.observations, {behaviour_id:behaviour.id});
+
+        item.examples = _.chain(vm.data.examples).select({behaviour_id:behaviour.id}).map(function(example) {
+          behaviour.addExample(new Example(example));
+        }).value();
+
+        item.observations = _.chain(vm.data.observations).select({behaviour_id:behaviour.id}).map(function(obervation) {
+          return new Observation(obervation);
+        }).value();
+
       });
 
       return item;
     }
-
 
 
     function assembleKid(kid) {
@@ -518,12 +708,10 @@
 
       // select observations -> behaviours -> items
       // kid.items = _.chain(vm.data.observations).select({kid_id:kid.id});
-      // debugger
 
 
       return kid;
     }
-
 
 
     function createRandomKid() {

@@ -82,14 +82,36 @@
 
 
 
-    .patch('updateBehaviour', '/:id', function *updateBehaviour() {
-      var p = parameterizedQuery(this.request.body, this.params.id);
-      var result = yield this.pg.db.client.query_(
-        'UPDATE behaviours SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values
-      );
-      this.body = result.rows;
-    })
 
+  .patch('updateBehaviour', '/:id', function* updateBehaviour() {
+
+    if (!_.size(this.request.body)) {
+      console.log('[route failure] updateBehaviour: this.request.body is empty');
+      this.status = 500;
+    } else if (!this.params.id || this.params.id === 'undefined') {
+      console.error('[route failure] updateBehaviour: this.params.id is missing');
+      this.status = 500;
+    } else {
+
+      var keys = _.keys(this.request.body),
+        values = _.values(this.request.body);
+
+      var indices = Array.apply(0, new Array(keys.length)).map(function(d, i) {
+        return '$' + (i + 1);
+      }); // <3
+
+      var query = {
+        name: 'updateBehaviour',
+        text: 'UPDATE behaviours SET (' + keys + ') = (' + indices + ') WHERE id=' + parseInt(this.params.id) + ' RETURNING *',
+        values: values
+      };
+
+      var result =
+        yield this.pg.db.client.query_(query);
+
+      this.body = result.rows;
+    }
+  })
 
 
 

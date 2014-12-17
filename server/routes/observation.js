@@ -33,15 +33,68 @@
       this.body = result.rows;
     })
 
-    .post('createObservation', '/', function *createObservation() {
-      console.log(this.request.body);
-      var result = yield this.pg.db.client.query_({
-        name: 'createObservation',
-        text: 'INSERT INTO observations (author_id, item_id, value, help) VALUES ($1, $2, $3, $4) RETURNING *',
-        values: _.map(this.request.body)
-      });
-      this.body = result.rows;
-    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .post('createObservation', '/', function* createObservation() {
+    if (!_.size(this.request.body)) {
+      console.log('[route failure] createObservation: this.request.body is empty');
+      this.status = 500;
+    } else {
+      var keys = _.keys(this.request.body),
+        values = _.values(this.request.body),
+        indices = Array.apply(0, new Array(keys.length)).map(function(d, i) {
+          return '$' + (i + 1);
+        }); // <3
+
+      try {
+        var result =
+          yield this.pg.db.client.query_({
+            name: 'createObservation',
+            text: 'INSERT INTO observations (' + keys + ') VALUES (' + indices + ') RETURNING *',
+            values: values
+          });
+
+        this.body = result.rows;
+      } catch (err) {
+        this.status = 500;
+        this.body = {
+          dberror: {
+            err: err,
+            message: err.message
+          }
+        };
+      }
+    }
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     .patch('updateObservation', '/:id', function *updateObservation() {
       var p = parameterizedQuery(this.request.body, this.params.id);
