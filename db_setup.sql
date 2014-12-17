@@ -74,9 +74,6 @@ CREATE TABLE IF NOT EXISTS kids (
 
   name          TEXT NOT NULL,
 
-  ethnicity     TEXT,
-  hair          TEXT,
-  eyes          TEXT,
   age           INT,
   sex           INT,
 

@@ -20,7 +20,7 @@
             }
 
             if (!item.hasOwnProperty('subdomain_id')) {
-                console.warn('item has now subdomain_id', item);
+                console.warn('item has no subdomain_id', item);
                 return;
             }
 
@@ -81,9 +81,53 @@
 
 
 
+    // item -> subdomainTitle XXX FIXME
+    app.filter('subdomainTitleById', function(resourceService) {
+        return function(subdomain_id) {
+            if (!subdomain_id) {
+                return;
+            }
+
+            return _.select(resourceService.read().subdomains, {
+                id: subdomain_id
+            })[0].title;
+
+        };
+    });
+
+
+
+
     app.filter('bySubdomain', function() {
         return function(items, subdomainId) {
             return _.select(items, {id:subdomainId});
+        };
+    });
+
+
+
+
+
+
+    app.filter('groupNameById', function(resourceService) {
+        return function(group_id) {
+            return _.select(resourceService.read().users, {
+                id: group_id
+            })[0].name;
+        };
+    });
+
+
+
+
+
+
+
+    app.filter('itemTitle', function(resourceService) {
+        return function(item_id) {
+            return _.select(resourceService.read().items, {
+                id: item_id
+            })[0].name;
         };
     });
 
@@ -99,6 +143,23 @@
             })[0];
         };
     });
+
+
+
+
+
+
+    app.filter('kidName', function(resourceService) {
+        return function(kid_id) {
+            return _.select(resourceService.read().kids, {
+                id: kid_id
+            })[0].name;
+        };
+    });
+
+
+
+
 
 
 

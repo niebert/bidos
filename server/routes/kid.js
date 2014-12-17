@@ -84,17 +84,40 @@
 
 
 
+  .patch('updateKid', '/:id', function* updateKid() {
 
-    .patch('updateKid', '/:id', function *updateKid() {
+    if (!_.size(this.request.body)) {
+      console.log('[route failure] updateKid: this.request.body is empty');
+      this.status = 500;
+    } else if (!this.params.id) {
+      console.error('[route failure] updateKid: this.params.id is missing');
+      this.status = 500;
+    } else {
+
+      var keys = _.keys(this.request.body),
+        values = _.values(this.request.body);
+
+      var indices = Array.apply(0, new Array(keys.length)).map(function(d, i) {
+        return '$' + (i + 1);
+      }); // <3
+
+      var query = {
+        name: 'updateKid',
+        text: 'UPDATE kids SET (' + keys + ') = (' + indices + ') WHERE id=' + parseInt(this.params.id) + ' RETURNING *',
+        values: values
+      };
+
+      console.log(query);
       debugger
-      console.log('UPDATE KID');
-      console.log(this.request.body);
-      var p = parameterizedQuery(this.request.body, this.params.id);
-      var result = yield this.pg.db.client.query_(
-        'UPDATE kids SET (' + p.columns + ') = (' + p.parameters + ') WHERE id=$1 RETURNING *', p.values
-      );
+
+      var result =
+        yield this.pg.db.client.query_(query);
+
       this.body = result.rows;
-    })
+    }
+  })
+
+
 
     .delete('deleteKid', '/:id', function *deleteKid() {
       var result = yield this.pg.db.client.query_({

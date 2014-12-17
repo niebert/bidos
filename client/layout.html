@@ -1,30 +1,41 @@
 <!-- MAIN RESOURCE CONTROLLER -->
 <core-drawer-panel responsiveWidth="900em" ng-controller="ResourceController as vm" id="drawerPanel">
-    <core-header-panel drawer>
-        <core-toolbar id="navheader" class="">
-            <span flex ui-sref="auth.home">BiDoS</span>
-        </core-toolbar>
+	<core-header-panel drawer>
+		<core-toolbar id="navheader" class="">
+			<span flex ui-sref="auth.profile">BiDoS</span>
+		</core-toolbar>
 
-        <core-item ui-sref="auth.dashboard" label="Dashboard"></core-item>
-        <core-item ui-sref="auth.home" label="Neue Beobachtung"></core-item>
+		<core-menu>
+			<pre>Angemeldet als: {{ auth.username }}/{{ auth.role }}</pre>
 
-        <core-menu>
-            <!-- <core-submenu class="drawer-menu" label="Ressourcen"> -->
-                <!-- <core-item ui-sref="auth.domain" label="Domains"></core-item> -->
-                <!-- <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item> -->
-                <core-item ui-sref="auth.item" label="Items"></core-item>
-                <!-- <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item> -->
-                <!-- <core-item ui-sref="auth.example" label="Examples"></core-item> -->
-                <core-item ui-sref="auth.observation" label="Beobachtungen"></core-item>
-                <core-item ui-sref="auth.kid" label="Kinder"></core-item>
-                <!-- <core-item ui-sref="auth.group" label="Groups"></core-item> -->
-                <core-item ui-sref="auth.user" label="Benutzer"></core-item>
-            <!-- </core-submenu> -->
-        </core-menu>
+			<hr>
 
-    </core-header-panel>
+			<core-item ui-sref="auth.item" label="Items"></core-item>
+			<core-item ui-sref="auth.observation" label="Beobachtungen"></core-item>
+			<core-item ui-sref="auth.kid" label="Kinder"></core-item>
+			<core-item ui-sref="auth.user" label="Benutzer"></core-item>
 
-    <!-- MAIN CONTENT -->
-    <core-header-panel main ui-view="main" id="main">
-    </core-header-panel>
+			<hr>
+
+			<core-item ui-sref="auth.profile" label="Eigenes Profil"></core-item>
+			<core-item label="Abmelden" ng-click="vm.logout()"></core-item>
+
+			<hr>
+
+			<core-item ui-sref="auth.help" label="Hilfe"></core-item>
+
+			<!-- <core-submenu class="drawer-menu" label="Ressourcen"> -->
+			<!-- <core-item ui-sref="auth.domain" label="Domains"></core-item> -->
+			<!-- <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item> -->
+			<!-- <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item> -->
+			<!-- <core-item ui-sref="auth.example" label="Examples"></core-item> -->
+			<!-- <core-item ui-sref="auth.group" label="Groups"></core-item> -->
+			<!-- </core-submenu> -->
+		</core-menu>
+
+	</core-header-panel>
+
+	<!-- MAIN CONTENT -->
+	<core-header-panel main ui-view="main" id="main">
+	</core-header-panel>
 </core-drawer-panel>

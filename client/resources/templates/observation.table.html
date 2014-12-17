@@ -142,7 +142,8 @@
 		<table>
 			<thead>
 				<th>ID</th>
-				<th>Titel</th>
+				<th>Kind</th>
+				<th>Gruppe</th>
 				<th>Subdomain</th>
 				<th>Domain</th>
 				<th>Erstellt am</th>
@@ -151,8 +152,9 @@
 			<tbody>
 				<tr ng-repeat="observation in vm.data.observations | orderBy:id" ng-click="vm.selectResource('observation', observation)">
 					<td> {{ observation.id }} </td>
-					<td> {{ observation.title }} </td>
-					<td> {{ observation | subdomainTitle }} </td>
+					<td> {{ observation.kid_id | kidName }} </td>
+					<td> {{ observation.kid_id | groupNameById }} </td>
+					<td> {{ observation.item_id | itemTitle }} </td>
 					<td> {{ observation | domainTitle }} </td>
 					<td> {{ observation.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
 					<td> {{ observation.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>

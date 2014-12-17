@@ -17,7 +17,7 @@
 
 
 
-  function ResourceController($scope, $rootScope, resourceService, $state, $stateParams, $q) {
+  function ResourceController($scope, $rootScope, resourceService, $state, $stateParams, $q, $window) {
 
     // view model, available as vm in all views
     var vm = _.merge(this, {
@@ -46,8 +46,14 @@
       saveItem: saveItem,
       newResource: newResource,
       getDomainTitle: getDomainTitle,
-      getGroupName: getGroupName
+      getGroupName: getGroupName,
+      logout: logout
     });
+
+    function logout() {
+      // $window.localStorage.getItem('auth_token');
+      $window.localStorage.clear();
+    }
 
     console.log('%cSTATE', 'color: #fd801e; font-size: 1.2em', $state);
 
@@ -192,8 +198,13 @@
 
     function updateResource(resource, id, formData) {
       return $q(function(resolve, reject) {
-        resourceService.update(resource, id, formData).then(function (response) {
 
+        if (resource === 'kid') {
+          formData = _.pick(formData, 'name', 'id', 'group_id', 'age', 'sex');
+        }
+
+
+        resourceService.update(resource, id, formData).then(function (response) {
           // clean up
           delete vm.new[resource];
 

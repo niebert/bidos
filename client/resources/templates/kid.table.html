@@ -1,14 +1,17 @@
 <!-- TOOLBAR -->
 <core-toolbar id="mainheader">
 
-	<core-icon-button id="navicon" icon="drawer" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
+	<paper-button role="button" tabindex="0" id="navicon" onclick="document.querySelector('core-drawer-panel').togglePanel();">MENÜ</paper-button>
 
 	<span flex ng-hide="vm.edit.kid">Kinder ({{ vm.data.kids.length }})</span>
 	<span flex ng-show="vm.edit.kid">Kind bearbeiten</span>
 	<span flex ng-show="vm.kid.new">Kind erstellen</span>
 
-	<core-icon-button icon="add-circle" ng-click="vm.newResource('kid')"></core-icon-button>
-	<core-icon-button icon="add" ng-click="vm.createRandomKid()"></core-icon-button>
+	<!-- <core-icon-button icon="add-circle" ng-click="vm.newResource('kid')"></core-icon-button> -->
+	<!-- <core-icon-button icon="add" ng-click="vm.createRandomKid()"></core-icon-button> -->
+
+	<paper-button role="button" tabindex="0" ng-click="vm.newResource('kid')">NEUES KIND</paper-button>
+
 
 	<!-- INCLUDE FORM OVERLAY BUTTON HERE -->
 	<!-- <link rel="import" href="/resources/templates/kid.form-overlay.html"> -->
@@ -23,7 +26,6 @@
 	<paper-shadow z="3" class="">
 		<core-toolbar style="background-color: #88a8fb;">
 			<span flex>{{ vm.new.kid.name }}</span>
-			<core-icon-button icon="save" ng-click="vm.createResource('kid', vm.new.kid)"> </core-icon-button>
 			<core-icon-button icon="clear" ng-click="vm.new.kid=false"> </core-icon-button>
 		</core-toolbar>
 		<div class="content">
@@ -45,13 +47,16 @@
 
 						<h2>Gruppe:</h2>
 						<md-radio-group ng-model="vm.new.kid.group_id">
-							<md-radio-button ng-repeat="group in vm.data.groups" value="{{group.id}}" aria-label="group">{{group.name}}</md-radio-button>
+							<md-radio-button ng-repeat="group in vm.data.groups" value="{{group.id}}" aria-label="group">{{ group.name }}</md-radio-button>
 						</md-radio-group>
 					</div>
 				</form>
 			</md-content>
 
 		</div>
+		<core-toolbar style="background-color: #fff;">
+			<paper-button raised class="colored" ng-disabled="!vm.new.kid.name || !vm.new.kid.age || !vm.new.kid.sex || !vm.new.kid.group_id" role="button" tabindex="0" ng-click="vm.createResource('kid', vm.new.kid)" style="width:100%;">SPEICHERN</paper-button>
+		</core-toolbar>
 	</paper-shadow>
 </div>
 
@@ -62,8 +67,7 @@
 	<paper-shadow z="3" class="">
 		<core-toolbar style="background-color: #fc9999;">
 			<span flex>{{ vm.selected.kid.name }}</span>
-			<core-icon-button icon="save" ng-click="vm.updateResource('kid', vm.edit.kid)"> </core-icon-button>
-			<core-icon-button icon="delete" ng-click="vm.destroyResource('kid', vm.edit.kid)"> </core-icon-button>
+			<core-icon-button icon="delete" ng-click="vm.destroyResource('kid', vm.edit.kid.id)"> </core-icon-button>
 			<core-icon-button icon="clear" ng-click="vm.edit.kid=false"> </core-icon-button>
 		</core-toolbar>
 		<div class="content">
@@ -92,6 +96,9 @@
 			</md-content>
 
 		</div>
+		<core-toolbar style="background-color: #fff;">
+			<paper-button raised class="colored" ng-disabled="!vm.edit.kid.name || !vm.edit.kid.age || !vm.edit.kid.sex || !vm.edit.kid.group_id" role="button" tabindex="0" ng-click="vm.createResource('kid', vm.edit.kid)" style="width:100%;">SPEICHERN</paper-button>
+		</core-toolbar>
 	</paper-shadow>
 </div>
 

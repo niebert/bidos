@@ -1,17 +1,3 @@
-[ account, config, role, questionary ]
-
------------------------------------------------------
-
---- MODEL: PERSON ---
-
-first name
-last name
-password
-email
-
------------------------------------------------------
-
-
 --- PRACTICIAN ---
 
 authentification
@@ -21,7 +7,7 @@ authentification
 /lf0030/    logout
 /lf0040/    forgot password
 
-private config 
+private config
 
 /lf0110/    view config
 /lf0120/    edit config
@@ -55,7 +41,7 @@ authentification
 /lf0530/    logout
 /lf0540/    forgot password
 
-private config 
+private config
 
 /lf0610/    view config
 /lf0620/    edit config

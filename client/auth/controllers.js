@@ -22,7 +22,7 @@
     .then(function authorized(user) {
       console.log("%cAUTHORIZED", "color: green; font-size: 1.2em", user);
       $rootScope.auth = user;
-      $state.go('auth.home');
+      $state.go('auth.observation');
     }, function unauthorized() {
       console.log("%cNOT AUTHORIZED", "color: green; font-size: 1.2em, padding: 16px;");
       $state.go('public.login');
@@ -33,7 +33,7 @@
       UserFactory.login(credentials)
       .then(function authorized(response) {
         $rootScope.auth = response.data;
-        $state.go('auth.home');
+        $state.go('auth.observation');
       }, handleError);
     };
 
