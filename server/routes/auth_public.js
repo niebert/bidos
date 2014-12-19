@@ -14,6 +14,8 @@
   function *authenticate(next) {
     var bcrypt = require('co-bcrypt');
 
+    console.log('auth request: ', this.request.body.username, '//', this.request.body.password);
+
 
     var result = yield this.pg.db.client.query_({
       name: 'readUser',
@@ -27,7 +29,6 @@
 
       user = result.rows[0];
       console.log(this.request.body, user);
-      debugger
       if (yield bcrypt.compare(this.request.body.password, user.password_hash)) {
         yield next;
       } else {
@@ -74,13 +75,13 @@
       yield next;
     }
 
-    console.log('usernameExists', usernameExists(username));
+    // console.log('usernameExists', usernameExists(username));
 
     while (usernameExists(username)) {
       username = username + '1';
     }
 
-    console.log('username', username);
+    // console.log('username', username);
     this.request.body.username = username;
 
     yield next;
@@ -94,6 +95,11 @@
     });
 
 
+    if (this.request.body.username === 'admin') {
+      this.request.body.status = 0;
+    }
+
+
     delete this.request.body.password;
 
 
@@ -104,6 +110,8 @@
 
       var keys = _.keys(this.request.body),
         values = _.values(this.request.body);
+
+        console.log(keys, values);
 
       var indices = Array.apply(0, new Array(keys.length)).map(function(d, i) {
         return '$' + (i + 1);

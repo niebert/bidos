@@ -1,20 +1,13 @@
-<div class="login">
-  <paper-shadow z=0>
-    <form novalidate>
+<div class="auth">
 
-      <paper-input-decorator floatingLabel label="Benutzername">
-        <input type="text" ng-model="user.username" required />
-      </paper-input-decorator>
+	<div class="content nfo"><span>Um sich anzumelden, geben Sie bitte Ihre E-Mail-Adresse und Ihr Passwort an. Sollten Sie ihr Passwort vergessen haben, klicken Sie bitte <a href="">hier</a>.</span></div>
 
-      <paper-input-decorator floatingLabel label="Passwort">
-        <input type="password" ng-model="user.password" required />
-      </paper-input-decorator>
+  <form novalidate>
 
-      <paper-button affirmative class="submit-button" ng-click="login(user)">
-        Anmelden
-      </paper-button>
+    <md-text-float label="Benutzername" ng-model="user.username" required></md-text-float>
+    <md-text-float label="Passwort" ng-model="user.password" type="password" required></md-text-float>
+    <md-button ng-click="auth.login(user)" class="md-raised md-primary md-button md-default-theme">Anmelden</md-button>
 
-    </form>
-  </paper-shadow>
+  </form>
 
 </div>

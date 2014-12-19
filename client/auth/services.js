@@ -5,17 +5,29 @@
 
   angular.module('auth.services', [
     'angular-jwt', // json web token
-    ])
+  ])
 
-  .factory('UserFactory',
-    ['$http', 'AuthTokenFactory', 'API_URL',
-    function($http, AuthTokenFactory, API_URL) {
+  .factory('RoleFactory', ['$http', 'API_URL',
+    function($http, API_URL) {
+
+      function getAllRoles() {
+        return $http.get(API_URL + '/v1/roles');
+      }
+
+      return {
+        getAllRoles: getAllRoles
+      };
+    }
+  ])
+
+
+  .factory('UserFactory', function($http, AuthTokenFactory, API_URL) {
 
     function login(credentials) {
       return $http.post(API_URL + '/auth/login', credentials)
-      .success(function(response) {
-        return AuthTokenFactory.setToken(response.token);
-      });
+        .success(function(response) {
+          return AuthTokenFactory.setToken(response.token);
+        });
     }
 
     function signup(formData) {
@@ -36,11 +48,9 @@
       signup: signup,
       getUser: getUser
     };
-  }])
+  })
 
-  .factory('AuthTokenFactory',
-    ['$window', 'TOKEN_KEY', '$q', 'jwtHelper',
-    function($window, TOKEN_KEY, $q, jwtHelper) {
+  .factory('AuthTokenFactory', function($window, TOKEN_KEY, $q, jwtHelper) {
 
     var store = $window.localStorage;
     var key = TOKEN_KEY;
@@ -66,8 +76,8 @@
     }
 
     return {
-     getToken: getToken,
-     setToken: setToken
+      getToken: getToken,
+      setToken: setToken
     };
-  }]);
+  });
 }());

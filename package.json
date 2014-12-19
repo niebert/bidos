@@ -4,6 +4,7 @@
   "description": "bidos",
   "main": "server.js",
   "dependencies": {
+    "angular-localforage": "^1.2.2",
     "bluebird": "^2.3.11",
     "chalk": "^0.5.1",
     "co-bcrypt": "^1.0.0",

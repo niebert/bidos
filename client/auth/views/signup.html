@@ -1,32 +1,28 @@
 <div class="auth">
-    <form novalidate>
+	<form novalidate>
 
-      <paper-input-decorator floatingLabel label="Benutzername">
-        <input type="text" ng-model="newUser.username" required />
-      </paper-input-decorator>
+		<div class="content nfo"><span>Um sich zu registrieren, wählen Sie bitte zuerst die gewünschte Rolle und füllen das dann unten stehende Formular aus. Sobald ein Administrator Ihren Antrag überprüft und freigeschaltet hat, können Sie sich mit dem Benutzernamen und Ihrem Passwort anmelden.</span></div>
 
-      <paper-input-decorator floatingLabel label="Passwort">
-        <input type="password" ng-model="newUser.password" required />
-      </paper-input-decorator>
+		<div class="content" style="width:100%; margin-top:24px;">
 
-      <paper-input-decorator floatingLabel label="E-Mail-Adresse">
-        <input type="text" ng-model="newUser.email" required />
-      </paper-input-decorator>
+			<span>Gewünschte Rolle:</span>
+			<select ng-model="newUser.role_id">
+				<option value="1" selected>Praktiker</option>
+				<option value="2">Wissenschaftler</option>
+			</select>
 
-      <paper-input-decorator floatingLabel label="Vor- und Nachname">
-        <input type="text" ng-model="newUser.name" required />
-      </paper-input-decorator>
+		</div>
 
-			<div class="content"  style="width:100%; margin-top:24px;">
-				<span>Gewünschte Rolle</span>
-				<select for ng-model="newUser.role_id" ng-change="" ng-options="role.id as role.longName for role in roles">
-				</select>
-			</div>
+		<div ng-show="newUser.role_id">
+			<md-text-float label="Vor- und Nachname" ng-model="newUser.name" required></md-text-float>
+			<md-text-float label="Passwort" ng-model="newUser.password" type="password" required></md-text-float>
+			<md-text-float label="E-Mail-Adresse" ng-model="newUser.email" type="email" required></md-text-float>
+		</div>
 
-      <paper-button affirmative class="submit-button" ng-click="signup(newUser)">
-        Registrieren
-      </paper-button>
+		<md-text-float ng-show="newUser.role_id=='1'" label="Institution" ng-model="newUser.institution" type="text" required></md-text-float>
+		<md-text-float ng-show="newUser.role_id=='2'" label="Stellung (Prof., Wissenschaftliche Hilfskraft, …)" ng-model="newUser.job" type="text" required></md-text-float>
 
+		<md-button ng-click="auth.signup(newUser)" class="md-raised md-primary md-button md-default-theme submit-button">Registrieren</md-button>
 
-    </form>
+	</form>
 </div>

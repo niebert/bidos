@@ -9,7 +9,7 @@
 
     $stateProvider
 
-      // Public routes to authenticate. All other routes are private.
+      /* Public routes to authenticate. All other routes are private. */
 
       .state('public', {
         url: '',

@@ -1,30 +1,17 @@
 <div class="unauthorized">
 
-  <div id="nav"> <!-- FIXME create home/dashboard route/view -->
-    <core-icon-button ui-sref="auth.home"
-      id="navicon" icon="home">
-    </core-icon-button>
+	<div id="nav">
+		<md-button class="md-raised md-button md-default-theme" ui-sref="public.login">
+			anmelden
+		</md-button>
 
-    <paper-button ui-sref="public.login">
-      anmelden
-    </paper-button>
+		<md-button class="md-raised md-button md-default-theme" ui-sref="public.signup">
+			registrieren
+		</md-button>
+	</div>
 
-    <paper-button ui-sref="public.signup">
-      registrieren
-    </paper-button>
-  </div>
+	<div id="main">
+		<div ui-view="main"></div>
+	</div>
 
-  <div id="main">
-    <div ui-view="main"></div>
-  </div>
-
-</div>
-
-<!-- left align for proper indent -->
-<div class="debug">
-<strong>$rootScope.state</strong>
-<pre>{{ state | json }}</pre>
-
-<strong>$rootScope.auth</strong>
-<pre>{{ auth | json }}</pre>
 </div>

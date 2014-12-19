@@ -648,3 +648,17 @@ md-input-group > input {
   margin: 32px;
   text-align: center;
 }
+
+.scientist-colors {
+  background-color: color($green, a400) !important;
+}
+
+.practitioner-colors {
+  background-color: color($blue, a400) !important;
+}
+
+.nfo {
+  width: 50%;
+  border: 1px solid #68b171;
+  margin: 24px;
+}

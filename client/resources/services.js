@@ -3,73 +3,84 @@
 (function() {
   'use strict';
 
-  angular.module('bidos.resource.services', [])
-
-  .service('resourceService', resourceService);
+  angular.module('bidos')
+    .service('resourceService', resourceService);
 
   function resourceService($http, $q, API_URL) {
 
-    // the back end will authenticate the user, check for it's group and
-    // respond with the correct resource object the user is allowed to get
+    /* Basic CRUD operations w/ HTTP calls to the back end. */
 
-    var dm = {};
+    /* The back end will authenticate the user, check for it's group and respond
+    /* with the correct resource object the user is allowed to get. */
+
+    var dm = {}; // data model
+    var RESOURCE_PATH = API_URL + '/v1/';
+    var DEFAULT_RESOURCE = 'resources/vanilla';
+
+
 
     return {
+      get: getResources,
+      create: createResource,
+      update: updateResource,
+      delete: deleteResource
+    };
 
-      getSubdomain: function(resourceObject) {
-        debugger
-        if (resourceObject.hasOwnProperty('subdomain_id')) {
-          return _.select(dm.subdomains, {id:resourceObject.subdomain_idt});
+
+
+    // resource can be an array or a string
+    function getResources(resource) {
+
+      // w/o arguments immediately return the data object
+      if (!resource) {
+        if (!_.isEmpty(dm)) {
+          return $q;
         }
-      },
+      }
 
-      read: function() {
-        return dm;
-      },
+      var deferred = $q.defer();
 
-      // resource can be an array or a string
-      get: function(resource) {
+      // make the argument an array if it isn't already <3
+      var resources = [].concat(resource || DEFAULT_RESOURCE);
 
-        var deferred  = $q.defer(),
+      var queries = _.map(resources, function(resource) {
+        return $http.get(RESOURCE_PATH + resource);
+      });
 
-            // make the argument an array and default to 'resource/vanilla'
-            resources = [].concat(resource || 'resources/vanilla'),
+      $q.all(queries).then(function(responses) {
 
-            queries = _.map(resources, function(resource) {
-              return $http.get(API_URL + '/v1/' + resource);
-            });
-
-        $q.all(queries).then(function(responses) {
-
-          // create a non-nested data model
-          _.chain(responses).map('data').each(function(response) {
+        // create flat (i.e. non-nested) data model
+        _.chain(responses)
+          .map('data')
+          .each(function(response) {
             console.info('[dm]', response);
             _.merge(dm, response);
           });
 
-          // TODO create nested and referenced jsobj (not json!) data model tree <3
+        deferred.resolve(dm);
+      });
 
-          deferred.resolve(dm);
-        });
+      dm.updatedAt = Date.now();
+      return deferred.promise;
+    }
 
-        dm.updatedAt = Date.now();
-        return deferred.promise;
-      },
 
-      create: function(resource, resourceObject) {
-        return $http.post(API_URL + '/v1/' + resource, resourceObject);
-      },
 
-      update: function(resource, id, resourceObject) {
-        if (!id) { debugger }
-        return $http.patch(API_URL + '/v1/' + resource + '/' + id, resourceObject);
-      },
+    function createResource(resource, resourceObject) {
+      return $http.post(RESOURCE_PATH + resource, resourceObject);
+    }
 
-      destroy: function(resource, id) {
-        return $http.delete(API_URL + '/v1/' + resource + '/' + id);
-      }
-    };
+
+
+    function updateResource(resource, id, resourceObject) {
+      return $http.patch([RESOURCE_PATH, resource, id].join('/'), resourceObject);
+    }
+
+
+
+    function deleteResource(resource, id) {
+      return $http.delete([RESOURCE_PATH, resource, id].join('/'));
+    }
 
   }
-
 }());

@@ -56,8 +56,10 @@ CREATE TABLE IF NOT EXISTS users (
   email         TEXT UNIQUE NOT NULL,
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT,
-  password      TEXT,
+  job           TEXT,
+  institution   TEXT,
   name          TEXT NOT NULL,
+  status        INT DEFAULT 1, -- -1=deactivated 0=normal 1=pending
 
   role_id       INT REFERENCES roles(id), -- NOT NULL, FIXME
   group_id      INT REFERENCES groups(id),
@@ -221,6 +223,7 @@ CREATE TABLE IF NOT EXISTS observations (
 CREATE VIEW auth AS
 SELECT users.id,
        username,
+       email,
        roles.name AS role,
        password_hash
 FROM users

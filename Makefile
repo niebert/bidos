@@ -60,7 +60,7 @@ dbreset-osx:
 
 dbreset:
 	sudo -u postgres dropdb bidos_development
-	sudo -u postgres createdb -O bidos bidos_development
+	sudo -u postgres createdb -O rene bidos_development
 
 dbinit:
 	@echo initializing database $(DATABASE)
@@ -69,9 +69,6 @@ dbinit:
 # TODO: do this via node, i.e. find out how to call my own middleware to create default users
 
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
-	@psql -U bidos -c "UPDATE users SET role_id = 1 WHERE id = 1" $(DATABASE)
-	@psql -U bidos -c "UPDATE users SET role_id = 2 WHERE id = 2" $(DATABASE)
-	@psql -U bidos -c "UPDATE users SET role_id = 3 WHERE id = 2" $(DATABASE)
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "role_id": "1" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "role_id": "2" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123", "role_id": "3" }' localhost:$(PORT)/auth/signup

@@ -1,19 +1,74 @@
-<!-- MAIN RESOURCE CONTROLLER -->
+<div ng-controller="ResourceController as vm" layout="column" layout-fill>
+	<section layout="row" flex>
+
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-xl')">
+
+			<md-toolbar class="md-theme-indigo">
+				<h1 class="md-toolbar-tools">Sidenav Left</h1>
+			</md-toolbar>
+
+
+			<md-content class="md-padding" ng-controller="LeftCtrl">
+				<md-button ng-click="close()" class="md-primary" hide-gt-md>
+					Close Sidenav Left
+				</md-button>
+				<p hide-md show-gt-md>
+					This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
+				</p>
+			</md-content>
+
+		</md-sidenav>
+
+
+
+		<md-content flex class="" main ui-view="main" id="main">
+			<!-- DO NOT APPLY MD-PADDING HERE FFS -->
+		</md-content>
+
+
+
+		<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+			<md-toolbar class="md-theme-light">
+				<h1 class="md-toolbar-tools">Sidenav Right</h1>
+			</md-toolbar>
+			<md-content ng-controller="RightCtrl" class="md-padding">
+				<md-button ng-click="close()" class="md-primary">
+					Close Sidenav Right
+				</md-button>
+			</md-content>
+		</md-sidenav>
+
+
+
+	</section>
+</div>
+
+
+
+<!--
+
+
+
 <core-drawer-panel responsiveWidth="900em" ng-controller="ResourceController as vm" id="drawerPanel">
 	<core-header-panel drawer>
-		<core-toolbar id="navheader" class="">
+		<core-toolbar id="navheader" ng-class="vm.roleCSS()">
 			<span flex ui-sref="auth.profile">BiDoS</span>
 		</core-toolbar>
 
 		<core-menu>
-			<pre>Angemeldet als: {{ auth.username }}/{{ auth.role }}</pre>
+			<pre><strong>Benutzer: {{ auth.username }}</strong></pre>
+			<pre><strong>Rolle: {{ auth.role }}</strong></pre>
 
 			<hr>
 
 			<core-item ui-sref="auth.item" label="Items" ng-show="vm.checkRole('itemsTable')"></core-item>
-			<core-item ui-sref="auth.observation" label="Beobachtungen"></core-item>
-			<core-item ui-sref="auth.kid" label="Kinder"></core-item>
-			<core-item ui-sref="auth.user" label="Benutzer"></core-item>
+			<core-item ui-sref="auth.observation" label="Beobachtungen" ng-show="vm.checkRole('observationsTable')"></core-item>
+			<core-item ui-sref="auth.kid" label="Kinder" ng-show="vm.checkRole('kidsTable')"></core-item>
+			<core-item ui-sref="auth.user" label="Benutzer" ng-show="vm.checkRole('usersTable')"></core-item>
+
+			<hr>
+
+			<core-item ui-sref="auth.stats" label="Statistiken" ng-show="vm.checkRole('stats')"></core-item>
 
 			<hr>
 
@@ -30,18 +85,18 @@
 
 
 
-			<!-- <core-submenu class="drawer-menu" label="Ressourcen"> -->
-			<!-- <core-item ui-sref="auth.domain" label="Domains"></core-item> -->
-			<!-- <core-item ui-sref="auth.subdomain" label="Subdomains"></core-item> -->
-			<!-- <core-item ui-sref="auth.behaviour" label="Behaviours"></core-item> -->
-			<!-- <core-item ui-sref="auth.example" label="Examples"></core-item> -->
-			<!-- <core-item ui-sref="auth.group" label="Groups"></core-item> -->
-			<!-- </core-submenu> -->
+			<core-submenu class="drawer-menu" label="Ressourcen">
+				<core-item ui-sref="auth.domain" label="Domains"></core-item>
+				<core-item ui-sref="auth.subdomain" label="Subdomains"></core-item>
+				<core-item ui-sref="auth.behaviour" label="Behaviours"></core-item>
+				<core-item ui-sref="auth.example" label="Examples"></core-item>
+				<core-item ui-sref="auth.group" label="Groups"></core-item>
+			</core-submenu>
+
 		</core-menu>
 
 	</core-header-panel>
 
-	<!-- MAIN CONTENT -->
-	<core-header-panel main ui-view="main" id="main">
-	</core-header-panel>
+
 </core-drawer-panel>
+ -->
