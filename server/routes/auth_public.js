@@ -98,7 +98,7 @@
 
 
     if (!_.size(this.request.body)) {
-      console.log('[route failure] updateItem: this.request.body is empty');
+      console.log('[route failure] auth_public/createUser: this.request.body is empty');
       this.status = 500;
     } else {
 
@@ -116,9 +116,9 @@
         values: values
       };
 
-      console.log(query);
       var result =
         yield this.pg.db.client.query_(query);
+        console.log(result.rows);
 
       this.body = result.rows;
     }

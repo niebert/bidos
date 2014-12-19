@@ -47,8 +47,27 @@
       newResource: newResource,
       getDomainTitle: getDomainTitle,
       getGroupName: getGroupName,
-      logout: logout
+      logout: logout,
+
+      checkRole: checkRole,
     });
+
+    function checkRole(what) {
+      console.log(what);
+
+      var permissions = {
+        pract: ['itemsTable', 'observationsTable', 'kidsTable'],
+        scientist: ['itemsTableAnon', 'observationsTableAnon', 'kidsTableAnon'],
+      };
+
+      if ($rootScope.auth) {
+        if ($rootScope.auth.role === 'admin') {
+          return true; // XXX FIXME HACK
+        } else {
+          return _.contains(permissions[$rootScope.auth.role], what);
+        }
+      }
+    }
 
     function logout() {
       // $window.localStorage.getItem('auth_token');

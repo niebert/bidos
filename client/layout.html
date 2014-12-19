@@ -10,7 +10,7 @@
 
 			<hr>
 
-			<core-item ui-sref="auth.item" label="Items"></core-item>
+			<core-item ui-sref="auth.item" label="Items" ng-show="vm.checkRole('itemsTable')"></core-item>
 			<core-item ui-sref="auth.observation" label="Beobachtungen"></core-item>
 			<core-item ui-sref="auth.kid" label="Kinder"></core-item>
 			<core-item ui-sref="auth.user" label="Benutzer"></core-item>

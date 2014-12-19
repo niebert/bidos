@@ -28,6 +28,26 @@
       $state.go('public.login');
     });
 
+
+    $scope.roles = [{
+      id: 0,
+      longName: 'Administrator',
+      shortName: 'admin'
+    }, {
+      id: 1,
+      longName: 'Practitioner',
+      shortName: 'pract'
+    }, {
+      id: 2,
+      longName: 'Scientist',
+      shortName: 'scientist'
+    }];
+
+    $scope.signUpNewUserRoles = function(rolename) {
+      return $scope.roles[rolename];
+    };
+
+
     $scope.login = function(credentials) {
       console.log('[AuthController] $scope.login', credentials);
       UserFactory.login(credentials)

@@ -17,9 +17,16 @@
         <input type="text" ng-model="newUser.name" required />
       </paper-input-decorator>
 
+			<div class="content"  style="width:100%; margin-top:24px;">
+				<span>Gewünschte Rolle</span>
+				<select for ng-model="newUser.role_id" ng-change="" ng-options="role.id as role.longName for role in roles">
+				</select>
+			</div>
+
       <paper-button affirmative class="submit-button" ng-click="signup(newUser)">
         Registrieren
       </paper-button>
+
 
     </form>
 </div>
