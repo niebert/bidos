@@ -34,6 +34,7 @@
     "Faker": "~2.1.1",
     "pleasejs": "~0.4.2",
     "angular-localforage": "~1.2.2",
-    "angular-pouchdb": "angular-pouchdb/angular-pouchdb#~1.0.2"
+    "angular-pouchdb": "angular-pouchdb/angular-pouchdb#~1.0.2",
+    "material-design-icons": "~1.0.1"
   }
 }

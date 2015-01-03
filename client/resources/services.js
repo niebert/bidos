@@ -6,7 +6,7 @@
   angular.module('bidos')
     .service('resourceService', resourceService);
 
-  function resourceService($http, $q, API_URL) {
+  function resourceService($http, $q, API_URL, $rootScope) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 
@@ -14,27 +14,43 @@
     /* with the correct resource object the user is allowed to get. */
 
     var dm = {}; // data model
-    var RESOURCE_PATH = API_URL + '/v1/';
+    var RESOURCE_PATH = API_URL + '/v1';
     var DEFAULT_RESOURCE = 'resources/vanilla';
-
-
 
     return {
       get: getResources,
       create: createResource,
       update: updateResource,
-      delete: deleteResource
+      destroy: destroyResource,
+
+      getGroupNameById: getGroupNameById
     };
 
+    function getGroupNameById(groupId) {
+      if (dm.groups) {
+        var groupName = _.select(dm.groups, {
+          id: +groupId
+        })[0].name;
 
+        return groupName;
+      }
+    }
 
     // resource can be an array or a string
     function getResources(resource) {
 
       // w/o arguments immediately return the data object
-      if (!resource) {
+      if (!arguments.length) {
         if (!_.isEmpty(dm)) {
-          return $q;
+          return $q(function(resolve, reject) {
+            if ($rootScope.networkStatus !== 'offline') {
+              console.log('online');
+              resolve(dm);
+            } else {
+              console.log('offline');
+              reject('FAILED GETTING DATA, CHECK YOUR INTERNET CONNECTION!');
+            }
+          });
         }
       }
 
@@ -44,7 +60,7 @@
       var resources = [].concat(resource || DEFAULT_RESOURCE);
 
       var queries = _.map(resources, function(resource) {
-        return $http.get(RESOURCE_PATH + resource);
+        return $http.get([RESOURCE_PATH, resource].join('/'));
       });
 
       $q.all(queries).then(function(responses) {
@@ -64,22 +80,31 @@
       return deferred.promise;
     }
 
-
-
     function createResource(resource, resourceObject) {
-      return $http.post(RESOURCE_PATH + resource, resourceObject);
+      return $http.post([RESOURCE_PATH, resource].join('/'), resourceObject)
+        .then(function(response) {
+          _.merge(dm, response.data);
+        });
     }
 
-
-
-    function updateResource(resource, id, resourceObject) {
-      return $http.patch([RESOURCE_PATH, resource, id].join('/'), resourceObject);
+    function updateResource(resource, resourceObject) {
+      return $http.patch([RESOURCE_PATH, resource, resourceObject.id].join('/'), resourceObject)
+        .then(function(response) {
+          _.merge(dm, response.data);
+        });
     }
 
+    function destroyResource(resource, id) {
+      return $http.delete([RESOURCE_PATH, resource, id].join('/'))
+        .then(function() {
 
+          resource = resource + 's'; // FIXME pluralizing here is dangerous and sucks
 
-    function deleteResource(resource, id) {
-      return $http.delete([RESOURCE_PATH, resource, id].join('/'));
+          // remove resource from view model array
+          dm[resource].splice(_.findIndex(dm[resource], {
+            id: id
+          }), 1);
+        });
     }
 
   }

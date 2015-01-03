@@ -32,7 +32,7 @@
           return;
         }
 
-        var subdomain = _.select(resourceService.read().subdomains, {
+        var subdomain = _.select(resourceService.get().subdomains, {
           id: item.subdomain_id
         })[0];
 
@@ -45,7 +45,7 @@
           return;
         }
 
-        return _.select(resourceService.read().domains, {
+        return _.select(resourceService.get().domains, {
           id: subdomain.domain_id
         })[0].title;
 
@@ -69,7 +69,7 @@
           return;
         }
 
-        var subdomain = _.select(resourceService.read().subdomains, {
+        var subdomain = _.select(resourceService.get().subdomains, {
           id: item.subdomain_id
         })[0];
 
@@ -96,7 +96,7 @@
           return;
         }
 
-        return _.select(resourceService.read().subdomains, {
+        return _.select(resourceService.get().subdomains, {
           id: subdomain_id
         })[0].title;
 
@@ -119,7 +119,8 @@
 
     app.filter('groupNameById', function(resourceService) {
       return function(group_id) {
-        return _.select(resourceService.read().groups, {
+        debugger
+        return _.select(resourceService.get().groups, {
           id: group_id
         })[0].name;
       };
@@ -133,7 +134,7 @@
 
     app.filter('itemTitle', function(resourceService) {
       return function(item_id) {
-        return _.select(resourceService.read().items, {
+        return _.select(resourceService.get().items, {
           id: item_id
         })[0].name;
       };
@@ -145,10 +146,15 @@
 
 
     app.filter('groupName', function(resourceService) {
-      return function(user) {
-        return _.select(resourceService.read().users, {
-          id: user.group_id
-        })[0];
+      return function(group_id) {
+        console.warn(group_id);
+        return resourceService.getGroupNameById(group_id);
+        // resourceService.get().then(function(data) {
+        //   console.log(data);
+        //   return _.select(data.groups, {
+        //     id: user.group_id
+        //   })[0];
+        // });
       };
     });
 
@@ -159,7 +165,7 @@
 
     app.filter('kidName', function(resourceService) {
       return function(kid_id) {
-        return _.select(resourceService.read().kids, {
+        return _.select(resourceService.get().kids, {
           id: kid_id
         })[0].name;
       };
@@ -172,7 +178,7 @@
 
 
 
-    // [1,2] -> [male,female]
+    // [1,2] -> [male,female] √
     app.filter('sexName', function() {
       return function(sex) {
         return sex === 1 ? 'männlich' : 'weiblich';

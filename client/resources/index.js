@@ -9,5 +9,6 @@
   require('./models');
   require('./directives/bidos-dashboard/bidos-dashboard');
   require('./directives/bidos-kids/bidos-kids');
+  require('./directives/bidos-debug/bidos-debug');
 
 }());

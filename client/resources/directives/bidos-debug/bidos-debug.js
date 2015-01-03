@@ -6,7 +6,7 @@
     .directive('bidosDebug', [function() {
       return {
         restrict: 'E',
-        templateUrl: 'resources/directives/debug-directive.html',
+        templateUrl: 'resources/directives/bidos-debug/bidos-debug.html',
         link: function(scope, element, attributes) {}
       };
     }]);

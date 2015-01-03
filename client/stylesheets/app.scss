@@ -475,7 +475,7 @@ thead {
 }
 
 th, td {
-  padding: 12px 16px 12px 16px;
+  padding: 8px 16px;
 }
 
 // tbody > td:hover {
@@ -661,4 +661,25 @@ md-input-group > input {
   width: 50%;
   border: 1px solid #68b171;
   margin: 24px;
+}
+
+md-dialog {
+  width: 75%;
+  height: 50%
+}
+
+
+.dialog-sheet {
+  background-color: #fff2e9;
+  border-bottom: 1px solid #A6A6A6;
+  padding: 16px 24px;
+}
+
+.dialog-header {
+  width: 100%;
+  background-color: #b0d092 !important;
+}
+
+md-dialog > h2 {
+  margin-right: 0;
 }

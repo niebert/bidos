@@ -60,7 +60,7 @@
     if (!vm.roles) {
       RoleFactory.getAllRoles().then(function(response) {
         vm.roles = response.data.roles;
-      })
+      });
     }
 
 

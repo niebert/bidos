@@ -1,4 +1,4 @@
-/* global angular, navigator, window */
+/* global angular, navigator, window, document */
 
 (function() {
   'use strict';

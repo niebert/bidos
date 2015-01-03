@@ -20,9 +20,6 @@
       new: {},
       edit: {},
 
-      // random resource generators
-      createRandomKid: createRandomKid,
-
       // generic resource classes
       newObservation: newObservation,
       newItem: newItem,
@@ -55,6 +52,18 @@
       }
     });
 
+    // function syncResources() {
+    //   if (_.isEmpty(vm.data)) {
+    //     console.log('no resources synced. syncing now.');
+    //     resourceService.get().then(function(data) {
+    //       angular.extend(vm.data, data);
+    //     });
+    //   } else {
+    //     console.log('there are resources but i have no idea how old they are.', vm);
+    //   }
+    // }
+
+    // syncResources();
 
     function roleCSS() {
       switch ($rootScope.auth.role) {
@@ -168,20 +177,6 @@
       return kid;
     }
 
-
-    function createRandomKid() {
-      resourceService.create('kid', {
-        name: faker.name.firstName() + ' ' + faker.name.lastName(),
-        age: faker.random.number({min: 6, max: 12}),
-        // ethnicity: faker.random.number({min: 0, max: 9}),
-        // hair: faker.internet.color(200, 200, 200),
-        // eyes: faker.internet.color(),
-        sex: faker.random.number({min: 1, max: 2}),
-        group_id: faker.random.number({min: 1, max: 4})
-      }).then(function(response) {
-        vm.data.kids.push(response.data[0]);
-      });
-    }
 
   }
 }());
