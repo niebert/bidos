@@ -1,0 +1,50 @@
+<md-content>
+	<md-toolbar>
+		<h2 class="md-toolbar-tools">
+			<md-button ui-sref="auth.home">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<span flex>Subdomains</span>
+
+			<md-button ng-click="vm.createOrEditItemDialog($event)">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<md-button>
+				<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</h2>
+	</md-toolbar>
+</md-content>
+
+
+<div layout="column" layout-fill>
+	<md-content>
+		<table>
+			<thead>
+				<th>ID</th>
+				<th>Titel</th>
+				<th>Subdomain</th>
+				<th>Domain</th>
+				<th>Erstellt am</th>
+				<th>Bearbeitet am</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="subdomain in vm.data.subdomains | orderBy:id" ng-click="vm.selectResource('subdomain', subdomain)">
+					<td> {{ subdomain.id }} </td>
+					<td> {{ subdomain.title }} </td>
+					<td> {{ subdomain | subdomainTitle }} </td>
+					<td> {{ subdomain | domainTitle }} </td>
+					<td> {{ subdomain.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+					<td> {{ subdomain.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</md-content>
+</div>
+
+<!--
+<div class="debug">
+<pre>{{ vm | json }} </pre>
+</div>
+ -->

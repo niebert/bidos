@@ -1,0 +1,61 @@
+<md-dialog aria-label="create-kid-dialog">
+
+	<md-subheader class="md-sticky-no-effect dialog-header">{{ vmd.kid.name }}</md-subheader>
+
+	<div class="dialog-sheet">
+		<pre>{{ vmd.kid | json }}</pre>
+	</div>
+
+	<md-content flex layout="column">
+		<form>
+			<div layout="column">
+				<md-text-float label="Name" ng-model="vmd.kid.name"></md-text-float>
+				<div layout="row" layout-align="center center">
+					<div flex>
+						<h3>Alter:</h3>
+						<!-- <input type="date" ng-model="vmd.kid.bday"> -->
+						<select ng-model="vmd.kid.age">
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+						</select>
+					</div>
+
+					<div flex>
+						<h3>Geschlecht:</h3>
+						<select ng-model="vmd.kid.sex">
+							<option value="1">männlich</option>
+							<option value="2">weiblich</option>
+						</select>
+					</div>
+					<div flex>
+						<h3>Gruppe:</h3>
+						<select ng-model="vmd.kid.group_id" ng-options="group.id as group.name for group in vmd.data.groups"></select>
+					</div>
+				</div>
+			</div>
+		</form>
+	</md-content>
+
+	<div class="md-actions" layout="row">
+		<md-button ng-show="vmd.kid.id" ng-click="vmd.destroy(vmd.kid.id)" class="md-raised md-warn md-button md-default-theme">
+			Löschen
+		</md-button>
+		<span flex></span>
+		<md-button ng-click="vmd.cancel()" class="md-raised md-button md-default-theme">
+			Abbrechen
+		</md-button>
+		<md-button ng-click="vmd.save(vmd.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vmd.kid.name || !vmd.kid.age || !vmd.kid.sex || !vmd.kid.group_id" ng-click="vmd.createResource('kid', vmd.kid)">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>

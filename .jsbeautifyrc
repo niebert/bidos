@@ -2,11 +2,12 @@
     "html": {
         "indent_char": "\t",
         "indent_size": 1,
-        "max_preserve_newlines": 5
+        "max_preserve_newlines": 3
     },
     "js": {
         "indent_char": " ",
         "indent_size": 2,
-        "max_preserve_newlines": 5
+        "max_preserve_newlines": 3,
+        "break_chained_methods": true
     }
 }

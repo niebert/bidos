@@ -1,0 +1,54 @@
+<style>
+md-content {
+	height: 100vh;
+}
+</style>
+
+
+<md-content>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+		<md-button ui-sref="auth.home">
+			<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+
+		<h2 flex>Kinder</h2>
+
+		<md-text-float flex label="Suche" ng-model="query"></md-text-float>
+
+		<md-button ng-click="vm.createOrEditKidDialog($event)">
+			<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+		<md-button ng-click="vm.createRandomKid()">
+			<md-icon aria-label="add-child" icon="lib/material-design-icons/social/svg/production/ic_plus_one_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+		<md-button>
+			<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+	</span>
+	</md-toolbar>
+	<section ng-repeat="group in vm.data.groups">
+		<md-subheader class="md-sticky-no-effect dialog-header">{{ group.name }}</md-subheader>
+
+		<table>
+			<thead>
+				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
+				<th ng-click="predicate='name'; reverse=!reverse">Name</th>
+				<th ng-click="predicate='age'; reverse=!reverse">Alter</th>
+				<th ng-click="predicate='sex'; reverse=!reverse">Geschlecht</th>
+				<th ng-click="predicate='group_id'; reverse=!reverse">Gruppe</th>
+				<th ng-click="predicate='created_at'; reverse=!reverse">erstellt</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="kid in vm.data.kids | filter:{ group_id: group.id } | filter:query | orderBy:predicate:reverse" ng-click="vm.createOrEditKidDialog($event, kid)">
+					<td> {{ kid.id }} </td>
+					<td> {{ kid.name }} </td>
+					<td> {{ kid.age }} </td>
+					<td> {{ kid.sex | sexName }} </td>
+					<td> {{ kid.group_id | groupName }} </td>
+					<td> {{ kid.created_at | date }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</md-content>

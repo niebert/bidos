@@ -13,17 +13,9 @@
   ]);
 
   require('./auth');
-  require('./resources/controllers/md-sidenav-controller.js');
-  require('./resources');
+  require('./bidos-core');
 
-
-
-  app.constant('API_URL', 'http://localhost:3000');
-  // app.constant('API_URL', 'http://192.168.2.9:3000');
-  // app.constant('API_URL', 'http://192.168.1.7:3000');
-  // app.constant('API_URL', 'http://bidos.sci-hub.ir:3000');
-
-
+  app.constant('API_URL', 'http://localhost:3000'); // CHANGE ME IF NECCESSARY
 
   /* Register event listeners to keep track of our network status and make it
   /* available on $rootScope.networkStatus. */
@@ -66,8 +58,6 @@
     }
   });
 
-
-
   app.config(function($logProvider) {
     $logProvider.debugEnabled(true);
   });
@@ -75,5 +65,40 @@
   app.run(function($rootScope, $log) {
     $rootScope.$log = $log;
   });
+
+  app.config(function($httpProvider) {
+    $httpProvider.interceptors.push(function($q, $rootScope) {
+      return {
+        'request': function(config) {
+          $rootScope.$broadcast('loading-started');
+          return config || $q.when(config);
+        },
+        'response': function(response) {
+          $rootScope.$broadcast('loading-complete');
+          return response || $q.when(response);
+        }
+      };
+    });
+  });
+
+  app.directive('loadingIndicator', function() {
+    return {
+      restrict: 'A',
+      template: '<md-progress-linear class="md-warn" md-mode="indeterminate"></md-progress-linear>',
+      link: function(scope, element, attrs) {
+        scope.$on('loading-started', function(e) {
+          element.css({
+            'display': ''
+          });
+        });
+        scope.$on('loading-complete', function(e) {
+          element.css({
+            'display': 'none'
+          });
+        });
+      }
+    };
+  });
+
 
 }());

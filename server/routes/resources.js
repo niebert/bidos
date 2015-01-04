@@ -73,6 +73,8 @@
       subdomains: subdomain.rows,
       usernames: _.map(usernames.rows, 'username')
     };
+
+    console.log('  >>>     delivering flat resources')
   }
 
   function *getNestedResources() {

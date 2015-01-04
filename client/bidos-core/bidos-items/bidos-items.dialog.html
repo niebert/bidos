@@ -1,0 +1,46 @@
+<md-dialog aria-label="create-item-dialog">
+
+	<md-subheader class="md-sticky-no-effect dialog-header">{{ vmd.item.title }}</md-subheader>
+
+	<div class="dialog-sheet">
+		<pre>{{ vmd.item | json }}</pre>
+	</div>
+
+	<md-content flex layout="column">
+		<form layout="column">
+			<md-text-float label="Item Titel" ng-model="vmd.item.title"></md-text-float>
+			<div layout="row" layout-align="center center">
+				<div flex>
+					<h3>Kategorie:</h3>
+					<select for ng-model="vmd.item.subdomain_id" ng-options="subdomain.id as subdomain.title group by vmd.getDomainTitle(subdomain.domain_id) for subdomain in vmd.data.subdomains"></select>
+				</div>
+			</div>
+			<div layout="row">
+				<div flex>
+					<h4>Niveau 1</h4>
+					<md-list>
+						<md-item>
+							{{ vm.data.behaviours }}
+						</md-item>
+					</md-list>
+				</div>
+				<div flex></div>
+				<div flex></div>
+			</div>
+		</form>
+	</md-content>
+
+	<div class="md-actions" layout="row">
+		<md-button ng-show="vmd.item.id" ng-click="vmd.destroy(vmd.item.id)" class="md-raised md-warn md-button md-default-theme">
+			Löschen
+		</md-button>
+		<span flex></span>
+		<md-button ng-click="vmd.cancel()" class="md-raised md-button md-default-theme">
+			Abbrechen
+		</md-button>
+		<md-button ng-click="vmd.save(vmd.item)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vmd.item.title || !vmd.item.subdomain_id" ng-click="vmd.createResource('item', vmd.item)">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>
