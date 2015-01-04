@@ -9,6 +9,7 @@
   require('./bidos-kids');
   require('./bidos-observations');
   require('./bidos-subdomains'); // TODO bundle with items
+  require('./bidos-users');
 
   require('./services/ResourceService');
   require('./services/ResourceHelper');
