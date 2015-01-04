@@ -5,11 +5,11 @@
   // Fri Dec 26 20:30:35 CET 2014
 
   angular.module('bidos')
-    .directive('bidosKids', bidosKids);
+    .directive('bidosObservations', bidosObservations);
 
   faker.locale = 'de';
 
-  function bidosKids() {
+  function bidosObservations() {
     return {
       scope: {},
       bindToController: true,
