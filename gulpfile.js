@@ -18,11 +18,11 @@
   var targetDir = 'build/';
 
 
-  gulp.task('bundleJavascript', handleJs);
-  gulp.task('compileSass', handleScss);
-  gulp.task('watchFiles', watch);
-  gulp.task('startServer', serve);
-  gulp.task('development', ['bundleJavascript', 'compileSass', 'watchFiles', 'startServer']);
+  gulp.task('scripts', scripts);
+  gulp.task('stylesheets', stylesheets);
+  gulp.task('watch', watch);
+  gulp.task('serve', serve);
+  gulp.task('development', ['scripts', 'stylesheets', 'watch', 'serve']);
   gulp.task('default', ['development']);
 
 
@@ -32,7 +32,7 @@
   }
 
 
-  function handleJs() {
+  function scripts() {
     var browserified = transform(function(filename) {
       var b = browserify(filename);
       return b.bundle();
@@ -48,7 +48,7 @@
   }
 
 
-  function handleScss() {
+  function stylesheets() {
     gulp.src(sourceDir + 'stylesheets/app.scss')
       .pipe(plumber({
         errorHandler: onError
@@ -64,8 +64,8 @@
 
 
   function watch() {
-    gulp.watch(sourceDir + '/**/*.js', ['handleJs']);
-    gulp.watch(sourceDir + '/**/*.scss', ['handleScss']);
+    gulp.watch(sourceDir + '/**/*.js', ['scripts']);
+    gulp.watch(sourceDir + '/**/*.scss', ['stylesheets']);
   }
 
 
@@ -79,7 +79,7 @@
         nodeArgs: ['--harmony']
       })
       .on('change', function() {
-        console.log(chalk.red.bold('>>> server restart ') + chalk.white.bold(new Date()));
+        console.log(chalk.red.bold('>> server restart ') + chalk.white.bold(new Date()));
       });
   }
 
