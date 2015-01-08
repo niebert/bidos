@@ -6,7 +6,7 @@
   angular.module('bidos')
     .service('ResourceService', ResourceService);
 
-  function ResourceService($http, $q, API_URL, $rootScope) {
+  function ResourceService($http, $q, API_URL, $localStorage, $sessionStorage) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 
@@ -20,12 +20,37 @@
     var RESOURCE_PATH = API_URL + '/v1';
     var DEFAULT_RESOURCE = 'resources/vanilla';
 
+
+
     return {
+      sync: syncResources,
       get: getResources,
       create: createResource,
       update: updateResource,
       destroy: destroyResource,
     };
+
+
+    function syncResources() {
+      var url = [RESOURCE_PATH, DEFAULT_RESOURCE].join('/');
+      console.log(url);
+
+      function pull() {
+        return $http.get(url)
+          .success(function(response) {
+            debugger
+            $localStorage.resources = response.data;
+          })
+          .error(function(response) {
+            console.warn(response.err);
+          });
+      }
+
+      pull()
+        .then(function(response) {
+          console.log('sync done', response);
+        });
+    }
 
     // resource can be an array or a string
     function getResources(requestedResource) {

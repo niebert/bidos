@@ -13,6 +13,8 @@
   var prefix = require('gulp-autoprefixer');
   var transform = require('vinyl-transform');
   var ngAnnotate = require('gulp-ng-annotate');
+  var run = require('gulp-run');
+  var shell = require('gulp-shell');
 
   var sourceDir = 'client/';
   var targetDir = 'build/';
@@ -22,7 +24,9 @@
   gulp.task('stylesheets', stylesheets);
   gulp.task('watch', watch);
   gulp.task('serve', serve);
-  gulp.task('development', ['scripts', 'stylesheets', 'watch', 'serve']);
+  gulp.task('manifest', manifest);
+  gulp.task('development', ['scripts', 'stylesheets', 'manifest', 'watch', 'serve']);
+  gulp.task('production', ['scripts', 'stylesheets', 'serve']);
   gulp.task('default', ['development']);
 
 
@@ -31,6 +35,11 @@
     console.log(err);
   }
 
+  function manifest() {
+    shell.task([
+      'manifest.sh'
+    ]);
+  }
 
   function scripts() {
     var browserified = transform(function(filename) {

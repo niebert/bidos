@@ -7,8 +7,10 @@
     'auth',
     'ngMaterial',
     'ngMessages',
+    'ngStorage',
     'ui.router',
-    'LocalForageModule'
+    // 'ngCordova',
+    // 'LocalForageModule'
     // 'pouchdb'
   ]);
 

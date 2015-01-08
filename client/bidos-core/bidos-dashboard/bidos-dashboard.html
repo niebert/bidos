@@ -16,8 +16,8 @@
 			</md-button>
 			-->
 
-				<md-icon ng-show="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_24px.svg" style="width: 24px; height: 24px;"></md-icon>
-				<md-icon ng-hide="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_problem_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+				<!-- <md-icon ng-show="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_24px.svg" style="width: 24px; height: 24px;"></md-icon> -->
+				<!-- <md-icon ng-hide="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_problem_24px.svg" style="width: 24px; height: 24px;"></md-icon> -->
 
 		</span>
 
@@ -34,19 +34,31 @@
 		<md-button ui-sref="auth.observations" flex style="background-color:{{vm.colors.a[1]}}">Beobachtungen</md-button>
 		<md-button ui-sref="auth.items" flex style="background-color:{{vm.colors.a[2]}}">Bausteine</md-button>
 		<md-button ui-sref="auth.kids" flex style="background-color:{{vm.colors.a[3]}}">Kinder</md-button>
+		<md-content flex="20" layout="column">
+			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[1]}}">Status</md-button>
+			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[2]}}">Profil</md-button>
+			<md-button class="capture" ng-class="{online:vm.networkStatus==online}" flex>{{ vm.networkStatus }}</md-button>
+		</md-content>
 	</md-content>
 
 	<md-content class="big" layout="row">
 		<md-button ui-sref="auth.groups" flex style="background-color:{{vm.colors.a[4]}}">Gruppen</md-button>
 		<md-button ui-sref="auth.users" flex style="background-color:{{vm.colors.a[5]}}">Benutzer</md-button>
-		<md-content layout="column">
+		<md-content flex="20" layout="column">
 			<md-button ng-click="vm.sync()" class="capture" flex style="background-color:{{vm.colors.b[0]}}">Sync</md-button>
-			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[1]}}">Status</md-button>
-			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[2]}}">Profil</md-button>
-			<md-button download="bidos-data.json" ng-click="vm.exportData()" class="capture" flex style="background-color:#7bb4da">Export</md-button>
+			<md-button class="capture" flex style="background-color:#7bb4da"><a href="v1/resources/vanilla" style="color:#000;text-decoration:none;">Export</a></md-button>
+			<md-button ng-click="vm.logout()" class="capture" flex style="background-color:#c92971">Abmelden</md-button>
 		</md-content>
 	</md-content>
 
+
+<!--
+ 	<md-content class="" layout="row" layout-align="end center" style="height:100px; background-color:#2c2c2c; padding:8px;">
+		<a ng-href="chrome://appcache-internals/" target="_blank" style="color:#ffdfe0;text-decoration:none;font-size:0.8em;">cache</a>
+		<span style="color:#ffdfe0;font-size:0.8em;"</span> |
+		<a style="color:#ffdfe0;text-decoration:none;font-size:0.8em;" href="v1/resources/vanilla" download="bidos-data.json">export</a>
+	</md-content>
+ -->
 
 
 </md-content>

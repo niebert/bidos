@@ -7,8 +7,8 @@
 
 		<h2 flex>Eigenes Profil</h2>
 
-		<md-button>
-			<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		<md-button ng-click="vm.dialog()">
+			<md-icon aria-label="more" icon="lib/material-design-icons/editor/svg/production/ic_mode_edit_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 		</md-button>
 	</span>
 	</md-toolbar>
@@ -34,6 +34,8 @@
 
 			<md-subheader class="profile-content">Authentifiziert bis</md-subheader>
 			<div>{{ vm.auth.exp | date:'yyyy-MM-dd HH:mm:ss Z' }}</div>
+
+			<md-button ng-href="mailto:rene.wilhelm@gmail.com?subject=BiDoS%20Profil%20löschen%20({{vm.auth.username}})" class="md-raised md-warn" style="margin-top:32px;">Profil löschen</md-button>
 
 		</md-content>
 

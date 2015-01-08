@@ -1,0 +1,97 @@
+<md-dialog aria-label="create-kid-dialog">
+
+	<md-subheader class="md-sticky-no-effect dialog-header">Eigenes Profil bearbeiten</md-subheader>
+
+	<md-content layout="column">
+
+		<div class="input-group">
+			<md-input-group class="md-default-theme">
+				<label for="name">Vor- und Nachname</label>
+				<md-input type="text" id="name" name="name" ng-model="vm.user.name" required ng-pattern="/^.* .*$/"></md-input>
+			</md-input-group>
+			<div ng-show="userForm.name.$dirty" ng-messages="userForm.name.$error">
+				<div class="error-message" ng-message="required">Sie müssen einen Namen angeben</div>
+				<div class="error-message" ng-message="pattern">Geben Sie den Namen im Format <em>Vorname</em> <em>Nachname</em> an</div>
+			</div>
+		</div>
+
+		<div class="input-group">
+			<md-input-group class="md-default-theme">
+				<label for="email">E-Mail-Adresse</label>
+				<md-input type="email" id="email" name="email" ng-model="vm.user.email" required></md-input>
+			</md-input-group>
+			<div ng-show="userForm.email.$dirty" ng-messages="userForm.email.$error">
+				<div class="error-message" ng-message="required">Sie müssen eine E-Mail-Adresse angeben</div>
+				<div class="error-message" ng-message="email">Ungültige E-Mail-Adresse</div>
+			</div>
+		</div>
+
+		<div class="input-group" ng-if="vm.user.id">
+			<md-input-group class="md-default-theme">
+				<label for="password">Passwort</label>
+				<md-input type="password" id="password" name="password" ng-model="vm.user.password"></md-input>
+			</md-input-group>
+			<div ng-show="userForm.password.$dirty" ng-messages="userForm.password.$error">
+				<div class="error-message" ng-message="required">Sie müssen ein Passwort angeben</div>
+				<div class="error-message" ng-message="minlength">Passwort zu kurz (mindestens 5 Zeichen)</div>
+			</div>
+		</div>
+
+		<div class="input-group" ng-if="!vm.user.id">
+			<md-input-group class="md-default-theme">
+				<label for="password">Passwort</label>
+				<md-input type="password" id="password" name="password" ng-model="vm.user.password" required ng-minlength="5"></md-input>
+			</md-input-group>
+			<div ng-show="userForm.password.$dirty" ng-messages="userForm.password.$error">
+				<div class="error-message" ng-message="required">Sie müssen ein Passwort angeben</div>
+				<div class="error-message" ng-message="minlength">Passwort zu kurz (mindestens 5 Zeichen)</div>
+			</div>
+		</div>
+
+		<div class="input-group">
+			<md-input-group class="md-default-theme">
+				<label for="institution">Institution (optional)</label>
+				<md-input type="text" id="institution" name="institution" ng-model="vm.user.institution"></md-input>
+			</md-input-group>
+			<div ng-show="userForm.institution.$dirty" ng-messages="userForm.institution.$error">
+			</div>
+		</div>
+
+		<div class="input-group">
+			<span>Status:</span>
+			<select name="status" ng-model="vm.user.status">
+				<option value="-1">deaktiviert</option>
+				<option value="0">aktiviert</option>
+				<option value="1" selected>ausstehend</option>
+			</select>
+			<div ng-show="userForm.status.$dirty" ng-messages="userForm.status.$error">
+				<div class="error-message" ng-message="required">Sie müssen einen Status auswählen</div>
+			</div>
+		</div>
+
+		<div class="input-group">
+			<span>Rolle:</span>
+			<select ng-model="vm.user.role_id">
+				<option value="1" selected>Praktiker</option>
+				<option value="2">Wissenschaftler</option>
+			</select>
+		</div>
+
+		<div class="input-group">
+			<span>Gruppe:</span>
+			<select ng-model="vm.user.group_id" ng-options="group.id as group.name for group in vm.data.groups"></select>
+		</div>
+
+	</md-content>
+
+	<div class="md-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="vm.cancel()" class="md-raised md-button md-default-theme">
+			Abbrechen
+		</md-button>
+		<md-button ng-click="vm.save(vm.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="false" ng-click="vm.createResource('kid', vm.kid)">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>

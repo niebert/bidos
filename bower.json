@@ -37,6 +37,7 @@
     "angular-localforage": "~1.2.2",
     "angular-pouchdb": "angular-pouchdb/angular-pouchdb#~1.0.2",
     "material-design-icons": "~1.0.1",
-    "ngstorage": "~0.3.0"
+    "ngstorage": "~0.3.0",
+    "ngCordova": "~0.1.10-alpha"
   }
 }

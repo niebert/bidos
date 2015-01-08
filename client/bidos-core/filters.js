@@ -33,9 +33,10 @@
         return;
       }
 
-      var subdomain = _.select(ResourceService.get().subdomains, {
-        id: item.subdomain_id
-      })[0];
+      var subdomain = _.select(ResourceService.get()
+        .subdomains, {
+          id: item.subdomain_id
+        })[0];
 
       if (!subdomain) {
         return;
@@ -46,9 +47,10 @@
         return;
       }
 
-      return _.select(ResourceService.get().domains, {
-        id: subdomain.domain_id
-      })[0].title;
+      return _.select(ResourceService.get()
+        .domains, {
+          id: subdomain.domain_id
+        })[0].title;
 
     };
   });
@@ -66,9 +68,10 @@
         return;
       }
 
-      var subdomain = _.select(ResourceService.get().subdomains, {
-        id: item.subdomain_id
-      })[0];
+      var subdomain = _.select(ResourceService.get()
+        .subdomains, {
+          id: item.subdomain_id
+        })[0];
 
       if (!subdomain) {
         return;
@@ -91,9 +94,10 @@
         return;
       }
 
-      return _.select(ResourceService.get().subdomains, {
-        id: subdomain_id
-      })[0].title;
+      return _.select(ResourceService.get()
+        .subdomains, {
+          id: subdomain_id
+        })[0].title;
 
     };
   });
@@ -110,9 +114,10 @@
 
   app.filter('groupNameById', function(ResourceService) {
     return function(group_id) {
-      return _.select(ResourceService.get().groups, {
-        id: group_id
-      })[0].name;
+      return _.select(ResourceService.get()
+        .groups, {
+          id: group_id
+        })[0].name;
     };
   });
 
@@ -120,9 +125,10 @@
 
   app.filter('itemTitle', function(ResourceService) {
     return function(item_id) {
-      return _.select(ResourceService.get().items, {
-        id: item_id
-      })[0].name;
+      return _.select(ResourceService.get()
+        .items, {
+          id: item_id
+        })[0].name;
     };
   });
 
@@ -142,9 +148,10 @@
 
   app.filter('kidName', function(ResourceService) {
     return function(kid_id) {
-      return _.select(ResourceService.get().kids, {
-        id: kid_id
-      })[0].name;
+      return _.select(ResourceService.get()
+        .kids, {
+          id: kid_id
+        })[0].name;
     };
   });
 
@@ -157,14 +164,6 @@
         return;
       }
       return ResourceHelper.countKids(groupId);
-    };
-  });
-
-
-  // [1,2] -> [male,female] √
-  app.filter('sexName', function() {
-    return function(sex) {
-      return sex === 1 ? 'männlich' : 'weiblich';
     };
   });
 
@@ -186,16 +185,17 @@
 
 
 
-
   app.filter('sex', function() {
     return function(kid) {
-      return kid.sex === 1 ? 'männlich' : 'weiblich';
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('sex')) {
+        return kid.sex === 1 ? 'männlich' : 'weiblich';
+      }
     };
   });
 
   app.filter('group', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('group_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('group_id')) {
         return ResourceHelper.groupName(resource.group_id);
       }
     };
@@ -203,7 +203,7 @@
 
   app.filter('author', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('author_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('author_id')) {
         return ResourceHelper.groupName(resource.group_id);
       }
     };
@@ -211,7 +211,7 @@
 
   app.filter('domain', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('domain_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('domain_id')) {
         return ResourceHelper.domainTitle(resource.domain_id);
       }
     };
@@ -219,7 +219,7 @@
 
   app.filter('item', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('item_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('item_id')) {
         return ResourceHelper.domainTitle(resource.item_id);
       }
     };
@@ -227,7 +227,7 @@
 
   app.filter('subdomain', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('subdomain_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('subdomain_id')) {
         return ResourceHelper.subdomainTitle(resource.subdomain_id);
       }
     };
@@ -235,7 +235,7 @@
 
   app.filter('kid', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('kid_id')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('kid_id')) {
         return ResourceHelper.kidName(resource.kid_id);
       }
     };
@@ -243,11 +243,14 @@
 
   app.filter('status', function() {
     return function(resource) {
-      if (arguments.length && arguments[0].hasOwnProperty('status')) {
+      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('status')) {
         switch (resource.status) {
-          case 0: return 'aktiviert';
-          case 1: return 'ausstehend';
-          case -1: return 'deaktiviert';
+          case 0:
+            return 'aktiviert';
+          case 1:
+            return 'ausstehend';
+          case -1:
+            return 'deaktiviert';
         }
       }
     };
@@ -257,12 +260,18 @@
     return function(value) {
       if (arguments.length && typeof arguments[0] === 'number') {
         switch (value) {
-          case 1: return '1';
-          case 2: return '2';
-          case 3: return '3';
-          case 0: return 'n/A';
-          case -1: return '--';
-          case -2: return '++';
+          case 1:
+            return '1';
+          case 2:
+            return '2';
+          case 3:
+            return '3';
+          case 0:
+            return 'n/A';
+          case -1:
+            return '--';
+          case -2:
+            return '++';
         }
       }
     };

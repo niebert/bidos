@@ -6,6 +6,7 @@
 			</md-button>
 
 			<span flex>Items</span>
+		<md-text-float flex label="Suche" ng-model="query"></md-text-float>
 
 			<md-button ng-click="vm.dialog($event)">
 				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
@@ -27,7 +28,7 @@
 			</div>
 
 			<div flex center layout="column" layout-margin layout-padding layout-align="space-around start">
-				<div flex ng-repeat="item in vm.data.items | filter:{subdomain_id:subdomain.id}:true | orderBy:id">
+				<div flex ng-repeat="item in vm.data.items | filter:{subdomain_id:subdomain.id}:true | filter:query | orderBy:id">
 					<span class="item" ng-click="vm.dialog($event, item)"> {{ item.id }} {{ item.title }} </span>
 				</div>
 			</div>
