@@ -1,36 +1,24 @@
-<style>
-.big {
-	width: 100%;
-	height: 100vh;
-	background-color: #68b171;
-	font-weight: 300;
-	text-transform: none;
-	font-size: 1.4em;
-	-webkit-font-smoothing: antialiased;
-	font-family: RobotoDraft, Roboto, sans-serif;
-}
-md-progress-linear > div.md-container {
-	z-index: 50134;
-	top: 0;
-	height: 3px;
-}
-.status {
-	font-size: small;
-	padding: 1em;
-	background-color: #edf2ff;
-}
-</style>
-
 <md-content class="big" center stretch layout="column">
 	<md-toolbar>
 		<span class="md-toolbar-tools">
-			<md-button ng-click="vm.createOrEditKidDialog($event)">
+
+			<!--
+ 			<md-button ng-click="vm.createOrEditKidDialog($event)">
 				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_menu_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
+			-->
+
 			<h2 flex>BiDoS Dashboard</h2>
+
+			<!--
 			<md-button>
 				<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
+			-->
+
+				<md-icon ng-show="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+				<md-icon ng-hide="vm.online" aria-label="more" icon="lib/material-design-icons/notification/svg/production/ic_sync_problem_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+
 		</span>
 
 		<!-- <div loading-indicator></div> -->
@@ -38,21 +26,27 @@ md-progress-linear > div.md-container {
 	</md-toolbar>
 
 
+	<md-content class="big" layout="row">
+		<md-button ui-sref="auth.capture" class="capture" flex style="background-color:{{vm.colors.a[0]}}">Neue Beobachtung</md-button>
+	</md-content>
 
 	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.capture" class="capture" flex="75" style="">Neue Beobachtung</md-button>
-		<div class="status" flex>
+		<md-button ui-sref="auth.observations" flex style="background-color:{{vm.colors.a[1]}}">Beobachtungen</md-button>
+		<md-button ui-sref="auth.items" flex style="background-color:{{vm.colors.a[2]}}">Bausteine</md-button>
+		<md-button ui-sref="auth.kids" flex style="background-color:{{vm.colors.a[3]}}">Kinder</md-button>
+	</md-content>
 
-		</div>
-	</md-content>
 	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.kids" flex style="">Kinder</md-button>
-		<md-button ui-sref="auth.items" flex style="">Items</md-button>
-		<md-button ui-sref="auth.observations" flex style="">Beobachtungen</md-button>
+		<md-button ui-sref="auth.groups" flex style="background-color:{{vm.colors.a[4]}}">Gruppen</md-button>
+		<md-button ui-sref="auth.users" flex style="background-color:{{vm.colors.a[5]}}">Benutzer</md-button>
+		<md-content layout="column">
+			<md-button ng-click="vm.sync()" class="capture" flex style="background-color:{{vm.colors.b[0]}}">Sync</md-button>
+			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[1]}}">Status</md-button>
+			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[2]}}">Profil</md-button>
+			<md-button download="bidos-data.json" ng-click="vm.exportData()" class="capture" flex style="background-color:#7bb4da">Export</md-button>
+		</md-content>
 	</md-content>
-	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.subdomains" flex style="">Subdomains</md-button>
-		<md-button ui-sref="auth.groups" flex style="">Gruppen</md-button>
-		<md-button ui-sref="auth.users" flex style="">Benutzer</md-button>
-	</md-content>
+
+
+
 </md-content>

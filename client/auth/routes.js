@@ -9,28 +9,41 @@
 
     $stateProvider
 
-      /* Public routes to authenticate. All other routes are private. */
+    /* Public routes to authenticate. All other routes are private. */
 
       .state('public', {
-        url: '',
-        templateUrl: 'auth/views/layout.html'
-      })
+      url: '',
+      templateUrl: 'auth/views/layout.html'
+    })
 
-      .state('public.login', {
-        url: '/login',
-        views: {
-          main: { templateUrl: 'auth/views/login.html' }
+    .state('public.login', {
+      url: '/login',
+      views: {
+        main: {
+          templateUrl: 'auth/views/login.html'
         }
-      })
+      }
+    })
 
-      .state('public.signup', {
-        url: '/signup',
-        views: {
-          main: { templateUrl: 'auth/views/signup.html' }
+    .state('public.signup', {
+      url: '/signup',
+      views: {
+        main: {
+          templateUrl: 'auth/views/signup.html'
         }
-      })
+      }
+    })
 
-      ;
+    .state('public.thankyou', {
+      url: '/thankyou',
+      views: {
+        main: {
+          templateUrl: 'auth/views/thankyou.html'
+        }
+      }
+    })
+
+    ;
 
   }]);
 }());

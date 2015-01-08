@@ -7,7 +7,7 @@
 
 			<span flex>Gruppen</span>
 
-			<md-button ng-click="vm.createOrEditItemDialog($event)">
+			<md-button ng-click="vm.dialog($event)">
 				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
 			<md-button>
@@ -15,36 +15,28 @@
 			</md-button>
 		</h2>
 	</md-toolbar>
+	<div layout="column" layout-fill>
+		<md-content>
+			<table>
+				<thead>
+					<th ng-click="predicate='id'; reverse=!reverse">ID</th>
+					<th ng-click="predicate='name'; reverse=!reverse">Name</th>
+					<th ng-click="predicate=''; reverse=!reverse">Kinder</th>
+					<th ng-click="predicate=''; reverse=!reverse">Letzte Aktivität</th>
+					<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt am</th>
+					<th ng-click="predicate='updated_at'; reverse=!reverse">Bearbeitet am</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="group in vm.data.groups | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog('group', group)">
+						<td> {{ group.id }} </td>
+						<td> {{ group.name }} </td>
+						<td> {{ group.id | countKids }} </td>
+						<td></td>
+						<td> {{ group.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+						<td> {{ group.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
+					</tr>
+				</tbody>
+			</table>
+		</md-content>
+	</div>
 </md-content>
-
-
-<div layout="column" layout-fill>
-	<md-content>
-		<table>
-			<thead>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Kinder</th>
-				<th>Letzte Aktivität</th>
-				<th>Erstellt am</th>
-				<th>Bearbeitet am</th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="group in vm.data.groups | orderBy:name" ng-click="vm.selectResource('group', group)">
-					<td> {{ group.id }} </td>
-					<td> {{ group.name }} </td>
-					<td> {{ group.id | countKids }} </td>
-					<td></td>
-					<td> {{ group.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
-					<td> {{ group.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
-				</tr>
-			</tbody>
-		</table>
-	</md-content>
-</div>
-
-<!--
-<div class="debug">
-<pre>{{ vm | json }} </pre>
-</div>
- -->

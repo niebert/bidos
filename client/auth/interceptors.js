@@ -10,14 +10,19 @@
     'angular-jwt', // json web token
   ])
 
-  .config(['$httpProvider', 'jwtInterceptorProvider', 'TOKEN_KEY',
-    function ($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
+  .config(function($httpProvider, jwtInterceptorProvider, TOKEN_KEY) {
     jwtInterceptorProvider.tokenGetter = function() {
+      var token = localStorage.getItem(TOKEN_KEY);
+
+      if (!token) {
+        console.warn('no auth token present');
+      }
+
       return localStorage.getItem(TOKEN_KEY);
     };
 
     $httpProvider.interceptors.push('jwtInterceptor');
-  }]);
+  });
 
 
 }());

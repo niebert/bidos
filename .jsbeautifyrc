@@ -7,7 +7,7 @@
     "js": {
         "indent_char": " ",
         "indent_size": 2,
-        "max_preserve_newlines": 3,
+        "max_preserve_newlines": 4,
         "break_chained_methods": true
     }
 }

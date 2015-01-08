@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS users (
   email         TEXT UNIQUE NOT NULL,
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT,
-  job           TEXT,
   institution   TEXT,
   name          TEXT NOT NULL,
   status        INT DEFAULT 1, -- -1=deactivated 0=normal 1=pending
@@ -168,7 +167,7 @@ CREATE TABLE IF NOT EXISTS examples (
 CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
 
-  value         INT NOT NULL, -- -2=advanced -1=notyet 0=na 1,2,3=niveau
+  value         INT NOT NULL, -- -2=advanced -1=behind 0=unknown 1,2,3=niveau
   help          BOOLEAN DEFAULT false,
 
   item_id       INT REFERENCES behaviours(id),
@@ -439,126 +438,192 @@ INSERT INTO groups (name) VALUES ('Polymer Industries');
 INSERT INTO groups (name) VALUES ('Aperture Labs');
 INSERT INTO groups (name) VALUES ('Fracture.org');
 
+
+
+
+
+
+/* A PERSONALE KOMPETENZEN */
 INSERT INTO domains (title) VALUES ('Personale Kompetenzen');
-INSERT INTO domains (title) VALUES ('Sprachliche Kompetenzen');
-INSERT INTO domains (title) VALUES ('Soziale Kompetenzen');
-INSERT INTO domains (title) VALUES ('Mathematische Kompetenzen');
 
 INSERT INTO subdomains (domain_id, title) VALUES ('1', 'Umgang mit eigenen Emotionen');
 INSERT INTO subdomains (domain_id, title) VALUES ('1', 'Selbstbewusstsein');
 INSERT INTO subdomains (domain_id, title) VALUES ('1', 'Selbständigkeit');
 INSERT INTO subdomains (domain_id, title) VALUES ('1', 'Spiel- und Lernverhalten');
+INSERT INTO subdomains (domain_id, title) VALUES ('1', 'Sprache im fachlichen Kontext');
+
+/* Umgang mit eigenen Emotionen */
+INSERT INTO items (subdomain_id, title) VALUES ('1', 'Wahrnehmung eigener Emotionen');
+INSERT INTO items (subdomain_id, title) VALUES ('1', 'Ursachen und Wirkungen von Emotionen');
+INSERT INTO items (subdomain_id, title) VALUES ('1', 'Regulierung eigener Emotionen I');
+INSERT INTO items (subdomain_id, title) VALUES ('1', 'Regulierung eigener Emotionen II');
+
+/* Selbstbewusstsein */
+INSERT INTO items (subdomain_id, title) VALUES ('2', 'Erkennen eigener Fähigkeiten');
+INSERT INTO items (subdomain_id, title) VALUES ('2', 'Vergleichen eigener Fähigkeiten');
+INSERT INTO items (subdomain_id, title) VALUES ('2', 'Selbstwirksamkeit');
+INSERT INTO items (subdomain_id, title) VALUES ('2', 'Vertreten der eigenen Interessen und Meinungen');
+INSERT INTO items (subdomain_id, title) VALUES ('2', 'Durchsetzen eigener Interessen');
+
+/* Selbständigkeit */
+INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstständiges Handeln I');
+INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstständiges Handeln II');
+INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstorganisation');
+
+/* Spiel- und Lernverhalten */
+INSERT INTO items (subdomain_id, title) VALUES ('4', 'Aufgabenorientierung');
+INSERT INTO items (subdomain_id, title) VALUES ('4', 'Anstrengungsbereitschaft');
+INSERT INTO items (subdomain_id, title) VALUES ('4', 'Ausdauer');
+INSERT INTO items (subdomain_id, title) VALUES ('4', 'Explorations- und Lernfreude');
+
+/* Sprache im fachlichen Kontext */
+INSERT INTO items (subdomain_id, title) VALUES ('5', 'Fachsprache');
+
+
+
+
+
+/* B SCHRIFTLICHE UND SPRACHLICHE KOMPETENZEN */
+INSERT INTO domains (title) VALUES ('Schriftliche und sprachliche Kompetenzen');
 
 INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Sprechen und Zuhören');
 INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Schreiben');
-INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Lesen');
+INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Lesen/Umgang mit Texten und Medien');
 INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Sprachaufmerksamkeit');
+INSERT INTO subdomains (domain_id, title) VALUES ('2', 'Sprache im fachlichen Kontext');
+
+/* Sprechen und Zuhören */
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Zuhören I');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Zuhören II');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Zuhören III');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Struktur des Erzählens');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Form des Erzählens');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Beschreiben');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Erklären');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Passiv — Konjunktiv');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Nebensätze');
+INSERT INTO items (subdomain_id, title) VALUES ('6', 'Gesprächsbeteiligung');
+
+/* Schreiben */
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Schreibfertigkeit');
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Wörter schreiben');
+INSERT INTO items (subdomain_id, title) VALUES ('7', 'Texte verfassen');
+
+/* Lesen */
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Lesefertigkeit I');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Lesefertigkeit II');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Leseverständnis');
+INSERT INTO items (subdomain_id, title) VALUES ('8', 'Umgang mit Text und Medien');
+
+/* Sprachaufmerksamkeit */
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Phonologische Bewusstheit I');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Phonologische Bewusstheit II');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Fehler korrigieren');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Situationsangemessenheit');
+INSERT INTO items (subdomain_id, title) VALUES ('9', 'Mehrsprachigkeit');
+
+/* Sprache im fachlichen Kontext */
+INSERT INTO items (subdomain_id, title) VALUES ('10', 'Fachsprache');
+
+
+
+
+
+INSERT INTO domains (title) VALUES ('Soziale Kompetenzen');
 
 INSERT INTO subdomains (domain_id, title) VALUES ('3', 'Kontakt');
 INSERT INTO subdomains (domain_id, title) VALUES ('3', 'Kooperation');
 INSERT INTO subdomains (domain_id, title) VALUES ('3', 'Konflikt');
 INSERT INTO subdomains (domain_id, title) VALUES ('3', 'Perspektivenübernahme');
+INSERT INTO subdomains (domain_id, title) VALUES ('3', 'Sprache im fachlichen Kontext');
+
+/* Kontakt */
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Initiierung sozialer Kontakte');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Gezielte Wahl von Spiel- und Arbeitspartnern');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Gestaltung von freundschaftlichen Beziehungen');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Sprache zur Kontaktaufnahme und –aufrechterhaltung');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Andere verstehen');
+INSERT INTO items (subdomain_id, title) VALUES ('11', 'Sich selbst Anderen gegenüber verständlich machen');
+
+/* Kooperation */
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Beteiligung an sozialen Gruppenaktivitäten');
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Beachtung sozialer (Spiel-)Regeln');
+INSERT INTO items (subdomain_id, title) VALUES ('12', 'Gemeinsame Bewältigung von Kooperationsaufgaben');
+
+/* Konflikt */
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Konflikte bewältigen I');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Konflikte bewältigen II');
+INSERT INTO items (subdomain_id, title) VALUES ('13', 'Konfliktanlässe und –wirkungen erkennen');
+
+/* Perspektivenübernahme */
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Empathie');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Wahrnehmung der Subjektivität von Perspektiven');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Koordination von Perspektiven');
+INSERT INTO items (subdomain_id, title) VALUES ('14', 'Fachsprache');
+
+/* Sprache im fachlichen Kontext */
+INSERT INTO items (subdomain_id, title) VALUES ('15', 'Fachsprache');
+
+
+
+
+
+
+
+
+INSERT INTO domains (title) VALUES ('Mathematische Kompetenzen');
 
 INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Zahlen und Operationen');
 INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Raum und Form');
 INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Muster und Strukturen');
 INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Größen und Messen');
 INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Daten, Häufigkeit, Wahrscheinlichkeit');
+INSERT INTO subdomains (domain_id, title) VALUES ('4', 'Sprache im fachlichen Kontext');
 
-INSERT INTO items (subdomain_id, title) VALUES ('1', 'Wahrnehmung eigener Emotionen');
-INSERT INTO items (subdomain_id, title) VALUES ('1', 'Ursachen und Wirkungen von Emotionen');
--- INSERT INTO items (subdomain_id, title) VALUES ('1', 'Regulierung eigener Emotionen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('1', 'Regulierung eigener Emotionen II');
+/* Zahlen und Operationen */
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Zählen I');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Zählen II');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Zählen III');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Zählen IV');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Mengen I');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Mengen II');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Mengen III');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Symbole');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Operationen I');
+INSERT INTO items (subdomain_id, title) VALUES ('16', 'Operationen II');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('2', 'Erkennen eigener Fähigkeiten');
--- INSERT INTO items (subdomain_id, title) VALUES ('2', 'Vergleichen eigener Fähigkeiten');
--- INSERT INTO items (subdomain_id, title) VALUES ('2', 'Selbstwirksamkeit');
--- INSERT INTO items (subdomain_id, title) VALUES ('2', 'Vertreten der eigenen Interessen und Meinungen');
--- INSERT INTO items (subdomain_id, title) VALUES ('2', 'Durchsetzen eigener Interessen');
+/* Raum und Form */
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Raum und Form I');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Raum und Form II');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Flächenformen I');
+INSERT INTO items (subdomain_id, title) VALUES ('17', 'Flächenformen II');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstständiges Handeln I');
--- INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstständiges Handeln II');
--- INSERT INTO items (subdomain_id, title) VALUES ('3', 'Selbstorganisation');
+/* Muster und Strukturen */
+INSERT INTO items (subdomain_id, title) VALUES ('18', 'Muster und Strukturen');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('4', 'Aufgabenorientierung');
--- INSERT INTO items (subdomain_id, title) VALUES ('4', 'Anstrengungsbereitschaft');
--- INSERT INTO items (subdomain_id, title) VALUES ('4', 'Ausdauer');
--- INSERT INTO items (subdomain_id, title) VALUES ('4', 'Explorations- und Lernfreude');
--- INSERT INTO items (subdomain_id, title) VALUES ('4', 'Fachsprache');
+/* Größen und Messen */
+INSERT INTO items (subdomain_id, title) VALUES ('19', 'Größen und Messen I');
+INSERT INTO items (subdomain_id, title) VALUES ('19', 'Größen und Messen II');
+INSERT INTO items (subdomain_id, title) VALUES ('19', 'Größen und Messen III');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören I');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören II');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Zuhören III');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Struktur des Erzählens');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Form des Erzählens');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Beschreiben');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Erklären');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Passiv — Konjunktiv');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Nebensätze');
--- INSERT INTO items (subdomain_id, title) VALUES ('5', 'Gesprächsbeteiligung');
+/* Daten, Häufigkeit, Wahrscheinlichkeit */
+INSERT INTO items (subdomain_id, title) VALUES ('20', 'Daten, Häufigkeit, Wahrscheinlichkeit I');
+INSERT INTO items (subdomain_id, title) VALUES ('20', 'Daten, Häufigkeit, Wahrscheinlichkeit II');
+INSERT INTO items (subdomain_id, title) VALUES ('20', 'Daten, Häufigkeit, Wahrscheinlichkeit III');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('6', 'Schreibfertigkeit');
--- INSERT INTO items (subdomain_id, title) VALUES ('6', 'Wörter schreiben');
--- INSERT INTO items (subdomain_id, title) VALUES ('6', 'Texte verfassen');
+/* Sprache im fachlichen Kontext */
+INSERT INTO items (subdomain_id, title) VALUES ('21', 'Fachsprache');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('7', 'Lesefertigkeit I');
--- INSERT INTO items (subdomain_id, title) VALUES ('7', 'Lesefertigkeit II');
--- INSERT INTO items (subdomain_id, title) VALUES ('7', 'Leseverständnis');
--- INSERT INTO items (subdomain_id, title) VALUES ('7', 'Umgang mit Text und Medien');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Phonologische Bewusstheit I');
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Phonologische Bewusstheit II');
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Fehler korrigieren');
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Situationsangemessenheit');
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Mehrsprachigkeit');
--- INSERT INTO items (subdomain_id, title) VALUES ('8', 'Fachsprache');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Initiierung sozialer Kontakte');
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Gezielte Wahl von Spiel- und Arbeitspartnern');
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Gestaltung von freundschaftlichen Beziehungen');
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Sprache zur Kontaktaufnahme und –aufrechterhaltung');
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Andere verstehen');
--- INSERT INTO items (subdomain_id, title) VALUES ('9', 'Sich selbst Anderen gegenüber verständlich machen');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('10', 'Beteiligung an sozialen Gruppenaktivitäten');
--- INSERT INTO items (subdomain_id, title) VALUES ('10', 'Beachtung sozialer (Spiel-)Regeln');
--- INSERT INTO items (subdomain_id, title) VALUES ('10', 'Gemeinsame Bewältigung von Kooperationsaufgaben');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konflikte bewältigen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konflikte bewältigen II');
--- INSERT INTO items (subdomain_id, title) VALUES ('11', 'Konfliktanlässe und –wirkungen erkennen');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('12', 'Empathie');
--- INSERT INTO items (subdomain_id, title) VALUES ('12', 'Wahrnehmung der Subjektivität von Perspektiven');
--- INSERT INTO items (subdomain_id, title) VALUES ('12', 'Koordination von Perspektiven');
--- INSERT INTO items (subdomain_id, title) VALUES ('12', 'Fachsprache');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen II');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen III');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Zählen IV');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen II');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Mengen III');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Symbole');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Operationen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('13', 'Operationen II');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('14', 'Raum und Form I');
--- INSERT INTO items (subdomain_id, title) VALUES ('14', 'Raum und Form II');
--- INSERT INTO items (subdomain_id, title) VALUES ('14', 'Flächenformen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('14', 'Flächenformen II');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('15', 'Muster und Strukturen');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen I');
--- INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen II');
--- INSERT INTO items (subdomain_id, title) VALUES ('16', 'Größen und Messen III');
 
--- INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit I');
--- INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit II');
--- INSERT INTO items (subdomain_id, title) VALUES ('17', 'Daten, Häufigkeit, Wahrscheinlichkeit III');
--- INSERT INTO items (subdomain_id, title) VALUES ('17', 'Fachsprache');
 
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');

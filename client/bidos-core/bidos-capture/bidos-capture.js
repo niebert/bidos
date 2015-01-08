@@ -3,21 +3,18 @@
   /* global angular, Please */
 
   angular.module('bidos')
-    .directive('bidosDashboard', bidosDashboard);
+    .directive('bidosCapture', bidosCapture);
 
-  function bidosDashboard() {
+  function bidosCapture() {
     return {
       scope: {},
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-dashboard/bidos-dashboard.html'
+      templateUrl: '/bidos-core/bidos-capture/bidos-capture.html'
     };
 
-    function controllerFn() {
-      var vm = angular.extend(this, {
-        colors: colors
-      });
+    function controllerFn(CaptureService) {
 
       var colors = Please.make_scheme({
         h: 130,
@@ -27,6 +24,17 @@
         scheme_type: 'triadic',
         format: 'rgb-string'
       });
+
+
+      var vm = angular.extend(this, {
+        colors: colors
+      });
+
+      CaptureService.getCurrent()
+        .then(function(observation) {
+          vm.observation = observation;
+        });
+
 
     }
   }

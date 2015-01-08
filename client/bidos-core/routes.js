@@ -28,6 +28,58 @@
     })
 
 
+    .state('auth.selectSubdomain', {
+      url: '/selectSubdomain',
+      views: {
+        main: {
+          template: '<bidos-select-subdomain></bidos-select-subdomain>'
+        }
+      }
+    })
+
+
+
+    .state('auth.selectDomain', {
+      url: '/selectDomain',
+      views: {
+        main: {
+          template: '<bidos-select-domain></bidos-select-domain>'
+        }
+      }
+    })
+
+
+
+    .state('auth.selectItem', {
+      url: '/selectItem',
+      views: {
+        main: {
+          template: '<bidos-select-item></bidos-select-item>'
+        }
+      }
+    })
+
+
+    .state('auth.selectKid', {
+      url: '/selectKid',
+      views: {
+        main: {
+          template: '<bidos-select-kid></bidos-select-kid>'
+        }
+      }
+    })
+
+
+    .state('auth.capture', {
+      url: '/capture',
+      views: {
+        main: {
+          template: '<bidos-capture></bidos-capture>'
+        }
+      }
+    })
+
+
     .state('auth.kids', {
       url: '/kids',
       views: {
@@ -78,11 +130,43 @@
     })
 
 
+    .state('auth.observe', {
+      url: '/observe',
+      views: {
+        main: {
+          template: '<bidos-observe></bidos-observe>'
+        }
+      }
+    })
+
+
     .state('auth.users', {
       url: '/users',
       views: {
         main: {
           template: '<bidos-users></bidos-users>'
+        }
+      }
+    })
+
+
+
+    .state('auth.profile', {
+      url: '/profile',
+      views: {
+        main: {
+          template: '<bidos-profile></bidos-profile>'
+        }
+      }
+    })
+
+
+
+    .state('auth.status', {
+      url: '/status',
+      views: {
+        main: {
+          template: '<bidos-status></bidos-status>'
         }
       }
     })

@@ -9,17 +9,14 @@
   require('./services');
 
   angular.module('auth.controller', [])
-  .controller('AuthController', AuthController);
+    .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, UserFactory, RoleFactory) {
+  function AuthController($rootScope, $state, $location, UserFactory, RoleFactory) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $rootScope.state = toState.name;
     });
-
-
-
 
 
     var vm = angular.extend(this, {
@@ -29,25 +26,19 @@
     });
 
 
-
-
-
     var ROUTES = {
-      AUTH_SUCCESS   : '',
-      AUTH_FAILURE   : 'public.login',
+      AUTH_SUCCESS: '',
+      AUTH_FAILURE: 'public.login',
 
-      SIGNUP_SUCCESS : 'auth.home',
-      SIGNUP_FAILURE : '',
+      SIGNUP_SUCCESS: 'public.thankyou',
+      SIGNUP_FAILURE: '',
 
-      LOGIN_SUCCESS  : 'auth.home',
-      LOGIN_FAILURE  : '',
+      LOGIN_SUCCESS: 'auth.home',
+      LOGIN_FAILURE: '',
 
-      LOGOUT_SUCCESS : 'public.login',
-      LOGOUT_FAILURE : '',
+      LOGOUT_SUCCESS: 'public.login',
+      LOGOUT_FAILURE: '',
     };
-
-
-
 
 
     /* INIT */
@@ -58,13 +49,11 @@
     auth();
 
     if (!vm.roles) {
-      RoleFactory.getAllRoles().then(function(response) {
-        vm.roles = response.data.roles;
-      });
+      RoleFactory.getAllRoles()
+        .then(function(response) {
+          vm.roles = response.data.roles;
+        });
     }
-
-
-
 
 
     /* TODO: handle net::ERR_INTERNET_DISCONNECTED failure by displaying a
@@ -73,14 +62,10 @@
     /* storage, because he get's that as a login response from the server. */
 
 
-
-
-
     /* AUTH */
-
     function auth() {
       UserFactory.getUser()
-      .then(authSuccess, authFailure);
+        .then(authSuccess, authFailure);
     }
 
     function authSuccess(user) {
@@ -91,19 +76,16 @@
     function authFailure() {
       console.log('%cNOT AUTHORIZED', 'color: green; font-size: 1.2em, padding: 16px;');
       $state.go(ROUTES.AUTH_FAILURE);
+      $location.path('/');
     }
 
 
-
-
-
     /* LOGIN */
-
     function login(formData) {
       console.log('[auth] login attempt', formData);
 
       UserFactory.login(formData)
-      .then(loginSuccess, loginFailure);
+        .then(loginSuccess, loginFailure);
     }
 
     function loginSuccess(response) {
@@ -117,16 +99,12 @@
     }
 
 
-
-
-
     /* LOGOUT */
-
     function logout() {
       console.log('[auth] logout attempt');
 
       UserFactory.logout()
-      .then(logoutSuccess, logoutFailure);
+        .then(logoutSuccess, logoutFailure);
     }
 
     function logoutSuccess(response) {
@@ -140,18 +118,14 @@
     }
 
 
-
-
-
     /* SIGNUP */
-
     function signup(formData) {
       console.log('[auth] signup attempt', formData);
 
       formData.username = formData.email.split('@')[0];
 
       UserFactory.signup(formData)
-      .then(signupSuccess, signupFailure);
+        .then(signupSuccess, signupFailure);
     }
 
     function signupSuccess(response) {

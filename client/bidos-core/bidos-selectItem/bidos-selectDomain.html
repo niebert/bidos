@@ -1,0 +1,16 @@
+<md-content class="big" center stretch layout="column">
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="auth.capture">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<h2 flex>Domain auswählen</h2>
+		</span>
+	</md-toolbar>
+
+	<md-content class="big" layout="column" style="font-size:1.6em;">
+		<md-button ng-click="vm.selectDomain(domain)" flex stretch style="background-color:#f6ebc5" ng-repeat="domain in vm.data.domains">{{domain.title}}</md-button>
+	</md-content>
+
+</md-content>

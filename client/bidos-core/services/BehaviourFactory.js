@@ -4,9 +4,9 @@
   'use strict';
 
   angular.module('bidos')
-    .service('ResourceService', ResourceService);
+    .service('BehaviourFactory', BehaviourFactory);
 
-  function ResourceService($http, $q, API_URL, $rootScope) {
+  function BehaviourFactory($http, $q, API_URL, $rootScope) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 

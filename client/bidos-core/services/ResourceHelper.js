@@ -29,9 +29,12 @@
 
 
     function groupName(groupId) {
-      return _.select(resources.groups, {
+      var groups = _.select(resources.groups, {
         id: +groupId
-      })[0].name;
+      });
+      if (groups.length) {
+        return groups[0].name;
+      }
     }
 
   }

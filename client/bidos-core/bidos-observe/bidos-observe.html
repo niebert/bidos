@@ -1,0 +1,72 @@
+<md-content class="bidos-observe" layout="column" style="height:100vh;">
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+		<md-button ui-sref="auth.capture">
+			<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+		<h2 flex>Beobachtung einstellen</h2>
+	</span>
+	</md-toolbar>
+
+	<md-content layout="row" layout-align="space-around start" style="background-color:#daffec;">
+		<div flex="15">Kind</div>
+		<div flex>
+			{{ vm.observation.kid.name }} ({{ vm.observation.kid.age }}, {{ vm.observation.kid | sex }}, Gruppe: {{ vm.observation.kid | group }})
+		</div>
+	</md-content>
+
+	<md-content layout="row" layout-align="space-around start" style="background-color:#dbffd9;">
+		<div flex="15"> Kompetenzbereich </div>
+		<div flex> {{ vm.observation.domain.title }} </div>
+	</md-content>
+
+	<md-content layout="row" layout-align="space-around start" style="background-color:#edffda;">
+		<div flex="15"> Teilbereich </div>
+		<div flex> {{ vm.observation.subdomain.title }} </div>
+	</md-content>
+
+	<md-content layout="row" layout-align="space-around start" style="background-color:#ffffda;">
+		<div flex="15"> Baustein </div>
+		<div flex> {{ vm.observation.item.title }} </div>
+	</md-content>
+
+	<md-content layout="row" layout-align="space-around end" style="background-color:#ffeddb;">
+		<div flex="15"> <!-- Header --> </div>
+		<div flex> </div>
+		<div flex> Niveau 1 </div>
+		<div flex> Niveau 2 </div>
+		<div flex> Niveau 3 </div>
+		<div flex> </div>
+		<div flex> </div>
+	</md-content>
+
+	<md-content layout="row" layout-align="space-around start" style="background-color:#ffeddb;">
+		<div flex="15"> Verhalten </div>
+		<div flex> noch nicht </div>
+		<div flex ng-click="vm.dialog($event)"> {{ vm.behaviour(1) }} </div>
+		<div flex ng-click="vm.dialog($event)"> {{ vm.behaviour(2) }} </div>
+		<div flex ng-click="vm.dialog($event)"> {{ vm.behaviour(3) }} </div>
+		<div flex> weiter entwickelt </div>
+		<div flex> konnte nicht beobachtet werden </div>
+	</md-content>
+
+	<md-content flex layout="row" layout-align="space-around start" style="background-color:#ffd9d9;">
+		<div flex="15">Beispiele</div>
+		<div flex layout="column">
+			<div flex ng-repeat="example in vm.examples(1)">
+				{{ example.description }}
+			</div>
+		</div>
+		<div flex layout="column">
+			<div flex ng-repeat="example in vm.examples(2)">
+				{{ example.description }}
+			</div>
+		</div>
+		<div flex layout="column">
+			<div flex ng-repeat="example in vm.examples(3)">
+				{{ example.description }}
+			</div>
+		</div>
+	</md-content>
+
+</md-content>

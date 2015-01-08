@@ -7,7 +7,7 @@
 
 			<span flex>Items</span>
 
-			<md-button ng-click="vm.createOrEditItemDialog($event)">
+			<md-button ng-click="vm.dialog($event)">
 				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
 			<md-button>
@@ -15,36 +15,23 @@
 			</md-button>
 		</h2>
 	</md-toolbar>
+
+	<section class="domain" ng-repeat="domain in vm.data.domains | orderBy:id">
+
+		<md-subheader class="md-sticky-no-effect dialog-header" style="background-color:{{vm.colors[$index]}}">{{ domain.title }}</md-subheader>
+
+		<div layout="row" layout-margin layout-fill layout-align="space-around start" ng-repeat="subdomain in vm.data.subdomains | filter:{domain_id:+domain.id} | orderBy:title">
+
+			<div flex="40" center layout="column" layout-margin layout-padding layout-align="space-around start">
+				{{ subdomain.id }} {{ subdomain.title }}
+			</div>
+
+			<div flex center layout="column" layout-margin layout-padding layout-align="space-around start">
+				<div flex ng-repeat="item in vm.data.items | filter:{subdomain_id:subdomain.id}:true | orderBy:id">
+					<span class="item" ng-click="vm.dialog($event, item)"> {{ item.id }} {{ item.title }} </span>
+				</div>
+			</div>
+
+		</div>
+	</section>
 </md-content>
-
-
-<div layout="column" layout-fill>
-	<md-content>
-		<table>
-			<thead>
-				<th>ID</th>
-				<th>Titel</th>
-				<th>Subdomain</th>
-				<th>Domain</th>
-				<th>Erstellt am</th>
-				<th>Bearbeitet am</th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in vm.data.items | orderBy:id" ng-click="vm.selectResource('item', item)">
-					<td> {{ item.id }} </td>
-					<td> {{ item.title }} </td>
-					<td> {{ item | subdomainTitle }} </td>
-					<td> {{ item | domainTitle }} </td>
-					<td> {{ item.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
-					<td> {{ item.updated_at | date:'dd.MM.yyyy HH:mm' }} </td>
-				</tr>
-			</tbody>
-		</table>
-	</md-content>
-</div>
-
-<!--
-<div class="debug">
-<pre>{{ vm | json }} </pre>
-</div>
- -->

@@ -41,7 +41,7 @@
   function *tokenize() {
     this.body = _.merge(user, {
       token: jwt.sign(user, secret, {
-        expiresInMinutes: 60 * 24 * 7
+        expiresInMinutes: 60 * 24 * 7 // one week
       })
     });
 

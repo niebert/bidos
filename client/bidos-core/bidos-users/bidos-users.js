@@ -1,6 +1,7 @@
 (function() {
   'use strict';
-  /* global angular, faker */
+  /* global angular, _ */
+
 
   angular.module('bidos')
     .directive('bidosUsers', bidosUsers);
@@ -11,75 +12,109 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-users/bidos-users.html'
+      templateUrl: '/bidos-core/bidos-users/bidos-users.table.html'
     };
 
     function controllerFn(ResourceService, $mdDialog) {
       var vm = angular.extend(this, {
-        data: {},
-        createOrEditGroupDialog: createOrEditGroupDialog
+        dialog: dialog,
+        removeEmptyGroups: removeEmptyGroups
       });
 
+      ResourceService.get()
+        .then(function(data) {
+          vm.data = data;
+        });
 
-      ResourceService.get().then(function(data) {
-        angular.extend(vm.data, data);
-      });
+      function removeEmptyGroups(group) {
+        _.select(vm.data.users, {
+            group_id: group.id
+          })
+          .length;
+      }
 
-
-      function createOrEditGroupDialog(ev, group) {
+      function dialog(ev, user) {
         $mdDialog.show({
             bindToController: false,
             controller: dialogControllerFn,
-            controllerAs: 'vmd',
+            controllerAs: 'vm',
             locals: {
-              group: group,
+              user: user,
               data: vm.data
             },
             targetEvent: ev,
             templateUrl: '/bidos-core/bidos-users/bidos-users.dialog.html'
           })
-          .then(function() {
-            // success
-          }, function() {
-            console.log('dialog cancelled');
+          .then(function(response) {
+            console.log(response);
+          }, function(response) {
+            console.log('dialog cancelled', response);
           });
       }
 
 
-      function dialogControllerFn($mdDialog, data, group) {
-        console.log('dialogControllerFn', group);
-        var vmd = angular.extend(this, {
+      function dialogControllerFn($mdDialog, data, user) {
+        var dialogVm = angular.extend(this, {
           cancel: cancel,
           save: save,
           destroy: destroy,
           data: data,
-          group: group
+          user: user,
+          formIsValid: formIsValid
         });
+
+        function formIsValid(user) {
+          if (!user) {
+            return;
+          }
+
+          var validations = [
+            user.name !== undefined,
+            user.email !== undefined,
+            user.status !== undefined,
+            user.role_id !== undefined
+          ];
+
+          if (!user.id) {
+            validations.push([user.password !== undefined]);
+          }
+
+          return _.all(validations);
+        }
 
         function cancel() {
           $mdDialog.cancel();
         }
 
-        function destroy(id) {
-          ResourceService.destroy('group', id).then(function(response) {
-            $mdDialog.hide(response);
-          });
+        function destroy(user) {
+          ResourceService.destroy('user', user.id)
+            .then(function(response) {
+              $mdDialog.hide(response);
+            });
         }
 
-        function save(group) {
-          if (group.id) {
-            ResourceService.update('group', group).then(function(response) {
-              console.log('resource updated:', group);
-              $mdDialog.hide(response);
-            });
+        function save(user) {
+          if (user.id) {
+            ResourceService.update('user', user)
+              .success(function(response) {
+                $mdDialog.hide(response);
+              })
+              .error(function(response) {
+                console.warn(response);
+              });
           } else {
-            ResourceService.create('group', group).then(function(response) {
-              console.log('resource created:', group);
-              $mdDialog.hide(response);
-            });
+            ResourceService.create('user', user)
+              .success(function(response) {
+                $mdDialog.hide(response);
+              })
+              .error(function(response) {
+                console.warn(response);
+              });
           }
         }
       }
+
+
     }
   }
 

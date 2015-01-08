@@ -1,28 +1,33 @@
 <md-dialog aria-label="create-group-dialog">
 
-	<md-subheader class="md-sticky-no-effect dialog-header">{{ vmd.group.name }}</md-subheader>
+	<md-subheader ng-show="vm.group" class="md-sticky-no-effect dialog-header">Gruppe bearbeiten</md-subheader>
+	<md-subheader ng-hide="vm.group" class="md-sticky-no-effect dialog-header">Neue Gruppe erstellen</md-subheader>
 
 	<div class="dialog-sheet">
-		<pre>{{ vmd.group | json }}</pre>
+		<pre>{{ vm.group | json }}</pre>
 	</div>
+
+	<md-content ng-show="vm.error" class="error">
+		Fehler: {{ vm.error }}
+	</md-content>
 
 	<md-content flex layout="column">
 		<form>
 			<div layout="column">
-				<md-text-float label="Name" ng-model="vmd.group.name"></md-text-float>
+				<md-text-float label="Name" ng-model="vm.group.name"></md-text-float>
 			</div>
 		</form>
 	</md-content>
 
 	<div class="md-actions" layout="row">
-		<md-button ng-show="vmd.group.id" ng-click="vmd.destroy(vmd.group.id)" class="md-raised md-warn md-button md-default-theme">
+		<md-button ng-show="vm.group.id" ng-click="vm.destroy(vm.group.id)" class="md-raised md-warn md-button md-default-theme">
 			Löschen
 		</md-button>
 		<span flex></span>
-		<md-button ng-click="vmd.cancel()" class="md-raised md-button md-default-theme">
+		<md-button ng-click="vm.cancel()" class="md-raised md-button md-default-theme">
 			Abbrechen
 		</md-button>
-		<md-button ng-click="vmd.save(vmd.group)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vmd.group.name || !vmd.group.age || !vmd.group.sex || !vmd.group.group_id" ng-click="vmd.createResource('group', vmd.group)">
+		<md-button ng-click="vm.save(vm.group)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vm.group.name" ng-click="vm.createResource('group', vm.group)">
 			Speichern
 		</md-button>
 	</div>

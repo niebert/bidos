@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, faker */
+  /* global angular */
 
   angular.module('bidos')
     .directive('bidosGroups', bidosGroups);
@@ -16,21 +16,20 @@
 
     function controllerFn(ResourceService, $mdDialog) {
       var vm = angular.extend(this, {
-        data: {},
-        createOrEditGroupDialog: createOrEditGroupDialog
+        dialog: dialog,
+        data: null
       });
 
+      ResourceService.get()
+        .then(function(data) {
+          vm.data = data;
+        });
 
-      ResourceService.get().then(function(data) {
-        angular.extend(vm.data, data);
-      });
-
-
-      function createOrEditGroupDialog(ev, group) {
+      function dialog(ev, group) {
         $mdDialog.show({
             bindToController: false,
             controller: dialogControllerFn,
-            controllerAs: 'vmd',
+            controllerAs: 'vm',
             locals: {
               group: group,
               data: vm.data
@@ -48,12 +47,13 @@
 
       function dialogControllerFn($mdDialog, data, group) {
         console.log('dialogControllerFn', group);
-        var vmd = angular.extend(this, {
+        var vm = angular.extend(this, {
           cancel: cancel,
           save: save,
           destroy: destroy,
           data: data,
-          group: group
+          group: group,
+          error: null
         });
 
         function cancel() {
@@ -61,22 +61,37 @@
         }
 
         function destroy(id) {
-          ResourceService.destroy('group', id).then(function(response) {
-            $mdDialog.hide(response);
-          });
+          ResourceService.destroy('group', id)
+            .success(function(response) {
+              $mdDialog.hide(response);
+            })
+            .error(function(response) {
+              console.warn(response.err.detail);
+              switch (response.err.code) {
+                case '23503':
+                  vm.error = 'Sie können die Gruppe nicht löschen, solange ihr noch Kinder zugeordnet sind.';
+                  break;
+              }
+            });
         }
 
         function save(group) {
           if (group.id) {
-            ResourceService.update('group', group).then(function(response) {
-              console.log('resource updated:', group);
-              $mdDialog.hide(response);
-            });
+            ResourceService.update('group', group)
+              .success(function(response) {
+                $mdDialog.hide(response);
+              })
+              .error(function(response) {
+                console.warn(response);
+              });
           } else {
-            ResourceService.create('group', group).then(function(response) {
-              console.log('resource created:', group);
-              $mdDialog.hide(response);
-            });
+            ResourceService.create('group', group)
+              .success(function(response) {
+                $mdDialog.hide(response);
+              })
+              .error(function(response) {
+                console.warn(response);
+              });
           }
         }
       }

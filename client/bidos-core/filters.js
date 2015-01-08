@@ -7,12 +7,13 @@
 
   var app = angular.module('bidos');
 
-  app.filter('readableStatus', function() {
+
+  app.filter('status', function() {
     return function(statusId) {
       var statuses = {
-        '-1': 'disabled',
-        '0': 'active',
-        '1': 'pending '
+        '-1': 'deaktiviert',
+        '0': 'aktiviert',
+        '1': 'ausstehend '
       };
 
       return statuses[statusId] || '';
@@ -116,6 +117,7 @@
   });
 
 
+
   app.filter('itemTitle', function(ResourceService) {
     return function(item_id) {
       return _.select(ResourceService.get().items, {
@@ -167,17 +169,101 @@
   });
 
 
-  app.filter('toRoleName', function() {
+  app.filter('role', function() {
     return function(role) {
       switch (role) {
         case 1:
-          return 'admin';
+          return 'Administrator';
         case 2:
-          return 'practitioner';
+          return 'Praktiker';
         case 3:
-          return 'scientist';
+          return 'Wissenschaftler';
         default:
           return 'keine';
+      }
+    };
+  });
+
+
+
+
+  app.filter('sex', function() {
+    return function(kid) {
+      return kid.sex === 1 ? 'männlich' : 'weiblich';
+    };
+  });
+
+  app.filter('group', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('group_id')) {
+        return ResourceHelper.groupName(resource.group_id);
+      }
+    };
+  });
+
+  app.filter('author', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('author_id')) {
+        return ResourceHelper.groupName(resource.group_id);
+      }
+    };
+  });
+
+  app.filter('domain', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('domain_id')) {
+        return ResourceHelper.domainTitle(resource.domain_id);
+      }
+    };
+  });
+
+  app.filter('item', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('item_id')) {
+        return ResourceHelper.domainTitle(resource.item_id);
+      }
+    };
+  });
+
+  app.filter('subdomain', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('subdomain_id')) {
+        return ResourceHelper.subdomainTitle(resource.subdomain_id);
+      }
+    };
+  });
+
+  app.filter('kid', function(ResourceHelper) {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('kid_id')) {
+        return ResourceHelper.kidName(resource.kid_id);
+      }
+    };
+  });
+
+  app.filter('status', function() {
+    return function(resource) {
+      if (arguments.length && arguments[0].hasOwnProperty('status')) {
+        switch (resource.status) {
+          case 0: return 'aktiviert';
+          case 1: return 'ausstehend';
+          case -1: return 'deaktiviert';
+        }
+      }
+    };
+  });
+
+  app.filter('value', function() {
+    return function(value) {
+      if (arguments.length && typeof arguments[0] === 'number') {
+        switch (value) {
+          case 1: return '1';
+          case 2: return '2';
+          case 3: return '3';
+          case 0: return 'n/A';
+          case -1: return '--';
+          case -2: return '++';
+        }
       }
     };
   });

@@ -1,3 +1,10 @@
+/*
+ * @Author: asdf
+ * @Date:   2015-01-04 17:22:24
+ * @Last Modified by:   asdf
+ * @Last Modified time: 2015-01-07 03:22:10
+ */
+
 (function() {
   'use strict';
   /* global angular, _ */
@@ -15,48 +22,75 @@
     };
 
     function controllerFn(ResourceService, $mdDialog) {
+
       var vm = angular.extend(this, {
-        data: {},
-        createOrEditItemDialog: createOrEditItemDialog
+        data: null,
+        dialog: dialog
       });
 
+      ResourceService.get()
+        .then(function(resources) {
+          vm.data = resources;
+        });
 
-      ResourceService.get().then(function(data) {
-        angular.extend(vm.data, data);
-      });
-
-
-      function createOrEditItemDialog(ev, item) {
+      function dialog(ev, item) {
         $mdDialog.show({
             bindToController: false,
-            controller: dialogControllerFn,
-            controllerAs: 'vmd',
+            controller: dialogController,
+            controllerAs: 'vm',
             locals: {
-              item: item,
-              data: vm.data
+              data: vm.data, // the data model of the parent list view
+              item: item // the item the user clicked on
             },
             targetEvent: ev,
             templateUrl: '/bidos-core/bidos-items/bidos-items.dialog.html'
           })
-          .then(function() {
-            // success
-          }, function() {
-            console.log('dialog cancelled');
+          .then(function(response) {
+            console.log('dialog succeeded', response);
+          }, function(response) {
+            console.log('dialog cancelled', response);
           });
       }
 
 
-      function dialogControllerFn($mdDialog, data, item) {
-        var vmd = angular.extend(this, {
+      function dialogController($mdDialog, data, item) {
+        var vm = angular.extend(this, {
           cancel: cancel,
           save: save,
           destroy: destroy,
           data: data,
           item: item,
           getDomainTitle: getDomainTitle,
+          formIsValid: formIsValid,
+          addExample: addExample
         });
 
-        // vm.new.item = new Item(); // XXX TODO XXX HERE HERE HERE
+
+        function addExample(behaviour, example) {
+          if (!behaviour || !example) {
+            return;
+          }
+
+          example.behaviour_id = behaviour.id;
+
+          ResourceService.create('example', example)
+            .then(function(response) {
+              console.log('added example', response);
+            });
+        }
+
+        function formIsValid(item) {
+          if (!item) {
+            return;
+          }
+
+          var validations = [
+            item.title !== undefined,
+          ];
+
+          return _.all(validations);
+        }
+
 
         function getDomainTitle(subdomain_id) {
           return _.select(vm.data.domains, {
@@ -69,23 +103,106 @@
           $mdDialog.cancel();
         }
 
-        function destroy(id) {
-          ResourceService.destroy('item', id).then(function(response) {
-            $mdDialog.hide(response);
-          });
+        function destroy(item) {
+          ResourceService.destroy('item', item.id)
+            .then(function(response) {
+              $mdDialog.hide(response);
+            });
         }
 
+        var behaviours1 = _.select(vm.data.behaviours, {
+          item_id: item.id,
+          niveau: 1
+        });
+
+        if (behaviours1.length) {
+          vm.item.behaviour1 = behaviours1[0].description;
+        }
+
+        var behaviours2 = _.select(vm.data.behaviours, {
+          item_id: item.id,
+          niveau: 2
+        });
+
+        if (behaviours2.length) {
+          vm.item.behaviour2 = behaviours2[0].description;
+        }
+
+        var behaviours3 = _.select(vm.data.behaviours, {
+          item_id: item.id,
+          niveau: 3
+        });
+
+        if (behaviours3.length) {
+          vm.item.behaviour3 = behaviours3[0].description;
+        }
+
+        console.log(vm.behaviour1);
+        console.log(vm.behaviour2);
+        console.log(vm.behaviour3);
+
         function save(item) {
+          if (item.behaviour1) {
+            ResourceService.create('behaviour', {
+              description: item.behaviour1,
+              item_id: item.id,
+              niveau: 1
+            })
+            .success(function(response) {
+
+            })
+            .error(function(response) {
+
+            });
+            delete item.behaviour1;
+          }
+
+          if (item.behaviour2) {
+            ResourceService.create('behaviour', {
+              description: item.behaviour2,
+              item_id: item.id,
+              niveau: 2
+            })
+            .success(function(response) {
+
+            })
+            .error(function(response) {
+
+            });
+            delete item.behaviour2;
+          }
+
+          if (item.behaviour3) {
+            ResourceService.create('behaviour', {
+              description: item.behaviour3,
+              item_id: item.id,
+              niveau: 3
+            })
+            .success(function(response) {
+
+            })
+            .error(function(response) {
+
+            });
+            delete item.behaviour3;
+          }
+
           if (item.id) {
-            ResourceService.update('item', item).then(function(response) {
-              console.log('resource updated:', item);
-              $mdDialog.hide(response);
-            });
+            delete item.behaviour1;
+            delete item.behaviour2;
+            delete item.behaviour3;
+
+            ResourceService.update('item', item)
+              .then(function(response) {
+                console.log('resource updated:', item);
+                $mdDialog.hide(response);
+              });
           } else {
-            ResourceService.create('item', item).then(function(response) {
-              console.log('resource created:', item);
-              $mdDialog.hide(response);
-            });
+            ResourceService.create('item', item)
+              .then(function(response) {
+                console.log('resource created:', item);
+                $mdDialog.hide(response);
+              });
           }
         }
       }

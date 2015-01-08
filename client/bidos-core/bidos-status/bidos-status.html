@@ -1,0 +1,46 @@
+<md-content class="big" center stretch layout="column">
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+		<md-button ui-sref="auth.home">
+			<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+
+		<h2 flex>Eigenes Profil</h2>
+
+		<md-button>
+			<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+		</md-button>
+	</span>
+	</md-toolbar>
+
+
+	<md-content class="" layout="column" layout-align="space-around center">
+
+		<md-content class="profile-content" layout="column" layout-align="space-around center">
+
+			<md-subheader class="status-content">Netzwerkstatus</md-subheader>
+			<div>{{ vm.networkStatus }}</div>
+
+			<md-subheader class="status-content">Letzte Synchronisation</md-subheader>
+			<div>{{ vm.data.updatedAt | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>
+
+			<md-subheader class="status-content">Ungesendete Daten</md-subheader>
+			<div>{{ vm.data.outbox.length || 'keine' }}</div>
+
+			<md-subheader class="status-content">Zugeordnete Gruppen</md-subheader>
+			<div></div>
+
+			<md-subheader class="status-content">Zugeordnete Kinder</md-subheader>
+			<div></div>
+
+			<md-subheader class="status-content">Eingestellte Beobachtungen</md-subheader>
+			<div></div>
+
+			<md-subheader class="status-content">BiDoS Version</md-subheader>
+			<div></div>
+
+		</md-content>
+
+	</md-content>
+
+</md-content>
