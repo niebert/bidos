@@ -1,29 +1,51 @@
+#
+# Thu Jan 15 03:05:02 CET 2015
+#
+
+OS = $(shell uname -s)
+REMOTE_HOST = 92.51.147.239
+DB_SETUP_FILE = ./db_setup.sql
+
 BASEDIR = .
-
-ifeq (${NODE_ENV},production)
-PORT=3105
-DATABASE = bidos_development
-ENVIRONMENT = --production
-else
-PORT=3000
-DATABASE = bidos_development
-endif
-
 IGNOREFILE = $(BASEDIR)/.gitignore
 REMOVEFILES = `cat $(IGNOREFILE)` *bz2
 
-NAME = bidos-server
-TARBALL = $(NAME)-`date '+%Y%m%d'`.tar.bz2
+NAME = bidos
 
-REMOTE_HOST = rene@141.26.69.238
+TARBALL = $(NAME)-`date '+%Y%m%d'`.tar.bz2
 REMOTE_PATH = $(NAME)
 
-DEPLOY_CMD = "cd $(REMOTE_PATH); make setup"
-FOREVER_CMD = "PORT=$(PORT) forever start -w -a -o out.log -e err.log server.js"
+DEPLOY_CMD = "cd $(REMOTE_PATH); make install"
+START_CMD = "gulp"
 
-DB_SETUP_FILE = ./db_setup.sql
+
+ifeq (${NODE_ENV},production)
+	PORT=3001
+	DATABASE = bidos_production
+	ENVIRONMENT = --production
+else
+	PORT=3000
+	DATABASE = bidos_development
+endif
+
 
 install: npm bower
+db: dbreset dbinit dbsetup
+deploy: git-deploy
+
+
+git-deploy:
+	ssh $(REMOTE_HOST) 'test -d bidos || git clone https://github.com/rwilhelm/bidos.git'
+	ssh $(REMOTE_HOST) 'cd $(NAME) && git pull'
+	ssh $(REMOTE_HOST) 'cd $(NAME) && make install'
+	ssh $(REMOTE_HOST) 'cd $(NAME) && make db'
+	@echo running in $(NODE_ENV) mode
+	@echo open $(REMOTE_HOST):$(PATH)
+
+rsync-deploy:
+	@echo deploying to $(REMOTE_HOST):$(REMOTE_PATH)
+	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
+	@ssh $(REMOTE_HOST)
 
 bower:
 	@echo installing bower components
@@ -43,32 +65,25 @@ forever:
 	@echo starting server on port $(PORT)
 	@$(FOREVER_CMD)
 
-deploy:
-	@echo deploying to $(REMOTE_HOST):$(REMOTE_PATH)
-	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
-	@ssh $(REMOTE_HOST)
-
-dball: dbreset dbinit dbsetup
-dball-osx: dbreset-osx dbinit dbsetup
-
-# FIXME: find a better way to do all this w/o sudo and/or drop the whole
-# database. afaict updating a postgres view is not so simple.
-
-dbreset-osx:
-	dropdb bidos_development
-	createdb -O bidos bidos_development
-
 dbreset:
+ifeq ($(OS),Darwin)
+	dropdb bidos_development
+	createdb -O asdf bidos_development
+else
 	sudo -u postgres dropdb bidos_development
-	sudo -u postgres createdb -O rene bidos_development
+	sudo -u postgres createdb -O asdf bidos_development
+endif
 
 dbinit:
-	@echo initializing database $(DATABASE)
-	@psql -U bidos -f $(DB_SETUP_FILE) $(DATABASE)
-
-# TODO: do this via node, i.e. find out how to call my own middleware to create default users
+ifeq ($(OS),Darwin)
+	psql -U bidos -f $(DB_SETUP_FILE) $(DATABASE)
+else
+	psql -f $(DB_SETUP_FILE) $(DATABASE)
+endif
 
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "role_id": "1" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "role_id": "2" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123", "role_id": "3" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "1", "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "2", "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "3", "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
+
+PHONY = .
