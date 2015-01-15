@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-items/bidos-items.html'
+      templateUrl: '/bidos-core/bidos-items/bidos-items.table.html'
     };
 
     function controllerFn(ResourceService, $mdDialog) {
@@ -23,6 +23,34 @@
       ResourceService.get()
         .then(function(resources) {
           vm.data = resources;
+          vm.items = resources.items;
+
+          _.each(vm.items, function(item) {
+
+            item.subdomain = _.select(resources.subdomains, {
+              id: +item.subdomain_id
+            })[0];
+
+            item.domain = _.select(resources.domains, {
+              id: +item.subdomain.domain_id
+            })[0];
+
+            item.behaviours = _.select(resources.behaviours, {
+              item_id: +item.id
+            });
+
+            _.each(item.behaviours, function(behaviour) {
+              var obj = {behaviour_id: +behaviour.id};
+              behaviour.ideas = _.select(resources.ideas, obj);
+              behaviour.examples = _.select(resources.examples, obj);
+              behaviour.observations = _.select(resources.observations, obj);
+            });
+
+            item.ideas = _.chain(item.behaviours).map('ideas').flatten().value();
+            item.examples = _.chain(item.behaviours).map('examples').flatten().value();
+            item.observations = _.chain(item.behaviours).map('observations').flatten().value();
+
+          });
         });
 
       function dialog(ev, item) {
@@ -129,53 +157,49 @@
           vm.item.behaviour3 = behaviours3[0].description;
         }
 
-        console.log(vm.behaviour1);
-        console.log(vm.behaviour2);
-        console.log(vm.behaviour3);
-
         function save(item) {
           if (item.behaviour1) {
             ResourceService.create('behaviour', {
-              description: item.behaviour1,
-              item_id: item.id,
-              niveau: 1
-            })
-            .success(function(response) {
+                description: item.behaviour1,
+                item_id: item.id,
+                niveau: 1
+              })
+              .success(function(response) {
 
-            })
-            .error(function(response) {
+              })
+              .error(function(response) {
 
-            });
+              });
             delete item.behaviour1;
           }
 
           if (item.behaviour2) {
             ResourceService.create('behaviour', {
-              description: item.behaviour2,
-              item_id: item.id,
-              niveau: 2
-            })
-            .success(function(response) {
+                description: item.behaviour2,
+                item_id: item.id,
+                niveau: 2
+              })
+              .success(function(response) {
 
-            })
-            .error(function(response) {
+              })
+              .error(function(response) {
 
-            });
+              });
             delete item.behaviour2;
           }
 
           if (item.behaviour3) {
             ResourceService.create('behaviour', {
-              description: item.behaviour3,
-              item_id: item.id,
-              niveau: 3
-            })
-            .success(function(response) {
+                description: item.behaviour3,
+                item_id: item.id,
+                niveau: 3
+              })
+              .success(function(response) {
 
-            })
-            .error(function(response) {
+              })
+              .error(function(response) {
 
-            });
+              });
             delete item.behaviour3;
           }
 

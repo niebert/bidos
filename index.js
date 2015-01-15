@@ -4,8 +4,8 @@
 
   var _ = require('lodash');
 
-  var config = require('./server/config')[process.env.NODE_ENV || 'development'],
-      routes = require('./server/routes');
+  var config = require('./server/config')[process.env.NODE_ENV || 'development'];
+  var routes = require('./server/routes');
 
   // node core
   var path = require('path');
@@ -13,7 +13,7 @@
   // koa itself
   var app = require('koa')();
 
-  // colors! ^^
+  // colors and neat alignment! ^^
   var chalk = require('chalk');
   var columnify = require('columnify');
 
@@ -21,8 +21,8 @@
   var jwt = require('koa-jwt');
 
   // miscellaneous middleware
-  var mount = require('koa-mount'),
-      serve = require('koa-static');
+  var mount = require('koa-mount');
+  var serve = require('koa-static');
 
   app.use(require('koa-bodyparser')());
   app.use(require('koa-compress')());
@@ -98,3 +98,4 @@
   /*jshint -W030 */
   require.main === module ? listen() : module.exports = exports = listen;
 }());
+

@@ -574,7 +574,6 @@ INSERT INTO items (subdomain_id, title) VALUES ('13', 'Konfliktanlässe und –w
 INSERT INTO items (subdomain_id, title) VALUES ('14', 'Empathie');
 INSERT INTO items (subdomain_id, title) VALUES ('14', 'Wahrnehmung der Subjektivität von Perspektiven');
 INSERT INTO items (subdomain_id, title) VALUES ('14', 'Koordination von Perspektiven');
-INSERT INTO items (subdomain_id, title) VALUES ('14', 'Fachsprache');
 
 /* Sprache im fachlichen Kontext */
 INSERT INTO items (subdomain_id, title) VALUES ('15', 'Fachsprache');

@@ -211,8 +211,8 @@
 
   app.filter('domain', function(ResourceHelper) {
     return function(resource) {
-      if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('domain_id')) {
-        return ResourceHelper.domainTitle(resource.domain_id);
+      if (arguments.length && arguments[0] !== null) {
+        return ResourceHelper.domainTitle(resource);
       }
     };
   });
