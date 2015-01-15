@@ -7,15 +7,21 @@
 
 		<h2 flex>Benutzer</h2>
 
-		<md-text-float flex label="Suche" ng-model="query"></md-text-float>
-
 		<md-button ng-click="vm.dialog($event)">
 			<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 		</md-button>
 	</span>
 	</md-toolbar>
 
-	<div layout="column" layout-fill>
+
+	<md-toolbar class="search-bar" style="padding-left: 0;">
+		<span class="md-toolbar-tools">
+			<md-text-float flex label="Suche" ng-model="query"></md-text-float>
+		</span>
+	</md-toolbar>
+
+
+	<div layout="column" layout-fill style="margin-top: 32px;">
 		<md-content>
 			<table>
 				<thead>

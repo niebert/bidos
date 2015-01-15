@@ -39,8 +39,8 @@
 
 
 
-    .state('auth.selectDomain', {
-      url: '/selectDomain',
+    .state('auth.select-domain', {
+      url: '/select-domain',
       views: {
         main: {
           template: '<bidos-select-domain></bidos-select-domain>'
@@ -49,9 +49,40 @@
     })
 
 
+    .state('auth.select-help', {
+      url: '/select-help',
+      views: {
+        main: {
+          template: '<bidos-select-help></bidos-select-help>'
+        }
+      }
+    })
 
-    .state('auth.selectItem', {
-      url: '/selectItem',
+
+
+    .state('auth.select-behaviour', {
+      url: '/select-behaviour',
+      views: {
+        main: {
+          template: '<bidos-select-behaviour></bidos-select-behaviour>'
+        }
+      }
+    })
+
+
+    .state('auth.select-subdomain', {
+      url: '/select-subdomain',
+      views: {
+        main: {
+          template: '<bidos-select-subdomain></bidos-select-subdomain>'
+        }
+      }
+    })
+
+
+
+    .state('auth.select-item', {
+      url: '/select-item',
       views: {
         main: {
           template: '<bidos-select-item></bidos-select-item>'
@@ -60,11 +91,22 @@
     })
 
 
-    .state('auth.selectKid', {
-      url: '/selectKid',
+
+    .state('auth.select-kid', {
+      url: '/select-kid',
       views: {
         main: {
           template: '<bidos-select-kid></bidos-select-kid>'
+        }
+      }
+    })
+
+
+    .state('auth.finish-observation', {
+      url: '/finish-observation',
+      views: {
+        main: {
+          template: '<bidos-finish-observation></bidos-finish-observation>'
         }
       }
     })

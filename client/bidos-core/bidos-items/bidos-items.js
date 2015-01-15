@@ -1,10 +1,3 @@
-/*
- * @Author: asdf
- * @Date:   2015-01-04 17:22:24
- * @Last Modified by:   asdf
- * @Last Modified time: 2015-01-07 03:22:10
- */
-
 (function() {
   'use strict';
   /* global angular, _ */
@@ -24,7 +17,6 @@
     function controllerFn(ResourceService, $mdDialog) {
 
       var vm = angular.extend(this, {
-        data: null,
         dialog: dialog
       });
 

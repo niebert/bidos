@@ -163,15 +163,30 @@ CREATE TABLE IF NOT EXISTS examples (
 
 
 
+
+CREATE TABLE IF NOT EXISTS ideas (
+  id            SERIAL PRIMARY KEY,
+
+  behaviour_id  INT REFERENCES behaviours(id), -- TODO NOT NULL
+  description   TEXT NOT NULL,
+
+  verified      BOOLEAN DEFAULT FALSE,
+  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+
 -- TABLE observations
 CREATE TABLE IF NOT EXISTS observations (
   id            SERIAL PRIMARY KEY,
 
-  value         INT NOT NULL, -- -2=advanced -1=behind 0=unknown 1,2,3=niveau
   help          BOOLEAN DEFAULT false,
 
-  item_id       INT REFERENCES behaviours(id),
-  author_id     INT REFERENCES users(id),
+  behaviour_id  INT REFERENCES behaviours(id),
+  user_id       INT REFERENCES users(id),
   kid_id        INT REFERENCES kids(id),
 
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -617,25 +632,51 @@ INSERT INTO items (subdomain_id, title) VALUES ('21', 'Fachsprache');
 
 
 
-
-
-
-
-
-
-
-
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('1', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
+
+INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, description) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');
+INSERT INTO examples (behaviour_id, description) VALUES ('3', 'erzählt, dass es einerseits wütend auf seinen Bruder ist, aber zugleich auch traurig ist wegen des Streits mit ihm.');
+
+
+
 
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '1', '(er-)kennt Ursachen von eigenen Emotionen');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '2', '(er-)kennt unterschiedliche Ursachen und/oder Wirkungen von eigenen Emotionen');
 INSERT INTO behaviours (item_id, niveau, description) VALUES ('2', '3', '(er-)kennt unterschiedliche Ursachen und Wirkungen von komplexen eigenen Emotionen');
 
-INSERT INTO examples (behaviour_id, description) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
-INSERT INTO examples (behaviour_id, description) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');
-INSERT INTO examples (behaviour_id, description) VALUES ('3', 'erzählt, dass es einerseits wütend auf seinen Bruder ist, aber zugleich auch traurig ist wegen des Streits mit ihm.');
+INSERT INTO examples (behaviour_id, description) VALUES ('4', '"Ich freue mich immer, wenn Papa mir was mitbringt."');
+INSERT INTO examples (behaviour_id, description) VALUES ('5', '"Ich freue mich, wenn ich ein Tor schieße, weil wir dann die Sieger sind"');
+INSERT INTO examples (behaviour_id, description) VALUES ('6', 'Ich habe mich sehr geschämt, als ich beim Fahrradturnier runtergefallen bin, obwohl ich gar nichts dazu konnte, der Klotz lag …');
+
+
+
+
+
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('3', '1', 'reguliert eigene Emotionen durch Rückzug aus der emotionsgeladenen Situation');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('3', '2', 'reguliert eigene Emotionen durch Manipulation der emotionsauslösenden Situation (z.B. Ablenkung in der Situation)');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('3', '3', 'reguliert eigene Emotionen durch gedankliche Ablenkung, Austausch mit Anderen oder sozial angemessenes Verbergen');
+
+INSERT INTO examples (behaviour_id, description) VALUES ('7', 'läuft aus dem Raum, in dem sich Kinder zanken');
+INSERT INTO examples (behaviour_id, description) VALUES ('8', 'lenkt sich nach einem Streit mit etwas Schönem, dem Anhören einer CD, ab');
+INSERT INTO examples (behaviour_id, description) VALUES ('9', 'verbirgt Enttäuschung, wenn eine Erwartung nicht erfüllt wurde');
+
+
+
+
+
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('4', '1', 'wartet kurz ab, bis es eine Belohnung (materiell oder immateriell) erhält');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('4', '2', 'verzichtet zugunsten einer größeren (späteren) Belohnung auf eine kleinere (frühere)');
+INSERT INTO behaviours (item_id, niveau, description) VALUES ('4', '3', 'verzichtet zugunsten einer größeren (späteren) Belohnung auf eine kleinere (frühere) und begründet dies');
+
+INSERT INTO examples (behaviour_id, description) VALUES ('10', 'räumt schnell auf, damit es früher nach draußen kann');
+INSERT INTO examples (behaviour_id, description) VALUES ('11', 'wartet ab, damit später alle zusammen weggehen können');
+INSERT INTO examples (behaviour_id, description) VALUES ('12', 'Ich spare mein Geld, damit ich mir später die Indianerfigur kaufen kann');
+
+
+
 
 
 -- EOF

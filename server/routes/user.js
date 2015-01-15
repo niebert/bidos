@@ -53,7 +53,9 @@
         text: 'SELECT * FROM users WHERE id=$1',
         values: [this.params.id]
       });
-    this.body = result.rows;
+    this.body = {
+      users: result.rows
+    };
   })
 
   .post('createUser', '/', function* createUser() {
@@ -89,7 +91,10 @@
             values: values
           });
 
-        this.body = result.rows;
+        this.body = {
+          users: result.rows
+        };
+
       } catch (err) {
         this.status = 500;
         this.body = {
@@ -111,7 +116,9 @@
         text: 'DELETE FROM users WHERE id=$1',
         values: [this.params.id]
       });
-    this.body = result.rows;
+    this.body = {
+      users: result.rows
+    };
   });
 
 

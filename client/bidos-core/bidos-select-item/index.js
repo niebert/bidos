@@ -1,0 +1,1 @@
+require('./bidos-select-item');

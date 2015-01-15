@@ -8,41 +8,51 @@
 
   function CaptureService($rootScope, ResourceService, $q) {
 
-    var observation = {
-      domain: null,
-      subdomain: null,
-      value: null,
-      help: false,
-      kid: null,
-      item: null,
-      author_id: $rootScope.auth.id,
-      examples: []
-    };
+    var observation = {};
 
     return {
-      newObservation: newObservation,
-      selectKid: selectKid,
-      selectItem: selectItem,
+      add: add,
+      resetItem: resetItem,
       addExample: addExample,
-      saveObservation: saveObservation,
       getCurrent: getCurrent,
-      selectDomain: selectDomain
+      newObservation: newObservation,
+      saveObservation: saveObservation,
+      selectKid: selectKid,
+      selectDomain: selectDomain,
+      selectSubdomain: selectSubdomain,
+      selectItem: selectItem,
+      selectBehaviour: selectBehaviour,
+      selectHelp: selectHelp
     };
 
+    function resetItem() {
+      delete observation.domain;
+      delete observation.subdomain;
+      delete observation.item;
+      delete observation.behaviour;
+      delete observation.help;
+    }
+
     function selectDomain(domain) {
+      observation.item = null;
+      observation.subdomain = null;
       observation.domain = domain;
+    }
+
+    function selectSubdomain(subdomain) {
+      observation.subdomain = subdomain;
+    }
+
+    function selectHelp(help) {
+      observation.help = help;
+    }
+
+    function selectBehaviour(behaviour) {
+      observation.behaviour = behaviour;
     }
 
     function selectItem(item) {
       observation.item = item;
-
-      ResourceService.get().then(function(resources) {
-        observation.subdomain = _.select(resources.subdomains, {
-          id: item.subdomain_id
-        })[0];
-      });
-
-      console.log('selected item', item);
     }
 
     function getCurrent() {
@@ -55,11 +65,27 @@
       return new Observation();
     }
 
-    function saveObservation(observation) {
-      ResourceService.create('observation', observation)
+    function saveObservation() {
+      var obs = {
+        behaviour_id: observation.behaviour.id,
+        examples: observation.examples,
+        ideas: observation.ideas,
+        help: observation.help,
+        kid_id: observation.kid.id,
+        user_id: $rootScope.auth.id
+      };
+
+      debugger
+
+      ResourceService.create('observation', obs)
         .then(function(response) {
           console.log(response);
         });
+    }
+
+    function add(resource, content) {
+      debugger
+      observation[resource] = [].concat(content);
     }
 
     function selectKid(kid) {

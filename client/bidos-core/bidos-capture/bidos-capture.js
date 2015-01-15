@@ -14,26 +14,36 @@
       templateUrl: '/bidos-core/bidos-capture/bidos-capture.html'
     };
 
-    function controllerFn(CaptureService) {
-
-      var colors = Please.make_scheme({
-        h: 130,
-        s: 0.7,
-        v: 0.75
-      }, {
-        scheme_type: 'triadic',
-        format: 'rgb-string'
-      });
-
+    function controllerFn($state, CaptureService) {
 
       var vm = angular.extend(this, {
-        colors: colors
+        selectDomain: selectDomain,
+        selectBehaviour: selectBehaviour
       });
 
       CaptureService.getCurrent()
         .then(function(observation) {
-          vm.observation = observation;
+          angular.extend(vm, observation);
         });
+
+      function selectDomain() {
+        if (!vm.kid) {
+          return;
+        }
+
+        CaptureService.selectDomain();
+        $state.go('auth.select-domain');
+      }
+
+
+      function selectBehaviour() {
+        if (!vm.kid) {
+          return;
+        }
+
+        CaptureService.selectBehaviour();
+        $state.go('auth.select-behaviour');
+      }
 
 
     }

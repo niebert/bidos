@@ -13,16 +13,22 @@
     return {
       scope: {},
       bindToController: true,
-      controller: controllerFn,
+      controller: controller,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-selectKid/bidos-selectKid.html'
+      templateUrl: '/bidos-core/bidos-select-kid/bidos-select-kid.html'
     };
 
-    function controllerFn(ResourceService, $mdDialog, $rootScope, $state, CaptureService) {
+    function controller(ResourceService, $mdDialog, $rootScope, $state, CaptureService) {
       var vm = angular.extend(this, {
-        data: {},
         dialogControllerFn: dialogControllerFn,
         selectKid: selectKid
+      });
+
+
+
+      ResourceService.get().then(function(data) {
+        vm.kids = data.kids;
+        vm.groups = data.groups;
       });
 
 
@@ -33,12 +39,6 @@
         CaptureService.selectKid(kid);
         $state.go('auth.capture');
       }
-
-
-
-      ResourceService.get().then(function(data) {
-        angular.extend(vm.data, data);
-      });
 
 
       function dialogControllerFn(ev, kid) {
