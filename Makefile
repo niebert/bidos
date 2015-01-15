@@ -2,6 +2,7 @@
 # Thu Jan 15 03:05:02 CET 2015
 #
 
+USER = $(shell whoami)
 OS = $(shell uname -s)
 REMOTE_HOST = 92.51.147.239
 DB_SETUP_FILE = ./db_setup.sql
@@ -68,10 +69,10 @@ forever:
 dbreset:
 ifeq ($(OS),Darwin)
 	dropdb bidos_development
-	createdb -O asdf bidos_development
+	createdb -O $(USER) bidos_development
 else
 	sudo -u postgres dropdb bidos_development
-	sudo -u postgres createdb -O asdf bidos_development
+	sudo -u postgres createdb -O $(USER) bidos_development
 endif
 
 dbinit:
