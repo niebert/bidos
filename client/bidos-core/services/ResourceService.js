@@ -6,7 +6,7 @@
   angular.module('bidos')
     .service('ResourceService', ResourceService);
 
-  function ResourceService($http, $q, API_URL, $localStorage, $sessionStorage) {
+  function ResourceService($http, $q, $localStorage, $sessionStorage) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 
@@ -17,7 +17,7 @@
     var outbox = [];
 
     var resources = {}; // data model
-    var RESOURCE_PATH = API_URL + '/v1';
+    var RESOURCE_PATH = 'v1';
     var DEFAULT_RESOURCE = 'resources/vanilla';
 
 

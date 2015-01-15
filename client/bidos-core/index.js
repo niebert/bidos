@@ -26,7 +26,6 @@
   require('./services/ResourceHelper');
 
   // require('./services/ItemFactory');
-  // require('./services/BehaviourFactory');
   // require('./services/ExampleFactory');
   // require('./services/ObservationFactory');
 

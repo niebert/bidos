@@ -17,8 +17,6 @@
   require('./auth');
   require('./bidos-core');
 
-  app.constant('API_URL', 'http://localhost:3000'); // CHANGE ME IF NECCESSARY
-
   /* Register event listeners to keep track of our network status and make it
   /* available on $rootScope.networkStatus. */
 

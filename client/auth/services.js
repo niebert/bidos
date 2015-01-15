@@ -21,7 +21,7 @@
   ])
 
 
-  .factory('UserFactory', function($http, AuthTokenFactory, API_URL) {
+  .factory('UserFactory', function($http, AuthTokenFactory) {
 
     function login(credentials) {
       return $http.post('auth/login', credentials)

@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# version 7
+# version 8
 
 CACHE:
 
@@ -68,7 +68,6 @@ CACHE:
 /bidos-core/filters.js
 /bidos-core/index.js
 /bidos-core/routes.js
-/bidos-core/services/BehaviourFactory.js
 /bidos-core/services/CaptureService.js
 /bidos-core/services/ExampleFactory.js
 /bidos-core/services/ItemFactory.js
