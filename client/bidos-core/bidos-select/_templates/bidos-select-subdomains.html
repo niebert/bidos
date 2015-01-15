@@ -4,9 +4,10 @@
 			<md-button ui-sref="auth.capture">
 				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
-			<h2 flex> Beobachtung abschließen </h2>
+			<h2 flex> Teilbereich auswählen </h2>
 		</span>
 	</md-toolbar>
+
 
 	<div layout="row">
 		<div layout="column" layout-fill>
@@ -28,28 +29,14 @@
 				<span> {{ vm.observation.behaviour.text }} ({{ vm.observation.behaviour.niveau }}) </span>
 			</md-whiteframe>
 			<md-whiteframe flex ng-show="vm.observation.help" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'helps'})">
-				<span> {{ vm.observation.help.value ? 'Mit Hilfe' : 'Ohne Hilfe' }} </span>
+				<span> {{ vm.observation.help!==undefined && vm.help ? 'Mit Hilfe' : 'Ohne Hilfe' }} </span>
 			</md-whiteframe>
 		</div>
 	</div>
 
+
 	<md-content flex layout="column">
-
-		<div flex class="mybutton choose-help" layout="row" layout-align="space-around center" ng-click="vm.dialog($event, 'examples')">
-			<div> Beispiele anzeigen/hinzufügen </div>
-		</div>
-
-		<div flex class="mybutton choose-help" layout="row" layout-align="space-around center" ng-click="vm.dialog($event, 'ideas')">
-			<div> Förderideen anzeigen/hinzufügen </div>
-		</div>
-
-		<div flex class="mybutton choose-help" layout="row" layout-align="space-around center" ng-click="vm.complete()">
-			<div> Beobachtung abschließen </div>
-		</div>
-
+		<md-button class="mybutton2" flex ng-repeat="subdomain in vm.subdomains" ng-click="vm.select(subdomain)"> {{ subdomain.name }} </md-button>
 	</md-content>
-
-
-	</div>
 
 </md-content>

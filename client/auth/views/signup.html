@@ -1,31 +1,41 @@
 <div class="auth">
 	<form novalidate>
 
-		<p>Um sich zu registrieren, wählen Sie bitte zuerst die gewünschte Rolle und
-		füllen das dann unten stehende Formular aus. Sobald ein Administrator
-		Ihren Antrag überprüft und freigeschaltet hat, können Sie sich mit Ihren
-		Zugangsdaten anmelden.</p>
+		<p>Um sich zu registrieren, wählen Sie bitte zuerst die gewünschte Rolle und füllen das dann unten stehende Formular aus. Sobald ein Administrator Ihren Antrag überprüft und freigeschaltet hat, können Sie sich mit Ihren Zugangsdaten anmelden.</p>
 
 		<div class="content" style="width:100%; margin-top:24px;">
-
-			<span>Gewünschte Rolle:</span>
-			<select ng-model="newUser.role_id">
-				<option value="1" selected>Praktiker</option>
-				<option value="2">Wissenschaftler</option>
-			</select>
-
+			<span> Gewünschte Rolle: </span>
+			<select ng-model="user.role" ng-options="role.value as role.text for role in auth.roles"> </select>
 		</div>
 
-		<div ng-show="newUser.role_id">
-			<md-text-float label="Vor- und Nachname" ng-model="newUser.name" required></md-text-float>
-			<md-text-float label="Passwort" ng-model="newUser.password" type="password" required></md-text-float>
-			<md-text-float label="E-Mail-Adresse" ng-model="newUser.email" type="email" required></md-text-float>
+		<div ng-show="user.role">
+			<md-input-container>
+				<label>Vor- und Nachname</label>
+				<input type="text" ng-model="user.name" required>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Passwort</label>
+				<input type="password" ng-model="user.password" required>
+			</md-input-container>
+
+			<md-input-container>
+				<label>E-Mail-Adresse</label>
+				<input type="email" ng-model="user.email" required>
+			</md-input-container>
 		</div>
 
-		<md-text-float ng-show="newUser.role_id=='1'" label="Institution" ng-model="newUser.institution" type="text" required></md-text-float>
-		<md-text-float ng-show="newUser.role_id=='2'" label="Stellung (Prof., Wissenschaftliche Hilfskraft, …)" ng-model="newUser.job" type="text" required></md-text-float>
+		<md-input-container ng-show="user.role==1">
+			<span>Institution</span>
+			<select ng-model="user.institution_id" ng-options="institution.id as institution.name for institution in auth.institutions" required> </select>
+		</md-input-container>
 
-		<md-button ng-click="auth.signup(newUser)" class="md-raised md-primary md-button md-default-theme submit-button">Registrieren</md-button>
+		<md-input-container ng-show="user.role==2">
+			<label>Stellung</label>
+			<input type="text" ng-model="user.job" required>
+		</md-input-container>
+
+		<md-button ng-click="auth.signup(user)" class="md-raised md-primary md-button md-default-theme submit-button"> Registrieren </md-button>
 
 	</form>
 </div>

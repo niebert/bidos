@@ -1,10 +1,9 @@
 html {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 *, *:before, *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
-
 @import '_color-palette';
 $bgc1: color($grey, 50);
 $fgc1: color($grey, 1000);
@@ -620,6 +619,7 @@ md-input-group > label {
 .example-description {
     margin-bottom: 12px;
     padding-bottom: 12px;
+    padding-top: 20px;
 }
 .newExample {
     width: 100%;
@@ -717,10 +717,10 @@ to prevent collapsing during animation*/
     position: absolute;
     left: 0;
     right: 0;
-    -webkit-transition: all .5s linear;
-    -moz-transition: all .5s linear;
-    -o-transition: all .5s linear;
-    transition: all .5s linear;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 [ui-view].ng-enter {
     opacity: 0;
@@ -826,7 +826,21 @@ md-content > md-toolbar + md-content {
     padding: 24px;
     margin: 12px 24px;
     border: 10px solid #333;
-    font-size: 2.2em;
+    font-size: 1.6em;
+    white-space: normal;
+}
+.mybutton2 {
+    padding: 24px;
+    margin: 12px 24px;
+    border: 10px solid #333;
+    font-size: 1.2em;
+    white-space: normal;
+}
+.mybutton3 {
+    padding: 16px;
+    margin: 12px 24px;
+    border: 10px solid #333;
+    font-size: 1.1em;
     white-space: normal;
 }
 .mybutton:first-child {
@@ -859,20 +873,81 @@ md-whiteframe {
     margin: 10px 20px;
     padding: 20px;
 }
-
-.example-description {
-  font-size: .5em;
-  font-style: italic;
-  padding: 0;
-  margin: 0;
-  text-align: center;
+.example-text {
+    font-size: .7em;
+    font-style: italic;
+    padding: 8px;
+    margin: 0;
+    // text-align: center;
 }
-
 .status-card {
-  text-align: center;
+    padding: 8px;
+    font-size: 0.9em;
+    text-align: center;
+    width: 90%;
 }
-
+.status-card:first-child {
+    margin-bottom: 3px;
+}
+.status-card:last-child {
+    margin-top: 3px;
+}
+.choice-card {
+    text-align: center;
+}
 .padded {
-  margin: 16px 0;
-  padding: 0;
+    margin: 16px 0;
+    padding: 0;
+}
+.two-cols {} .behaviour-button {
+    margin: 12px 24px;
+    border: 10px solid #333;
+    font-size: 1.2em;
+    white-space: normal;
+}
+.behaviour-text {
+    padding: 12px;
+    font-size: 1em;
+}
+.help-button {
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
+}
+.bold {
+    font-weight: 400;
+}
+span.behaviour {
+    font-weight: 400;
+}
+span.example {
+    font-size: 0.8em;
+}
+span.help {
+    text-align: center;
+}
+.button-card {
+    border: 8px solid #333;
+    text-align: center;
+    font-size: 0.8rem;
+}
+.help-card {
+  border: 8px solid #49ffe6;
+  background-color: #dafffa;
+}
+.selected1 {
+  background-color: #fbd6c9;
+  border-color: #f87854;
+}
+.selected2 {
+  background-color: #faddbe;
+  border-color: #f49843;
+}
+.selected3 {
+  background-color: #d2bbfa;
+  border-color: #711ff9;
+}
+.selected4 {
+  background-color: #bed8fa;
+  border-color: #357bf9;
 }

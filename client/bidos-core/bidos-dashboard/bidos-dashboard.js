@@ -32,6 +32,14 @@
         }, {
           scheme_type: 'triadic',
           format: 'rgb-string'
+        }),
+        c: Please.make_scheme({
+          h: 120,
+          s: 0.2,
+          v: 0.75
+        }, {
+          scheme_type: 'triadic',
+          format: 'rgb-string'
         })
       };
 

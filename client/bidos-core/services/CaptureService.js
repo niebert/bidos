@@ -11,93 +11,91 @@
     var observation = {};
 
     return {
-      add: add,
-      resetItem: resetItem,
-      addExample: addExample,
-      getCurrent: getCurrent,
-      newObservation: newObservation,
-      saveObservation: saveObservation,
-      selectKid: selectKid,
-      selectDomain: selectDomain,
-      selectSubdomain: selectSubdomain,
-      selectItem: selectItem,
-      selectBehaviour: selectBehaviour,
-      selectHelp: selectHelp
+      get: getObservation,
+      complete: completeObservation,
+      select: selectResource,
     };
 
-    function resetItem() {
-      delete observation.domain;
-      delete observation.subdomain;
-      delete observation.item;
-      delete observation.behaviour;
-      delete observation.help;
+    function selectResource(resource) {
+      var type = resource.type.slice(0, -1);
+
+      switch (type) {
+        case 'domain':
+          delete observation.domain;
+          delete observation.subdomain;
+          delete observation.item;
+          delete observation.behaviour;
+          delete observation.help;
+          break;
+        case 'subdomain':
+          delete observation.item;
+          delete observation.behaviour;
+          delete observation.help;
+          break;
+        case 'item':
+          delete observation.behaviour;
+          delete observation.help;
+          break;
+        case 'help':
+          break;
+      }
+
+      switch (type) {
+        case 'example':
+        case 'idea':
+          (observation[type] = observation[type] || [])
+          .push(resource);
+          break;
+        default:
+          observation[type] = resource;
+      }
+
+      console.log(observation);
     }
 
-    function selectDomain(domain) {
-      observation.item = null;
-      observation.subdomain = null;
-      observation.domain = domain;
-    }
-
-    function selectSubdomain(subdomain) {
-      observation.subdomain = subdomain;
-    }
-
-    function selectHelp(help) {
-      observation.help = help;
-    }
-
-    function selectBehaviour(behaviour) {
-      observation.behaviour = behaviour;
-    }
-
-    function selectItem(item) {
-      observation.item = item;
-    }
-
-    function getCurrent() {
-      return $q(function(resolve, reject) {
+    function getObservation() {
+      return $q(function(resolve) {
         resolve(observation);
       });
     }
 
-    function newObservation() {
-      return new Observation();
-    }
+    function completeObservation() {
 
-    function saveObservation() {
       var obs = {
+        type: 'observations',
         behaviour_id: observation.behaviour.id,
-        examples: observation.examples,
-        ideas: observation.ideas,
-        help: observation.help,
+        help: observation.help.value,
         kid_id: observation.kid.id,
         user_id: $rootScope.auth.id
       };
 
-      debugger
+      _.each(observation.example, function(example) { // singular here TODO
+        ResourceService.create({
+            type: 'examples', // plural here TODO
+            text: example.text,
+            behaviour_id: observation.behaviour.id
+          })
+          .then(function(response) {
+            console.log(response);
+          });
+      });
 
-      ResourceService.create('observation', obs)
+      _.each(observation.idea, function(idea) { // singular here TODO
+        ResourceService.create({
+            type: 'ideas', // plural here TODO
+            text: idea.text,
+            behaviour_id: observation.behaviour.id
+          })
+          .then(function(response) {
+            console.log(response);
+          });
+      });
+
+      ResourceService.create(obs)
         .then(function(response) {
           console.log(response);
         });
     }
-
-    function add(resource, content) {
-      debugger
-      observation[resource] = [].concat(content);
-    }
-
-    function selectKid(kid) {
-      observation.kid = kid;
-      console.log('selected kid', kid);
-    }
-
-
-    function addExample(example) {
-      observation.examples.push(example);
-    }
-
 
   }
 }());

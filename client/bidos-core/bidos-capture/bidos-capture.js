@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, Please */
+  /* global angular */
 
   angular.module('bidos')
     .directive('bidosCapture', bidosCapture);
@@ -17,35 +17,41 @@
     function controllerFn($state, CaptureService) {
 
       var vm = angular.extend(this, {
+        selectKid: selectKid,
         selectDomain: selectDomain,
         selectBehaviour: selectBehaviour
       });
 
-      CaptureService.getCurrent()
+      CaptureService.get()
         .then(function(observation) {
           angular.extend(vm, observation);
         });
+
+      function selectKid() {
+        $state.go('auth.select', {
+          resource: 'kids'
+        });
+      }
 
       function selectDomain() {
         if (!vm.kid) {
           return;
         }
 
-        CaptureService.selectDomain();
-        $state.go('auth.select-domain');
+        $state.go('auth.select', {
+          resource: 'domains'
+        });
       }
-
 
       function selectBehaviour() {
         if (!vm.kid) {
           return;
         }
 
-        CaptureService.selectBehaviour();
-        $state.go('auth.select-behaviour');
+        $state.go('auth.select', {
+          resource: 'behaviours'
+        });
       }
-
-
     }
   }
 

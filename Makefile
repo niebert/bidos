@@ -83,8 +83,8 @@ else
 endif
 
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "1", "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "2", "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role_id": "3", "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123" }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
 
 PHONY = .

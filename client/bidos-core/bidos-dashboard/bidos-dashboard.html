@@ -28,25 +28,27 @@
 
 	<md-content class="big" layout="row">
 		<md-button ui-sref="auth.capture" class="capture" flex style="background-color:{{vm.colors.a[0]}}">Neue Beobachtung</md-button>
+		<md-button ui-sref="auth.portfolio" class="capture" flex style="background-color:{{vm.colors.a[1]}}">Auswertung</md-button>
 	</md-content>
 
 	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.observations" flex style="background-color:{{vm.colors.a[1]}}">Beobachtungen</md-button>
-		<md-button ui-sref="auth.items" flex style="background-color:{{vm.colors.a[2]}}">Bausteine</md-button>
-		<md-button ui-sref="auth.kids" flex style="background-color:{{vm.colors.a[3]}}">Kinder</md-button>
+		<md-button ui-sref="auth.resources({resource: 'observations'})" flex style="background-color:{{vm.colors.a[2]}}">Beobachtungen</md-button>
+		<md-button ui-sref="auth.resources({resource: 'items'})" flex style="background-color:{{vm.colors.a[3]}}">Bausteine</md-button>
+		<md-button ui-sref="auth.resources({resource: 'kids'})" flex style="background-color:{{vm.colors.a[4]}}">Kinder</md-button>
 		<md-content flex="20" layout="column">
-			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[1]}}">Status</md-button>
-			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[2]}}">Profil</md-button>
-			<md-button class="capture" ng-class="{online:vm.networkStatus==online}" flex>{{ vm.networkStatus }}</md-button>
+			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[3]}}">Status</md-button>
+			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[4]}}">Profil</md-button>
+			<md-button class="capture" ng-class="{online:vm.networkStatus==online}" flex style="background-color:{{vm.colors.b[5]}}">{{ vm.networkStatus }}</md-button>
 		</md-content>
 	</md-content>
 
 	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.groups" flex style="background-color:{{vm.colors.a[4]}}">Gruppen</md-button>
-		<md-button ui-sref="auth.users" flex style="background-color:{{vm.colors.a[5]}}">Benutzer</md-button>
+		<md-button ui-sref="auth.resources({resource: 'institutions'})" flex style="background-color:{{vm.colors.c[0]}}">Institutionen</md-button>
+		<md-button ui-sref="auth.resources({resource: 'groups'})" flex style="background-color:{{vm.colors.c[1]}}">Gruppen</md-button>
+		<md-button ui-sref="auth.resources({resource: 'users'})" flex style="background-color:{{vm.colors.c[2]}}">Benutzer</md-button>
 		<md-content flex="20" layout="column">
-			<md-button ng-click="vm.sync()" class="capture" flex style="background-color:{{vm.colors.b[0]}}">Sync</md-button>
-			<md-button class="capture" flex style="background-color:#7bb4da"><a href="v1/resources/vanilla" style="color:#000;text-decoration:none;">Export</a></md-button>
+			<md-button ng-click="vm.sync()" class="capture" flex style="background-color:{{vm.colors.c[4]}}">Sync</md-button>
+			<md-button class="capture" flex style="background-color:{{vm.colors.c[5]}}"><a href="v1/resources/vanilla" style="color:#000;text-decoration:none;">Export</a></md-button>
 			<md-button ng-click="vm.logout()" class="capture" flex style="background-color:#c92971">Abmelden</md-button>
 		</md-content>
 	</md-content>

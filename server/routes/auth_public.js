@@ -95,9 +95,9 @@
     });
 
 
-    if (this.request.body.username === 'admin') {
-      this.request.body.status = 0;
-    }
+    // if (this.request.body.username === 'admin') {
+    //   this.request.body.status = 0;
+    // }
 
 
     delete this.request.body.password;
@@ -119,7 +119,7 @@
 
 
       var query = {
-        name: 'updateItem',
+        name: 'createUser',
         text: 'INSERT INTO users (' + keys + ') VALUES (' + indices + ') RETURNING *',
         values: values
       };

@@ -1,4 +1,4 @@
-/* global angular, navigator, window, document */
+/* global angular, navigator, window, document, faker */
 
 (function() {
   'use strict';
@@ -17,8 +17,12 @@
   require('./auth');
   require('./bidos-core');
 
+  faker.locale = 'de';
+
   /* Register event listeners to keep track of our network status and make it
   /* available on $rootScope.networkStatus. */
+
+  app.constant('STRINGS', require('./strings'));
 
   app.run(function($rootScope) {
 

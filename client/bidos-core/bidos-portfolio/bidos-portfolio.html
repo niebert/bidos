@@ -1,0 +1,38 @@
+<md-content class="big" layout="column">
+	<md-toolbar>
+		<h2 class="md-toolbar-tools">
+			<md-button ui-sref="auth.home">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<span flex> Auswertung </span>
+		</h2>
+	</md-toolbar>
+
+
+
+	<md-whiteframe flex="10" layout layout-align="center center" class="md-whiteframe-z1 help-card">
+		<span class="bold"> Wählen Sie zuerst einen oder mehrere der vier Bereiche aus </span>
+	</md-whiteframe>
+
+	<div layout="row">
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.select(domain)" ng-repeat="domain in vm.domains">
+			<span class="bold"> {{ domain.name }} </span>
+		</md-whiteframe>
+	</div>
+
+
+	<div flex layout="column">
+		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
+			<span class="bold"> Institution auswerten </span>
+		</md-whiteframe>
+
+		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
+			<span class="bold"> Gruppen auswerten </span>
+		</md-whiteframe>
+
+		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
+			<span class="bold"> Kinder auswerten </span>
+		</md-whiteframe>
+	</div>
+
+</md-content>

@@ -7,19 +7,6 @@
     'angular-jwt', // json web token
   ])
 
-  .factory('RoleFactory', ['$http',
-    function($http) {
-
-      function getAllRoles() {
-        return $http.get('v1/roles');
-      }
-
-      return {
-        getAllRoles: getAllRoles
-      };
-    }
-  ])
-
 
   .factory('UserFactory', function($http, AuthTokenFactory) {
 

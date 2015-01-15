@@ -17,33 +17,29 @@
     function controller($state, $mdDialog, ResourceService, CaptureService) {
       var vm = angular.extend(this, {
         dialog: dialog,
-        save: save
+        complete: complete
       });
 
-      CaptureService.getCurrent()
+      CaptureService.get()
         .then(function(observation) {
-
-          if (!observation.domain || !observation.subdomain || !observation.item) {
-            $state.go('auth.select-domain');
-            return;
+          if (_.isEmpty(observation) || observation.allDone) {
+            $state.go('auth.capture');
           }
-
-          angular.extend(vm, observation);
+          vm.observation = observation;
         });
 
-
-      function save() {
-        CaptureService.saveObservation();
+      function complete() {
+        CaptureService.complete();
       }
 
       function dialog(ev, type) {
-
         $mdDialog.show({
             bindToController: false,
             controller: dialogController,
             controllerAs: 'vm',
             locals: {
-              type: type
+              type: type,
+              parent: vm
             },
             targetEvent: ev,
             templateUrl: 'bidos-core/bidos-finish-observation/bidos-finish-observation.dialog.html'
@@ -55,25 +51,20 @@
           });
       }
 
-      function dialogController($mdDialog, type) {
-        debugger
+      function dialogController($mdDialog, type, parent) {
         angular.extend(this, {
           type: type,
+          parent: parent,
           cancel: cancel,
-          save: save,
-          add: add
+          save: save
         });
 
         function cancel() {
           $mdDialog.cancel();
         }
 
-        function save() {
-          $mdDialog.hide();
-        }
-
-        function add(resource, content) {
-          CaptureService.add(resource, content);
+        function save(resource) {
+          CaptureService.select(resource);
           $mdDialog.hide();
         }
       }

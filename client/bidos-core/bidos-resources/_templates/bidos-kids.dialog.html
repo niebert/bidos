@@ -1,0 +1,71 @@
+<md-dialog aria-label="create-kid-dialog">
+
+	<md-subheader class="md-sticky-no-effect dialog-header">{{ vm.kid.name }}</md-subheader>
+
+	<div class="dialog-sheet">
+		<pre>{{ vm.kid | json }}</pre>
+	</div>
+
+	<md-content flex layout="column">
+		<form>
+			<div layout="column">
+				<div layout="row">
+
+					<md-input-container flex>
+						<label>Name</label>
+						<input type="text" ng-model="vm.kid.name">
+					</md-input-container>
+
+					<md-input-container flex>
+						<label>Geburtstag</label>
+						<input type="date" ng-model="vm.kid.bday"> </input>
+					</md-input-container>
+				</div>
+
+				<div layout="row">
+					<div flex layout="column">
+
+						<div flex style="margin-bottom: 24px;">
+							<span>Gruppe</span>
+							<select style="width: 90%;" ng-options="group.id as group.name for group in vm.parent.groups" ng-model="vm.kid.group_id"> </select>
+						</div>
+
+						<div flex style="margin-bottom: 24px;">
+							<span>Geschlecht</span>
+							<select style="width: 90%;" ng-options="sex.value as sex.text for sex in vm.parent.sexes" ng-model="vm.kid.sex"> </select>
+						</div>
+
+					</div>
+					<div flex layout="column">
+
+						<div flex style="margin-bottom: 24px;">
+							<span>Religion</span>
+							<select style="width: 90%;" ng-options="religion.value as religion.text for religion in vm.parent.religions" ng-model="vm.kid.religion"> </select>
+						</div>
+
+						<div flex style="margin-bottom: 24px;">
+							<span>Händigkeit</span>
+							<select style="width: 90%;" ng-options="hands.value as hands.text for hands in vm.parent.hands" ng-model="vm.kid.handedness"> </select>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</form>
+	</md-content>
+
+	<div class="md-actions" layout="row">
+		<md-button ng-show="vm.kid.id" ng-click="vm.destroy(vm.kid)" class="md-raised md-warn md-button md-default-theme">
+			Löschen
+		</md-button>
+		<span flex></span>
+		<md-button ng-click="vm.cancel()" class="md-raised md-button md-default-theme">
+			Abbrechen
+		</md-button>
+		<md-button ng-click="vm.save(vm.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vm.kid.name || !vm.kid.group_id" ng-click="vm.createResource(vm.kid)">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>

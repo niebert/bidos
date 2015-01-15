@@ -185,6 +185,19 @@
 
 
 
+  app.filter('age', function() {
+    return function(date) {
+      if (!date) {
+        return;
+      }
+
+      var ageDifMs = Date.now() - date.getTime();
+      var ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    };
+  });
+
+
   app.filter('sex', function() {
     return function(kid) {
       if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('sex')) {

@@ -8,23 +8,35 @@
   require('lodash');
   require('./services');
 
+  var roles = require('../strings')
+    .roles;
+
   angular.module('auth.controller', [])
     .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, $location, UserFactory, RoleFactory) {
+  function AuthController($rootScope, $state, $location, UserFactory, $http) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       $rootScope.state = toState.name;
     });
 
-
     var vm = angular.extend(this, {
       login: login,
       logout: logout,
-      signup: signup
+      signup: signup,
+      roles: roles
     });
 
+    $http.get('v1/institutions')
+      .success(function(response) {
+        angular.extend(vm, response);
+      });
+
+    $http.get('v1/groups')
+      .success(function(response) {
+        vm.groups = response.data;
+      });
 
     var ROUTES = {
       AUTH_SUCCESS: '',
@@ -47,14 +59,6 @@
     /* FIXME: make sure this is done on every single request. */
 
     auth();
-
-    if (!vm.roles) {
-      RoleFactory.getAllRoles()
-        .then(function(response) {
-          vm.roles = response.data.roles;
-        });
-    }
-
 
     /* TODO: handle net::ERR_INTERNET_DISCONNECTED failure by displaying a
     /* message/toast to the user, telling him that he needs to be online to

@@ -27,7 +27,7 @@
           vm.data = data;
         });
 
-      CaptureService.getCurrent()
+      CaptureService.get()
         .then(function(observation) {
           vm.observation = observation;
 

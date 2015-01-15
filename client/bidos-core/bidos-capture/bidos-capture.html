@@ -4,28 +4,18 @@
 			<md-button ui-sref="auth.home">
 				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
 			</md-button>
-
 			<span flex> Neue Beobachtung </span>
-
-<!-- 			<md-button ng-click="vm.createOrEditItemDialog($event)">
-				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
-			</md-button>
- --><!-- 			<md-button>
-				<md-icon aria-label="more" icon="lib/material-design-icons/navigation/svg/production/ic_more_vert_24px.svg" style="width: 24px; height: 24px;"></md-icon>
-			</md-button>
- -->		</h2>
+		</h2>
 	</md-toolbar>
 
-	<div flex layout="row" layout-align="space-around center" class="big-button" ui-sref="auth.select-kid" ng-show="!vm.kid">
+	<div flex layout="row" layout-align="space-around center" class="big-button" ng-click="vm.selectKid()" ng-show="!vm.kid">
 		<div flex="30" class="big-number"> 1 </div>
 		<div flex class="big-text"> Kind auswählen </div>
 	</div>
 
-	<div flex layout="row" layout-align="space-around center" class="big-button okay" ui-sref="auth.select-kid" ng-show="vm.kid">
+	<div flex layout="row" layout-align="space-around center" class="big-button okay" ng-click="vm.selectKid()" ng-show="vm.kid">
 		<div flex="30" class="big-number"> 1 </div>
-		<div flex class="big-text">
-			{{ vm.kid.name }}
-		</div>
+		<div flex class="big-text"> {{ vm.kid.name }} </div>
 	</div>
 
 	<div flex layout="row" layout-align="space-around center" class="big-button" ng-click="vm.selectDomain()" ng-show="!vm.item" ng-class="{disabled:!vm.kid}">
@@ -33,11 +23,9 @@
 		<div flex class="big-text"> Baustein auswählen </div>
 	</div>
 
-	<div flex layout="row" layout-align="space-around center" class="big-button okay" ui-sref="auth.select-item" ng-show="vm.item">
+	<div flex layout="row" layout-align="space-around center" class="big-button okay" ng-click="vm.selectDomain()" ng-show="vm.item">
 		<div flex="30" class="big-number"> 2 </div>
-		<div flex class="big-text">
-			{{ vm.item.title }}
-		</div>
+		<div flex class="big-text"> {{ vm.item.name }} </div>
 	</div>
 
 	<div flex layout="row" layout-align="space-around center" class="big-button" ng-click="vm.selectBehaviour()" ng-class="{disabled:!vm.kid || !vm.item}">
@@ -45,44 +33,4 @@
 		<div flex class="big-text"> Beobachtung einstellen </div>
 	</div>
 
-
-	<!-- 		<bidos-select-kid-button kid="{{vm.kid}}" flex> {{ vm.kid }} </bidos-select-kid-button>
-		<bidos-select-kid-button kid="{{vm.kid}}" flex> {{ vm.kid }} </bidos-select-kid-button>
-		<bidos-select-kid-button kid="{{vm.kid}}" flex> {{ vm.kid }} </bidos-select-kid-button>
--->
-
-	<!--
-	<md-button flex ng-hide="vm.observation.kid" ui-sref="auth.selectKid" style="background-color:#f8d9cf">Kind auswählen</md-button>
-
-	<md-content flex ng-show="vm.observation.kid" layout="row" layout-align="space-around center" style="background-color:#daffec;" ui-sref="auth.selectKid">
-		<div flex="25">Kind</div>
-		<div flex>
-			{{ vm.observation.kid.name }} ({{ vm.observation.kid.age }}, {{ vm.observation.kid | sex }}, Gruppe: {{ vm.observation.kid | group }})
-		</div>
-	</md-content>
-
-
-	<md-button flex ng-hide="vm.observation.item" ui-sref="auth.selectDomain" style="background-color:#f8d9cf">Item auswählen</md-button>
-
-	<div flex layout="column" ng-show="vm.observation.item">
-		<md-content flex layout="row" layout-align="space-around center" style="background-color:#dbffd9;" ui-sref="auth.selectDomain">
-			<div flex="25">Kompetenzbereich</div>
-			<div flex>{{ vm.observation.domain.title }}</div>
-		</md-content>
-
-		<md-content flex layout="row" layout-align="space-around center" style="background-color:#edffda;" ui-sref="auth.selectItem">
-			<div flex="25">Teilbereich</div>
-			<div flex>{{ vm.observation.subdomain.title }}</div>
-		</md-content>
-
-		<md-content flex layout="row" layout-align="space-around center" style="background-color:#ffffda;" ui-sref="auth.selectItem">
-			<div flex="25">Baustein</div>
-			<div flex>{{ vm.observation.item.title }}</div>
-		</md-content>
-	</div>
-
-
-
-	<md-button flex ng-hide="vm.observation.configuration" ui-sref="auth.observe" style="background-color:#f8d9cf">Beobachtung einstellen</md-button>
-	<md-button ng-disable="!vm.observation.domain || !vm.observation.item" flex ng-show="vm.observation.configuration" ui-sref="auth.observe" style="background-color:#c6f9d0">{{vm.observation}}</md-button> -->
 </md-content>

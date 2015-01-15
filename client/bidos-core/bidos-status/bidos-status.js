@@ -20,13 +20,10 @@
         networkStatus: $rootScope.networkStatus
       });
 
-
       ResourceService.get()
         .then(function(data) {
           vm.data = data;
-          debugger
         });
-
 
     }
   }

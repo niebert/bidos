@@ -56,25 +56,47 @@
       text: 'SELECT * FROM users'
     });
 
+    var idea = yield this.pg.db.client.query_({
+      name: 'getAllIdeas',
+      text: 'SELECT * FROM ideas'
+    });
+
+    var institution = yield this.pg.db.client.query_({
+      name: 'getAllInstitutions',
+      text: 'SELECT * FROM institutions'
+    });
+
     var usernames = yield this.pg.db.client.query_({
       name: 'getAllUsernamess',
       text: 'SELECT * FROM usernames'
     });
 
-    this.body = {
+    // NOTE: things are getting pluralized here
+
+    var resources = {
       behaviours: behaviour.rows,
       domains: domain.rows,
       examples: example.rows,
+      institutions: institution.rows,
       groups: group.rows,
       users: user.rows,
       items: item.rows,
       kids: kid.rows,
+      ideas: idea.rows,
       observations: observation.rows,
       subdomains: subdomain.rows,
       usernames: _.map(usernames.rows, 'username')
     };
 
-    console.log('  >>>     delivering flat resources')
+    _.each(resources, function(resource,i) {
+      _.each(resource, function(r) {
+        r.type = i;
+      });
+    });
+
+    this.body = resources;
+
+    console.log('  >>>     delivering flat resources');
   }
 
   function *getNestedResources() {

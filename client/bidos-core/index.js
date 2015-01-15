@@ -3,43 +3,28 @@
 
   require('lodash');
 
-  require('./bidos-dashboard');
-  require('./bidos-items');
-  require('./bidos-groups'); // TODO bundle with kids
-  require('./bidos-kids');
-  require('./bidos-observations');
-  require('./bidos-subdomains'); // TODO bundle with items
-  require('./bidos-users');
+  // manage resources
+  require('./services/ResourceService');
+  require('./services/ResourceHelper');
+  require('./bidos-resources');
+
+  // do observation
+  require('./services/CaptureService');
   require('./bidos-capture');
   require('./bidos-observe');
+  require('./bidos-select');
+  require('./directives/bidos-select-kid-button');
+  require('./bidos-finish-observation/bidos-finish-observation');
+
   require('./bidos-profile');
   require('./bidos-status');
 
-  require('./bidos-select-kid');
-  require('./bidos-select-item');
-  require('./bidos-select-domain');
-  require('./bidos-select-subdomain');
-
-  require('./services/CaptureService');
-
-  require('./services/ResourceService');
-  require('./services/ResourceHelper');
-
-  // require('./services/ItemFactory');
-  // require('./services/ExampleFactory');
-  // require('./services/ObservationFactory');
-
-  // require('./services/KidFactory');
-  // require('./services/GroupFactory');
-
   require('./controllers/md-sidenav-controller.js'); // TODO bundle into directive
+
+  require('./bidos-dashboard');
+  require('./bidos-portfolio');
 
   require('./filters');
   require('./routes');
-
-  require ('./directives/bidos-select-kid-button');
-  require ('./bidos-select-behaviour/bidos-select-behaviour');
-  require ('./bidos-select-help/bidos-select-help');
-  require ('./bidos-finish-observation/bidos-finish-observation');
 
 }());

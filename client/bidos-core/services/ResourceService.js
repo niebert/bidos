@@ -6,142 +6,278 @@
   angular.module('bidos')
     .service('ResourceService', ResourceService);
 
-  function ResourceService($http, $q, $localStorage, $sessionStorage) {
+  function ResourceService($rootScope, $http, $q) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 
-    /* The back end will authenticate the user, check for it's group and respond
-    /* with the correct resource object the user is allowed to get. */
+    /* TODO: The back end should authenticate the user, check for it's group
+    /* and respond with the correct resource object the user is allowed to
+    /* get. */
 
-    // if offline, store post/patch/delete requests here until we're online
-    var outbox = [];
-
-    var resources = {}; // data model
+    var flatResources = {};
+    var nestedResources = {};
     var RESOURCE_PATH = 'v1';
     var DEFAULT_RESOURCE = 'resources/vanilla';
 
-
-
     return {
-      sync: syncResources,
       get: getResources,
       create: createResource,
       update: updateResource,
       destroy: destroyResource,
     };
 
+    function nestResources() {
+      var nestedResources = {};
 
-    function syncResources() {
-      var url = [RESOURCE_PATH, DEFAULT_RESOURCE].join('/');
-      console.log(url);
+      nestedResources.institutions = flatResources.institutions;
+      nestedResources.users = flatResources.users;
+      nestedResources.domains = flatResources.domains;
 
-      function pull() {
-        return $http.get(url)
-          .success(function(response) {
-            debugger
-            $localStorage.resources = response.data;
-          })
-          .error(function(response) {
-            console.warn(response.err);
-          });
-      }
-
-      pull()
-        .then(function(response) {
-          console.log('sync done', response);
+      // domains -> subdomains
+      _.each(nestedResources.domains, function(domain) {
+        domain.subdomains = _.select(flatResources.subdomains, {
+          domain_id: domain.id
         });
-    }
 
-    // resource can be an array or a string
-    function getResources(requestedResource) {
-      // w/o arguments immediately return the data object
-      // if (!arguments.length) {
-      //   if (!resources) {
-      //     return $q(function(resolve, reject) {
-      //       if ($rootScope.networkStatus !== 'offline') {
-      //         resolve(resources);
-      //       } else {
-      //         reject('FAILED GETTING DATA, CHECK YOUR INTERNET CONNECTION!');
-      //       }
-      //     });
-      //   }
-      // }
 
-      var deferred = $q.defer();
+        // subdomains -> items
+        _.each(domain.subdomains, function(subdomain) {
+          subdomain.items = _.select(flatResources.items, {
+            subdomain_id: subdomain.id
+          });
 
-      // make the argument an array if it isn't already <3
-      requestedResource = [].concat(requestedResource || DEFAULT_RESOURCE);
+          // items -> behaviours
+          _.each(subdomain.items, function(item) {
+            item.behaviours = _.select(flatResources.behaviours, {
+              item_id: item.id
+            });
 
-      var queries = _.map(requestedResource, function(resource) {
-        return $http.get([RESOURCE_PATH, resource].join('/'));
+            item.subdomain = _.select(domain.subdomains, {
+              id: item.subdomain_id
+            })[0];
+
+            item.domain = _.select(nestedResources.domains, {
+              id: item.subdomain.domain_id
+            })[0];
+
+            item.examples = _.chain(item.behaviours)
+              .map('examples')
+              .flatten()
+              .value();
+
+            item.ideas = _.chain(item.behaviours)
+              .map('ideas')
+              .flatten()
+              .value();
+
+            item.observations = _.chain(item.behaviours)
+              .map('observations')
+              .flatten()
+              .value();
+
+
+
+            // behaviours -> observations
+            // behaviours -> examples
+            // behaviours -> ideas
+            _.each(item.behaviours, function(behaviour) {
+              behaviour.observations = _.select(flatResources.observations, {
+                behaviour_id: behaviour.id
+              });
+
+              behaviour.examples = _.select(flatResources.examples, {
+                behaviour_id: behaviour.id
+              });
+
+              behaviour.ideas = _.select(flatResources.ideas, {
+                behaviour_id: behaviour.id
+              });
+            });
+
+            // extra stuff
+            item.subdomain = _.select(domain.subdomains, {
+              id: item.subdomain_id
+            })[0];
+
+            item.domain = _.select(nestedResources.domains, {
+              id: item.subdomain.domain_id
+            })[0];
+
+            item.examples = _.chain(item.behaviours)
+              .map('examples')
+              .flatten()
+              .value();
+
+            item.ideas = _.chain(item.behaviours)
+              .map('ideas')
+              .flatten()
+              .value();
+
+            item.observations = _.chain(item.behaviours)
+              .map('observations')
+              .flatten()
+              .value();
+          });
+        });
+      });
+
+      nestedResources.groups = flatResources.groups;
+
+      // groups -> users
+      // groups -> kids
+      _.each(nestedResources.groups, function(group) {
+        group.users = _.select(flatResources.users, {
+          group_id: group.id
+        });
+        group.kids = _.select(flatResources.kids, {
+          group_id: group.id
+        });
+      });
+
+      nestedResources.subdomains = _.chain(nestedResources.domains)
+        .map('subdomains')
+        .flatten()
+        .value();
+
+      nestedResources.items = _.chain(nestedResources.subdomains)
+        .map('items')
+        .flatten()
+        .value();
+
+      nestedResources.behaviours = _.chain(nestedResources.items)
+        .map('behaviours')
+        .flatten()
+        .value();
+
+      nestedResources.kids = _.chain(flatResources.groups)
+        .map('kids')
+        .flatten()
+        .value();
+
+      nestedResources.observations = _.chain(nestedResources.behaviours)
+        .map('observations')
+        .flatten()
+        .value();
+
+      _.each(nestedResources.observations, function(observation) {
+        var byId = {
+          observation_id: observation.id
+        };
+
+        observation.kid = _.select(flatResources.kids, byId);
+
+        observation.behaviour = _.select(flatResources.behaviours, {
+          id: observation.behaviour_id
+        })[0];
+
+        observation.kid = _.select(flatResources.kids, {
+          id: observation.kid_id
+        })[0];
+
+        observation.user = _.select(flatResources.users, {
+          id: observation.user_id
+        })[0];
+
+        observation.author = _.select(flatResources.users, {
+          id: observation.author_id
+        })[0];
+
+        observation.item = _.select(flatResources.items, {
+          id: observation.behaviour.item_id
+        })[0];
+
+        observation.subdomain = _.select(flatResources.subdomains, {
+          id: observation.item.subdomain_id
+        })[0];
+
+        observation.domain = _.select(flatResources.domains, {
+          id: observation.subdomain.domain_id
+        })[0];
+
       });
 
 
-      $q.all(queries)
-        .then(function(responses) {
+      _.each(nestedResources.kids, function(kid) {
+        kid.bday = new Date(kid.bday);
+      });
 
-          // create flat (i.e. non-nested) data model
-          _.chain(responses)
-            .map('data')
-            .each(function(response) {
-              console.info('[resources]', response);
-              _.merge(resources, response);
+      console.log(nestedResources);
+      return nestedResources;
+    }
+
+
+    function getResources(sync) {
+      var url = [RESOURCE_PATH, DEFAULT_RESOURCE].join('/');
+      return $q(function(resolve) {
+        if (_.isEmpty(flatResources) || sync) {
+          $http.get(url)
+            .success(function(response) {
+              flatResources = response;
+              nestedResources = nestResources(flatResources);
+              resolve(nestedResources);
             });
-          deferred.resolve(resources);
-        });
-
-      // resources.updatedAt = Date.now();
-      return deferred.promise;
+        } else {
+          resolve(nestedResources);
+        }
+      });
     }
 
-    function createResource(resource, data) {
-      console.log('ResourceService::createResource');
+    function createResource(resource) {
+      var url = [RESOURCE_PATH, resource.type].join('/');
+      return $q(function(resolve) {
 
-      var url = [RESOURCE_PATH, resource].join('/');
+        delete resource.type;
+        resource.author_id = $rootScope.auth.id;
 
-      return $http.post(url, data)
-        .success(createResourceSuccess)
-        .error(createResourceFailure);
+        $http.post(url, resource)
+          .success(function(response) {
 
-      function createResourceSuccess(response) {
-        // _.merge(resources, response);
-        // angular.extend(resources, response);
-        resources[resource + 's'].push(response[resource + 's'][0]); // TODO
-        return response;
-      }
+            _.each(response, function(d, i) {
+              flatResources[i].push(d[0]);
+            });
 
-      function createResourceFailure(error) {
-        return error;
-      }
+            nestedResources = nestResources(flatResources);
+            resolve(nestedResources);
+          });
+      });
     }
 
-    function updateResource(resource, resourceObject) {
-      return $http.patch([RESOURCE_PATH, resource, resourceObject.id].join('/'), resourceObject)
-        .success(function(response) {
-          _.merge(resources, response.data);
-        })
-        .error(function(error) {
-          return error;
-        });
+    function updateResource(resource) {
+      var url = [RESOURCE_PATH, resource.type, resource.id].join('/');
+      return $q(function(resolve) {
+
+        delete resource.type;
+        resource.author_id = $rootScope.auth.id;
+
+        $http.patch(url, resource)
+          .success(function(response) {
+
+            _.each(response, function(d, i) {
+              flatResources[i].splice(_.findIndex(flatResources[i], {
+                id: d[0].id
+              }), 1, d[0]);
+            });
+
+            nestedResources = nestResources(flatResources);
+            resolve(nestedResources);
+          });
+      });
     }
 
-    function destroyResource(resource, id) {
-      var url = [RESOURCE_PATH, resource, id].join('/');
-      return $http.delete(url)
-        .success(function destroyResourceSuccess(response) {
-          resource = resource + 's'; // TODO
-          // remove resource from view model array
-          resources[resource].splice(_.findIndex(resources[resource], {
-            id: id
-          }), 1);
-          return response;
-        })
-        .error(function destroyResourceFailure(error) {
-          return error;
-        });
+    function destroyResource(resource) {
+      var url = [RESOURCE_PATH, resource.type, resource.id].join('/');
+      return $q(function(resolve) {
+        $http.delete(url)
+          .success(function(response) {
+
+            var resource = flatResources[response[0]];
+            resource.splice(_.findIndex(resource, response[1]), 1);
+
+            nestedResources = nestResources(flatResources);
+            resolve(nestedResources);
+          });
+      });
     }
-
-
 
   }
 }());
