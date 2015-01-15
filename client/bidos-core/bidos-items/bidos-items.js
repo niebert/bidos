@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-items/bidos-items.table.html'
+      templateUrl: 'bidos-core/bidos-items/bidos-items.table.html'
     };
 
     function controllerFn(ResourceService, $mdDialog) {
@@ -63,7 +63,7 @@
               item: item // the item the user clicked on
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-items/bidos-items.dialog.html'
+            templateUrl: 'bidos-core/bidos-items/bidos-items.dialog.html'
           })
           .then(function(response) {
             console.log('dialog succeeded', response);

@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-profile/bidos-profile.html'
+      templateUrl: 'bidos-core/bidos-profile/bidos-profile.html'
     };
 
     function controllerFn($rootScope, $mdDialog) {
@@ -31,7 +31,7 @@
               user: vm.auth
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-profile/bidos-profile.dialog.html',
+            templateUrl: 'bidos-core/bidos-profile/bidos-profile.dialog.html',
           })
           .then(function() {
             // success

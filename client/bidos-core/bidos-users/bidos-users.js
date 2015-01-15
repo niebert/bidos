@@ -12,7 +12,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-users/bidos-users.table.html'
+      templateUrl: 'bidos-core/bidos-users/bidos-users.table.html'
     };
 
     function controllerFn(ResourceService, $mdDialog) {
@@ -43,7 +43,7 @@
               data: vm.data
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-users/bidos-users.dialog.html'
+            templateUrl: 'bidos-core/bidos-users/bidos-users.dialog.html'
           })
           .then(function(response) {
             console.log(response);

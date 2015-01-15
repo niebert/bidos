@@ -11,6 +11,7 @@
     "columnify": "^1.3.2",
     "dgeni": "^0.4.1",
     "diacritics": "^1.2.1",
+    "gulp-shell": "^0.2.11",
     "koa": "^0.14.0",
     "koa-bodyparser": "^1.3.0",
     "koa-compress": "^1.0.8",
@@ -47,7 +48,8 @@
     "vinyl-transform": "^1.0.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --harmony test/apiSpec.js -u bdd -R spec --reporter=list -w"
+    "test": "./node_modules/mocha/bin/mocha --harmony test/apiSpec.js -u bdd -R spec --reporter=list -w",
+		"lg": "DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp"
   },
   "author": "René Wilhelm <rene.wilhelm@gmail.com>",
   "license": "ISC"

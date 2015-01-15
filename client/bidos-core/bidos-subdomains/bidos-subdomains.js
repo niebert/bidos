@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-subdomains/bidos-subdomains.html'
+      templateUrl: 'bidos-core/bidos-subdomains/bidos-subdomains.html'
     };
 
     function controllerFn(ResourceService, $mdDialog) {
@@ -36,7 +36,7 @@
               data: vm.data
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-subdomains/bidos-subdomains.dialog.html'
+            templateUrl: 'bidos-core/bidos-subdomains/bidos-subdomains.dialog.html'
           })
           .then(function() {
             // success

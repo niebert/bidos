@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-capture/bidos-capture.html'
+      templateUrl: 'bidos-core/bidos-capture/bidos-capture.html'
     };
 
     function controllerFn($state, CaptureService) {

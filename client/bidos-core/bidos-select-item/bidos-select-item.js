@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controller,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-select-item/bidos-select-item.html'
+      templateUrl: 'bidos-core/bidos-select-item/bidos-select-item.html'
     };
 
     function controller($state, ResourceService, CaptureService) {

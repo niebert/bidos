@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-dashboard/bidos-dashboard.html'
+      templateUrl: 'bidos-core/bidos-dashboard/bidos-dashboard.html'
     };
 
     function controllerFn($rootScope, ResourceService, UserFactory, $state) {

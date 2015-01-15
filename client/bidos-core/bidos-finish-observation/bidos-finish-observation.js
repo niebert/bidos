@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controller,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-finish-observation/bidos-finish-observation.html'
+      templateUrl: 'bidos-core/bidos-finish-observation/bidos-finish-observation.html'
     };
 
     function controller($state, $mdDialog, ResourceService, CaptureService) {
@@ -46,7 +46,7 @@
               type: type
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-finish-observation/bidos-finish-observation.dialog.html'
+            templateUrl: 'bidos-core/bidos-finish-observation/bidos-finish-observation.dialog.html'
           })
           .then(function(response) {
             console.log('dialog succeeded', response);

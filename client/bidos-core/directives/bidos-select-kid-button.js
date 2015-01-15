@@ -15,7 +15,7 @@
       transclude: true,
       restrict: 'E',
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/directives/bidos-select-kid-button.html'
+      templateUrl: 'bidos-core/directives/bidos-select-kid-button.html'
     };
 
     function controller() {

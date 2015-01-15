@@ -15,7 +15,7 @@
       bindToController: true,
       controller: controller,
       controllerAs: 'vm',
-      templateUrl: '/bidos-core/bidos-select-kid/bidos-select-kid.html'
+      templateUrl: 'bidos-core/bidos-select-kid/bidos-select-kid.html'
     };
 
     function controller(ResourceService, $mdDialog, $rootScope, $state, CaptureService) {
@@ -51,7 +51,7 @@
               data: vm.data
             },
             targetEvent: ev,
-            templateUrl: '/bidos-core/bidos-kids/bidos-selectKid.dialog.html'
+            templateUrl: 'bidos-core/bidos-kids/bidos-selectKid.dialog.html'
           })
           .then(function() {
             // success
