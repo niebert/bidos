@@ -6,7 +6,7 @@
   angular.module('bidos')
     .service('CaptureService', CaptureService);
 
-  function CaptureService($rootScope, ResourceService, $q) {
+  function CaptureService($rootScope, ResourceService, $q, $state) {
 
     var observation = {};
 
@@ -94,6 +94,7 @@
       ResourceService.create(obs)
         .then(function(response) {
           console.log(response);
+          $state.go('auth.capture');
         });
     }
 
