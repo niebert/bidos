@@ -79,6 +79,10 @@
             values: values
           });
 
+        _.each(result.rows, function(r) {
+          r.type = 'users';
+        });
+
         this.body = {
           users: result.rows
         };
@@ -148,6 +152,10 @@
 
       var result =
         yield this.pg.db.client.query_(query);
+
+      _.each(result.rows, function(r) {
+        r.type = 'users';
+      });
 
       this.body = {
         users: result.rows

@@ -1,7 +1,7 @@
 -- DROP SCHEMA public CASCADE;
 -- CREATE SCHEMA public;
 
--- D S I B :: E O F :: K U :: G
+-- D S I B :: E O F :: K U :: G I
 
 
 CREATE TABLE IF NOT EXISTS institutions (
@@ -29,12 +29,12 @@ CREATE TABLE IF NOT EXISTS users (
   modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name          TEXT UNIQUE NOT NULL,
   role          INT NOT NULL,
+  text          TEXT,
   enabled       BOOLEAN DEFAULT FALSE,
   email         TEXT UNIQUE NOT NULL,
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT
 );
-
 
 ALTER TABLE groups ADD COLUMN author_id INT REFERENCES users(id);
 ALTER TABLE institutions ADD COLUMN author_id INT REFERENCES users(id);

@@ -63,6 +63,10 @@
             values: values
           });
 
+        _.each(result.rows, function(r) {
+          r.type = 'kids';
+        });
+
         this.body = {
           observations: result.rows
         };

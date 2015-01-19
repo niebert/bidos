@@ -69,6 +69,10 @@
             values: values
           });
 
+        _.each(result.rows, function(r) {
+          r.type = 'examples';
+        });
+
         this.body = {
           examples: result.rows
         };

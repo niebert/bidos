@@ -59,6 +59,10 @@
             values: values
           });
 
+        _.each(result.rows, function(r) {
+          r.type = 'behaviours';
+        });
+
         this.body = {
           behaviours: result.rows
         };
@@ -108,6 +112,10 @@
 
       var result =
         yield this.pg.db.client.query_(query);
+
+      _.each(result.rows, function(r) {
+        r.type = 'behaviours';
+      });
 
       this.body = {
         behaviours: result.rows
