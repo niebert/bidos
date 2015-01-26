@@ -21,7 +21,10 @@
       countKids: countKids,
       groupName: groupName,
       subdomainTitle: subdomainTitle,
+      institutionName: institutionName,
       domainTitle: domainTitle,
+      group: group,
+      institution: institution
     };
 
     function countKids(groupId) {
@@ -38,6 +41,32 @@
       });
       if (groups.length) {
         return groups[0].name;
+      }
+    }
+
+    function institutionName(institutionId) {
+      var institutions = _.select(resources.institutions, {
+        id: +institutionId
+      });
+      if (institutions.length) {
+        return institutions[0].name;
+      }
+    }
+
+    function group(resource) {
+      var groups = _.select(resources.groups, {
+        id: +resource.group_id
+      });
+      if (groups.length) {
+        return groups[0];
+      }
+    }
+
+    function institution(resource) {
+      var institutionId = resource.institution_id || this.group(resource);
+
+      if (institutionId) {
+        return this.institutionName(institutionId);
       }
     }
 

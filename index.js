@@ -38,7 +38,7 @@
   // serve static dirs
   app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
   app.use(mount('/build', serve(path.join(__dirname, 'build'))));
-  app.use(mount('/', serve(path.join(__dirname, 'client')))); // FIXME: .html only
+  app.use(mount('/', serve(path.join(__dirname, 'client')))); // TODO: .html only
 
   // fancy console output
   console.log('\n' + chalk.cyan('>> public routes'));
@@ -74,7 +74,7 @@
 	// are reached. if it fails, it throws and the previous middleware will catch
 	// that error and send back status 401 and redirect to /login.
 
-  // app.use(jwt({ secret: config.secret.key })); // <-- decrypts
+  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
   // fancy console output
   console.log('\n' + chalk.cyan('>> private routes'));

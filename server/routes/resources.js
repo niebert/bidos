@@ -7,7 +7,6 @@
   var _ = require('lodash');
 
   module.exports = exports = new Router()
-    .get('getNestedResources', '/', getNestedResources)
     .get('getVanillaResources', '/vanilla', getVanillaResources);
 
   function *getVanillaResources() {
@@ -90,30 +89,11 @@
 
     _.each(resources, function(resource,i) {
       _.each(resource, function(r) {
-        r.type = i;
+        r.type = i.slice(0, -1); // singular
       });
     });
 
     this.body = resources;
-
-    console.log('  >>>     delivering flat resources');
-  }
-
-  function *getNestedResources() {
-    var kids = yield this.pg.db.client.query_({
-      name: 'getNestedKidResources',
-      text: 'SELECT * from kid_resources;'
-    });
-
-    var items = yield this.pg.db.client.query_({
-      name: 'getNestedItemResources',
-      text: 'SELECT * from item_resources;'
-    });
-
-    this.body = {
-      domains: items.rows[0].domains,
-      groups: kids.rows[0].groups
-    };
   }
 
 }());

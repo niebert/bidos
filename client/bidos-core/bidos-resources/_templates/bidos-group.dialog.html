@@ -24,6 +24,11 @@
 					<textarea type="text" id="name" name="name" ng-model="vm.group.text"></textarea>
 				</md-input-container>
 
+				<md-input-container>
+					<span>Institution</span>
+					<select ng-model="vm.group.institution_id" ng-options="institution.id as institution.name for institution in vm.parent.institutions" required> </select>
+				</md-input-container>
+
 			</md-content>
 		</form>
 	</md-content>
@@ -40,7 +45,7 @@
 			Abbrechen
 		</md-button>
 
-		<md-button ng-click="vm.save(vm.group)" class="md-raised md-primary md-button" ng-disabled="!vm.group.name">
+		<md-button ng-click="vm.save(vm.group)" class="md-raised md-primary md-button" ng-disabled="!vm.group.name || !vm.group.institution_id">
 			Speichern
 		</md-button>
 	</div>

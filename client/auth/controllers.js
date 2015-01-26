@@ -28,12 +28,12 @@
       roles: roles
     });
 
-    $http.get('v1/institutions')
+    $http.get('v1/institution')
       .success(function(response) {
         angular.extend(vm, response);
       });
 
-    $http.get('v1/groups')
+    $http.get('v1/group')
       .success(function(response) {
         vm.groups = response.data;
       });

@@ -29,11 +29,11 @@
 
 
     .state('auth.select', {
-      url: '/select/:resource',
+      url: '/select/:type',
       views: {
         main: {
           template: function(stateParams) {
-            return '<bidos-select resource="' + stateParams.resource + '"></bidos-select>';
+            return '<bidos-select resource="' + stateParams.type + '"></bidos-select>';
           }
         }
       }
@@ -62,11 +62,11 @@
 
 
     .state('auth.resources', {
-      url: '/resource/:resource',
+      url: '/resource/:type',
       views: {
         main: {
           template: function(stateParams) {
-            return '<bidos-resources resource="' + stateParams.resource + '"></bidos-resources>';
+            return '<bidos-resources type="' + stateParams.type + '"></bidos-resources>';
           }
         }
       }

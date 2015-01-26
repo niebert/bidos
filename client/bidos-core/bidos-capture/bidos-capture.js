@@ -29,7 +29,7 @@
 
       function selectKid() {
         $state.go('auth.select', {
-          resource: 'kids'
+          type: 'kid'
         });
       }
 
@@ -39,7 +39,7 @@
         }
 
         $state.go('auth.select', {
-          resource: 'domains'
+          type: 'domain'
         });
       }
 
@@ -49,7 +49,7 @@
         }
 
         $state.go('auth.select', {
-          resource: 'behaviours'
+          type: 'behaviour'
         });
       }
     }

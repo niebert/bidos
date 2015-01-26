@@ -9,6 +9,7 @@
     'ngMessages',
     'ngStorage',
     'ui.router',
+    'angularCharts',
     // 'ngCordova',
     // 'LocalForageModule'
     // 'pouchdb'

@@ -17,40 +17,51 @@
     };
 
     function selectResource(resource) {
-      var type = resource.type.slice(0, -1);
-
+      var type = resource.type;
+      observation[type] = resource;
+      console.log(type);
       switch (type) {
+        case 'kid':
+          $state.go('auth.capture');
+          break;
         case 'domain':
-          delete observation.domain;
-          delete observation.subdomain;
-          delete observation.item;
-          delete observation.behaviour;
-          delete observation.help;
+          $state.go('auth.select', {
+            type: 'subdomain'
+          });
           break;
         case 'subdomain':
-          delete observation.item;
-          delete observation.behaviour;
-          delete observation.help;
+          $state.go('auth.select', {
+            type: 'item'
+          });
           break;
         case 'item':
-          delete observation.behaviour;
-          delete observation.help;
+          $state.go('auth.select', {
+            type: 'behaviour'
+          });
+          break;
+        case 'behaviour':
+          if (resource.niveau === 0 || resource.niveau === 4) {
+            $state.go('auth.finish-observation');
+          } else {
+            $state.go('auth.select', {
+              type: 'help'
+            });
+          }
           break;
         case 'help':
+          $state.go('auth.finish-observation');
           break;
-      }
-
-      switch (type) {
         case 'example':
         case 'idea':
+          // push into array, create if neccessary
           (observation[type] = observation[type] || [])
           .push(resource);
           break;
         default:
-          observation[type] = resource;
+          $state.go('auth.capture');
       }
 
-      console.log(observation);
+      console.info(observation);
     }
 
     function getObservation() {
@@ -62,16 +73,20 @@
     function completeObservation() {
 
       var obs = {
-        type: 'observations',
-        behaviour_id: observation.behaviour.id,
-        help: observation.help.value,
+        type: 'observation',
+        item_id: observation.item.id,
         kid_id: observation.kid.id,
-        user_id: $rootScope.auth.id
+        user_id: $rootScope.auth.id,
+        niveau: observation.behaviour.niveau
       };
 
-      _.each(observation.example, function(example) { // singular here TODO
+      if (observation.help && observation.help.value) {
+        obs.help = observation.help.value;
+      }
+
+      _.each(observation.example, function(example) {
         ResourceService.create({
-            type: 'examples', // plural here TODO
+            type: 'example',
             text: example.text,
             behaviour_id: observation.behaviour.id
           })
@@ -80,9 +95,9 @@
           });
       });
 
-      _.each(observation.idea, function(idea) { // singular here TODO
+      _.each(observation.idea, function(idea) {
         ResourceService.create({
-            type: 'ideas', // plural here TODO
+            type: 'idea',
             text: idea.text,
             behaviour_id: observation.behaviour.id
           })
@@ -95,6 +110,7 @@
         .then(function(response) {
           console.log(response);
           $state.go('auth.capture');
+          observation = {};
         });
     }
 

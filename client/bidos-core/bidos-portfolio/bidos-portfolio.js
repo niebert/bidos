@@ -24,6 +24,71 @@
         isSelected: isSelected
       });
 
+      vm.chartConfig = {
+        labels: false,
+        title: "Products",
+        legend: {
+          display: true,
+          position: 'left'
+        },
+        innerRadius: 0
+      };
+
+      function singleKidChartData(kid) {
+
+        if (!kid) {
+          var kid = _.select(vm.kids, {
+            id: 1
+          })[0];
+        }
+
+        /* observations grouped by niveau */
+        var observations = _.groupBy(vm.observations, 'niveau');
+
+        var observations = _.groupBy(vm.observations, function(observation) {
+          return observation.niveau;
+        });
+
+        debugger
+
+        return {
+          series: _.map(vm.domains, 'name'),
+          data: _.map(vm.observations, function(observation) {
+
+          })
+        };
+
+      }
+
+      function getChartData() {
+        vm.chartData = {
+          series: _.map(vm.institutions, 'name'),
+          data: _.map(vm.observations, function(observation) {
+            var group = _.filter(vm.groups, {
+              id: observation.kid.group_id
+            })[0];
+            return {
+              x: _.filter(vm.institutions, {
+                id: group.institution_id
+              })[0].name,
+              y: [observation.niveau]
+            };
+          })
+        };
+        // vm.chartData = {
+        //   series: _.map(vm.domains, 'name'),
+        //   data: _.map(vm.observations, function(observation) {
+        //     var group = _.filter(vm.groups, {id: observation.kid.group_id})[0];
+        //     return {
+        //       x: _.filter(vm.institutions, {id: group.institution_id})[0].name,
+        //       y: [observation.niveau]
+        //     };
+        //   })
+        // };
+      }
+
+      vm.chartType = 'bar';
+
       function isSelected(resource) {
         return _.contains(vm.selection, resource);
       }
@@ -44,6 +109,8 @@
       ResourceService.get()
         .then(function(data) {
           updateViewModel(data);
+          singleKidChartData();
+          getChartData();
         });
 
       function dialog(ev) {

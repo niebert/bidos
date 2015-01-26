@@ -20,18 +20,9 @@
 		</md-whiteframe>
 	</div>
 
-
 	<div flex layout="column">
-		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
-			<span class="bold"> Institution auswerten </span>
-		</md-whiteframe>
-
-		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
-			<span class="bold"> Gruppen auswerten </span>
-		</md-whiteframe>
-
-		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select('less')">
-			<span class="bold"> Kinder auswerten </span>
+		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card">
+			<div ac-chart="vm.chartType" ac-data="vm.chartData" ac-config="vm.chartConfig" id='chart' class='chart'></div>
 		</md-whiteframe>
 	</div>
 

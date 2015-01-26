@@ -11,24 +11,24 @@
 
 	<div layout="row">
 		<div layout="column" layout-fill>
-			<md-whiteframe flex ng-show="vm.observation.domain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'domains'})">
+			<md-whiteframe flex ng-show="vm.observation.domain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'domain'})">
 				<span> {{ vm.observation.domain.name }} </span>
 			</md-whiteframe>
-			<md-whiteframe flex ng-show="vm.observation.subdomain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'subdomains'})">
+			<md-whiteframe flex ng-show="vm.observation.subdomain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'subdomain'})">
 				<span> {{ vm.observation.subdomain.name }} </span>
 			</md-whiteframe>
-			<md-whiteframe flex ng-show="vm.observation.item" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'items'})">
+			<md-whiteframe flex ng-show="vm.observation.item" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'item'})">
 				<span> {{ vm.observation.item.name }} </span>
 			</md-whiteframe>
 		</div>
 		<div layout="column" layout-fill>
-			<md-whiteframe flex ng-show="vm.observation.kid" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'kids'})">
+			<md-whiteframe flex ng-show="vm.observation.kid" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'kid'})">
 				<span> {{ vm.observation.kid.name }} </span>
 			</md-whiteframe>
-			<md-whiteframe flex ng-show="vm.observation.behaviour" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'behaviours'})">
+			<md-whiteframe flex ng-show="vm.observation.behaviour" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'behaviour'})">
 				<span> {{ vm.observation.behaviour.text }} ({{ vm.observation.behaviour.niveau }}) </span>
 			</md-whiteframe>
-			<md-whiteframe flex ng-show="vm.observation.help" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({resource: 'helps'})">
+			<md-whiteframe flex ng-show="vm.observation.help" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'help'})">
 				<span> {{ vm.observation.help!==undefined && vm.help ? 'Mit Hilfe' : 'Ohne Hilfe' }} </span>
 			</md-whiteframe>
 		</div>

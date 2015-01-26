@@ -5,53 +5,55 @@
 
 
 CREATE TABLE IF NOT EXISTS institutions (
-  id            SERIAL PRIMARY KEY,
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT UNIQUE NOT NULL,
-  text          TEXT
+  id                SERIAL PRIMARY KEY,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT UNIQUE NOT NULL,
+  text              TEXT
 );
 
 CREATE TABLE IF NOT EXISTS groups (
-  id               SERIAL PRIMARY KEY,
-  created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name             TEXT UNIQUE NOT NULL,
-  text             TEXT,
-  institution_id   INT REFERENCES institutions(id)
+  id                SERIAL PRIMARY KEY,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT UNIQUE NOT NULL,
+  text              TEXT,
+  institution_id    INT REFERENCES institutions(id)
 );
 
 CREATE TABLE IF NOT EXISTS users (
-  id            SERIAL PRIMARY KEY,
-  institution_id INT REFERENCES institutions(id),
-  group_id      INT REFERENCES groups(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT UNIQUE NOT NULL,
-  role          INT NOT NULL,
-  text          TEXT,
-  enabled       BOOLEAN DEFAULT FALSE,
-  email         TEXT UNIQUE NOT NULL,
-  username      TEXT UNIQUE NOT NULL,
-  password_hash TEXT
+  id                SERIAL PRIMARY KEY,
+  institution_id    INT REFERENCES institutions(id),
+  group_id          INT REFERENCES groups(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT UNIQUE NOT NULL,
+  role              INT NOT NULL,
+  text              TEXT,
+  enabled           BOOLEAN DEFAULT FALSE,
+  email             TEXT UNIQUE NOT NULL,
+  username          TEXT UNIQUE NOT NULL,
+  job               TEXT,
+  password_hash     TEXT
 );
 
 ALTER TABLE groups ADD COLUMN author_id INT REFERENCES users(id);
 ALTER TABLE institutions ADD COLUMN author_id INT REFERENCES users(id);
+ALTER TABLE users ADD COLUMN author_id INT REFERENCES users(id);
 
 CREATE TABLE IF NOT EXISTS kids (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT UNIQUE NOT NULL,
-  text          TEXT,
-  group_id      INT REFERENCES groups(id),
-  enabled       BOOLEAN DEFAULT TRUE,
-  bday          DATE,
-  sex           INT,
-  religion      INT,
-  hands         INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT UNIQUE NOT NULL,
+  text              TEXT,
+  group_id          INT REFERENCES groups(id),
+  enabled           BOOLEAN DEFAULT TRUE,
+  bday              DATE,
+  sex               INT,
+  religion          INT,
+  hands             INT
 );
 
 
@@ -59,93 +61,94 @@ CREATE TABLE IF NOT EXISTS kids (
 
 
 CREATE TABLE IF NOT EXISTS domains (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT UNIQUE NOT NULL,
-  text          TEXT,
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT UNIQUE NOT NULL,
+  text              TEXT,
+  sort              INT
 );
 
 
 CREATE TABLE IF NOT EXISTS subdomains (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT NOT NULL,
-  text          TEXT,
-  domain_id     INT REFERENCES domains(id) NOT NULL,
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT NOT NULL,
+  text              TEXT,
+  domain_id         INT REFERENCES domains(id) NOT NULL,
+  sort              INT
 );
 
 
 CREATE TABLE IF NOT EXISTS items (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT NOT NULL,
-  text          TEXT,
-  subdomain_id  INT REFERENCES subdomains(id) NOT NULL,
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT NOT NULL,
+  text              TEXT,
+  subdomain_id      INT REFERENCES subdomains(id) NOT NULL,
+  sort              INT
 );
 
 
 CREATE TABLE IF NOT EXISTS behaviours (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT,
-  text          TEXT NOT NULL,
-  item_id       INT REFERENCES items(id) NOT NULL,
-  niveau        INT NOT NULL, -- 0=notyet, 1, 2, 3, 4=advanced
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT,
+  text              TEXT NOT NULL,
+  item_id           INT REFERENCES items(id) NOT NULL,
+  niveau            INT NOT NULL, -- 0=notyet, 1, 2, 3, 4=advanced
+  sort              INT
 );
 
 
 
 CREATE TABLE IF NOT EXISTS examples (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT,
-  text          TEXT,
-  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
-  observation_id  INT REFERENCES behaviours(id),
-  enabled       BOOLEAN DEFAULT FALSE,
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT,
+  text              TEXT,
+  behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
+  observation_id    INT REFERENCES behaviours(id),
+  enabled           BOOLEAN DEFAULT FALSE,
+  sort              INT
 );
 
 
 CREATE TABLE IF NOT EXISTS ideas (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT,
-  text          TEXT,
-  behaviour_id  INT REFERENCES behaviours(id) NOT NULL,
-  observation_id  INT REFERENCES behaviours(id),
-  enabled       BOOLEAN DEFAULT FALSE,
-  sort          INT
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT,
+  text              TEXT,
+  behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
+  observation_id    INT REFERENCES behaviours(id),
+  enabled           BOOLEAN DEFAULT FALSE,
+  sort              INT
 );
 
 
 CREATE TABLE IF NOT EXISTS observations (
-  id            SERIAL PRIMARY KEY,
-  author_id     INT REFERENCES users(id),
-  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name          TEXT,
-  text          TEXT,
-  help          BOOLEAN,
-  behaviour_id  INT REFERENCES behaviours(id),
-  user_id       INT REFERENCES users(id),
-  kid_id        INT REFERENCES kids(id)
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name              TEXT,
+  text              TEXT,
+  help              BOOLEAN,
+  niveau            INT,
+  item_id           INT REFERENCES items(id),
+  user_id           INT REFERENCES users(id),
+  kid_id            INT REFERENCES kids(id)
 );
 
 
@@ -301,15 +304,22 @@ update_modified_column();
 
 
 
-INSERT INTO groups (name) VALUES ('Lustige Löwen');
-INSERT INTO groups (name) VALUES ('Bescheidene Bären');
-INSERT INTO groups (name) VALUES ('Schlaue Schafe');
-INSERT INTO groups (name) VALUES ('Fliegende Fische');
-
+INSERT INTO institutions (name) VALUES ('Kindertagesstätte Villa Unibunt');
 INSERT INTO institutions (name) VALUES ('Hort an der Grundschule Süd');
 INSERT INTO institutions (name) VALUES ('Integrative Kindertagesstätte Lebenshilfe');
 INSERT INTO institutions (name) VALUES ('Katholische Kindertagesstätte St. Maria');
-INSERT INTO institutions (name) VALUES ('Kindertagesstätte Villa Unibunt');
+INSERT INTO institutions (name) VALUES ('Katholische Kindertagesstätte Godramstein');
+
+INSERT INTO groups (institution_id, name) VALUES ('1', 'Lustige Löwen');
+INSERT INTO groups (institution_id, name) VALUES ('1', 'Bescheidene Bären');
+INSERT INTO groups (institution_id, name) VALUES ('2', 'Schlaue Schafe');
+INSERT INTO groups (institution_id, name) VALUES ('2', 'Fliegende Fische');
+INSERT INTO groups (institution_id, name) VALUES ('3', 'Gut Holz');
+INSERT INTO groups (institution_id, name) VALUES ('3', 'Waidmanns Heil');
+INSERT INTO groups (institution_id, name) VALUES ('4', 'Flora und Faune');
+INSERT INTO groups (institution_id, name) VALUES ('4', 'Schief und Krumm');
+INSERT INTO groups (institution_id, name) VALUES ('5', 'Kain und Abel');
+INSERT INTO groups (institution_id, name) VALUES ('5', 'Herz und Niere');
 
 
 /* A PERSONALE KOMPETENZEN */

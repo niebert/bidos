@@ -168,14 +168,14 @@
   });
 
 
-  app.filter('role', function() {
-    return function(role) {
-      switch (role) {
-        case 1:
+  app.filter('role', function(STRINGS) {
+    return function(resource) {
+      switch (resource.role) {
+        case 0:
           return 'Administrator';
-        case 2:
+        case 1:
           return 'Praktiker';
-        case 3:
+        case 2:
           return 'Wissenschaftler';
         default:
           return 'keine';
@@ -235,6 +235,12 @@
       if (arguments.length && arguments[0] !== null && arguments[0].hasOwnProperty('item_id')) {
         return ResourceHelper.domainTitle(resource.item_id);
       }
+    };
+  });
+
+  app.filter('institution', function(ResourceHelper) {
+    return function(resource) {
+      return ResourceHelper.institution(resource);
     };
   });
 

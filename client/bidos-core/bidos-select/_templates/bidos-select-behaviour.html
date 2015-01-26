@@ -1,0 +1,57 @@
+<md-content class="big" layout="column">
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="auth.capture">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<h2 flex> Verhalten auswählen </h2>
+		</span>
+	</md-toolbar>
+
+
+	<div layout="row">
+		<div layout="column" layout-fill>
+			<md-whiteframe flex ng-show="vm.observation.domain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'domain'})">
+				<span> {{ vm.observation.domain.name }} </span>
+			</md-whiteframe>
+			<md-whiteframe flex ng-show="vm.observation.subdomain" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'subdomain'})">
+				<span> {{ vm.observation.subdomain.name }} </span>
+			</md-whiteframe>
+			<md-whiteframe flex ng-show="vm.observation.item" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'item'})">
+				<span> {{ vm.observation.item.name }} </span>
+			</md-whiteframe>
+		</div>
+		<div layout="column" layout-fill>
+			<md-whiteframe flex ng-show="vm.observation.kid" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'kid'})">
+				<span> {{ vm.observation.kid.name }} </span>
+			</md-whiteframe>
+			<md-whiteframe flex ng-show="vm.observation.behaviour" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'behaviour'})">
+				<span> {{ vm.observation.behaviour.text }} ({{ vm.observation.behaviour.niveau }}) </span>
+			</md-whiteframe>
+			<md-whiteframe flex ng-show="vm.observation.help" class="status-card md-whiteframe-z1" layout layout-align="center center" ui-sref="auth.select({type: 'help'})">
+				<span> {{ vm.observation.help!==undefined && vm.help ? 'Mit Hilfe' : 'Ohne Hilfe' }} </span>
+			</md-whiteframe>
+		</div>
+	</div>
+
+	<div flex layout="column">
+
+		<md-whiteframe flex layout="row" layout-align="space-around center" class="md-whiteframe-z1 button-card" ng-repeat="behaviour in vm.observation.item.behaviours" ng-click="vm.select(behaviour)">
+			<span flex="5" class="behaviour">{{ behaviour.niveau }}</span>
+			<span flex class="behaviour">{{ behaviour.text }}</span>
+			<span flex class="example">z. B. {{ behaviour.examples[0].text; }}</span>
+		</md-whiteframe>
+
+		<div flex layout="row" layout-align="space-around center">
+
+			<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select({type:'behaviours', niveau: 0})">
+				<span class="bold">weniger weit entwickelt</span>
+			</md-whiteframe>
+			<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card" ng-click="vm.select({type:'behaviours', niveau: 4})">
+				<span class="bold">weiter entwickelt</span>
+			</md-whiteframe>
+
+		</div>
+	</div>
+
+</md-content>

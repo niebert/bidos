@@ -1,0 +1,49 @@
+<md-content>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="auth.home">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<h2 flex>Bausteine</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'item'})">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-toolbar class="search-bar padded">
+		<span class="md-toolbar-tools">
+			<md-input-container flex>
+			  <label>Suche</label>
+			  <input type="text" ng-model="query">
+			</md-input-container>
+		</span>
+	</md-toolbar>
+
+	<table>
+		<thead>
+			<th ng-click="vm.sortOrder='id'; reverse=!reverse">ID</th>
+			<th ng-click="vm.sortOrder='name'; reverse=!reverse">Titel</th>
+			<th ng-click="vm.sortOrder='subdomain'; reverse=!reverse">Teilbereich</th>
+			<th ng-click="vm.sortOrder='domain'; reverse=!reverse">Bereich</th>
+			<th ng-click="vm.sortOrder='behaviours.length'; reverse=!reverse">Verhalten</th>
+			<th ng-click="vm.sortOrder='observations.length'; reverse=!reverse">Beobachtungen</th>
+			<th ng-click="vm.sortOrder='examples.length'; reverse=!reverse">Beispiele</th>
+			<th ng-click="vm.sortOrder='ideas.length'; reverse=!reverse">Ideen</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in vm.items | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, item)">
+				<td> {{ item.id }} </td>
+				<td> {{ item.name }} </td>
+				<td> {{ item.subdomain.name }} </td>
+				<td> {{ item.domain.name }} </td>
+				<td> {{ item.behaviours.length }} </td>
+				<td> {{ item.observations.length }} </td>
+				<td> {{ item.examples.length }} </td>
+				<td> {{ item.ideas.length }} </td>
+			</tr>
+		</tbody>
+	</table>
+</md-content>

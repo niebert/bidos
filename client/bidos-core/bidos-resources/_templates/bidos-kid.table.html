@@ -1,0 +1,49 @@
+<md-content>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="auth.home">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<h2 flex>Kinder</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<md-button ng-click="vm.createRandomKid()">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/social/svg/production/ic_plus_one_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-toolbar class="search-bar padded">
+		<span class="md-toolbar-tools">
+			<md-input-container flex>
+			  <label>Suche</label>
+			  <input type="text" ng-model="query">
+			</md-input-container>
+		</span>
+	</md-toolbar>
+
+	<table>
+		<thead>
+			<th ng-click="vm.sortOrder='id'; reverse=!reverse">ID</th>
+			<th ng-click="vm.sortOrder='name'; reverse=!reverse">Name</th>
+			<th ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtstag</th>
+			<th ng-click="vm.sortOrder='sex'; reverse=!reverse">Geschlecht</th>
+			<th ng-click="vm.sortOrder='group_id'; reverse=!reverse">Gruppe</th>
+			<th ng-click="vm.sortOrder='created_at'; reverse=!reverse">erstellt</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="kid in vm.kids | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
+				<td> {{ kid.id }} </td>
+				<td> {{ kid.name }} </td>
+				<td> {{ kid.bday | date }} </td>
+				<td> {{ kid | sex }} </td>
+				<td> {{ kid | group }} </td>
+				<td> {{ kid.created_at | date }} </td>
+			</tr>
+		</tbody>
+	</table>
+
+</md-content>

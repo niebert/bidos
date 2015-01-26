@@ -6,16 +6,16 @@
   angular.module('bidos')
     .service('ResourceService', ResourceService);
 
-  function ResourceService($rootScope, $http, $q) {
+  function ResourceService($rootScope, $mdToast, $http, $q) {
 
     /* Basic CRUD operations w/ HTTP calls to the back end. */
 
     /* TODO: The back end should authenticate the user, check for it's group
     /* and respond with the correct resource object the user is allowed to
-    /* get. */
+    /* get, and not more. */
 
-    var flatResources = {};
-    var nestedResources = {};
+    var data = {}; // server response
+    var resources = {}; // nested resources
     var RESOURCE_PATH = 'v1';
     var DEFAULT_RESOURCE = 'resources/vanilla';
 
@@ -26,198 +26,156 @@
       destroy: destroyResource,
     };
 
-    function nestResources() {
-      var nestedResources = {};
+    function prepareResources() {
+      /* Programatically add getter methods to resource objects. We traverse
+      /* all resources and look for blabla_id, which refers to the parent id.
+      /* On the parent we create the getter blablas() then. */
 
-      nestedResources.institutions = flatResources.institutions;
-      nestedResources.users = flatResources.users;
-      nestedResources.domains = flatResources.domains;
-
-      // domains -> subdomains
-      _.each(nestedResources.domains, function(domain) {
-        domain.subdomains = _.select(flatResources.subdomains, {
-          domain_id: domain.id
+      // nestResource('institutions', 'groups');
+      function nestResource(a, b) {
+        resources[a] = _.clone(data[a]);
+        _.each(resources[a], function(resource) {
+          var parentKey = resource.type + '_id';
+          if (!resource.hasOwnProperty(b)) {
+            Object.defineProperty(resource, b, {
+              get: function() {
+                return _.filter(data[b], function(d) {
+                  return d[parentKey] === this.id;
+                }, this);
+              }
+            });
+          }
         });
+      }
+
+      /* TODO: The following two parts work fine but could be refactored to be
+      /* a little bit more maintainable. */
+
+      resources.kids = _.clone(data.kids);
+      resources.users = _.clone(data.users);
 
 
-        // subdomains -> items
-        _.each(domain.subdomains, function(subdomain) {
-          subdomain.items = _.select(flatResources.items, {
-            subdomain_id: subdomain.id
-          });
 
-          // items -> behaviours
-          _.each(subdomain.items, function(item) {
-            item.behaviours = _.select(flatResources.behaviours, {
-              item_id: item.id
-            });
-
-            item.subdomain = _.select(domain.subdomains, {
-              id: item.subdomain_id
-            })[0];
-
-            item.domain = _.select(nestedResources.domains, {
-              id: item.subdomain.domain_id
-            })[0];
-
-            item.examples = _.chain(item.behaviours)
-              .map('examples')
-              .flatten()
+      var r = _.map(data, function(datum, datumKey) {
+        var ddx = {};
+        ddx[datumKey] = _.chain(datum)
+          .map(function(d) {
+            return _.chain(d)
+              .keys()
+              .filter(function(key) {
+                return key.match(/_id$/);
+              })
               .value();
+          })
+          .flatten()
+          .uniq()
+          .value();
+        return ddx;
+      });
 
-            item.ideas = _.chain(item.behaviours)
-              .map('ideas')
-              .flatten()
-              .value();
+      _.each(r, function(d) {
+        var p;
+        _.each(d, function(v, i) {
+          p = i;
+          _.each(v, function(child) {
+            var c = child.slice(0, child.lastIndexOf('_id')) + 's';
+            nestResource(c, p);
+          }.bind(this));
+        });
+      });
 
-            item.observations = _.chain(item.behaviours)
-              .map('observations')
-              .flatten()
-              .value();
-
-
-
-            // behaviours -> observations
-            // behaviours -> examples
-            // behaviours -> ideas
-            _.each(item.behaviours, function(behaviour) {
-              behaviour.observations = _.select(flatResources.observations, {
-                behaviour_id: behaviour.id
-              });
-
-              behaviour.examples = _.select(flatResources.examples, {
-                behaviour_id: behaviour.id
-              });
-
-              behaviour.ideas = _.select(flatResources.ideas, {
-                behaviour_id: behaviour.id
-              });
-            });
-
-            // extra stuff
-            item.subdomain = _.select(domain.subdomains, {
-              id: item.subdomain_id
-            })[0];
-
-            item.domain = _.select(nestedResources.domains, {
-              id: item.subdomain.domain_id
-            })[0];
-
-            item.examples = _.chain(item.behaviours)
-              .map('examples')
-              .flatten()
-              .value();
-
-            item.ideas = _.chain(item.behaviours)
-              .map('ideas')
-              .flatten()
-              .value();
-
-            item.observations = _.chain(item.behaviours)
-              .map('observations')
-              .flatten()
-              .value();
+      // convert dates to actual date objects
+      _.each(resources, function(resource) {
+        _.each(resource, function(r) {
+          _.each(r, function(value, key, object) {
+            if (key.match(/_at$/) || key.match(/^bday$/)) {
+              object[key] = new Date(value);
+            }
           });
         });
       });
 
-      nestedResources.groups = flatResources.groups;
-
-      // groups -> users
-      // groups -> kids
-      _.each(nestedResources.groups, function(group) {
-        group.users = _.select(flatResources.users, {
-          group_id: group.id
-        });
-        group.kids = _.select(flatResources.kids, {
-          group_id: group.id
-        });
+      _.each(resources.subdomains, function(subdomain) {
+        if (!subdomain.hasOwnProperty('domain')) {
+          Object.defineProperty(subdomain, 'domain', {
+            get: function() {
+              return _.filter(resources.domains, {
+                id: this.domain_id
+              })[0];
+            }
+          });
+        }
       });
 
-      nestedResources.subdomains = _.chain(nestedResources.domains)
-        .map('subdomains')
-        .flatten()
-        .value();
+      _.each(resources.items, function(item) {
+        if (!item.hasOwnProperty('subdomain')) {
+          Object.defineProperty(item, 'subdomain', {
+            get: function() {
+              return _.filter(resources.subdomains, {
+                id: this.subdomain_id
+              })[0];
+            }
+          });
+        }
 
-      nestedResources.items = _.chain(nestedResources.subdomains)
-        .map('items')
-        .flatten()
-        .value();
+        if (!item.hasOwnProperty('domain')) {
+          Object.defineProperty(item, 'domain', {
+            get: function() {
+              return _.filter(resources.domains, {
+                id: this.subdomain.domain_id
+              })[0];
+            }
+          });
+        }
 
-      nestedResources.behaviours = _.chain(nestedResources.items)
-        .map('behaviours')
-        .flatten()
-        .value();
+        if (!item.hasOwnProperty('domain')) {
+          Object.defineProperty(item, 'examples', {
+            get: function() {
+              return _.chain(this.behaviours)
+                .map('examples')
+                .flatten()
+                .value();
+            }
+          });
+        }
 
-      nestedResources.kids = _.chain(flatResources.groups)
-        .map('kids')
-        .flatten()
-        .value();
+        if (!item.hasOwnProperty('ideas')) {
+          Object.defineProperty(item, 'ideas', {
+            get: function() {
+              return _.chain(this.behaviours)
+                .map('ideas')
+                .flatten()
+                .value();
+            }
+          });
+        }
 
-      nestedResources.observations = _.chain(nestedResources.behaviours)
-        .map('observations')
-        .flatten()
-        .value();
-
-      _.each(nestedResources.observations, function(observation) {
-        var byId = {
-          observation_id: observation.id
-        };
-
-        observation.kid = _.select(flatResources.kids, byId);
-
-        observation.behaviour = _.select(flatResources.behaviours, {
-          id: observation.behaviour_id
-        })[0];
-
-        observation.kid = _.select(flatResources.kids, {
-          id: observation.kid_id
-        })[0];
-
-        observation.user = _.select(flatResources.users, {
-          id: observation.user_id
-        })[0];
-
-        observation.author = _.select(flatResources.users, {
-          id: observation.author_id
-        })[0];
-
-        observation.item = _.select(flatResources.items, {
-          id: observation.behaviour.item_id
-        })[0];
-
-        observation.subdomain = _.select(flatResources.subdomains, {
-          id: observation.item.subdomain_id
-        })[0];
-
-        observation.domain = _.select(flatResources.domains, {
-          id: observation.subdomain.domain_id
-        })[0];
-
+        if (!item.hasOwnProperty('examples')) {
+          Object.defineProperty(item, 'examples', {
+            get: function() {
+              return _.chain(this.behaviours)
+                .map('examples')
+                .flatten()
+                .value();
+            }
+          });
+        }
       });
-
-
-      _.each(nestedResources.kids, function(kid) {
-        kid.bday = new Date(kid.bday);
-      });
-
-      console.log(nestedResources);
-      return nestedResources;
     }
-
 
     function getResources(sync) {
       var url = [RESOURCE_PATH, DEFAULT_RESOURCE].join('/');
       return $q(function(resolve) {
-        if (_.isEmpty(flatResources) || sync) {
+        if (_.isEmpty(data) || sync) {
           $http.get(url)
             .success(function(response) {
-              flatResources = response;
-              nestedResources = nestResources(flatResources);
-              resolve(nestedResources);
+              data = response;
+              prepareResources();
+              resolve(resources);
+              console.info(resources);
             });
         } else {
-          resolve(nestedResources);
+          resolve(resources);
         }
       });
     }
@@ -232,12 +190,23 @@
         $http.post(url, resource)
           .success(function(response) {
 
-            _.each(response, function(d, i) {
-              flatResources[i].push(d[0]);
+            _.each(response, function(d) {
+              data[d.type + 's'].push(d);
             });
 
-            nestedResources = nestResources(flatResources);
-            resolve(nestedResources);
+            prepareResources();
+            resolve(response);
+            $mdToast.show($mdToast.simple()
+              .content('Resource erfolgreich erstellt')
+              .position('bottom right')
+              .hideDelay(3000));
+          })
+          .error(function(error) {
+            $mdToast.show($mdToast.simple()
+              .content(error[0].content.detail)
+              .position('bottom right')
+              .hideDelay(5000));
+            resolve(error);
           });
       });
     }
@@ -252,14 +221,25 @@
         $http.patch(url, resource)
           .success(function(response) {
 
-            _.each(response, function(d, i) {
-              flatResources[i].splice(_.findIndex(flatResources[i], {
-                id: d[0].id
-              }), 1, d[0]);
-            });
+            data[response[0].type + 's'].splice(_.findIndex(data[response[0].type + 's'], {
+              id: response[0].id
+            }), 1, response[0]);
 
-            nestedResources = nestResources(flatResources);
-            resolve(nestedResources);
+            console.log('update succeeded');
+
+            prepareResources();
+            resolve(response);
+            $mdToast.show($mdToast.simple()
+              .content('Resource erfolgreich aktualisiert')
+              .position('bottom right')
+              .hideDelay(3000));
+          })
+          .error(function(error) {
+            $mdToast.show($mdToast.simple()
+              .content(error[0].content.detail)
+              .position('bottom right')
+              .hideDelay(5000));
+            resolve(error);
           });
       });
     }
@@ -270,11 +250,23 @@
         $http.delete(url)
           .success(function(response) {
 
-            var resource = flatResources[response[0]];
-            resource.splice(_.findIndex(resource, response[1]), 1);
+            data[response[0].type + 's'].splice(_.findIndex(data[response[0].type + 's'], {
+              id: response[0].id
+            }), 1);
 
-            nestedResources = nestResources(flatResources);
-            resolve(nestedResources);
+            prepareResources();
+            resolve(response);
+            $mdToast.show($mdToast.simple()
+              .content('Resource erfolgreich gelöscht')
+              .position('bottom right')
+              .hideDelay(3000));
+          })
+          .error(function(error) {
+            $mdToast.show($mdToast.simple()
+              .content(error[0].content.detail)
+              .position('bottom right')
+              .hideDelay(5000));
+            resolve(error);
           });
       });
     }

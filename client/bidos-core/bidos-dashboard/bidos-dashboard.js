@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, Please */
+  /* global angular, Please, Blob, document, URL */
 
   angular.module('bidos')
     .directive('bidosDashboard', bidosDashboard);
@@ -70,14 +70,14 @@
           .then(function(data) {
             var json = JSON.stringify(data);
             var blob = new Blob([json], {
-              type: "application/json"
+              type: 'application/json'
             });
             var url = URL.createObjectURL(blob);
 
             var a = document.createElement('a');
-            a.download = "bidos-data-export.json";
+            a.download = 'bidos-data-export.json';
             a.href = url;
-            a.textContent = "Export Data";
+            a.textContent = 'Export Data';
           });
       }
     }

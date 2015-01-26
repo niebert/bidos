@@ -26,6 +26,7 @@
             $state.go('auth.capture');
           }
           vm.observation = observation;
+          console.log(observation);
         });
 
       function complete() {
