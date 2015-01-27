@@ -16,7 +16,7 @@
       }
     };
 
-    function controller(ResourceService, $mdDialog, STRINGS) {
+    function controller(ResourceService, $mdDialog, STRINGS, $scope, $rootScope) {
       var vm = angular.extend(this, {
         dialog: dialog,
         createRandomKid: createRandomKid,
@@ -24,6 +24,8 @@
       });
 
       vm.sortOrder = 'id';
+
+      $scope.auth = $rootScope.auth;
 
       function updateViewModel() {
         ResourceService.get()
@@ -90,6 +92,10 @@
       }
 
       function dialog(ev, resource) {
+        if ($rootScope.auth.role === 2) {
+          return;
+        }
+
         $mdDialog.show({
             bindToController: false,
             controller: dialogController,

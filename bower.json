@@ -39,6 +39,7 @@
     "material-design-icons": "~1.0.1",
     "ngstorage": "~0.3.0",
     "ngCordova": "~0.1.10-alpha",
-    "angular-charts": "~0.2.7"
+    "angular-charts": "~0.2.7",
+    "angular-chart.js": "~0.3.18"
   }
 }

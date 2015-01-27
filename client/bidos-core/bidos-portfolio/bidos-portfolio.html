@@ -8,22 +8,43 @@
 		</h2>
 	</md-toolbar>
 
-
-
+	<!--
 	<md-whiteframe flex="10" layout layout-align="center center" class="md-whiteframe-z1 help-card">
 		<span class="bold"> Wählen Sie zuerst einen oder mehrere der vier Bereiche aus </span>
 	</md-whiteframe>
+  -->
 
 	<div layout="row">
-		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.select(domain)" ng-repeat="domain in vm.domains">
-			<span class="bold"> {{ domain.name }} </span>
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('kid')">
+			<span class="bold"> per Kind </span>
+		</md-whiteframe>
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('group')">
+			<span class="bold"> per Gruppe </span>
+		</md-whiteframe>
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('institution')">
+			<span class="bold"> per Institution </span>
 		</md-whiteframe>
 	</div>
 
+<!--
+	<div layout="row">
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('domain')">
+			<span class="bold"> per Bereich </span>
+		</md-whiteframe>
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('subdomain')">
+			<span class="bold"> per Teilbereich </span>
+		</md-whiteframe>
+		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('institution')">
+			<span class="bold"> per Baustein </span>
+		</md-whiteframe>
+	</div>
+ -->
 	<div flex layout="column">
+		<!--
 		<md-whiteframe flex layout layout-align="center center" class="md-whiteframe-z1 button-card">
 			<div ac-chart="vm.chartType" ac-data="vm.chartData" ac-config="vm.chartConfig" id='chart' class='chart'></div>
-		</md-whiteframe>
+		</md-whiteframe> -->
+		<canvas id="bar" class="chart chart-bar" data="data" labels="labels" legend="true" series="series"></canvas>
 	</div>
 
 </md-content>

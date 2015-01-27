@@ -135,6 +135,8 @@
     function signupSuccess(response) {
       console.info('[auth] signup success', response);
       $state.go(ROUTES.SIGNUP_SUCCESS);
+      vm.new = response.data[0];
+      console.log('vm.auth', vm.auth);
     }
 
     function signupFailure(response) {

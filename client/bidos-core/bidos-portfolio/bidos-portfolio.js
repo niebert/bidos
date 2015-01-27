@@ -14,80 +14,29 @@
       templateUrl: 'bidos-core/bidos-portfolio/bidos-portfolio.html'
     };
 
-    function controllerFn($rootScope, $mdDialog, ResourceService, STRINGS) {
+    function controllerFn($rootScope, $mdDialog, $scope, ResourceService, STRINGS) {
 
       var vm = angular.extend(this, {
         auth: $rootScope.auth,
-        dialog: dialog,
         select: select,
         selection: [],
-        isSelected: isSelected
+        isSelected: isSelected,
+        selectChart: selectChart
       });
 
-      vm.chartConfig = {
-        labels: false,
-        title: "Products",
-        legend: {
-          display: true,
-          position: 'left'
-        },
-        innerRadius: 0
-      };
-
-      function singleKidChartData(kid) {
-
-        if (!kid) {
-          var kid = _.select(vm.kids, {
-            id: 1
-          })[0];
+      function selectChart(resourceType) {
+        switch (resourceType) {
+          case 'kid':
+            chartA();
+            break;
+          case 'group':
+            chartB();
+            break;
+          case 'institution':
+            chartC();
+            break;
         }
-
-        /* observations grouped by niveau */
-        var observations = _.groupBy(vm.observations, 'niveau');
-
-        var observations = _.groupBy(vm.observations, function(observation) {
-          return observation.niveau;
-        });
-
-        debugger
-
-        return {
-          series: _.map(vm.domains, 'name'),
-          data: _.map(vm.observations, function(observation) {
-
-          })
-        };
-
       }
-
-      function getChartData() {
-        vm.chartData = {
-          series: _.map(vm.institutions, 'name'),
-          data: _.map(vm.observations, function(observation) {
-            var group = _.filter(vm.groups, {
-              id: observation.kid.group_id
-            })[0];
-            return {
-              x: _.filter(vm.institutions, {
-                id: group.institution_id
-              })[0].name,
-              y: [observation.niveau]
-            };
-          })
-        };
-        // vm.chartData = {
-        //   series: _.map(vm.domains, 'name'),
-        //   data: _.map(vm.observations, function(observation) {
-        //     var group = _.filter(vm.groups, {id: observation.kid.group_id})[0];
-        //     return {
-        //       x: _.filter(vm.institutions, {id: group.institution_id})[0].name,
-        //       y: [observation.niveau]
-        //     };
-        //   })
-        // };
-      }
-
-      vm.chartType = 'bar';
 
       function isSelected(resource) {
         return _.contains(vm.selection, resource);
@@ -101,59 +50,135 @@
         }
       }
 
-      function updateViewModel(data) {
-        angular.extend(vm, data);
-        angular.extend(vm, STRINGS);
-      }
-
-      ResourceService.get()
-        .then(function(data) {
-          updateViewModel(data);
-          singleKidChartData();
-          getChartData();
-        });
-
-      function dialog(ev) {
-        $mdDialog.show({
-            bindToController: false,
-            controller: dialogController,
-            controllerAs: 'vm',
-            locals: {
-              data: vm.data,
-              user: vm.auth
-            },
-            targetEvent: ev,
-            templateUrl: 'bidos-core/bidos-portfolio/bidos-portfolio.dialog.html',
-          })
-          .then(function() {
-            // success
-          }, function() {
-            console.log('dialog cancelled');
+      function updateViewModel() {
+        ResourceService.get()
+          .then(function(data) {
+            angular.extend(vm, data);
+            angular.extend(vm, STRINGS);
+            chartB();
           });
       }
 
+      function chartA() {
+        $scope.series = _.map(vm.domains, 'name');
 
-      function dialogController($mdDialog, ResourceService, data, user) {
-        angular.extend(this, {
-          cancel: cancel,
-          update: update,
-          data: data,
-          user: user
+        var allKidsWithObservations = _.filter(vm.kids, function(kid) {
+          return kid.observations.length;
         });
 
-        function cancel() {
-          $mdDialog.cancel();
+        if ($rootScope.auth.role === 2) {
+          $scope.labels = _.map(allKidsWithObservations, 'id');
+        } else {
+          $scope.labels = _.map(allKidsWithObservations, 'name');
         }
 
-        function update(user) {
-          ResourceService.update('user', user)
-            .then(function(response) {
-              console.log('resource created:', user);
-              $mdDialog.hide(response);
-            });
+        $scope.data = [
+          [],
+          [],
+          [],
+          []
+        ];
+
+        function sumKidSkillForDomain(kid, domainId) {
+          $scope.data[domainId - 1].push(_.chain(kid.observations)
+            .filter({
+              domain_id: domainId
+            })
+            .map('niveau')
+            .reduce(function(sum, i) {
+              console.log(sum, i);
+              return sum + i;
+            })
+            .value() || 0);
         }
+
+        _.each(allKidsWithObservations, function(kid) {
+          sumKidSkillForDomain(kid, 1);
+          sumKidSkillForDomain(kid, 2);
+          sumKidSkillForDomain(kid, 3);
+          sumKidSkillForDomain(kid, 4);
+        });
       }
 
+      function chartB() {
+        $scope.series = _.map(vm.domains, 'name');
+
+        var allGroupsWithObservations = _.filter(vm.groups, function(group) {
+          return group.observations.length;
+        });
+
+        $scope.labels = _.map(allGroupsWithObservations, 'name');
+        $scope.data = [
+          [],
+          [],
+          [],
+          []
+        ];
+
+        function sumGroupSkillForDomain(group, domainId) {
+          var domainSkill = _.chain(group.observations)
+            .flatten()
+            .filter({
+              domain_id: domainId
+            })
+            .map('niveau')
+            .reduce(function(sum, i) {
+              console.log(sum, i);
+              return sum + i;
+            })
+            .value();
+
+          $scope.data[domainId - 1].push(domainSkill || 0);
+        }
+
+        _.each(allGroupsWithObservations, function(group) {
+          sumGroupSkillForDomain(group, 1);
+          sumGroupSkillForDomain(group, 2);
+          sumGroupSkillForDomain(group, 3);
+          sumGroupSkillForDomain(group, 4);
+        });
+      }
+
+      function chartC() {
+        $scope.series = _.map(vm.domains, 'name');
+
+        var allGroupsWithObservations = _.filter(vm.institutions, function(institution) {
+          return institution.observations.length;
+        });
+
+        $scope.labels = _.map(allGroupsWithObservations, 'name');
+        $scope.data = [
+          [],
+          [],
+          [],
+          []
+        ];
+
+        function sumGroupSkillForDomain(group, domainId) {
+          var domainSkill = _.chain(group.observations)
+            .flatten()
+            .filter({
+              domain_id: domainId
+            })
+            .map('niveau')
+            .reduce(function(sum, i) {
+              console.log(sum, i);
+              return sum + i;
+            })
+            .value();
+
+          $scope.data[domainId - 1].push(domainSkill || 0);
+        }
+
+        _.each(allGroupsWithObservations, function(group) {
+          sumGroupSkillForDomain(group, 1);
+          sumGroupSkillForDomain(group, 2);
+          sumGroupSkillForDomain(group, 3);
+          sumGroupSkillForDomain(group, 4);
+        });
+      }
+
+      updateViewModel();
     }
   }
 

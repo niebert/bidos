@@ -14,7 +14,9 @@
       templateUrl: 'bidos-core/bidos-dashboard/bidos-dashboard.html'
     };
 
-    function controllerFn($rootScope, ResourceService, UserFactory, $state) {
+    function controllerFn($rootScope, $scope, ResourceService, UserFactory, $state) {
+
+      $scope.auth = $rootScope.auth;
 
       var colors = {
         a: Please.make_scheme({

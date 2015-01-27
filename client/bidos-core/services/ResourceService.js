@@ -31,6 +31,11 @@
       /* all resources and look for blabla_id, which refers to the parent id.
       /* On the parent we create the getter blablas() then. */
 
+      resources.kids = _.clone(data.kids);
+      resources.users = _.clone(data.users);
+
+      // --------------------------------------------------------------------------------
+
       // nestResource('institutions', 'groups');
       function nestResource(a, b) {
         resources[a] = _.clone(data[a]);
@@ -48,13 +53,12 @@
         });
       }
 
+      // --------------------------------------------------------------------------------
+
       /* TODO: The following two parts work fine but could be refactored to be
       /* a little bit more maintainable. */
 
-      resources.kids = _.clone(data.kids);
-      resources.users = _.clone(data.users);
-
-
+      // --------------------------------------------------------------------------------
 
       var r = _.map(data, function(datum, datumKey) {
         var ddx = {};
@@ -95,29 +99,46 @@
         });
       });
 
-      _.each(resources.subdomains, function(subdomain) {
-        if (!subdomain.hasOwnProperty('domain')) {
-          Object.defineProperty(subdomain, 'domain', {
-            get: function() {
-              return _.filter(resources.domains, {
-                id: this.domain_id
-              })[0];
-            }
-          });
-        }
+      // --------------------------------------------------------------------------------
+
+      // <3
+      function installParentResourceGetter(data, resources, parentType) {
+        _.each(resources, function(d) {
+          if (!d.hasOwnProperty(parentType)) {
+            Object.defineProperty(d, parentType, {
+              get: function() {
+                return _.filter(data[parentType + 's'], {
+                  id: this[parentType + '_id']
+                })[0];
+              }
+            });
+          }
+        });
+      }
+
+      _.each(data, function(resources) {
+        var parentTypes = _.chain(resources[0]) // <- beware
+          .keys()
+          .filter(function(d) {
+            return d.match(/_id/);
+          })
+          .map(function(d) {
+            return d.split('_id')[0];
+          })
+          .value();
+
+        _.each(parentTypes, function(parentType) {
+          if (data.hasOwnProperty(parentType + 's')) {
+            installParentResourceGetter(data, resources, parentType);
+          }
+        });
       });
 
-      _.each(resources.items, function(item) {
-        if (!item.hasOwnProperty('subdomain')) {
-          Object.defineProperty(item, 'subdomain', {
-            get: function() {
-              return _.filter(resources.subdomains, {
-                id: this.subdomain_id
-              })[0];
-            }
-          });
-        }
+      // --------------------------------------------------------------------------------
 
+      // the next one requires the get subdomain property to be set on each domain resource
+
+      _.each(resources.items, function(item) {
         if (!item.hasOwnProperty('domain')) {
           Object.defineProperty(item, 'domain', {
             get: function() {
@@ -128,7 +149,9 @@
           });
         }
 
-        if (!item.hasOwnProperty('domain')) {
+        // the next two require the item to have the get behaviours property to be set
+
+        if (!item.hasOwnProperty('examples')) {
           Object.defineProperty(item, 'examples', {
             get: function() {
               return _.chain(this.behaviours)
@@ -149,18 +172,90 @@
             }
           });
         }
+      });
 
-        if (!item.hasOwnProperty('examples')) {
-          Object.defineProperty(item, 'examples', {
+      // --------------------------------------------------------------------------------
+
+      _.each(resources.observations, function(observation) {
+        if (!observation.hasOwnProperty('domain')) {
+          Object.defineProperty(observation, 'domain', {
             get: function() {
-              return _.chain(this.behaviours)
-                .map('examples')
-                .flatten()
+              return this.item.subdomain.domain;
+            }
+          });
+        }
+
+        if (!observation.hasOwnProperty('domain_id')) {
+          Object.defineProperty(observation, 'domain_id', {
+            get: function() {
+              return this.item.subdomain.domain.id;
+            }
+          });
+        }
+
+        if (!observation.hasOwnProperty('subdomain_id')) {
+          Object.defineProperty(observation, 'subdomain_id', {
+            get: function() {
+              return this.item.subdomain.id;
+            }
+          });
+        }
+
+      });
+
+      // --------------------------------------------------------------------------------
+
+      _.each(resources.kids, function(kid) {
+        if (!kid.hasOwnProperty('skill')) {
+          Object.defineProperty(kid, 'skill', {
+            get: function() {
+              return _.chain(this.observations)
+                .map('niveau')
+                .reduce(function(sum, n) {
+                  return sum + n;
+                })
                 .value();
             }
           });
         }
       });
+
+      // --------------------------------------------------------------------------------
+
+      _.each(resources.groups, function(group) {
+        if (!group.hasOwnProperty('observations')) {
+          Object.defineProperty(group, 'observations', {
+            get: function() {
+              return _.chain(group.kids)
+                .map('observations')
+                .filter(function(d) {
+                  return d.length;
+                })
+                .value();
+            }
+          });
+        }
+      });
+
+      // --------------------------------------------------------------------------------
+
+      _.each(resources.institutions, function(institution) {
+        if (!institution.hasOwnProperty('observations')) {
+          Object.defineProperty(institution, 'observations', {
+            get: function() {
+              return _.chain(institution.groups)
+                .map('kids')
+                .flatten()
+                .map('observations')
+                .filter(function(d) {
+                  return d.length;
+                })
+                .value();
+            }
+          });
+        }
+      });
+
     }
 
     function getResources(sync) {

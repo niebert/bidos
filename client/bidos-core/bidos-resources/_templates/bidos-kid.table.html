@@ -28,8 +28,9 @@
 	<table>
 		<thead>
 			<th ng-click="vm.sortOrder='id'; reverse=!reverse">ID</th>
-			<th ng-click="vm.sortOrder='name'; reverse=!reverse">Name</th>
-			<th ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtstag</th>
+			<th ng-hide="auth.role==2" ng-click="vm.sortOrder='name'; reverse=!reverse">Name</th>
+			<th ng-hide="auth.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtstag</th>
+			<th ng-show="auth.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtsjahr</th>
 			<th ng-click="vm.sortOrder='sex'; reverse=!reverse">Geschlecht</th>
 			<th ng-click="vm.sortOrder='group_id'; reverse=!reverse">Gruppe</th>
 			<th ng-click="vm.sortOrder='created_at'; reverse=!reverse">erstellt</th>
@@ -37,8 +38,9 @@
 		<tbody>
 			<tr ng-repeat="kid in vm.kids | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
 				<td> {{ kid.id }} </td>
-				<td> {{ kid.name }} </td>
-				<td> {{ kid.bday | date }} </td>
+				<td ng-hide="auth.role==2"> {{ kid.name }} </td>
+				<td ng-hide="auth.role==2"> {{ kid.bday | date }} </td>
+				<td ng-show="auth.role==2"> {{ kid.bday | date:'yyyy' }} </td>
 				<td> {{ kid | sex }} </td>
 				<td> {{ kid | group }} </td>
 				<td> {{ kid.created_at | date }} </td>

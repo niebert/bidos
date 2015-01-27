@@ -4,7 +4,7 @@
 			<h2 flex>BiDoS 2</h2>
 		</span>
 	</md-toolbar>
-<!--
+	<!--
 
 	<md-content class="" layout="row" layout-wrap>
 		<md-content flex="40" class="" layout="row" layout-wrap>
@@ -29,38 +29,46 @@
  -->
 
 	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.capture" class="capture" flex style="background-color:{{vm.colors.a[0]}}">Neue Beobachtung</md-button>
+		<md-button ng-hide="auth.role==2" ui-sref="auth.capture" class="capture" flex style="background-color:{{vm.colors.a[0]}}">Neue Beobachtung</md-button>
 		<md-button ui-sref="auth.portfolio" class="capture" flex style="background-color:{{vm.colors.a[1]}}">Auswertung</md-button>
 	</md-content>
 
 	<md-content class="big" layout="row">
 		<md-button ui-sref="auth.resources({type: 'observation'})" flex style="background-color:{{vm.colors.a[2]}}">Beobachtungen</md-button>
-		<md-button ui-sref="auth.resources({type: 'item'})" flex style="background-color:{{vm.colors.a[3]}}">Bausteine</md-button>
+		<md-button ng-hide="auth.role==1" ui-sref="auth.resources({type: 'item'})" flex style="background-color:{{vm.colors.a[3]}}">Bausteine</md-button>
 		<md-button ui-sref="auth.resources({type: 'kid'})" flex style="background-color:{{vm.colors.a[4]}}">Kinder</md-button>
-		<md-content flex="20" layout="column">
+<!-- 		<md-content flex="20" layout="column">
 			<md-button ui-sref="auth.status" class="capture" flex style="background-color:{{vm.colors.b[3]}}">Status</md-button>
 			<md-button ui-sref="auth.profile" class="capture" flex style="background-color:{{vm.colors.b[4]}}">Profil</md-button>
-		</md-content>
+		</md-content> -->
 	</md-content>
 
-	<md-content class="big" layout="row">
-		<md-button ui-sref="auth.resources({type: 'institution'})" flex style="background-color:{{vm.colors.c[0]}}">Institutionen</md-button>
-		<md-button ui-sref="auth.resources({type: 'group'})" flex style="background-color:{{vm.colors.c[1]}}">Gruppen</md-button>
-		<md-button ui-sref="auth.resources({type: 'user'})" flex style="background-color:{{vm.colors.c[2]}}">Benutzer</md-button>
-		<md-content flex="20" layout="column">
-			<!-- <md-button ng-click="vm.sync()" class="capture" flex style="background-color:{{vm.colors.c[4]}}">Sync</md-button> -->
-			<!-- <md-button class="capture" flex style="background-color:{{vm.colors.c[5]}}"><a href="v1/resources/vanilla" style="color:#000;text-decoration:none;">Export</a></md-button> -->
+	<md-content ng-hide="auth.role==2" class="big" layout="row">
+		<md-button flex ng-hide="auth.role==2||auth.role==1" ui-sref="auth.resources({type: 'institution'})" flex style="background-color:{{vm.colors.c[0]}}">Institutionen</md-button>
+		<md-button flex ng-hide="" ui-sref="auth.resources({type: 'group'})" flex style="background-color:{{vm.colors.c[1]}}">Gruppen</md-button>
+		<md-button flex ng-hide="auth.role==2||auth.role==1" ui-sref="auth.resources({type: 'user'})" flex style="background-color:{{vm.colors.c[2]}}">Benutzer</md-button>
+		<!-- 		<md-content flex="20" layout="column">
+			<md-button class="capture" flex style="background-color:{{vm.colors.c[5]}}"><a href="v1/resources/vanilla" style="color:#000;text-decoration:none;">Export</a>
+			</md-button>
 			<md-button class="capture" ng-class="{online:vm.networkStatus==online}" flex style="background-color:{{vm.colors.b[5]}}">{{ vm.networkStatus }}</md-button>
 			<md-button ng-click="vm.logout()" class="capture" flex style="background-color:#c92971">Abmelden</md-button>
-		</md-content>
+		</md-content> -->
+
 	</md-content>
-	<!--
- 	<md-content class="" layout="row" layout-align="end center" style="height:100px; background-color:#2c2c2c; padding:8px;">
-		<a ng-href="chrome://appcache-internals/" target="_blank" style="color:#ffdfe0;text-decoration:none;font-size:0.8em;">cache</a>
-		<span style="color:#ffdfe0;font-size:0.8em;"</span> |
-		<a style="color:#ffdfe0;text-decoration:none;font-size:0.8em;" href="v1/resources/vanilla" download="bidos-data.json">export</a>
+
+	<md-content class="" layout="row" layout-align="end center" style="height:100px; background-color:#2c2c2c; padding:8px;color:#fff;font-size:0.7em;color:#ffdfe0;text-decoration:none;">
+		<a style="color:#ffdfe0;text-decoration:none;" href="v1/resources/vanilla" download="bidos-data.json">BiDoS2 v1-rc1</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="mailto:rene.wilhelm@gmail.com" download="bidos-data.json">hilfe</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="#">{{ vm.networkStatus }}</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="#">{{ auth | role }} . {{ auth.username }}</a>
+		<span flex></span>
+		<a ng-href="chrome://appcache-internals/" target="_blank" style="color:#ffdfe0;text-decoration:none;">cache</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="v1/resources/vanilla" download="bidos-data.json">export</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" ui-sref="auth.status">status</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" ui-sref="auth.status">profil</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="#" ng-click="vm.logout()">abmelden</a>
 	</md-content>
- -->
+
 
 
 </md-content>

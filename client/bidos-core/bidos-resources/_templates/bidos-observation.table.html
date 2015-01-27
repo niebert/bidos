@@ -25,24 +25,24 @@
 	<table>
 		<thead>
 			<th ng-click="predicate='id'; reverse=!reverse">ID</th>
-			<th ng-click="predicate='kid.name'; reverse=!reverse">Kind</th>
+			<th ng-hide="auth.role==2" ng-click="predicate='kid.name'; reverse=!reverse">Kind</th>
 			<th ng-click="predicate='niveau'; reverse=!reverse">Wert</th>
 			<th ng-click="predicate='item.name'; reverse=!reverse">Baustein</th>
-			<th ng-click="predicate='subdomain.name'; reverse=!reverse">Teilbereich</th>
-			<th ng-click="predicate='domain.name'; reverse=!reverse">Kompetenzbereich</th>
+			<!-- <th ng-click="predicate='subdomain.name'; reverse=!reverse">Teilbereich</th> -->
+			<th ng-click="predicate='domain.name'; reverse=!reverse">Bereich</th>
 			<th ng-click="predicate='date'; reverse=!reverse">Datum</th>
-			<th ng-click="predicate='author.name'; reverse=!reverse">Autor</th>
+			<!-- <th ng-click="predicate='author.name'; reverse=!reverse">Autor</th> -->
 		</thead>
 		<tbody>
 			<tr ng-repeat="observation in vm.observations | filter:{'kid.name':query} | orderBy:predicate:reverse" ng-click="vm.observationDetails($event, observation)">
 				<td> {{ observation.id }} </td>
-				<td> {{ observation.kid.name }} </td>
+				<td ng-hide="auth.role==2"> {{ observation.kid.name }} </td>
 				<td> {{ observation.niveau }} </td>
 				<td> {{ observation.item.name }} </td>
-				<td> {{ observation.subdomain.name }} </td>
+				<!-- <td> {{ observation.subdomain.name }} </td> -->
 				<td> {{ observation.domain.name }} </td>
 				<td> {{ observation.created_at | date }} </td>
-				<td> {{ observation.author.name }} </td>
+				<!-- <td> {{ observation.author.name }} </td> -->
 			</tr>
 		</tbody>
 	</table>

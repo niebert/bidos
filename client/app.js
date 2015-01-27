@@ -9,10 +9,8 @@
     'ngMessages',
     'ngStorage',
     'ui.router',
-    'angularCharts',
+    'chart.js',
     // 'ngCordova',
-    // 'LocalForageModule'
-    // 'pouchdb'
   ]);
 
   require('./auth');

@@ -172,13 +172,13 @@
     return function(resource) {
       switch (resource.role) {
         case 0:
-          return 'Administrator';
+          return 'Administrator'.toLowerCase();
         case 1:
-          return 'Praktiker';
+          return 'Praktiker'.toLowerCase();
         case 2:
-          return 'Wissenschaftler';
+          return 'Wissenschaftler'.toLowerCase();
         default:
-          return 'keine';
+          return 'keine'.toLowerCase();
       }
     };
   });
