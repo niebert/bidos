@@ -1,4 +1,0 @@
-redis           redis
-authentication  passport, passport-local
-bcrypt          bcrypt
-postgres        pg
