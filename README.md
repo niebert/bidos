@@ -32,10 +32,10 @@ Die benötigten Pakete des Projekts müssten jetzt installiert sein und der Serv
 make db
 ```
 
-Die Datenbank ist nun eingerichtet mit notwendigen Resourcen (Stand: Ende 2014) vorpopuliert. Das user interface müsste unter der Adresse des Servers auf Port 3000 erreichbar sein. Nachdem man sich mit als **admin** mit dem Passwort **123** eingeloggt hat, sollte man zuerst in der Benutzerverwaltung das Passwort für den Admin-Benutzer ändern.
+Die Datenbank ist nun eingerichtet mit notwendigen Resourcen (Stand: Ende 2014) vorpopuliert. Das user interface müsste unter der Adresse des Servers auf **Port 3000** erreichbar sein. Nachdem man sich mit als **admin** mit dem Passwort **123** eingeloggt hat, sollte man zuerst in der Benutzerverwaltung das Passwort für den Admin-Benutzer ändern.
 
 
 ## Hinweise
 
-- Nicht von Administratoren erstellte Benutzer müssen das flag *enabled* (Default: *disabled*) gesetzt haben, um sich einloggen zu können. Dazu in der Benutzerverwaltung auf den Benutzer klicken und die Einstellung dort ändern und speichern.
+- Nicht von Administratoren erstellte Benutzer müssen das flag *enabled* (Default: *false*) gesetzt haben, um sich einloggen zu können. Dazu in der Benutzerverwaltung auf den Benutzer klicken und die Einstellung dort ändern und speichern.
 
