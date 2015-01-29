@@ -49,7 +49,8 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --harmony test/apiSpec.js -u bdd -R spec --reporter=list -w",
-		"lg": "DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp"
+		"lg": "DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp",
+    "start": "gulp"
   },
   "author": "René Wilhelm <rene.wilhelm@gmail.com>",
   "license": "ISC"
