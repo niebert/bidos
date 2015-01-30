@@ -13,7 +13,6 @@
   var prefix = require('gulp-autoprefixer');
   var transform = require('vinyl-transform');
   var ngAnnotate = require('gulp-ng-annotate');
-  var run = require('gulp-run');
   var shell = require('gulp-shell');
 
   var sourceDir = 'client/';
