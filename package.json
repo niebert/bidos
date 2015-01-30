@@ -23,6 +23,7 @@
     "koa-static": "^1.4.8",
     "koa-validate": "^0.2.5",
     "lodash": "^2.4.1"
+    "shipit-deploy": "^1.1.1"
   },
   "devDependencies": {
     "browserify": "^8.0.3",
