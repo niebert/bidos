@@ -10,3 +10,4 @@ build
 
 schema.json
 doc/*
+jspm_packages
