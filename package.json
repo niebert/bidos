@@ -8,6 +8,7 @@
     "bluebird": "^2.9.3",
     "chalk": "*",
     "co-bcrypt": "^1.0.0",
+    "co-crypto": "^0.9.1",
     "columnify": "^1.4.1",
     "diacritics": "^1.2.1",
     "koa": "^0.16.0",
@@ -21,6 +22,7 @@
     "koa-static": "^1.4.8",
     "koa-validate": "^0.2.7",
     "lodash": "^3.0.0",
+    "sendgrid": "^1.5.0",
     "shipit-deploy": "^1.1.1"
   },
   "devDependencies": {

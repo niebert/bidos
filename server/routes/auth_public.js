@@ -9,8 +9,196 @@
     Router = require('koa-router'),
     user;
 
+  var sendgrid = require("sendgrid")('bidos', 'COEvNvaCcIkgOdDELr5gS');
+
+  var crypto = require('co-crypto');
+
   var removeDiacritics = require('diacritics')
     .remove;
+
+  Date.prototype.addHours = function(h) {
+    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+    return this;
+  };
+
+  // logging out is done on the clients side by deleting the token.
+  // TODO: keep track of deployed tokens
+
+  module.exports = exports = new Router()
+    .post('/login', authenticate, tokenize)
+    .post('/signup', generateUsername, createResource('user'))
+    .post('/forgot', forgotPassword)
+    .get('/reset/:hash', resetPassword)
+    .post('/reset/:hash', setNewPassword);
+
+  function* resetPassword(next) {
+    var result =
+      yield this.pg.db.client.query_('SELECT * FROM password_reset WHERE hash = $1', [this.params.hash]);
+
+    if (!result.rowCount) {
+
+      this.status = 401;
+      this.body = {
+        error: 'reset request not found'
+      };
+
+    } else {
+      this.redirect('/#/reset/' + result.rows[0].hash);
+    }
+  }
+
+  function* setNewPassword(resourceType) {
+
+    var bcrypt = require('co-bcrypt');
+    this.request.body.password_hash =
+      yield bcrypt.hash(this.request.body.password,
+        yield bcrypt.genSalt(10));
+
+    var password_reset;
+    var userId;
+
+    try {
+      password_reset =
+        yield this.pg.db.client.query_('SELECT * FROM password_reset WHERE hash = $1', [this.params.hash]);
+      if (!password_reset.rows.length || password_reset.rows[0].expires < Date.now()) {
+        throw new Error('some error');
+      } else {
+        userId = password_reset.rows[0].user_id;
+      }
+    } catch (err) {
+      console.log('ERR', err);
+      this.status = 500;
+      this.body = [{
+        type: 'error',
+        content: 'password reset token expired or invalid'
+      }];
+    }
+
+    var query = 'UPDATE users SET (password_hash) = ($1) WHERE id=' + parseInt(password_reset.rows[0].user_id) + ' RETURNING *'; // pluralize
+    var values = [this.request.body.password_hash];
+
+    console.log(query);
+
+    try {
+      var result =
+        yield this.pg.db.client.query_(query, values);
+
+      if (!password_reset.rows.length) {
+        this.status = 500;
+        this.body = [{
+          type: 'error',
+          content: 'password reset token expired or invalid'
+        }];
+      }
+
+      _.each(result.rows, function(r) {
+        r.type = resourceType;
+      });
+
+      try {
+        var userId;
+        if (password_reset.rows) {
+          userId = password_reset.rows[0].user_id;
+        }
+        yield this.pg.db.client.query_('DELETE from password_reset where user_id=$1', [userId]);
+      } catch (err) {
+        console.error(err);
+        this.status = 500;
+        this.body = [{
+          type: 'error',
+          content: err
+        }];
+      }
+
+      this.body = result.rows;
+
+    } catch (err) {
+      console.error(err);
+      this.status = 500;
+      this.body = [{
+        type: 'error',
+        content: err
+      }];
+    }
+  };
+
+  function* forgotPassword(next) {
+    var hash =
+      yield crypto.randomBytes(20);
+
+    console.log(hash);
+
+    // lookup user
+    var result =
+      yield this.pg.db.client.query_({
+        name: 'readUser',
+        text: 'SELECT * FROM auth WHERE email = $1'
+      }, [this.request.body.email]);
+
+    if (!result.rowCount) {
+
+      // user not found
+      this.status = 401;
+      this.body = {
+        error: 'unknown user'
+      };
+
+    } else {
+
+      // user found
+      var user = result.rows[0];
+      var expires = new Date()
+        .addHours(1); // 1 hour
+
+      console.log('user found: ', user);
+
+      var query = 'INSERT INTO password_reset (user_id, hash, expires) VALUES ($1, $2, $3) RETURNING *'; // pluralize
+      var values = [user.id, hash.toString('hex'), expires];
+
+      console.log(query, values);
+
+      try {
+        var result =
+          yield this.pg.db.client.query_(query, values);
+
+        if (!result.rowCount) {
+          this.status = 500;
+          this.body = {
+            error: 'could not add passwort_reset database entry'
+          };
+        }
+
+        console.log('password_reset database entry added');
+
+        var payload = {
+          to: user.email,
+          toname: user.name,
+          from: 'admin@bidos',
+          subject: '[bidos] Passwort zurücksetzen',
+          text: 'Folgen Sie dem folgenden Link um Ihr Passwort zurückzusetzen: http://localhost:3000/auth/reset/' + hash.toString('hex'),
+          html: 'Klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen: <a href="http://localhost:3000/auth/reset/' + hash.toString('hex') + '">http://localhost:3000/auth/reset/' + hash.toString('hex') + '</a>'
+        };
+
+        sendgrid.send(payload, function(err, json) {
+          if (err) {
+            console.error(err);
+          }
+          this.status = 200;
+          console.log(json);
+        }.bind(this));
+
+      } catch (err) {
+        console.error(err);
+        this.status = 500;
+        this.body = [{
+          type: 'error',
+          content: err
+        }];
+      }
+
+    }
+  }
+
 
   function* authenticate(next) {
     var bcrypt = require('co-bcrypt');
@@ -26,7 +214,7 @@
     if (!result.rowCount) {
       this.status = 401;
       this.body = {
-        error: 'unknown username'
+        error: 'Unbekannter Benutzername'
       };
     } else {
 
@@ -38,9 +226,18 @@
       } else {
         this.status = 401;
         this.body = {
-          error: 'wrong password'
+          error: 'Falsches Passwort'
         };
       }
+
+      if (!user.enabled) {
+        console.log(user);
+        this.status = 401;
+        this.body = {
+          error: 'Der Benutzer ist nicht aktiviert'
+        };
+      }
+
     }
   }
 
@@ -148,12 +345,5 @@
       }
     };
   }
-
-  // logging out is done on the clients side by deleting the token.
-  // TODO: keep track of deployed tokens
-
-  module.exports = exports = new Router()
-    .post('/login', authenticate, tokenize)
-    .post('/signup', generateUsername, createResource('user'));
 
 }());

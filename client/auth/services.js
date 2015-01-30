@@ -21,6 +21,14 @@
       return $http.post('auth/signup', formData);
     }
 
+    function forgot(formData) {
+      return $http.post('auth/forgot', formData);
+    }
+
+    function reset(formData, hash) {
+      return $http.post('auth/reset/' + hash, formData);
+    }
+
     function logout() {
       AuthTokenFactory.setToken(); // removes token from local storage
     }
@@ -33,7 +41,9 @@
       login: login,
       logout: logout,
       signup: signup,
-      getUser: getUser
+      getUser: getUser,
+      forgot: forgot,
+      reset: reset
     };
   })
 

@@ -1,14 +1,14 @@
 <div class="auth">
 	<form novalidate>
 
-		<p>Um sich zu registrieren, wählen Sie bitte zuerst die gewünschte Rolle und füllen das dann unten stehende Formular aus. Sobald ein Administrator Ihren Antrag überprüft und freigeschaltet hat, können Sie sich mit Ihren Zugangsdaten anmelden.</p>
+		<h2>Neuen Account Registrieren</h2>
 
 		<div class="content" style="width:100%; margin-top:24px;">
 			<span> Gewünschte Rolle: </span>
 			<select ng-model="user.role" ng-options="role.value as role.text for role in auth.roles"> </select>
 		</div>
 
-		<div ng-show="user.role">
+		<div ng-show="user.role!==undefined">
 			<md-input-container>
 				<label>Vor- und Nachname</label>
 				<input type="text" ng-model="user.name" required>
@@ -26,8 +26,13 @@
 		</div>
 
 		<md-input-container ng-show="user.role==1">
-			<span>Institution</span>
+			<span> Institution </span>
 			<select ng-model="user.institution_id" ng-options="institution.id as institution.name for institution in auth.institutions" required> </select>
+		</md-input-container>
+
+		<md-input-container ng-show="user.role==1">
+			<span> Gruppe </span>
+			<select ng-model="user.group_id" ng-options="group.id as group.name for group in auth.groups | filter:{institution_id:user.institution_id}"></select>
 		</md-input-container>
 
 		<md-input-container ng-show="user.role==2">

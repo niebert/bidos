@@ -43,6 +43,24 @@
       }
     })
 
+    .state('public.forgot', {
+      url: '/forgot',
+      views: {
+        main: {
+          templateUrl: 'auth/views/forgot.html'
+        }
+      }
+    })
+
+    .state('public.reset', {
+      url: '/reset/:hash',
+      views: {
+        main: {
+          templateUrl: 'auth/views/reset.html'
+        }
+      }
+    })
+
     ;
 
   }]);

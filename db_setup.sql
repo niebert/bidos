@@ -155,6 +155,21 @@ CREATE TABLE IF NOT EXISTS observations (
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+CREATE TABLE IF NOT EXISTS password_reset (
+  id                       SERIAL PRIMARY KEY,
+  created_at               TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  user_id                  INT REFERENCES users(id),
+  hash                     TEXT UNIQUE,
+  expires                  DATE
+);
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 -- auth table to run authentication queries against (back end only!)
 CREATE VIEW auth AS
 SELECT users.id,

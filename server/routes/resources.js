@@ -65,11 +65,6 @@
       text: 'SELECT * FROM institutions'
     });
 
-    var usernames = yield this.pg.db.client.query_({
-      name: 'getAllUsernamess',
-      text: 'SELECT * FROM usernames'
-    });
-
     // NOTE: things are getting pluralized here
 
     var resources = {
@@ -83,8 +78,7 @@
       kids: kid.rows,
       ideas: idea.rows,
       observations: observation.rows,
-      subdomains: subdomain.rows,
-      usernames: _.map(usernames.rows, 'username')
+      subdomains: subdomain.rows
     };
 
     _.each(resources, function(resource,i) {

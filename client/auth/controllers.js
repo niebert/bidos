@@ -1,5 +1,5 @@
 /* jshint unused:false */
-/* global angular */
+/* global angular, _ */
 /* exported AuthController */
 
 (function() {
@@ -14,7 +14,7 @@
   angular.module('auth.controller', [])
     .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, $location, UserFactory, $http) {
+  function AuthController($rootScope, $state, $mdToast, $stateParams, $location, UserFactory, $http, $q) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -25,18 +25,27 @@
       login: login,
       logout: logout,
       signup: signup,
-      roles: roles
+      roles: roles,
+      forgot: forgot,
+      reset: reset
     });
 
-    $http.get('v1/institution')
-      .success(function(response) {
-        angular.extend(vm, response);
-      });
+    function getPublicData() {
+      var queries = [
+        $http.get('public/groups'),
+        $http.get('public/usernames'),
+        $http.get('public/institutions'),
+      ];
 
-    $http.get('v1/group')
-      .success(function(response) {
-        vm.groups = response.data;
-      });
+      $q.all(queries)
+        .then(function(results) {
+          vm.groups = results[0].data;
+          vm.usernames = results[1].data;
+          vm.institutions = results[2].data;
+        });
+    }
+
+    getPublicData();
 
     var ROUTES = {
       AUTH_SUCCESS: '',
@@ -50,6 +59,12 @@
 
       LOGOUT_SUCCESS: 'public.login',
       LOGOUT_FAILURE: '',
+
+      FORGOT_SUCCESS: 'public.reset',
+      FORGOT_FAILURE: '',
+
+      RESET_SUCCESS: 'public.login',
+      RESET_FAILURE: '',
     };
 
 
@@ -79,8 +94,8 @@
 
     function authFailure() {
       console.log('%cNOT AUTHORIZED', 'color: green; font-size: 1.2em, padding: 16px;');
-      $state.go(ROUTES.AUTH_FAILURE);
-      $location.path('/');
+      // $state.go(ROUTES.AUTH_FAILURE);
+      // $location.path('/');
     }
 
 
@@ -100,6 +115,12 @@
 
     function loginFailure(response) {
       console.warn('[auth] login failure', response);
+      $mdToast.show($mdToast.simple()
+        .content(response.data.error)
+        .position('bottom right')
+        .hideDelay(3000));
+
+
     }
 
 
@@ -141,6 +162,40 @@
 
     function signupFailure(response) {
       console.warn('[auth] signup failure', response);
+    }
+
+
+    /* PASSWORD FORGOT */
+    function forgot(formData) {
+      console.log('[auth] forgot attempt', formData);
+
+      UserFactory.forgot(formData)
+        .then(forgotSuccess, forgotFailure);
+    }
+
+    function forgotSuccess(response) {
+      console.info('[auth] forgot success', response);
+      $state.go(ROUTES.FORGOT_SUCCESS);
+    }
+
+    function forgotFailure(response) {
+      console.warn('[auth] forgot failure', response);
+    }
+
+    /* PASSWORD RESET */
+    function reset(formData) {
+      console.log('[auth] reset attempt', formData);
+      UserFactory.reset(formData, $stateParams.hash)
+        .then(resetSuccess, resetFailure);
+    }
+
+    function resetSuccess(response) {
+      console.info('[auth] reset success', response);
+      $state.go(ROUTES.RESET_SUCCESS);
+    }
+
+    function resetFailure(response) {
+      console.warn('[auth] reset failure', response);
     }
   }
 
