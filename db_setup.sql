@@ -176,7 +176,8 @@ SELECT users.id,
        username,
        email,
        role,
-       password_hash
+       password_hash,
+       enabled
 FROM users;
 
 -- auth table to run authentication queries against (front end only!)
