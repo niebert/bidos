@@ -94,8 +94,8 @@
 
     function authFailure() {
       console.log('%cNOT AUTHORIZED', 'color: green; font-size: 1.2em, padding: 16px;');
-      // $state.go(ROUTES.AUTH_FAILURE);
-      // $location.path('/');
+      $state.go(ROUTES.AUTH_FAILURE);
+      $location.path('/');
     }
 
 
