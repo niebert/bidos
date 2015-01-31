@@ -23,6 +23,13 @@
 
   app.constant('STRINGS', require('./strings'));
 
+  app.config([
+    '$compileProvider',
+    function($compileProvider) {
+      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
+    }
+  ]);
+
   app.run(function($rootScope) {
 
     if (navigator.onLine) {

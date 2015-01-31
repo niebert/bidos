@@ -63,7 +63,7 @@
 		<a style="color:#ffdfe0;text-decoration:none;" href="#">{{ auth | role }} . {{ auth.username }}</a>
 		<span flex></span>
 		<a ng-href="chrome://appcache-internals/" target="_blank" style="color:#ffdfe0;text-decoration:none;">cache</a> &nbsp;.&nbsp;
-		<a style="color:#ffdfe0;text-decoration:none;" href="v1/resources/vanilla" download="bidos-data.json">export</a> &nbsp;.&nbsp;
+		<a style="color:#ffdfe0;text-decoration:none;" href="{{ vm.resourceDownload }}" download="bidos-data-{{ vm.date }}.json">export</a> &nbsp;.&nbsp;
 		<a style="color:#ffdfe0;text-decoration:none;" ui-sref="auth.status">status</a> &nbsp;.&nbsp;
 		<a style="color:#ffdfe0;text-decoration:none;" ui-sref="auth.status">profil</a> &nbsp;.&nbsp;
 		<a style="color:#ffdfe0;text-decoration:none;" href="#" ng-click="vm.logout()">abmelden</a>

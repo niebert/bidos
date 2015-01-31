@@ -14,7 +14,7 @@
       templateUrl: 'bidos-core/bidos-dashboard/bidos-dashboard.html'
     };
 
-    function controllerFn($rootScope, $scope, ResourceService, UserFactory, $state) {
+    function controllerFn($rootScope, $scope, ResourceService, UserFactory, $state, $window) {
 
       $scope.auth = $rootScope.auth;
 
@@ -45,14 +45,24 @@
         })
       };
 
-      angular.extend(this, {
+      var vm = angular.extend(this, {
         colors: colors,
         online: $rootScope.networkStatus === 'online',
         exportData: exportData,
         logout: logout,
         sync: sync,
-        networkStatus: $rootScope.networkStatus
+        networkStatus: $rootScope.networkStatus,
+        date: new Date().toJSON().replace(/[:]/g, '-')
       });
+
+      ResourceService.get()
+        .then(function(resources) {
+          var blob = new Blob([JSON.stringify(resources)], {
+            type: 'application/json'
+          });
+          vm.resourceDownload = ($window.URL || $window.webkitURL)
+            .createObjectURL(blob);
+        });
 
       function sync() {
         ResourceService.sync();
