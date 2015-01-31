@@ -256,6 +256,45 @@
         }
       });
 
+      // practition
+      switch ($rootScope.auth.role) {
+
+        case 0:
+          break;
+
+        case 1:
+          resources.kids = _.flatten(_.chain(data.users)
+            .filter({
+              id: $rootScope.auth.id
+            })
+            .first()
+            .value()
+            .institution.groups.map(function(d) {
+              return d.kids;
+            }));
+
+          resources.groups = _.flatten(_.chain(data.users)
+            .filter({
+              id: $rootScope.auth.id
+            })
+            .first()
+            .value()
+            .institution.groups);
+
+          // resources.observations = _.flatten(_.chain(data.users)
+          //   .filter({
+          //     id: $rootScope.auth.id
+          //   })
+          //   .first()
+          //   .value()
+          //   .institution.groups);
+
+          break;
+
+        case 2:
+          break;
+      }
+
     }
 
     function getResources(sync) {
