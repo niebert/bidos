@@ -23,8 +23,7 @@
     'subdomain',
     'user',
     'idea',
-    'institution',
-    'username'
+    'institution'
   ];
 
   if (routesAreEmpty()) {
