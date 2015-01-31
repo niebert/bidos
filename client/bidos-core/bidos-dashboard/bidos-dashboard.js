@@ -18,35 +18,8 @@
 
       $scope.auth = $rootScope.auth;
 
-      var colors = {
-        a: Please.make_scheme({
-          h: 24,
-          s: 0.3,
-          v: 0.9
-        }, {
-          scheme_type: 'ana',
-          format: 'rgb-string'
-        }),
-        b: Please.make_scheme({
-          h: 60,
-          s: 0.2,
-          v: 0.75
-        }, {
-          scheme_type: 'triadic',
-          format: 'rgb-string'
-        }),
-        c: Please.make_scheme({
-          h: 120,
-          s: 0.2,
-          v: 0.75
-        }, {
-          scheme_type: 'triadic',
-          format: 'rgb-string'
-        })
-      };
-
       var vm = angular.extend(this, {
-        colors: colors,
+        colors: require('../../config').colors,
         online: $rootScope.networkStatus === 'online',
         exportData: exportData,
         logout: logout,
