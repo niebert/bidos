@@ -1,985 +1,138 @@
-html {
-    box-sizing: border-box;
-}
+@import '_color-palette';
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
-@import '_color-palette';
-$bgc1: color($grey, 50);
-$fgc1: color($grey, 1000);
-$toolbarcolor: color($purple, 500);
-// $toolbarcolor: color($purple, 500);
-$debugborder: 1px solid color($red, 500);
-// reusable spacing for stuff
-@mixin spacing {
-    padding: 24px;
-    margin: 16px;
+
+html {
+    box-sizing: border-box;
+    // height: 100vh;
+    // min-height: 100vh;
+    // max-height: 100vh;
 }
-core-toolbar {
-    background-color: #fff;
-}
-.attention-toolbar {
-    background-color: color($red, 300);
-}
-span.header {
-    font-weight: bold;
-}
-.error {
-    color: #e53c14;
-    font-weight: bold;
-    size: 1.2em;
-    padding: 8px;
-    margin: 8px;
-    border: 1px solid #bd2110;
-}
-// .child-toolbar {
-//   background-color: color($green, 200);
-// }
-.item-toolbar {
-    background-color: color($grey, 0);
-}
-.edit-form-field {
-    margin-bottom: 24px;
-}
-.form-error {
-    color: color($red, 500);
-    font-size: 0.8em;
-    line-height: 90%;
-}
-* {
-    // font-family: RobotoDraft, Roboto, sans-serif;
-}
-body {
-    -webkit-font-smoothing: antialiased;
-    // font-family: RobotoDraft, Roboto, sans-serif;
-    font-weight: '300';
-    // color: color($grey, 700);
-    background-color: $bgc1;
-}
-.yes {
-    background-color: color($green, 100);
-}
-.no {
-    background-color: color($red, 100);
-}
-.save-button {
-    background-color: color($blue, 400);
-    color: white;
-    font-weight: 400;
-}
-h2 {
-    font-weight: 400;
-}
-.breadcrumbs {
-    font-size: 0.7em;
-}
-paper-shadow {
-    // margin: 20px;
-}
-core-toolbar {
-    background-color: #fff;
-}
-core-header-panel {
-    background-color: #333;
-}
-core-tooltip::shadow #tooltip {
-    z-index: 5;
-}
-.new-resource-form-overlay {
-    @include spacing;
-    background-color: #fff;
-}
-paper-shadow.item {
-    min-height: 100px;
-    flex-grow: 1;
-    /* default 0 */
-}
-.yesno {
-    text-align: center;
-}
-.unauthorized {
-    margin: 40px;
-    padding: 40px;
-}
-.item-container-sheet {
-    min-height: 100vh;
-}
-.select-item:hover {
-    color: color($indigo, a400);
-}
-// debug box within pre tag
-.debug {
-    background-color: #fff;
-    @include spacing;
-    margin-left: 0;
-    margin-right: 0;
-    // margin-top: 256px;
-    border-top: $debugborder;
-    pre {
-        @include spacing;
-    }
-}
-// detail box w/ pre tag
-.detail {
-    padding: 12px 24px;
-    font-size: 1.1em
-}
-.editMode {
-    color: color($red, a400);
-}
-.selected-behaviour-toolbar {
-    background-color: color($pink, a400) !important;
-}
-.card-container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-    align-content: center;
-}
-.card {
-    flex-grow: 1;
-    min-width: 23%;
-    flex: 1;
-    margin: 12px;
-}
-.card-small {
-    flex-grow: 1;
-    flex: 1;
-    margin: 12px;
-}
-// .behaviour {
-//   min-height: 200px;
-//   margin: 12px;
-// }
-// .behaviour-card-active {
-// }
-// .behaviour-description {
-//   @include spacing;
-// }
-// .example-description {
-//   padding: 24px;
-//   background-color: color($grey, 200);
-//   border-top: 1px solid color($grey, 400);
-// }
-.subdomain {
-    padding-bottom: 2px;
-    flex-direction: row;
-    justify-content: space-around;
-}
-// .item {
-//   flex-grow: 1;
-// }
-// core-item.example {
-//   padding-left: 32px;
-//   margin-left: 32px;
-// }
-.behaviour p {
-    font-size: 1.2em;
-    font-weight: 500;
-}
-.example > p {
-    padding-left: 16px;
-    font-weight: 500;
-}
-// core-toolbar.behaviour {
-//   background-color: color($green, 200);
-// }
-// core-submenu.drawer-menu::shadow #submenu {
-//   margin-left: 60px;
-// }
-/* Polymer: Responsive Side Nav
-   https://www.polymer-project.org/docs/elements/layout-elements.html
-   ------------------------------------------------------------------ */
 
 body {
-    font-family: sans-serif;
+  height: 100%;
 }
-core-header-panel {
-    background: white;
-}
-// core-toolbar {
-//   background-color: color($pink, 300);
-// }
-#navheader {
-    background-color: color($pink, 500);
-}
-.content {
-    padding: 20px;
-}
-/* drawer is always visible on a wide screen
-   so menu button isn't required */
 
-core-drawer-panel:not([narrow]) #navicon {
-    display: none;
+$color1: #333;
+$color2: #ccc;
+$bg-color: #d8f1ff;
+$male-color: #d8f1ff;
+$female-color: #fcedff;
+$bidos-colors: #b72926, #e5bd71, #5f539f, #4b7fa2;
+$group-colors: #cd002b, #f5710b, #0f76b1, #abb609, #fec41e, #e01950, #421244, #1c8b5a, #feee1f, #ff4d2c, #1c99b4, #ff6e2b, #d00d4a, #e6bc0f, #2c672c;
+
+$button-index-size: 2.5rem;
+
+a {
+    text-decoration: none;
+    color: $color2;
 }
-// #drawerPanel {
-//   // ...
-// }
-// core-menu {
-//   line-height: 24px;
-// }
-// core-item {
-//   overflow: visible;
-//   left: 0;
-// }
-.edit-form-label {
-    width: 100px;
-    padding: 0 20px;
+
+body {
+  background-color: #7f7f7f;
 }
-.new-card, .detail-card, .edit-card {
-    margin: 24px;
-    padding: 0; // FIXME
-    &.content {
-        height: 120px;
+
+.male-bg {
+  background-color: $male-color;
+}
+
+.female-bg {
+  background-color: $female-color;
+}
+
+
+/* bidos-styled button */
+
+@for $i from 1 through length($bidos-colors) {
+  .bidos-button#{$i} {
+    border-left: 10px solid nth($bidos-colors, $i);
+    background-color: lighten(nth($bidos-colors, $i), 20);
+    & > * {
+      padding: 1rem;
+      white-space: normal;
+      font-weight: normal;
+      text-transform: none;
+      color: rgba(0, 0, 0, 0.66);
     }
-}
-.item.core-selected {
-    color: #fc4807;
-    font-weight: 500;
-}
-.new-card core-toolbar, .detail-card core-toolbar, .edit-card core-toolbar {
-    background-color: color($orange, a100);
-}
-// .domain,
-// .item,
-// .behaviour,
-// .example {
-//   margin-left: 0;
-//   padding-left: 0;
-// }
-// .subdomain {
-//   margin: 1.8em 1.5em;
-// }
-// .group-input {
-//   margin-bottom: 30px;
-//   margin-left: 10px;
-// }
-// .group-title {
-//   margin-right: 2em;
-//   input {
-//     border: none;
-//   }
-// }
-// .rx-form {
-//   max-width: 500px;
-//   padding: 32px;
-// }
-// .debug {
-//   padding: 50px;
-//   width: 100%;
-// }
-// .sidenav {
-//   height: 100vh;
-// //   min-width: 170px;
-// //   width: 170px;
-// //   .top-row {
-// //     height: 80px;
-// //     background-color: color($teal, 400);
-// //   }
-// }
-// // #main {
-// //   width: 100%;
-// //   .top-row {
-// //     height: 80px;
-// //     background-color: color($teal, 500);
-// //   }
-// // }
-// // .top-right-button {
-// //   float: left;
-// // }
-// // .content {
-// //   margin-left: 20px;
-// // }
-// // // .
-// // // └── html
-// // //     └── body
-// // //         └── app
-// // //             └── main
-// // //                 └── nope
-// // // general
-// // * {
-// //   box-sizing: border-box;
-// //   -moz-box-sizing: border-box;
-// //   -webkit-box-sizing: border-box
-// // }
-// body {
-//   -webkit-font-smoothing: antialiased;
-//   // color: #373737;
-// // display: flex;
-// }
-// // a {
-// //   color: color($indigo, 500);
-// //   text-decoration: none;
-// // }
-// // h2 {
-// //   margin: 0;
-// // }
-// // // custom
-.submit-button {
-    color: color($indigo, 500);
-    float: right;
-    margin-top: 24px;
-}
-// .cancel-button:hover {
-//   color: color($red, 500);
-// }
-// // // containers (2)
-// // #pref {
-// //   padding: 12px 24px;
-// //   float: right;
-// //   height: 100px;
-// //   background-color: #ff7793;
-// //   color: white;
-// //   font-weight: 400;
-// //   width: 100%;
-// //   text-align: right;
-// // }
-// #menu {
-//   background-color: color($grey, 50);
-//   md-sidenav-left {
-//     height: 100vh;
-//   }
-// }
-// #main {
-//   padding: 2em 3em;
-// //   height: 100vh;
-// //   float: left;
-// //   width: 100%;
-// }
-// // #main.unauthorized {
-// //   padding: 8% 0;
-// //   width: 100%;
-// //   .login,
-// //   .signup {
-// //     width: 16em;
-// //     margin: 0 auto;
-// //   }
-// // }
-// // // pure.css
-// html, button, input, select, textarea,
-// .pure-g [class *= "pure-u"] {
-//   /* Set your content font stack here: */
-//   font-family: 'RobotoDraft', sans-serif;
-//   font-weight: '300';
-// }
-// // .l-box {
-// //   // padding: 64px 96px;
-// // }
-// // // forms
-// // div.form {
-// //   max-width: 33%;
-// // }
-// // form {
-// //   // margin: 0 auto;
-// // }
-// // tables
-table {
-    width: 100%;
-}
-thead {
+    & > .index {
+      font-size: $button-index-size;
+    };
+    & > .text {
+      text-align: left;
+      font-size: $button-index-size / 2;
+    };
+  };
+};
+
+/* plain button */
+
+.bidos-button {
+  border-left: 10px $color1;
+  & > * {
+    padding: 1rem;
+    white-space: normal;
+    font-weight: normal;
+    text-transform: none;
+    color: rgba(0, 0, 0, 0.66);
+  }
+  & > .index {
+    font-size: $button-index-size / 2;
+  };
+  & > .text {
     text-align: left;
-}
-th, td {
-    padding: 8px 16px;
-}
-// tbody > td:hover {
-//   background-color: color($indigo, 50);
-// }
-// tr:hover {
-//   background-color: color($pink, 50);
-// }
-th.del {
-    width: 10px;
-}
-td.del:hover {
-    background-color: color($red, 400);
-    color: white;
-}
-.auth {
-    background-color: $bgc1;
-}
-#main {
-    background-color: color($grey, 300);
-}
-pre {
-    font: monospace !important;
-}
-paper-shadow {
-    background-color: #fff;
-}
-// // // polymer
-// // paper-tabs::shadow #selectionBar {
-// //   background-color: color($teal, 300);
-// // }
-// // paper-tabs paper-tab::shadow #ink {
-// //   color: color($teal, 100);
-// // }
-// // paper-button {
-// //   &.create {
-// //     background-color: color($blue, 500);
-// //     color: white;
-// //   }
-// // }
-// // core-item {
-// //   &:hover {
-// //     color: color($blue, 400);
-// //   }
-// //   &.logout:hover {
-// //     color: color($red, 300);
-// //   }
-// // }
-// // // flexbox
-// // .container {
-// //   display: flex;
-// // }
-// // .element {
-// //   order: 1;
-// //   flex: 0 1 auto;
-// // }
-/*
-  We're using CSS transitions for when
-  the enter and move events are triggered
-  for the element that has the .repeated-item
-  class
-*/
+    font-size: $button-index-size / 2;
+  };
+  & > .example {
+    text-align: left;
+    font-size: $button-index-size / 6;
+  };
+};
 
-.repeated-item.ng-enter, .repeated-item.ng-move {
-    -webkit-transition: 0.5s linear all;
-    -moz-transition: 0.5s linear all;
-    -o-transition: 0.5s linear all;
-    transition: 0.5s linear all;
-    opacity: 0;
-}
-/*
- The ng-enter-active and ng-move-active
- are where the transition destination properties
- are set so that the animation knows what to
- animate.
-*/
+@for $i from 1 through length($group-colors) {
+  .group-button#{$i} {
+    border-left: 10px solid nth($group-colors, $i);
+    background-color: lighten(nth($group-colors, $i), 20);
+  };
+  .kid-button#{$i} {
+    background-color: lighten(nth($group-colors, $i), 20);
+  }
+};
 
-.repeated-item.ng-enter.ng-enter-active, .repeated-item.ng-move.ng-move-active {
-    opacity: 1;
+.bidos-button-upper {
+  border-top-left-radius: 3px !important;
+  border-top-right-radius: 3px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
-/*
-  We're using CSS keyframe animations for when
-  the leave event is triggered for the element
-  that has the .repeated-item class
-*/
 
-.repeated-item.ng-leave {
-    -webkit-animation: 0.5s my_animation;
-    -moz-animation: 0.5s my_animation;
-    -o-animation: 0.5s my_animation;
-    animation: 0.5s my_animation;
+.bidos-button-lower {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: 3px !important;
+  border-bottom-right-radius: 3px !important;
 }
-@keyframes my_animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-/*
-  Unfortunately each browser vendor requires
-  its own definition of keyframe animation code...
-*/
 
-@-webkit-keyframes my_animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
+.new-example {
+  position: relative;
+  padding: 32px;
+  height: 20%;
 }
-@-moz-keyframes my_animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-@-o-keyframes my_animation {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-md-input-group > input {
-    width: 100%;
-}
-// SaSS version
-// form > .row {
-//   @include flex-display();
-//   @include flex-align-items(center);
-//   @include flex-direction(row);
-//   > * {
-//     font-size: inherit;
-//     margin: 0 8px;
-//   }
-//   margin-left: -8px;
-// }
-// md-input-group.long {
-//   input {
-//      width : 262px;
-//   }
-// }
-.help {
-    padding: 32px;
-    margin: 32px;
-    text-align: center;
-}
-.scientist-colors {
-    background-color: color($green, a400) !important;
-}
-.practitioner-colors {
-    background-color: color($blue, a400) !important;
-}
-.nfo {
-    width: 50%;
-    border: 1px solid #68b171;
-    margin: 24px;
-}
-md-dialog {
-    width: 90%;
-    height: 90%
-}
-.dialog-sheet {
-    background-color: #fff2e9;
-    border-bottom: 1px solid #A6A6A6;
-    padding: 16px 24px;
-}
-.dialog-header {
-    width: 100%;
-    background-color: #b0d092 !important;
-}
-md-dialog > h2 {
-    margin-right: 0;
-}
-.big {
-    width: 100%;
-    height: 100vh;
-    background-color: #68b171;
-    font-weight: 300;
-    text-transform: none;
-    font-size: 1.4em;
-    -webkit-font-smoothing: antialiased;
-    // font-family: RobotoDraft, Roboto, sans-serif;
-}
-.big {
-    width: 100%;
-    height: 100vh;
-    background-color: #68b171;
-    font-weight: 300;
-    text-transform: none;
-    font-size: 1.3em;
-    -webkit-font-smoothing: antialiased;
-    // font-family: RobotoDraft, Roboto, sans-serif;
-}
-md-progress-linear > div.md-container {
-    z-index: 50134;
-    top: 0;
-    height: 3px;
-}
-.status {
-    font-size: small;
-    padding: 1em;
-    background-color: #edf2ff;
-}
-.md-button.md-default-theme {
-    border-radius: 0;
-}
-.input-group {
-    margin-bottom: 24px;
-}
-md-input-group > label {
-    color: #c0c8e7;
-}
-.error-message {
-    font-size: 0.8em;
-    color: #fc4807;
-    margin-left: 8px;
-}
-.server-error {
-    background-color: #f69279 !important;
-}
-.behaviour-header {
-    border-bottom: 1px solid #42e0ff;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-}
-.behaviour-description {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-}
-.example-description {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    padding-top: 20px;
-}
-.newExample {
-    width: 100%;
-    border: none;
-    border-left: 3px double #2d62ff;
-    padding: 8px;
-    margin: 8px 0;
-}
-.domain {
-    margin-bottom: 32px;
-}
-.item:hover {
-    color: #1d85ff;
-}
-.profile-content {
-    margin-top: 32px;
-}
-.big {
-    width: 100%;
-    height: 100vh;
-    background-color: #68b171;
-    font-weight: 300;
-    text-transform: none;
-    -webkit-font-smoothing: antialiased;
-    // font-family: RobotoDraft, Roboto, sans-serif;
-}
-.preview {
-    padding: 24px;
-}
-.item-header {
-    border-bottom: 1px solid #90d4c0;
-    margin-bottom: 12px;
-    margin-left: 8px;
-    padding-bottom: 12px;
-}
-.behaviour-details {
-    font-size: 0.9em;
-    padding: 0 16px 16px 16px;
-    line-height: 1em;
-}
-p.behaviour-example {
-    margin-top: 0;
-}
-.preview {
-    padding: 24px;
-}
-.status-content {
-    margin-top: 32px;
-}
-.input-group {
-    margin-bottom: 24px;
-}
-md-input-group > label {
-    color: #c0c8e7;
-}
-.error-message {
-    font-size: 0.8em;
-    color: #fc4807;
-    margin-left: 8px;
-}
-.server-error {
-    background-color: #f69279 !important;
-}
-.user-header {
-    border-bottom: 1px solid #90d4c0;
-    margin-bottom: 12px;
-    margin-left: 8px;
-    padding-bottom: 12px;
-}
-.user-details {
-    margin-top: 0;
-    margin-bottom: 64px;
-    font-size: .9em;
-    list-style-type: none;
-    font-weight: 300;
-}
-.deactivated {
-    color: #fc4807;
-}
-/* ANGULAR MATERIAL */
 
-.bidos-observe > md-content > div {
-    padding: 32px;
-}
-/* Have to set height explicity on ui-view
-to prevent collapsing during animation*/
+$textarea-padding: 18px;
 
-.well[ui-view] {
-    height: 65px;
-}
-.ui-view-container {
-    position: relative;
-}
-[ui-view].ng-enter, [ui-view].ng-leave {
+.new-example > button {
     position: absolute;
-    left: 0;
-    right: 0;
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    -o-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
-}
-[ui-view].ng-enter {
-    opacity: 0;
-    // -webkit-transform:scale3d(0.5, 0.5, 0.5);
-    // -moz-transform:scale3d(0.5, 0.5, 0.5);
-    // transform:scale3d(0.5, 0.5, 0.5);
-}
-[ui-view].ng-enter-active {
-    opacity: 1;
-    // -webkit-transform:scale3d(1, 1, 1);
-    // -moz-transform:scale3d(1, 1, 1);
-    // transform:scale3d(1, 1, 1);
-}
-[ui-view].ng-leave {
-    opacity: 1;
-    // -webkit-transform:translate3d(0, 0, 0);
-    // -moz-transform:translate3d(0, 0, 0);
-    // transform:translate3d(0, 0, 0);
-}
-[ui-view].ng-leave-active {
-    opacity: 0;
-    // -webkit-transform:translate3d(10px, 0, 0);
-    // -moz-transform:translate3d(10px, 0, 0);
-    // transform:translate3d(10px, 0, 0);
-}
-full-height {
-    height: 100vh;
-}
-.big-button {
-    padding: 64px 64px;
-    margin: 32px;
-    border: 10px solid #333;
-    &.disabled {
-        border-color: #ccc;
-        color: #ccc;
-    }
-    &.okay {
-        border-color: #52c3d7;
-        color: #52c3d7;
-    }
-}
-.big-button-alt {
-    padding: 32px 32px;
-    margin: 32px;
-    border: 10px solid #333;
-    width: 90%;
-    &.disabled {
-        border-color: #ccc;
-        color: #ccc;
-    }
-    &.okay {
-        border-color: #52c3d7;
-        color: #52c3d7;
-    }
-}
-.big-number {
-    font-size: 15vh;
-}
-.big-text {
-    font-size: 5vh;
-}
-.kid-container {
-    flex-wrap: wrap;
-}
-.kid-card {
-    font-size: 2em;
-    text-align: left;
-    padding: 12px;
-    margin: 12px;
-}
-.search-bar {
-    font-size: 1em;
-    background-color: white !important;
-    color: #333 !important;
-    padding-left: 24px;
-    margin-bottom: -24px;
-    text-overflow: ellipsis !important;
-    overflow: hidden;
-    display: block;
-    width: inherit;
-}
-.small-header {
-    padding-top: 0;
-    font-size: .5em;
-}
-.okay {
-    border-color: rgb(33, 150, 243);
-    // color: #68b171;
-}
-.full-width {
-    margin: 24px;
-    width: 100%;
-}
-md-content > md-toolbar {} $okay-color: #53dbb8;
-$clickme-color: #d15f42;
-// md-content > md-toolbar + div {
-//   background-color: $clickme-color;
-// }
-md-content > md-toolbar + md-content {
-    height: 100vh;
-}
-.mybutton {
-    padding: 24px;
-    margin: 12px 24px;
-    border: 10px solid #333;
-    font-size: 1.6em;
-    white-space: normal;
-}
-.mybutton2 {
-    padding: 24px;
-    margin: 12px 24px;
-    border: 10px solid #333;
-    font-size: 1.2em;
-    white-space: normal;
-}
-.mybutton3 {
-    padding: 16px;
-    margin: 12px 24px;
-    border: 10px solid #333;
-    font-size: 1.1em;
-    white-space: normal;
-}
-.mybutton:first-child {
-    margin-top: 24px;
-}
-.mybutton:last-child {
-    margin-bottom: 24px;
-}
-.smaller-item-buttons {
-    font-size: 1.2em;
-}
-.behaviour-description {
-    font-size: .6em;
-    text-align: center;
-}
-.item-title {
-    font-size: .4em;
-}
-.domain-title {
-    font-size: .4em;
-}
-.subdomain-title {
-    font-size: .4em;
-}
-.choose-help {
-    height: 100%;
-}
-md-whiteframe {
-    background: #fff;
-    margin: 10px 20px;
-    padding: 20px;
-}
-.example-text {
-    font-size: .7em;
-    font-style: italic;
-    padding: 8px;
-    margin: 0;
-    // text-align: center;
-}
-.status-card {
-    padding: 8px;
-    font-size: 0.9em;
-    text-align: center;
-    width: 90%;
-}
-.status-card:first-child {
-    margin-bottom: 3px;
-}
-.status-card:last-child {
-    margin-top: 3px;
-}
-.choice-card {
-    text-align: center;
-}
-.padded {
-    margin: 16px 0;
-    padding: 0;
-}
-.two-cols {} .behaviour-button {
-    margin: 12px 24px;
-    border: 10px solid #333;
-    font-size: 1.2em;
-    white-space: normal;
-}
-.behaviour-text {
-    padding: 12px;
-    font-size: 1em;
-}
-.help-button {
-    width: 100%;
-    text-align: center;
-    vertical-align: center;
-}
-.bold {
-    font-weight: 400;
-}
-span.behaviour {
-    font-weight: 400;
-}
-span.example {
-    font-size: 0.8em;
-}
-span.help {
-    text-align: center;
-}
-.button-card {
-    border: 8px solid #333;
-    text-align: center;
-    font-size: 0.8rem;
-}
-.help-card {
-  border: 8px solid #49ffe6;
-  background-color: #dafffa;
-}
-.selected1 {
-  background-color: #fbd6c9;
-  border-color: #f87854;
-}
-.selected2 {
-  background-color: #faddbe;
-  border-color: #f49843;
-}
-.selected3 {
-  background-color: #d2bbfa;
-  border-color: #711ff9;
-}
-.selected4 {
-  background-color: #bed8fa;
-  border-color: #357bf9;
-}
-.green-button {
-  background-color: #53db5d !important;
-}
-.enabled-row {
-  color: #317f44;
+    bottom: 78px;
+    right: 128px;
+  &:last-child {
+    right: 50px;
+  };
 }
 
-.disabled-row {
-  color: #b42944;
-}
-.superuser-row {
-  color: #b4c6ff;
-}
-
-sheet-background {
-  background-color: #e7e7e7;
-}
-
-sheet-color {
-  background-color: #f5f5f5;
-}
-// .chart {
-//   width: 1184px;
-//   height: 458px;
-// }
-
-.chart-container {
-  width: 82% !important;
-  margin-top: 25px;
-  margin-left: auto;
-  margin-right: auto;
+textarea#input_001, textarea#input_002, textarea#input_003 {
+  padding: 50px 142px 50px 50px;
+  font-size: 1.8rem;
+  font-weight: 300;
 }
