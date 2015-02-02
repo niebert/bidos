@@ -16,54 +16,77 @@
     var Observation = function() {};
     var observation = new Observation();
 
+    if ($state.params.type === undefined) {
+      go();
+    }
+
     return {
       get: get,
       done: done,
-      select: select,
+      reset: reset,
+      select: select, // a.k.a. next
       add: add,
-      go: go,
-      cleanUp: cleanUp
+      remove: remove,
+      go: go
     };
+
+
+    function reset() {
+      return $q(function(resolve) {
+        observation = new Observation();
+        this.go(0);
+        resolve(observation);
+      });
+    }
+
+    function remove(resource) {}
 
     function add(resource) {
       return $q(function(resolve) {
+        var type = resource.type + 's'; // pluralized
         // push into array, create if neccessary
-        (observation[resource.type] = observation[resource.type] || [])
+        (observation[type] = observation[type] || [])
         .push(resource);
-
         resolve(observation);
       });
     }
 
     function cleanUp(resourceTypes) {
       console.log('%ccleaning up ' + JSON.stringify(resourceTypes), 'color: #333; font-weight: 500; font-size: 1.2em;');
+
+      // _.remove(resourceTypes, function(n) { return n.match(/examples|ideas/); });
+
       _.each(resourceTypes, function(type) {
         delete observation[type];
       });
     }
 
-    function go(type) {
-      return $q(function(resolve) {
-        if (arguments.length === 0) {
-          debugger
+
+    function go(resource) {
+
+      // if -1 (not found) go to 1 (start)
+      var i = Math.abs(steps.indexOf($state.params.type));
+
+      if (resource && observation.hasOwnProperty(resource.type)) {
+        i++; // go to next
+      } else {
+        while (!observation.hasOwnProperty(steps[i]) && i > 0) {
+          i--; // go to prev
         }
+      }
 
-        var next = observation.order.slice(observation.order.indexOf(type) + 1, observation.order.length);
-        this.cleanUp(next);
+      console.log('%cGO TO ' + steps[i], 'color: #df5138; font-weight: 500; font-size: 1.2em;', i);
 
-        $state.go('auth.capture.go', {
-          type: type
-        });
-        resolve();
-      }.bind(this));
+      $state.go('auth.capture.go', {
+        type: steps[i]
+      });
     }
 
+
+
     function select(resource) {
-      var type = resource.type;
-      var next = observation.order.slice(observation.order.indexOf(type) + 1, observation.order.length);
-      var forward = next[0];
-      observation[type] = resource;
-      this.go(forward);
+      observation[resource.type] = resource;
+      go(resource);
     }
 
     function get() {
@@ -73,6 +96,7 @@
     }
 
     function done() {
+
       var obs = {
         type: 'observation',
         item_id: observation.item.id,
@@ -85,23 +109,17 @@
         obs.help = observation.help.value;
       }
 
-      _.each(observation.example, function(example) {
-        ResourceService.create({
-            type: 'example',
-            text: example.text,
-            behaviour_id: observation.behaviour.id
-          })
+      _.each(observation.examples, function(example) {
+        example.behaviour_id = observation.behaviour.id;
+        ResourceService.create(example)
           .then(function(response) {
             console.log(response);
           });
       });
 
-      _.each(observation.idea, function(idea) {
-        ResourceService.create({
-            type: 'idea',
-            text: idea.text,
-            behaviour_id: observation.behaviour.id
-          })
+      _.each(observation.ideas, function(idea) {
+        idea.behaviour_id = observation.behaviour.id;
+        ResourceService.create(idea)
           .then(function(response) {
             console.log(response);
           });
@@ -110,7 +128,7 @@
       ResourceService.create(obs)
         .then(function(response) {
           console.log(response);
-          this.go();
+          go();
           observation.reset();
         });
     }

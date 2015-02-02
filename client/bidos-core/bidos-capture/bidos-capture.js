@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular */
+  /* global angular, _ */
 
   angular.module('bidos')
     .directive('bidosCapture', bidosCapture);
@@ -21,62 +21,89 @@
       }
     };
 
-    function controllerFn($state, CaptureService, ResourceService, $mdDialog, $scope, $rootScope, $stateParams, STRINGS) {
+    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, CaptureService, ResourceService, STRINGS) {
 
       var vm = angular.extend(this, {
-        go: go,
         add: add,
+        remove: remove,
+        debug: debug,
+        reset: reset,
         select: select,
+        go: go,
+
         isActive: isActive,
         isDisabled: isDisabled,
+        indexChar: indexChar,
+
         nextExample: nextExample,
+
         kidFilter: kidFilter,
         maxSkill: maxSkill,
-        getChar: getChar,
-        debug: debug
       });
 
-      init();
+      // should happen only once
+      updateViewModel();
 
       function debug() {
         console.log(vm.observation);
-      }
-
-
-      function go(type) {
-        CaptureService.go(type);
-      }
-
-      function init() {
-        // should happen only once
-        CaptureService.get()
-          .then(function(observation) {
-            vm.observation = observation;
-
-            var type = $state.params.type;
-            var order = vm.observation.order;
-            var back = order[order.indexOf(type) - 1];
-            if (back && !vm.observation.hasOwnProperty(back)) {
-              go(back);
-            }
-
-            if (!back) {
-              go('kid');
-            }
-
-            ResourceService.get()
-              .then(function(data) {
-                updateViewModel(data);
-              });
-          });
       }
 
       function add(resource) {
         CaptureService.add(resource)
           .then(function(observation) {
             vm.observation = observation;
+            delete $scope.newStuff;
           });
       }
+
+      function remove(resource) {
+        CaptureService.remove(resource)
+          .then(function(observation) {
+            vm.observation = observation;
+          });
+      }
+
+      function reset() {
+        CaptureService.reset(resource)
+          .then(function(observation) {
+            vm.observation = observation;
+          });
+      }
+
+      function select(resource) {
+        CaptureService.select(resource);
+      }
+
+      function go(type) {
+        CaptureService.go({type:type}); // or at least { type:'whatever' }
+      }
+
+      function updateViewModel() {
+        angular.extend(vm, STRINGS);
+
+        ResourceService.get()
+          .then(function(data) {
+            angular.extend(vm, data);
+          });
+
+        CaptureService.get()
+          .then(function(observation) {
+            vm.observation = observation;
+          });
+      }
+
+      function isActive(type) {
+        return $state.params.type === type ? 'is-active' : '';
+      }
+
+      function isDisabled(type) {
+        return !vm.observation.hasOwnProperty(type) && !this.isActive(type);
+      }
+
+      function indexChar(index) {
+        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[index];
+      }
+
 
       function kidFilter(filterObject) {
         if (!filterObject) {
@@ -114,42 +141,6 @@
           } else {
             behaviour.exId = 0;
           }
-        }
-      }
-
-      function getChar(index) {
-        switch (index) {
-          case 0:
-            return 'A';
-          case 1:
-            return 'B';
-          case 2:
-            return 'C';
-          case 3:
-            return 'D';
-        }
-      }
-
-      function select(resource) {
-        CaptureService.select(resource);
-      }
-
-      function updateViewModel(data) {
-        angular.extend(vm, data);
-        angular.extend(vm, STRINGS);
-      }
-
-      function isActive(type) {
-        return $state.params.type === type;
-      }
-
-      function isDisabled(type) {
-        if (vm.observation.hasOwnProperty(type)) {
-          return false;
-        }
-
-        if (!this.isActive(type)) {
-          return true;
         }
       }
 
