@@ -11,3 +11,5 @@ build
 schema.json
 doc/*
 jspm_packages
+
+npm-debug.log
