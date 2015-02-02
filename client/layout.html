@@ -1,7 +1,5 @@
-<div layout="column" layout-fill>
-	<section layout="row" flex>
-
-
+<div flex layout="column">
+	<section flex layout="row">
 		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-xl')">
 
 			<md-toolbar class="md-theme-indigo">
@@ -17,16 +15,11 @@
 					This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
 				</p>
 			</md-content>
-
 		</md-sidenav>
 
-
-
-		<md-content flex class="" main ui-view="main" id="main">
+		<md-content layout flex main ui-view="main">
 			<!-- DO NOT APPLY MD-PADDING HERE FFS -->
 		</md-content>
-
-
 
 		<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
 			<md-toolbar class="md-theme-light">
@@ -39,7 +32,21 @@
 			</md-content>
 		</md-sidenav>
 
-
-
 	</section>
+
+<!-- 	<section flex flex layout="row">
+		<div flex layout="row" layout-align="space-around center" id="footer-bar">
+			<a href="v1/resources/vanilla" download="bidos-data.json">BiDoS2 v1-rc1</a> &nbsp;.&nbsp;
+			<a href="mailto:rene.wilhelm@gmail.com" download="bidos-data.json">hilfe</a> &nbsp;.&nbsp;
+			<a href="#">{{ vm.networkStatus }}</a> &nbsp;.&nbsp;
+			<a href="#">{{ auth | role }} . {{ auth.username }}</a>
+			<span flex></span>
+			<a ng-href="chrome://appcache-internals/" target="_blank">cache</a> &nbsp;.&nbsp;
+			<a href="{{ vm.resourceDownload }}" download="bidos-data-{{ vm.date }}.json">export</a> &nbsp;.&nbsp;
+			<a ui-sref="auth.status">status</a> &nbsp;.&nbsp;
+			<a ui-sref="auth.status">profil</a> &nbsp;.&nbsp;
+			<a href="#" ng-click="vm.logout()">abmelden</a>
+		</div>
+	</section>
+ -->
 </div>

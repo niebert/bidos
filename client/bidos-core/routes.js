@@ -22,29 +22,7 @@
       url: '/home',
       views: {
         main: {
-          template: '<bidos-dashboard></bidos-dashboard>'
-        }
-      }
-    })
-
-
-    .state('auth.select', {
-      url: '/select/:type',
-      views: {
-        main: {
-          template: function(stateParams) {
-            return '<bidos-select resource="' + stateParams.type + '"></bidos-select>';
-          }
-        }
-      }
-    })
-
-
-    .state('auth.finish-observation', {
-      url: '/finish-observation',
-      views: {
-        main: {
-          template: '<bidos-finish-observation></bidos-finish-observation>'
+          template: '<bidos-dashboard layout flex></bidos-dashboard>'
         }
       }
     })
@@ -54,11 +32,23 @@
       url: '/capture',
       views: {
         main: {
-          template: '<bidos-capture></bidos-capture>'
+          template: '<bidos-capture layout="row" flex></bidos-capture>'
         }
       }
     })
 
+
+    .state('auth.capture.go', {
+      url: '/:type',
+      views: {
+        'capture-main': {
+          template: function(stateParams) {
+            if (_.isEmpty(stateParams)) { stateParams.type = 'kid'; }
+            return '<bidos-capture layout="row" flex type="' + stateParams.type + '"></bidos-capture>';
+          }
+        }
+      }
+    })
 
 
     .state('auth.resources', {
@@ -66,19 +56,8 @@
       views: {
         main: {
           template: function(stateParams) {
-            return '<bidos-resources type="' + stateParams.type + '"></bidos-resources>';
+            return '<bidos-resources layout flex type="' + stateParams.type + '"></bidos-resources>';
           }
-        }
-      }
-    })
-
-
-
-    .state('auth.observe', {
-      url: '/observe',
-      views: {
-        main: {
-          template: '<bidos-observe></bidos-observe>'
         }
       }
     })

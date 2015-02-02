@@ -3,27 +3,33 @@
 
   require('lodash');
 
-  // manage resources
+  // services
   require('./services/ResourceService');
   require('./services/ResourceHelper');
+  require('./services/CaptureService');
+
+  // misc controllers
+  require('./controllers/md-sidenav-controller');
+
+  // resource management
   require('./bidos-resources');
 
   // do observation
-  require('./services/CaptureService');
   require('./bidos-capture');
-  require('./bidos-observe');
-  require('./bidos-select');
-  require('./directives/bidos-select-kid-button');
-  require('./bidos-finish-observation/bidos-finish-observation');
 
+  // user profiles
   require('./bidos-profile');
+
+  // system status
   require('./bidos-status');
 
-  require('./controllers/md-sidenav-controller.js'); // TODO bundle into directive
-
+  // main screen
   require('./bidos-dashboard');
-  require('./bidos-portfolio');
 
+  // charts and stuff
+  require('./bidos-statistics');
+
+  // stuff
   require('./filters');
   require('./routes');
 
