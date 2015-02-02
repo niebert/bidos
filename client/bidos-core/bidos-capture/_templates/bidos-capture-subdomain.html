@@ -1,0 +1,7 @@
+<md-content flex layout="column" layout-padding layout-margin>
+	<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button{{subdomain.domain_id}}" ng-repeat="subdomain in vm.observation.domain.subdomains" ng-click="vm.select(subdomain)">
+		<div flex="20" class="index"> {{ $index + 1 }} </div>
+		<div flex="80" class="text"> {{ subdomain.name }} </div>
+	</md-button>
+</md-content>
+

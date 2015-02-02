@@ -1,0 +1,55 @@
+<md-content layout="column" flex>
+	<md-toolbar>
+		<h2 class="md-toolbar-tools">
+			<md-button ui-sref="auth.home">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<span flex> Beobachtung einstellen </span>
+		</h2>
+	</md-toolbar>
+
+	<div layout="row" flex>
+		<div flex="25" layout-align="space-around start">
+			<div flex layout="column" layout-margin ng-hide="auth.role==2">
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('kid') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('kid')" ng-click="vm.go('kid')" style="background-color:{{vm.colors.firenze[0]}}">
+					Kind <br><small>{{ vm.observation.kid.name }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('domain') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('domain')" ng-click="vm.go('domain')" style="background-color:{{vm.colors.firenze[0]}}">
+					Bereich <br><small>{{ vm.observation.domain.name }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('subdomain') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('subdomain')" ng-click="vm.go('subdomain')" style="background-color:{{vm.colors.firenze[0]}}">
+					Teilbereich <br><small>{{ vm.observation.subdomain.name }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('item') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('item')" ng-click="vm.go('item')" style="background-color:{{vm.colors.firenze[0]}}">
+					Baustein <br><small>{{ vm.observation.item.name }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('behaviour') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('behaviour')" ng-click="vm.go('behaviour')" style="background-color:{{vm.colors.firenze[0]}}">
+					Verhalten <br><small ng-show="vm.observation.behaviour">Niveau: {{ vm.observation.behaviour.niveau }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('help') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('help')" ng-click="vm.go('help')" style="background-color:{{vm.colors.firenze[0]}}">
+					Hilfe <br><small ng-show="vm.observation.help">{{ vm.observation.help.value ? 'Mit Hilfe' : 'Ohne Hilfe' }}</small>
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('examples') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('example')" ng-click="vm.go('examples')" style="background-color:{{vm.colors.firenze[0]}}">
+					Beispiele
+				</md-button>
+
+				<md-button flex class="" md-no-ink ng-class="vm.isActive('idea') ? 'md-primary' : ''" ng-disabled="vm.isDisabled('idea')" ng-click="vm.go('ideas')" style="background-color:{{vm.colors.firenze[0]}}">
+					Ideen
+				</md-button>
+
+			</div>
+
+		</div>
+
+		<md-content layout="row" flex ui-view="capture-main"></md-content>
+	</div>
+
+</md-content>
+

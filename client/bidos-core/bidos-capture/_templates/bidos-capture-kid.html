@@ -1,0 +1,70 @@
+<md-content layout="column" flex>
+	<div layout="row" layout-margin layout-wrap>
+		<md-input-container flex>
+			<label>Namen filtern</label>
+			<input type="text" ng-model="f.name">
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Gruppe {{ f.group.id }}</span>
+			<select ng-model="f.group" ng-options="group.name for group in vm.groups">
+				<option value> --- alle --- </option>
+			</select>
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Geschlecht {{ f.sex }}</span>
+			<select ng-model="f.sex" ng-options="sex.value as sex.text for sex in vm.sexes">
+				<option value=""> --- alle --- </option>
+			</select>
+		</md-input-container>
+
+		<!-- <md-input-container flex>
+			<span>Skill: {{ f.skill }}</span>
+			<md-slider flex min="{{0}}" max="{{vm.maxSkill()}}" ng-model="f.skill" class="md-default"> </md-slider>
+		</md-input-container> -->
+
+		<!-- <md-input-container>
+			<span> Alter.min </span>
+			<select ng-model="minAge">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select>
+		</md-input-container> -->
+
+		<!-- <md-input-container>
+			<span> Alter.max </span>
+			<select ng-model="maxAge">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select>
+		</md-input-container> -->
+	</div>
+
+	<md-content flex layout="column" layout-padding layout-margin ng-repeat="group in vm.groups | filter:f.group">
+		<md-button flex layout="row" layout-style="center center" class="md-raised bidos-button group-button{{group.id%12}}" ng-show="kids.length">
+			<div flex="20" class="index"> </div>
+			<div flex="80" class="text"> {{ group.name }} </div>
+		</md-button>
+		<md-button flex layout="row" layout-style="center center" class="md-raised bidos-button" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(f))" ng-click="vm.select(kid)">
+			<div flex="20" class="text"> </div>
+			<div flex="60" class="text"> {{ kid.name }} </div>
+			<div flex="20" class="text"> </div>
+		</md-button>
+	</md-content>
+</md-content>
+
