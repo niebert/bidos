@@ -1,19 +1,10 @@
 <md-content flex layout="column">
 	<div flex layout="column" layout-fill layout-padding layout-margin layout-style="center center">
-		<md-button flex class="md-raised" ng-click="vm.select(item)">
-			<span class="domain-char">Okay</span>
+		<md-button flex class="md-raised domain-button{{item.subdomain_id}}" ng-click="vm.done()">
+			Speichern
 		</md-button>
-		<md-button flex class="md-raised" ng-click="vm.select(item)">
-			<span class="domain-char">Nicht okay</span>
+		<md-button flex class="md-raised domain-button{{item.subdomain_id}}" ng-click="vm.discard()">
+			Verwerfen
 		</md-button>
 	</div>
-<!-- 	<div flex layout="row" layout-fill layout-padding layout-margin layout-style="center center">
-		<md-button flex class="md-raised" ng-click="vm.select(item)">
-			<span class="domain-char">Okay</span>
-		</md-button>
-		<md-button flex class="md-raised" ng-click="vm.select(item)">
-			<span class="domain-char">Nicht okay</span>
-		</md-button>
-	</div> -->
 </md-content>
-

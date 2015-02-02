@@ -1,13 +1,13 @@
 <md-content layout="row" layout-align="end center" layout-wrap>
 
-	<div flex="100" layout="row" class="new-example">
+	<div flex="100" layout="row" class="new-stuff">
 		<md-input-container flex>
 			<label>Neues Beispiel hinzufügen</label>
-			<textarea ng-model="newExampleText"></textarea>
+			<textarea ng-model="newStuff"></textarea>
 		</md-input-container>
 
-		<md-button ng-disabled="!newExampleText" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newExampleText})"> OK </md-button>
-		<md-button ng-disabled="newExampleText" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> FERTIG </md-button>
+		<md-button ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newStuff})"> OK </md-button>
+		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> FERTIG </md-button>
 	</div>
 
 	<md-content flex="100" layout="column" layout-align="end center" layout-margin layout-padding>

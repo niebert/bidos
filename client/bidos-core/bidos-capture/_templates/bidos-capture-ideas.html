@@ -1,21 +1,21 @@
 <md-content layout="row" layout-align="end center" layout-wrap>
 
-	<div flex="100" layout="row" class="new-example">
+	<div flex="100" layout="row" class="new-stuff">
 		<md-input-container flex>
-			<label>Neues Beispiel hinzufügen</label>
-			<textarea ng-model="newExampleText"></textarea>
+			<label>Neue Idee hinzufügen</label>
+			<textarea ng-model="newStuff"></textarea>
 		</md-input-container>
 
-		<md-button ng-disabled="!newExampleText" class="md-colored md-primary md-raised" ng-click="vm.addExample({type:'example', text:newExampleText})"> OK </md-button>
-		<md-button ng-disabled="newExampleText" class="md-colored md-accent md-raised" ui-sref="auth.capture.select({type:'idea'})"> FERTIG </md-button>
+		<md-button ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'idea', text:newStuff})"> OK </md-button>
+		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('review')"> FERTIG </md-button>
 	</div>
 
 	<md-content flex="100" layout="column" layout-align="end center" layout-margin layout-padding>
-		<md-button flex class="bidos-button" ng-repeat="example in vm.observation.examples | reverse" ng-click="vm.select(subdomain)">
-			<span class="index">{{ vm.observation.examples.length - $index }}</span> {{ example.text }}
+		<md-button flex class="bidos-button" ng-repeat="idea in vm.observation.ideas | reverse" ng-click="vm.select(subdomain)">
+			<span class="index"> {{ vm.observation.ideas.length - $index }} </span> {{ idea.text }}
 		</md-button>
-		<md-button flex class="bidos-button" ng-repeat="example in vm.observation.behaviour.examples | reverse" ng-click="vm.select(subdomain)">
-			<span class="index">{{ $index + 1 }}</span> {{ example.text }}
+		<md-button flex class="bidos-button" ng-repeat="idea in vm.observation.behaviour.ideas | reverse">
+			<span class="index"> {{ vm.observation.behaviour.ideas.length - $index }} </span> {{ idea.text }}
 		</md-button>
 	</md-content>
 

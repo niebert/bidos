@@ -114,7 +114,7 @@ body {
   border-bottom-right-radius: 3px !important;
 }
 
-.new-example {
+.new-stuff {
   position: relative;
   padding: 32px;
   height: 20%;
@@ -122,7 +122,7 @@ body {
 
 $textarea-padding: 18px;
 
-.new-example > button {
+.new-stuff > button {
     position: absolute;
     bottom: 78px;
     right: 128px;
@@ -135,4 +135,25 @@ textarea#input_001, textarea#input_002, textarea#input_003 {
   padding: 50px 142px 50px 50px;
   font-size: 1.8rem;
   font-weight: 300;
+}
+
+.bidos-breadcrumb-button {
+  & > * > * > *, & > * > *, & > * {
+    padding: 0rem;
+    white-space: initial;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.66);
+  }
+}
+
+button.is-active {
+  & > span {
+    color: #139eee;
+  }
+}
+
+button:disabled {
+  & > span {
+    color: rgba(0, 0, 0, 0.20);
+  }
 }
