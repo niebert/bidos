@@ -7,6 +7,60 @@
 
   var app = angular.module('bidos');
 
+  app.filter('reverse', function() {
+    return function(items) {
+      if (!items || !items.length) {
+        return;
+      }
+      return items.slice()
+        .reverse();
+    };
+  });
+
+
+  app.filter('queryFilter', function() {
+    return function(resources, query) {
+
+
+      function ageFilter(age) {
+        if (!query || !query.minAge || !query.maxAge) {
+          return true;
+        }
+        console.log(age + '>=' + query.minAge + '&&' + age + '<=' + query.maxAge + '==' + (age >= query.minAge && age <= query.maxAge));
+        return age >= query.minAge && age <= query.maxAge;
+      }
+
+      function skillFilter(skill) {
+        if (!query || !query.skill) {
+          return true;
+        }
+        console.log(skill, query.skill);
+        return skill >= query.skill;
+      }
+
+      function sexFilter(sex) {
+        if (!query) {
+          return true;
+        }
+        return sex === query.sex;
+      }
+
+      return _.map(resources, function(resource) {
+        var a = [];
+        if (resource.hasOwnProperty('age')) {
+          a.push(ageFilter(resource.age));
+        }
+        if (resource.hasOwnProperty('skill')) {
+          a.push(skillFilter(resource.skill));
+        }
+        if (resource.hasOwnProperty('sex')) {
+          a.push(sexFilter(resource.sex));
+        }
+        return _.all(a);
+      });
+
+    };
+  });
 
   app.filter('status', function() {
     return function(statusId) {
