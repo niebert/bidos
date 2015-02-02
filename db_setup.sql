@@ -509,17 +509,19 @@ INSERT INTO items (subdomain_id, name) VALUES ('20', 'Daten, Häufigkeit, Wahrsc
 INSERT INTO items (subdomain_id, name) VALUES ('21', 'Fachsprache');
 
 
-
-
 INSERT INTO behaviours (item_id, niveau, text) VALUES ('1', '1', 'benennt eigene Emotionen und Fähigkeiten');
 INSERT INTO behaviours (item_id, niveau, text) VALUES ('1', '2', 'stellt Verbindungen zwischen eigenen Emotionen und Situationen her');
 INSERT INTO behaviours (item_id, niveau, text) VALUES ('1', '3', 'stellt Verbindungen zwischen verschiedenen eigenen Emotionen in der gleichen Situation her');
 
 INSERT INTO examples (behaviour_id, text) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, text) VALUES ('1', '"Ich  Kribbeln im Bauch."habe ein ganz komisches (Vorfreude)');
+INSERT INTO examples (behaviour_id, text) VALUES ('1', '"Ich ganz komisches Kribbeln habe ein im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, text) VALUES ('1', '"Ich habe ein ganz komisches Kribbeln im Bauch." (Vorfreude)');
+INSERT INTO examples (behaviour_id, text) VALUES ('1', '"Ich habe  Baibbeln im(Vorfuch." ein ganz komisches Krreude)');
 INSERT INTO examples (behaviour_id, text) VALUES ('2', '"Ich habe da ganz schön weinen müssen, weil ich mir arg weh getan habe."');
+INSERT INTO examples (behaviour_id, text) VALUES ('2', '"Ich hinen müssen, weil ich mirabe da ganz schön we arg weh getan habe."');
+INSERT INTO examples (behaviour_id, text) VALUES ('2', '"Ich hw ganz schön weinen eh getanabe damüssen, weil ich mir arg  habe."');
 INSERT INTO examples (behaviour_id, text) VALUES ('3', 'erzählt, dass es einerseits wütend auf seinen Bruder ist, aber zugleich auch traurig ist wegen des Streits mit ihm.');
-
-
 
 
 INSERT INTO behaviours (item_id, niveau, text) VALUES ('2', '1', '(er-)kennt Ursachen von eigenen Emotionen');
