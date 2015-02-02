@@ -42,27 +42,27 @@
         console.log(vm.observation);
       }
 
-      // should happen only once
 
       function go(type) {
         CaptureService.go(type);
       }
 
       function init() {
+        // should happen only once
         CaptureService.get()
           .then(function(observation) {
             vm.observation = observation;
 
-            _.each(vm.observation.order, function(d) {
-              if ($state.params.type === 'd') {
-                return;
-              }
-              if (!vm.observation.hasOwnProperty(d)) {
-                debugger
-                go(d);
-                return;
-              }
-            });
+            var type = $state.params.type;
+            var order = vm.observation.order;
+            var back = order[order.indexOf(type) - 1];
+            if (back && !vm.observation.hasOwnProperty(back)) {
+              go(back);
+            }
+
+            if (!back) {
+              go('kid');
+            }
 
             ResourceService.get()
               .then(function(data) {

@@ -12,35 +12,12 @@
 
     var Observation = function() {
       function reset() {
-        this.examples = [];
-        this.ideas = [];
       }
 
       this.order = ['kid', 'domain', 'subdomain', 'item', 'behaviour', 'help', 'examples', 'ideas', 'review'];
-      this.current = 0;
-
-      function next() {
-        // var upwardsResources = this.order.slice(0, this.order.indexOf(this.current));
-
-        // _.each(upwardsResources.reverse(), function(d) {
-        //   console.log(upwardsResources, d);
-        //   if (!observation.hasOwnProperty(d)) {
-        //     console.log('%cGO_' + type, 'color: #1d4cbd; font-weight: 500; font-size: 1.2em;', observation);
-        //     this.go(d);
-        //   }
-        // }, this);
-      }
-
-      function prev() {
-        console.log('go to prev');
-      }
 
       return {
-        examples: [],
-        ideas: [],
         reset: reset,
-        next: next,
-        prev: prev,
         order: this.order
       };
     };
@@ -52,7 +29,8 @@
       done: done,
       select: select,
       add: add,
-      go: go
+      go: go,
+      cleanUp: cleanUp
     };
 
     function add(resource) {
@@ -66,6 +44,7 @@
     }
 
     function cleanUp(resourceTypes) {
+      console.log('%ccleaning up ' + JSON.stringify(resourceTypes), 'color: #333; font-weight: 500; font-size: 1.2em;');
       _.each(resourceTypes, function(type) {
         delete observation[type];
       });
@@ -74,28 +53,25 @@
     function go(type) {
       return $q(function(resolve) {
         if (arguments.length === 0) {
-          return;
+          debugger
         }
+
+        var next = observation.order.slice(observation.order.indexOf(type) + 1, observation.order.length);
+        this.cleanUp(next);
+
         $state.go('auth.capture.go', {
           type: type
         });
         resolve();
-      });
+      }.bind(this));
     }
 
     function select(resource) {
-
-      // <-- upwards / downwards -->
       var type = resource.type;
+      var next = observation.order.slice(observation.order.indexOf(type) + 1, observation.order.length);
+      var forward = next[0];
       observation[type] = resource;
-
-      // var downwardsResources = a.slice(a.indexOf(type) + 1, a.length);
-
-      // console.log('%cSEL_' + type, 'color: #1d4cbd; font-weight: 500; font-size: 1.2em;', resource);
-      // console.log('%ccleaning up', 'color: #333; font-weight: 500; font-size: 1.2em;', JSON.stringify(a));
-
-      // cleanUp(downwardsResources);
-
+      this.go(forward);
     }
 
     function get() {
