@@ -209,12 +209,28 @@
         if (!kid.hasOwnProperty('skill')) {
           Object.defineProperty(kid, 'skill', {
             get: function() {
-              return _.chain(this.observations)
+              var skill = _.chain(this.observations)
                 .map('niveau')
                 .reduce(function(sum, n) {
                   return sum + n;
                 })
                 .value();
+                return skill || 0;
+            }
+          });
+        }
+
+        if (!kid.hasOwnProperty('age')) {
+          Object.defineProperty(kid, 'age', {
+            get: function() {
+              var today = new Date();
+              var birthDate = this.bday;
+              var age = today.getFullYear() - birthDate.getFullYear();
+              var m = today.getMonth() - birthDate.getMonth();
+              if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+              }
+              return age;
             }
           });
         }
@@ -306,7 +322,6 @@
               data = response;
               prepareResources();
               resolve(resources);
-              console.info(resources);
             });
         } else {
           resolve(resources);
@@ -358,8 +373,6 @@
             data[response[0].type + 's'].splice(_.findIndex(data[response[0].type + 's'], {
               id: response[0].id
             }), 1, response[0]);
-
-            console.log('update succeeded');
 
             prepareResources();
             resolve(response);
