@@ -3,6 +3,9 @@
 (function() {
   'use strict';
 
+  var steps = require('../../config')
+    .steps;
+
   angular.module('bidos')
     .service('CaptureService', CaptureService);
 
@@ -10,18 +13,7 @@
 
     console.log('%cCAPTURE SERVICE    : ' + $state.params.type, 'color: #333; font-weight: 500; font-size: 1.2em;');
 
-    var Observation = function() {
-      function reset() {
-      }
-
-      this.order = ['kid', 'domain', 'subdomain', 'item', 'behaviour', 'help', 'examples', 'ideas', 'review'];
-
-      return {
-        reset: reset,
-        order: this.order
-      };
-    };
-
+    var Observation = function() {};
     var observation = new Observation();
 
     return {
