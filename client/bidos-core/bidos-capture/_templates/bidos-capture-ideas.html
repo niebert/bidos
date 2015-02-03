@@ -7,7 +7,7 @@
 		</md-input-container>
 
 		<md-button ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'idea', text:newStuff})"> OK </md-button>
-		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('review')"> FERTIG </md-button>
+		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.next()"> FERTIG </md-button>
 	</div>
 
 	<md-content flex="100" layout="column" layout-align="end center" layout-margin layout-padding>

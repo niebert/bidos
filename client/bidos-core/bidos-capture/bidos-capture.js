@@ -2,24 +2,39 @@
   'use strict';
   /* global angular, _ */
 
+  var steps = require('../../config')
+    .steps;
+
   angular.module('bidos')
     .directive('bidosCapture', bidosCapture);
 
   function bidosCapture() {
     return {
       scope: {},
+      controllerAs: 'vm',
       bindToController: true,
       controller: controllerFn,
-      controllerAs: 'vm',
-      templateUrl: function(elem, attrs) {
-        console.log('%cCAPTURE CONTROLLER : ' + (attrs.type || '_'), 'color: #333; font-weight: 500; font-size: 1.2em;');
-        if (attrs.type) {
-          return 'bidos-core/bidos-capture/_templates/bidos-capture-' + attrs.type + '.html';
-        } else {
-          return 'bidos-core/bidos-capture/_templates/bidos-capture.html';
-        }
-      }
+      templateUrl: templateFn,
+      link: linkFn
     };
+
+    function templateFn(elem, attr) {
+      if (attr.type) {
+        return 'bidos-core/bidos-capture/_templates/bidos-capture-' + attr.type + '.html';
+      } else {
+        return 'bidos-core/bidos-capture/_templates/bidos-capture.html';
+      }
+    }
+
+    function linkFn(scope, elem, attr) {
+      if (attr.type) {
+        console.log('%c\nCAPTURE CONTROLLER : ' + (attr.type || '_'), 'color: #161616; font-weight: bolder; font-size: 1.5em;');
+        scope.vm.go(attr.type);
+      } else {
+        console.log('%c\nCAPTURE CONTROLLER : ' + (attr.type || '_'), 'color: #161616; font-weight: bolder; font-size: 1.5em;');
+        scope.vm.start();
+      }
+    }
 
     function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, CaptureService, ResourceService, STRINGS) {
 
@@ -27,9 +42,11 @@
         add: add,
         remove: remove,
         debug: debug,
-        reset: reset,
         select: select,
+        next: next,
         go: go,
+        start: start,
+        done: done,
 
         isActive: isActive,
         isDisabled: isDisabled,
@@ -44,6 +61,14 @@
       // should happen only once
       updateViewModel();
 
+      function done() {
+        CaptureService.done();
+      }
+
+      function next() {
+        CaptureService.next();
+      }
+
       function debug() {
         console.log(vm.observation);
       }
@@ -56,18 +81,12 @@
           });
       }
 
-      function remove(resource) {
-        CaptureService.remove(resource)
-          .then(function(observation) {
-            vm.observation = observation;
-          });
+      function start() {
+        CaptureService.start();
       }
 
-      function reset() {
-        CaptureService.reset(resource)
-          .then(function(observation) {
-            vm.observation = observation;
-          });
+      function remove(resource) {
+        CaptureService.remove(resource);
       }
 
       function select(resource) {
@@ -75,7 +94,9 @@
       }
 
       function go(type) {
-        CaptureService.go({type:type}); // or at least { type:'whatever' }
+        CaptureService.go({
+          type: type
+        });
       }
 
       function updateViewModel() {
@@ -101,7 +122,7 @@
       }
 
       function indexChar(index) {
-        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[index];
+        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' [index];
       }
 
 

@@ -11,7 +11,7 @@
       custom1: ['#f7c6ff', '#fff7b4', '#3a90ff', '#ffc9af', '#c8ffd6']
     },
 
-    steps: ['kid', 'domain', 'subdomain', 'item', 'behaviour', 'help', 'examples', 'ideas', 'review', 'end']
+    steps: ['start', 'kid', 'domain', 'subdomain', 'item', 'behaviour', 'help', 'examples', 'ideas', 'review', 'end']
   };
 
 }());

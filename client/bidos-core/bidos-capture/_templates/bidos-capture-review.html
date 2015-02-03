@@ -1,10 +1,16 @@
 <md-content flex layout="column">
+	<md-whiteframe flex class="domain-button{{item.subdomain_id}}" ng-click="vm.done()">
+		<pre>
+				{{ vm.observation | json}}
+			</pre>
+	</md-whiteframe>
 	<div flex layout="column" layout-fill layout-padding layout-margin layout-style="center center">
 		<md-button flex class="md-raised domain-button{{item.subdomain_id}}" ng-click="vm.done()">
 			Speichern
 		</md-button>
-		<md-button flex class="md-raised domain-button{{item.subdomain_id}}" ng-click="vm.discard()">
+		<md-button flex class="md-raised domain-button{{item.subdomain_id}}" ng-click="vm.start()">
 			Verwerfen
 		</md-button>
 	</div>
 </md-content>
+

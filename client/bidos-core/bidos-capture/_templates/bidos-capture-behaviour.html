@@ -16,17 +16,17 @@
 
 			<div flex="20" layout="column">
 				<div flex layout="column" ng-if="$first">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button bx-centered" ng-click="vm.select(behaviour)">
+					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button bx-centered" ng-click="vm.select({type:'behaviour', niveau:0})">
 						<div flex="80" class="text"> weniger weit entwickelt </div>
 					</md-button>
 				</div>
 				<div flex layout="column" ng-if="$middle">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select(behaviour)">
+					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select({type:'behaviour', niveau:null})">
 						<div flex="80" class="text"> konnte nicht beobachtet werden </div>
 					</md-button>
 				</div>
 				<div flex layout="column" ng-if="$last">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select(behaviour)">
+					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select({type:'behaviour', niveau:0})">
 						<div flex="80" class="text"> weiter entwickelt </div>
 					</md-button>
 				</div>

@@ -44,7 +44,7 @@
         'capture-main': {
           template: function(stateParams) {
             if (_.isEmpty(stateParams)) { stateParams.type = 'kid'; }
-            return '<bidos-capture layout="row" flex type="' + stateParams.type + '"></bidos-capture>';
+            return '<bidos-capture layout="row" flex type="' + stateParams.type + '"></bidos-capture-go>';
           }
         }
       }
