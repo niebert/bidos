@@ -18,6 +18,12 @@
 
   faker.locale = 'de';
 
+  app.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+      .primaryPalette('teal')
+      .accentPalette('amber');
+  });
+
   Array.prototype.rotate = (function() {
     // save references to array functions to make lookup faster
     var push = Array.prototype.push;
