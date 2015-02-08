@@ -55,15 +55,14 @@
 		</md-input-container> -->
 	</div>
 
-	<md-content flex layout="column" layout-padding layout-margin ng-repeat="group in vm.groups | filter:f.group">
-		<md-button flex layout="row" layout-style="center center" class="md-raised bidos-button group-button{{group.id%12}}" ng-show="kids.length">
-			<div flex="20" class="index"> </div>
+	<md-content flex layout="row" layout-align="space-between center" layout-wrap layout-padding layout-margin ng-repeat="group in vm.groups | filter:f.group" layout-fill>
+		<md-button flex="100" layout="row" layout-align="end center" class="bx-institution md-raised bidos-button group-button{{group.id%12}}" ng-show="kids.length" layout-fill>
 			<div flex="80" class="text"> {{ group.name }} </div>
+			<div flex="20" class="index"> {{ group.institution.name }}</div>
 		</md-button>
-		<md-button flex layout="row" layout-style="center center" class="md-raised bidos-button" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(f))" ng-click="vm.select(kid)">
-			<div flex="20" class="text"> </div>
-			<div flex="60" class="text"> {{ kid.name }} </div>
-			<div flex="20" class="text"> </div>
+		<md-button flex="30" layout="row" layout-align="space-around center" class="md-raised bidos-button" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(f))" ng-click="vm.select(kid)" layout-fill ng-class="{'hasObs':kid.observations.length}">
+			<div flex="20" class="text"> {{ kid.age }}</div>
+			<div flex="80" class="text"> {{ kid.name }} </div>
 		</md-button>
 	</md-content>
 </md-content>

@@ -1,183 +1,160 @@
+/* jshint esnext:true */
 /* global angular, _ */
 
 (function() {
   'use strict';
 
-  var steps = require('../../config')
-    .steps;
+  var steps = require('../../config').steps;
 
   angular.module('bidos')
     .service('CaptureService', CaptureService);
 
   function CaptureService($rootScope, ResourceService, $q, $state) {
 
-    var observation = {};
-
-    return {
-      get: get,
-      done: done, // save and reset
-      select: select, // a.k.a. next
-      add: add,
-      next: next,
-      go: go, // go to resource
-      start: start // reset and go
-    };
-
-    function add(resource) {
-      return $q(function(resolve) {
-        var type = resource.type + 's'; // pluralized
-        // push into array, create if neccessary
-        (observation[type] = observation[type] || [])
-        .push(resource);
-        resolve(observation);
-      });
-    }
-
-    function cleanUp(resourceTypes) {
-      console.log('%ccleaning up ' + JSON.stringify(resourceTypes), 'color: #333; font-weight: 500; font-size: 1.2em;');
-
-      // _.remove(resourceTypes, function(n) { return n.match(/examples|ideas/); });
-
-      _.each(resourceTypes, function(type) {
-        delete observation[type];
-      });
-    }
-
-    function start() {
-      observation = {};
-      select({
-        type: 'start',
-        date: new Date(),
-        author: $rootScope.author
-      });
-    }
-
-    function next() {
-      // create empty arrays so go() will not fall back if no examples/ideas
-      // were added
-      switch ($state.params.type) {
-        case 'examples':
-        case 'ideas':
-        if (!observation.hasOwnProperty($state.params.type)) {
-          observation[$state.params.type] = [];
-          break;
-        }
+    class Observation {
+      constructor() {
+        this.stuff = {};
+        this.author_id = $rootScope.auth.id;
       }
 
-      var type = $state.params.type;
-      var i = steps.indexOf(type) + 1;
+      get satisfaction() {
+        var type = $state.params.type;
+        var index = steps.indexOf(type);
+        var deps = steps.slice(0, index + 1);
+        return _.all(deps, type => this.hasOwnProperty(type), this);
+      }
 
-      $state.go('auth.capture.go', {
-        type: steps[i]
+      get steps() {
+        return steps;
+      }
+
+      remove(resource) {
+        if (!resource.hasOwnProperty('type')) {
+          console.warn('resource has no type');
+          return;
+        }
+
+        var types = resource.type + 's'; // pluralize
+
+        if (!this.stuff.hasOwnProperty(types)) {
+          console.warn('observation has no' + types);
+          return;
+        }
+
+        var resourceIndex = this.stuff[types].indexOf(resource);
+
+        return this.stuff[types].splice(resourceIndex, 1);
+      }
+    }
+
+    var o = new Observation();
+
+    return {
+      select: select, // set a resource as selected
+      get: get, // return observation to controller or whatever
+      go: go, // go to resource (go to next w/o arg)
+      reset: reset,
+      add: add
+    };
+
+    function reset() {
+      console.log('resetting observation');
+      return $q(function(resolve) {
+        o = new Observation();
+        $state.go('auth.capture.go', {
+          type: 'start'
+        });
+        resolve(o);
       });
     }
 
-    function go(resource) {
-      console.log(_.keys(observation));
+    function get() {
+      return $q(resolve => resolve(o));
+    }
 
-      if (!resource) {
+
+    function add(resource) {
+      if (!resource.hasOwnProperty('type')) {
+        console.warn('resource has no type');
         return;
       }
 
-      // if -1 (not found) go to 1 (start)
-      var type = resource ? resource.type : $state.params.type; // really?
-      var i = steps.indexOf(type);
+      var types = resource.type + 's'; // pluralize
 
-      console.log('%cRESOURCE ' + JSON.stringify(resource), 'color: #ce2730; font-weight: bolder; font-size: 1.3em;');
+      if (!o.stuff.hasOwnProperty(types)) {
+        o.stuff[types] = [];
+      }
 
-      // console.log('%cGO(' + JSON.stringify(resource) + ')', 'color: #565a5d; font-weight: bolder; font-size: 1.3em;');
-      // console.log('%cUI STATE: ' + $state.params.type, 'color: #1b99d7; font-weight: bolder; font-size: 1.3em;');
-      // console.log('%cYOU ARE HERE: ' + i + ' (' + steps[i] + ')', 'color: #598e24; font-weight: bolder; font-size: 1.3em;');
-      // console.log('%cTYPE: ' + type, 'color: #49e071; font-weight: bolder; font-size: 1.3em;');
-      // console.log('%cSTEPS INDEX OF ' + type + ' ' + steps.indexOf(type), 'color: #3eb9d9; font-weight: bolder; font-size: 1.3em;');
+      // returns length of o.stuff[types]
+      return o.stuff[types].push(resource);
+    }
 
-      // rewind if neccessary
 
-      // if (observation.hasOwnProperty(type)) {
+    function select(resource) {
+      switch (resource.type) {
+        case 'example':
+        case 'idea':
+          o.add(resource);
+          break;
+        default:
+          o[resource.type] = resource;
+      }
+      go();
+    }
+
+    // no arg: go to next step
+    function go(resourceType) {
+      var i = $state.params.type ? steps.indexOf($state.params.type) : 0;
+
+      o.satisfaction ? i++ : i = 0;
+
+      return $state.go('auth.capture.go', {
+        type: resourceType || steps[i]
+      });
+
+
+
+      // var c = currentStep();
+      // var i;
+
+      // console.log('go(' + JSON.stringify(resourceType) + ')');
+
+      // if (o.hasOwnProperty(type)) {
       //   console.log('%c>>', 'color: #ca5f1b; font-weight: bolder; font-size: 1.3em;');
       //   i++; // go to next
       // } else if (steps.indexOf(type) >= i) {
       //   console.log('a');
       //   // must be true for the previous step to not go back
-      //   while (!observation.hasOwnProperty(steps[i - 1]) && i > 0) {
+      //   while (!o.hasOwnProperty(steps[i - 1]) && i > 0) {
       //     console.log('b');
       //     console.log('%c<<', 'color: #ca5f1b; font-weight: bolder; font-size: 1.3em;');
       //     i--; // go one step back
       //   }
       // }
 
-      while (!observation.hasOwnProperty(steps[i - 1]) && i > 0) {
-        console.log('%c<<', 'color: #ca5f1b; font-weight: bolder; font-size: 1.3em;');
-        i--; // go one step back
-      }
 
-      console.log('%cTYPE ' + JSON.stringify(type), 'color: #6c00b1; font-weight: bolder; font-size: 1.3em;');
-      console.log('%cSTEP INDEX ' + JSON.stringify(steps.indexOf(type)), 'color: #184cab; font-weight: bolder; font-size: 1.3em;');
+      // if (!arguments.length) {
 
-      // abort if index hasn't changed
-      if (i === steps.indexOf(type)) {
-        console.log('%cDON\'T MOVE!', 'color: #c9073c; font-weight: bolder; font-size: 1.3em;');
-        return;
-      } else {
-        console.log('%cGO TO: ' + i + ' (' + steps[i] + ')', 'color: #d53223; font-weight: bolder; font-size: 1.3em;');
-      }
+      //   // 1. get current position from $state.params.type
+      //   // 2. check if we need to rewind
+      //   // 3. go there
+      //   // -. dont go anywhere if the current position isnt satisfied
 
-      $state.go('auth.capture.go', {
-        type: steps[i]
-      });
-    }
+      //   i++;
+      //   console.log('current step is', i, steps[i]);
 
-    function select(resource) {
-      observation[resource.type] = resource;
-      next(); // TODO implement optional two-step-selection here
-    }
+      //   // if i is -1 (not found), go to start
+      //   i = i < 0 ? 0 : i;
 
-    function get() {
-      return $q(function(resolve) {
-        resolve(observation);
-      });
-    }
+      // } else {
+      //   i = steps.indexOf(resourceType);
+      // }
 
-    function done() {
+      // console.log('next step is', i, steps[i]);
 
-      var obs = {
-        type: 'observation',
-        item_id: observation.item.id,
-        kid_id: observation.kid.id,
-        user_id: $rootScope.auth.id,
-        niveau: observation.behaviour.niveau
-      };
-
-      debugger
-
-      if (observation.help && observation.help.value) {
-        obs.help = observation.help.value;
-      }
-
-      debugger
-
-      _.each(observation.examples, function(example) {
-        example.behaviour_id = observation.behaviour.id;
-        ResourceService.create(example)
-          .then(function(response) {
-            console.log(response);
-          });
-      });
-
-      _.each(observation.ideas, function(idea) {
-        idea.behaviour_id = observation.behaviour.id;
-        ResourceService.create(idea)
-          .then(function(response) {
-            console.log(response);
-          });
-      });
-
-      ResourceService.create(obs)
-        .then(function(response) {
-          console.log(response);
-          // go();
-          observation.reset();
-        });
+      // $state.go('auth.capture.go', {
+      //   type: steps[i]
+      // });
     }
 
   }

@@ -321,6 +321,7 @@
             .success(function(response) {
               data = response;
               prepareResources();
+              // debugger
               resolve(resources);
             });
         } else {

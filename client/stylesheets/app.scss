@@ -55,9 +55,11 @@ body {
       font-weight: normal;
       text-transform: none;
       color: rgba(0, 0, 0, 0.66);
+      color: rgba(0, 0, 0, 0.66);
     }
     & > .index {
       font-size: $button-index-size;
+      color: rgba(0, 0, 0, 0.50);
     };
     & > .text {
       text-align: left;
@@ -148,7 +150,7 @@ textarea#input_001, textarea#input_002, textarea#input_003 {
 
 button.is-active {
   & > span {
-    color: #139eee;
+    color: #139eee !important;
   }
 }
 
@@ -156,4 +158,41 @@ button:disabled {
   & > span {
     color: rgba(0, 0, 0, 0.20);
   }
+}
+
+span.new-stuff {
+  color: #fc4807;
+}
+
+.review {
+  font-weight: 300;
+  .stuff {
+    padding: 6px 4px;
+    margin: 6px 4px;
+  }
+  .header {
+    font-size: 1.5rem;
+  }
+  .left {
+    font-weight: 500;
+    margin-right: 1rem;
+  }
+  .right {
+    font-weight: 300;
+    margin-left: 1rem;
+  }
+  md-primary {
+    height: 80%;
+  }
+}
+
+.bx-institution {
+  & > .index {
+    font-size: .92rem;
+    text-align: right;
+  }
+}
+
+.hasObs {
+    background-color: darken(#f6f6f6, 50);
 }

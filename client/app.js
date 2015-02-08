@@ -18,11 +18,11 @@
 
   faker.locale = 'de';
 
-  app.config(function($mdThemingProvider) {
+  app.config(['$mdThemingProvider', function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('teal')
-      .accentPalette('amber');
-  });
+      .accentPalette('light-blue');
+  }]);
 
   Array.prototype.rotate = (function() {
     // save references to array functions to make lookup faster
@@ -47,12 +47,9 @@
 
   app.constant('STRINGS', require('./strings'));
 
-  app.config([
-    '$compileProvider',
-    function($compileProvider) {
-      $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
-    }
-  ]);
+  app.config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
+  }]);
 
   app.run(function($rootScope) {
 

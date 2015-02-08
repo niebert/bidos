@@ -1,4 +1,4 @@
-<md-content layout="row" layout-align="end center" layout-wrap>
+<md-content layout="row" layout-align="end center" layout-wrap layout-fill>
 
 	<div flex="100" layout="row" class="new-stuff">
 		<md-input-container flex>
@@ -7,12 +7,12 @@
 		</md-input-container>
 
 		<md-button ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newStuff})"> OK </md-button>
-		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.next()"> FERTIG </md-button>
+		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> FERTIG </md-button>
 	</div>
 
-	<md-content flex="100" layout="column" layout-align="end center" layout-margin layout-padding>
-		<md-button flex class="bidos-button" ng-repeat="example in vm.observation.examples | reverse" ng-click="vm.select(subdomain)">
-			<span class="index"> {{ vm.observation.examples.length - $index }} </span> {{ example.text }}
+	<md-content flex="100" layout="column" layout-margin layout-padding>
+		<md-button flex class="bidos-button" ng-repeat="example in vm.observation.stuff.examples | reverse">
+			<span class="index new-stuff"> {{ vm.observation.stuff.examples.length - $index }} </span> {{ example.text }}
 		</md-button>
 		<md-button flex class="bidos-button" ng-repeat="example in vm.observation.behaviour.examples | reverse">
 			<span class="index"> {{ vm.observation.behaviour.examples.length - $index }} </span> {{ example.text }}

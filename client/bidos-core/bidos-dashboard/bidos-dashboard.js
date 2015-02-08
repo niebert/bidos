@@ -20,12 +20,12 @@
 
       var vm = angular.extend(this, {
         colors: require('../../config').colors,
+        networkStatus: $rootScope.networkStatus,
         online: $rootScope.networkStatus === 'online',
+        date: new Date().toJSON().replace(/[:]/g, '-'),
         exportData: exportData,
         logout: logout,
-        sync: sync,
-        networkStatus: $rootScope.networkStatus,
-        date: new Date().toJSON().replace(/[:]/g, '-')
+        sync: sync // TODO
       });
 
       ResourceService.get()
@@ -37,7 +37,7 @@
             .createObjectURL(blob);
         });
 
-      function sync() {
+      function sync() { // TODO
         ResourceService.sync();
       }
 

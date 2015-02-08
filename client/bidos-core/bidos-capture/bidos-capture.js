@@ -1,9 +1,7 @@
 (function() {
   'use strict';
-  /* global angular, _ */
-
-  var steps = require('../../config')
-    .steps;
+  /* jshint esnext:true */
+  /* global angular, _, document */
 
   angular.module('bidos')
     .directive('bidosCapture', bidosCapture);
@@ -28,12 +26,53 @@
 
     function linkFn(scope, elem, attr) {
       if (attr.type) {
-        console.log('%c\nCAPTURE CONTROLLER : ' + (attr.type || '_'), 'color: #161616; font-weight: bolder; font-size: 1.5em;');
+        console.log('%c\nCAPTURE CONTROLLER : ' + attr.type, 'color: #161616; font-weight: bolder; font-size: 1.5em;');
         scope.vm.go(attr.type);
       } else {
-        console.log('%c\nCAPTURE CONTROLLER : ' + (attr.type || '_'), 'color: #161616; font-weight: bolder; font-size: 1.5em;');
-        scope.vm.start();
+        console.log('%c\nCAPTURE CONTROLLER : _', 'color: #161616; font-weight: bolder; font-size: 1.5em;');
+        if (scope.vm.observation) {
+          console.warn('DOES THIS EVER HAPPEN?');
+          console.log('deleting existing observation');
+          delete scope.vm.observation;
+        } else {
+          console.log('no existing observation');
+        }
+        scope.vm.reset();
       }
+
+      // count watchers
+      (function() {
+        var root = angular.element(document.getElementsByTagName('html'));
+
+        var watchers = [];
+
+        var f = function(element) {
+          angular.forEach(['$scope', '$isolateScope'], function(scopeProperty) {
+            if (element.data() && element.data()
+              .hasOwnProperty(scopeProperty)) {
+              angular.forEach(element.data()[scopeProperty].$$watchers, function(watcher) {
+                watchers.push(watcher);
+              });
+            }
+          });
+
+          angular.forEach(element.children(), function(childElement) {
+            f(angular.element(childElement));
+          });
+        };
+
+        f(root);
+
+        // Remove duplicate watchers
+        var watchersWithoutDuplicates = [];
+        angular.forEach(watchers, function(item) {
+          if (watchersWithoutDuplicates.indexOf(item) < 0) {
+            watchersWithoutDuplicates.push(item);
+          }
+        });
+
+        console.debug('watchers:', watchersWithoutDuplicates.length);
+      })();
     }
 
     function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, CaptureService, ResourceService, STRINGS) {
@@ -41,13 +80,10 @@
       var vm = angular.extend(this, {
         add: add,
         remove: remove,
-        debug: debug,
         select: select,
-        next: next,
         go: go,
+        reset: reset,
         start: start,
-        done: done,
-
         isActive: isActive,
         isDisabled: isDisabled,
         indexChar: indexChar,
@@ -61,42 +97,34 @@
       // should happen only once
       updateViewModel();
 
-      function done() {
-        CaptureService.done();
-      }
-
-      function next() {
-        CaptureService.next();
-      }
-
-      function debug() {
-        console.log(vm.observation);
-      }
-
       function add(resource) {
-        CaptureService.add(resource)
-          .then(function(observation) {
-            vm.observation = observation;
-            delete $scope.newStuff;
-          });
+        CaptureService.add(resource);
+        delete $scope.newStuff;
+      }
+
+      // reset and start over
+      function reset() {
+        CaptureService.reset();
       }
 
       function start() {
-        CaptureService.start();
+        CaptureService.reset();
+        CaptureService.select({
+          type: 'start',
+          value: new Date()
+        });
       }
 
-      function remove(resource) {
-        CaptureService.remove(resource);
+      function remove() {
+        CaptureService.remove();
+      }
+
+      function go(type) {
+        CaptureService.go(type);
       }
 
       function select(resource) {
         CaptureService.select(resource);
-      }
-
-      function go(type) {
-        CaptureService.go({
-          type: type
-        });
       }
 
       function updateViewModel() {
@@ -118,7 +146,9 @@
       }
 
       function isDisabled(type) {
-        return !vm.observation.hasOwnProperty(type) && !this.isActive(type);
+        if (vm.hasOwnProperty('observation')) {
+          return vm.observation.steps.indexOf(type) >= vm.observation.steps.indexOf($state.params.type);
+        }
       }
 
       function indexChar(index) {
@@ -142,7 +172,7 @@
           if (filterObject.hasOwnProperty('sex') && filterObject.sex !== null) {
             a.push(kid.sex === filterObject.sex);
           }
-          console.log(filterObject, _.all(a));
+          // console.slog(filterObject, _.all(a));
           return _.all(a);
         };
       }

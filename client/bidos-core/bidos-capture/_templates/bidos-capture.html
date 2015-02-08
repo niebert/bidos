@@ -12,7 +12,7 @@
 		<div flex="25" layout-align="space-around start">
 			<div flex layout="column" layout-margin ng-hide="auth.role==2">
 
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('start')" ng-disabled="vm.isDisabled('start')" ng-click="vm.go('start')"> Start </md-button>
+				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('start')" ng-disabled="vm.isDisabled('start')" ng-click="vm.reset()"> Start </md-button>
 				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('kid')" ng-disabled="vm.isDisabled('kid')" ng-click="vm.go('kid')"> Kind <br><small>{{ vm.observation.kid.name }}</small> </md-button>
 				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('domain')" ng-disabled="vm.isDisabled('domain')" ng-click="vm.go('domain')"> Bereich <br><small>{{ vm.observation.domain.name }}</small> </md-button>
 				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('subdomain')" ng-disabled="vm.isDisabled('subdomain')" ng-click="vm.go('subdomain')"> Teilbereich <br><small>{{ vm.observation.subdomain.name }}</small> </md-button>
