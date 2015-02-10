@@ -1,69 +1,32 @@
-<md-content layout="column" flex>
-	<div layout="row" layout-margin layout-wrap>
-		<md-input-container flex>
-			<label>Namen filtern</label>
-			<input type="text" ng-model="f.name">
-		</md-input-container>
+<div>
+	<md-toolbar class="md-theme-light">
+		<h1 class="md-toolbar-tools">Welches Kind möchten Sie beobachten?</h1>
+	</md-toolbar>
 
-		<md-input-container flex>
-			<span> Gruppe {{ f.group.id }}</span>
-			<select ng-model="f.group" ng-options="group.name for group in vm.groups">
-				<option value> --- alle --- </option>
-			</select>
-		</md-input-container>
+	<md-content class="md-padding" style="height: 100%;">
+		<md-list ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
+			<md-list ng-show="kids.length">
+				<h2> {{ group.name }} </h2>
+				<md-item class="md-whiteframe-z1" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(filterObject))" ng-click="vm.select(kid)" layout layout-margin layout-padding>
 
-		<md-input-container flex>
-			<span> Geschlecht {{ f.sex }}</span>
-			<select ng-model="f.sex" ng-options="sex.value as sex.text for sex in vm.sexes">
-				<option value=""> --- alle --- </option>
-			</select>
-		</md-input-container>
+					<h3 flex="20"> {{ kid.name }} </h3>
+					<md-item-content flex layout="row" layout-fill layout-wrap>
 
-		<!-- <md-input-container flex>
-			<span>Skill: {{ f.skill }}</span>
-			<md-slider flex min="{{0}}" max="{{vm.maxSkill()}}" ng-model="f.skill" class="md-default"> </md-slider>
-		</md-input-container> -->
+						<div flex="100">
+							Alter: <span class="bx-kid-details-hi">	{{ kid.age }} </span> / Update am: <span class="bx-kid-details-hi"> {{ kid.modified_at | date }} </span>
+						</div>
 
-		<!-- <md-input-container>
-			<span> Alter.min </span>
-			<select ng-model="minAge">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-			</select>
-		</md-input-container> -->
+						<div flex="100">
+							Personal: <span class="bx-kid-details-cat1"> {{ kid.skill[0] || '0' }} </span> / Schrift/Sprache: <span class="bx-kid-details-cat2"> {{ kid.skill[1] || '0'  }} </span> / Sozial: <span class="bx-kid-details-cat3"> {{ kid.skill[2] || '0'  }} </span> / Mathematik: <span class="bx-kid-details-cat4"> {{ kid.skill[3] || '0'  }} </span>
+						</div>
 
-		<!-- <md-input-container>
-			<span> Alter.max </span>
-			<select ng-model="maxAge">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-			</select>
-		</md-input-container> -->
-	</div>
-
-	<md-content flex layout="row" layout-align="space-between center" layout-wrap layout-padding layout-margin ng-repeat="group in vm.groups | filter:f.group" layout-fill>
-		<md-button flex="100" layout="row" layout-align="end center" class="bx-institution md-raised bidos-button group-button{{group.id%12}}" ng-show="kids.length" layout-fill>
-			<div flex="80" class="text"> {{ group.name }} </div>
-			<div flex="20" class="index"> {{ group.institution.name }}</div>
-		</md-button>
-		<md-button flex="30" layout="row" layout-align="space-around center" class="md-raised bidos-button" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(f))" ng-click="vm.select(kid)" layout-fill ng-class="{'hasObs':kid.observations.length}">
-			<div flex="20" class="text"> {{ kid.age }}</div>
-			<div flex="80" class="text"> {{ kid.name }} </div>
-		</md-button>
+						<div flex="100">
+							Beobachtungen: {{ kid.observations.length }}
+						</div>
+					</md-item-content>
+				</md-item>
+			</md-list>
+		</md-list>
 	</md-content>
-</md-content>
+</div>
 

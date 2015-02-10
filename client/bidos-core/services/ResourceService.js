@@ -211,11 +211,11 @@
             get: function() {
               var skill = _.chain(this.observations)
                 .map('niveau')
-                .reduce(function(sum, n) {
-                  return sum + n;
-                })
+                // .reduce(function(sum, n) {
+                //   return sum + n;
+                // })
                 .value();
-                return skill || 0;
+              return skill || [0, 0, 0, 0];
             }
           });
         }
@@ -331,6 +331,10 @@
     }
 
     function createResource(resource) {
+      if (!arguments.length) {
+        return;
+      }
+
       var url = [RESOURCE_PATH, resource.type].join('/');
       return $q(function(resolve) {
 
@@ -339,24 +343,24 @@
 
         $http.post(url, resource)
           .success(function(response) {
-
             _.each(response, function(d) {
               data[d.type + 's'].push(d);
             });
 
             prepareResources();
             resolve(response);
+
             $mdToast.show($mdToast.simple()
               .content('Resource erfolgreich erstellt')
               .position('bottom right')
               .hideDelay(3000));
           })
           .error(function(error) {
+            resolve(error);
             $mdToast.show($mdToast.simple()
               .content(error[0].content.detail)
               .position('bottom right')
-              .hideDelay(5000));
-            resolve(error);
+              .hideDelay(3000));
           });
       });
     }
@@ -371,22 +375,26 @@
         $http.patch(url, resource)
           .success(function(response) {
 
-            data[response[0].type + 's'].splice(_.findIndex(data[response[0].type + 's'], {
-              id: response[0].id
-            }), 1, response[0]);
+            var r = response[0]; // pick the first response data as example
+
+            data[r.type + 's'].splice(_.findIndex(data[r.type + 's'], {
+              id: r.id
+            }), 1, r);
 
             prepareResources();
             resolve(response);
-            $mdToast.show($mdToast.simple()
-              .content('Resource erfolgreich aktualisiert')
-              .position('bottom right')
-              .hideDelay(3000));
+            console.log('%cupdate resource ok: ' + r.type, 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
+            // $mdToast.show($mdToast.simple()
+            //   .content('Resource erfolgreich aktualisiert')
+            //   .position('bottom right')
+            //   .hideDelay(3000));
           })
           .error(function(error) {
-            $mdToast.show($mdToast.simple()
-              .content(error[0].content.detail)
-              .position('bottom right')
-              .hideDelay(5000));
+            // $mdToast.show($mdToast.simple()
+            //   .content(error[0].content.detail)
+            //   .position('bottom right')
+            //   .hideDelay(3000));
+            console.log('%cupdate resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
             resolve(error);
           });
       });
@@ -413,7 +421,7 @@
             $mdToast.show($mdToast.simple()
               .content(error[0].content.detail)
               .position('bottom right')
-              .hideDelay(5000));
+              .hideDelay(3000));
             resolve(error);
           });
       });

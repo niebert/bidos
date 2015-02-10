@@ -1,31 +1,36 @@
-<md-content layout="column" flex>
-	<md-toolbar>
-		<h2 class="md-toolbar-tools">
-			<md-button ui-sref="auth.home">
-				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
-			</md-button>
-			<span flex> Beobachtung einstellen </span>
-		</h2>
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
+	<md-toolbar class="md-theme-light">
+		<h1 class="md-toolbar-tools">Neue Beobachtung</h1>
 	</md-toolbar>
 
-	<div layout="row" flex>
-		<div flex="25" layout-align="space-around start">
-			<div flex layout="column" layout-margin ng-hide="auth.role==2">
+	<div ng-controller="LeftCtrl" class="md-padding" layout="column" layout-align="start center">
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('kid')" ng-disabled="vm.isDisabled('kid')" ng-click="vm.go('kid')">
+			Kind
+			<br>
+			<small>
+						{{ ($root.observation.kid && !vm.isActive('kid')) ? $root.observation.kid.name : 'Bitte wählen Sie ein Kind aus' }}
+					</small>
+		</md-button>
 
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('kid')" ng-disabled="vm.isDisabled('kid')" ng-click="vm.go('kid')"> Kind <br><small>{{ vm.observation.kid.name }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('domain')" ng-disabled="vm.isDisabled('domain')" ng-click="vm.go('domain')"> Bereich <br><small>{{ vm.observation.domain.name }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('subdomain')" ng-disabled="vm.isDisabled('subdomain')" ng-click="vm.go('subdomain')"> Teilbereich <br><small>{{ vm.observation.subdomain.name }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('item')" ng-disabled="vm.isDisabled('item')" ng-click="vm.go('item')"> Baustein <br><small>{{ vm.observation.item.name }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('behaviour')" ng-disabled="vm.isDisabled('behaviour')" ng-click="vm.go('behaviour')"> Verhalten <br><small ng-show="vm.observation.behaviour">Niveau: {{ vm.observation.behaviour.niveau }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('help')" ng-disabled="vm.isDisabled('help')" ng-click="vm.go('help')"> {{ vm.observation.help.value ? 'Mit' : 'Ohne' }} Hilfe <br></md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('examples')" ng-disabled="vm.isDisabled('examples')" ng-click="vm.go('examples')"> Beispiele <br><small ng-show="vm.observation.examples">+{{ vm.observation.examples ? vm.observation.examples.length : '' }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('ideas')" ng-disabled="vm.isDisabled('ideas')" ng-click="vm.go('ideas')"> Ideen <br><small ng-show="vm.observation.ideas">+{{ vm.observation.ideas ? vm.observation.ideas.length : '' }}</small> </md-button>
-				<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('review')" ng-disabled="vm.isDisabled('review')" ng-click="vm.go('review')"> Überprüfen </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('domain')" ng-disabled="vm.isDisabled('domain')" ng-click="vm.go('domain')"> Bereich
+			<br><small>{{ $root.observation.domain.name }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('subdomain')" ng-disabled="vm.isDisabled('subdomain')" ng-click="vm.go('subdomain')"> Teilbereich
+			<br><small>{{ $root.observation.subdomain.name }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('item')" ng-disabled="vm.isDisabled('item')" ng-click="vm.go('item')"> Baustein
+			<br><small>{{ $root.observation.item.name }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('behaviour')" ng-disabled="vm.isDisabled('behaviour')" ng-click="vm.go('behaviour')"> Verhalten
+			<br><small ng-show="$root.observation.behaviour">Niveau: {{ $root.observation.behaviour.niveau }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('help')" ng-disabled="vm.isDisabled('help')" ng-click="vm.go('help')"> {{ $root.observation.help.value ? 'Mit' : 'Ohne' }} Hilfe
+			<br>
+		</md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('examples')" ng-disabled="vm.isDisabled('examples')" ng-click="vm.go('examples')"> Beispiele
+			<br><small ng-show="$root.observation.stuff.examples">+{{ $root.observation.stuff.examples ? $root.observation.stuff.examples.length : '' }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('ideas')" ng-disabled="vm.isDisabled('ideas')" ng-click="vm.go('ideas')"> Ideen
+			<br><small ng-show="$root.observation.stuff.ideas">+{{ $root.observation.stuff.ideas ? $root.observation.stuff.ideas.length : '' }}</small> </md-button>
+		<md-button flex md-no-ink class="bidos-breadcrumb-button" ng-class="vm.isActive('review')" ng-disabled="vm.isDisabled('review')" ng-click="vm.go('review')"> Überprüfen </md-button>
 
-			</div>
-		</div>
-		<md-content layout="row" flex ui-view="capture-main"></md-content>
 	</div>
+</md-sidenav>
 
-</md-content>
+<md-content layout="row" flex ui-view="capture-main"></md-content>
 

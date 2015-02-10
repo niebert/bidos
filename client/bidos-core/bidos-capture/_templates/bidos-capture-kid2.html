@@ -1,0 +1,108 @@
+<md-toolbar class="md-theme-light">
+	<h1 class="md-toolbar-tools"></h1>
+</md-toolbar>
+
+<md-content>
+	<md-list ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
+
+		<h2> Gruppe: {{ group.name }} </h2>
+
+		<md-list class="" ng-show="kids.length">
+			<md-item flex class="kidCard" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(filterObject))" ng-click="vm.select(kid)" layout-fill>
+
+				<h3> {{ kid.name }} </h3>
+				<md-item-content class="kidDetails">
+
+					<p>
+						ID: <span class="bx-kid-details-hi"> {{ kid.id }} </span> / Alter: <span class="bx-kid-details-hi">	{{ kid.age }} </span> / Gruppe: <span class="bx-kid-details-hi"> {{ kid.group.name }} </span> / Update am: <span class="bx-kid-details-hi"> {{ kid.modified_at | date }} </span>
+					</p>
+
+					<p>
+						Personal: <span class="bx-kid-details-cat1"> {{ kid.skill[0] || '0' }} </span> / Schrift/Sprache: <span class="bx-kid-details-cat2"> {{ kid.skill[1] || '0'  }} </span> / Sozial: <span class="bx-kid-details-cat3"> {{ kid.skill[2] || '0'  }} </span> / Mathematik: <span class="bx-kid-details-cat4"> {{ kid.skill[3] || '0'  }} </span>
+					</p>
+
+					<p>
+						Beobachtungen: {{ kid.observations.length }}
+					</p>
+
+				</md-item-content>
+			</md-item>
+		</md-list>
+	</md-list>
+</md-content>
+
+<div layout="column">
+	<div layout="row" layout-margin layout-wrap>
+
+		<md-input-container flex>
+			<label> Filter Name </label>
+			<input type="text" ng-model="filterObject.kidName">
+		</md-input-container>
+
+		<md-input-container flex>
+			<label> Filter ID </label>
+			<input type="text" ng-model="filterObject.kidId">
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Gruppe {{ filterObject.groupId }} </span>
+			<select ng-model="filterObject.groupId" ng-options="group.id as group.name for group in vm.groups">
+				<option value> --- alle --- </option>
+			</select>
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Geschlecht {{ filterObject.kidSex }}</span>
+			<select ng-model="filterObject.kidSex" ng-options="sex.value as sex.text for sex in vm.sexes">
+				<option value=""> --- alle --- </option>
+			</select>
+		</md-input-container>
+
+		<!-- <md-input-container flex>
+			<span>Skill: {{ f.skill }}</span>
+			<md-slider flex min="{{0}}" max="{{vm.maxSkill()}}" ng-model="filterObject.skill" class="md-default"> </md-slider>
+		</md-input-container> -->
+
+		<!-- <md-input-container>
+			<span> Alter.min </span>
+			<select ng-model="minAge">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select>
+		</md-input-container> -->
+
+		<!-- <md-input-container>
+			<span> Alter.max </span>
+			<select ng-model="maxAge">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select>
+		</md-input-container> -->
+	</div>
+<!--
+	<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+		<md-toolbar class="md-theme-light">
+			<h1 class="md-toolbar-tools"></h1>
+		</md-toolbar>
+		<div ng-controller="RightCtrl" class="md-padding">
+			<md-button ng-click="close()" class="md-primary">
+				Close Sidenav Right
+			</md-button>
+		</div>
+	</md-sidenav> -->
+</div>
+

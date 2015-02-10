@@ -1,6 +1,6 @@
-<md-content flex layout="row" class="review">
+<md-content flex layout="row" class="review" layout-wrap layout-padding layout-margin>
 
-	<div flex="85" layout="column">
+	<div flex="100" layout="column">
 		<div>
 			<div flex class="stuff" layout="row">
 				<div flex="25" class="left header" layout="row" layout-align="end center"> Kind </div>
@@ -97,11 +97,11 @@
 		</div>
 	</div>
 
-	<div flex="15" layout="column" layout-padding layout-margin layout-fill layout-align="center center">
-		<md-button flex class="md-raised domain-button md-warn" layout-fill ng-click="vm.select({type:'help', value:false})">
-			Verwefen
+	<div flex="100" layout="row">
+		<md-button flex="50" class="md-raised domain-button md-warn" layout-fill ng-click="vm.start()">
+			Verwerfen
 		</md-button>
-		<md-button flex class="md-raised domain-button md-primary" layout-fill ng-click="vm.select({type:'help', value:true})">
+		<md-button flex="50" class="md-raised domain-button md-primary" layout-fill ng-click="vm.save()">
 			Speichern
 		</md-button>
 	</div>

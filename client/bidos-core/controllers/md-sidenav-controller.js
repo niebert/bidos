@@ -1,4 +1,7 @@
 (function() {
+  'use strict';
+  /* jshint esnext:true */
+  /* global angular */
 
   angular.module('bidos')
     .controller('AppCtrl', AppCtrl)

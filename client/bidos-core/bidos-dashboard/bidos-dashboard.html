@@ -1,9 +1,12 @@
 <md-content flex layout="column">
 
 	<md-toolbar flex="10">
-		<h2 class="md-toolbar-tools">
-        <span>BiDoS</span>
-      </h2>
+		<div class="md-toolbar-tools">
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/design/ic_menu_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<h2> BiDoS </h2>
+		</div>
 	</md-toolbar>
 
 

@@ -19,8 +19,8 @@
     function controller(ResourceService, $mdDialog, STRINGS, $scope, $rootScope) {
       var vm = angular.extend(this, {
         dialog: dialog,
-        createRandomKid: createRandomKid,
-        createRandomObservation: createRandomObservation
+        // createRandomKid: createRandomKid,
+        // createRandomObservation: createRandomObservation
       });
 
       vm.sortOrder = 'id';
@@ -37,59 +37,59 @@
 
       updateViewModel();
 
-      function createRandomKid() {
-        ResourceService.create({
-            type: 'kid',
-            name: faker.name.firstName() + ' ' + faker.name.lastName(),
-            bday: faker.date.between(faker.date.past(15), faker.date.past(10)),
-            sex: faker.random.number({
-              min: 1,
-              max: 2
-            }),
-            religion: faker.random.number({
-              min: 1,
-              max: 4
-            }),
-            hands: faker.random.number({
-              min: 1,
-              max: 3
-            }),
-            group_id: faker.random.number({
-              min: 1,
-              max: 10
-            })
-          })
-          .then(function(data) {
-            updateViewModel(data);
-          });
-      }
+      // function createRandomKid() {
+      //   ResourceService.create({
+      //       type: 'kid',
+      //       name: faker.name.firstName() + ' ' + faker.name.lastName(),
+      //       bday: faker.date.between(faker.date.past(15), faker.date.past(10)),
+      //       sex: faker.random.number({
+      //         min: 1,
+      //         max: 2
+      //       }),
+      //       religion: faker.random.number({
+      //         min: 1,
+      //         max: 4
+      //       }),
+      //       hands: faker.random.number({
+      //         min: 1,
+      //         max: 3
+      //       }),
+      //       group_id: faker.random.number({
+      //         min: 1,
+      //         max: 10
+      //       })
+      //     })
+      //     .then(function(data) {
+      //       updateViewModel(data);
+      //     });
+      // }
 
-      function createRandomObservation() {
-        var observation = {
-          type: 'observation',
-          help: function() {
-            return faker.random.number({
-              min: 0,
-              max: 1
-            }) === 0 ? false : true;
-          },
-          niveau: faker.random.number({
-            min: 0,
-            max: 4
-          })
-        };
+      // function createRandomObservation() {
+      //   var observation = {
+      //     type: 'observation',
+      //     help: function() {
+      //       return faker.random.number({
+      //         min: 0,
+      //         max: 1
+      //       }) === 0 ? false : true;
+      //     },
+      //     niveau: faker.random.number({
+      //       min: 0,
+      //       max: 4
+      //     })
+      //   };
 
-        var item = _.sample(vm.items);
-        observation.item_id = item.id;
+      //   var item = _.sample(vm.items);
+      //   observation.item_id = item.id;
 
-        var kid = _.sample(vm.kids);
-        observation.kid_id = kid.id;
+      //   var kid = _.sample(vm.kids);
+      //   observation.kid_id = kid.id;
 
-        ResourceService.create(observation)
-          .then(function(data) {
-            updateViewModel(data);
-          });
-      }
+      //   ResourceService.create(observation)
+      //     .then(function(data) {
+      //       updateViewModel(data);
+      //     });
+      // }
 
       function dialog(ev, resource) {
         if ($rootScope.auth.role === 2) {

@@ -1,22 +1,24 @@
-<md-content layout="row" layout-align="end center" layout-wrap layout-fill>
+<md-content flex layout-margin layout-padding>
 
-	<div flex="100" layout="row" class="new-stuff">
-		<md-input-container flex>
-			<label>Neue Idee hinzufügen</label>
+	<div flex layout="row" class="newStuffForm" layout-wrap>
+		<md-input-container flex="100" layout-fill>
+			<label>Neues Beispiel hinzufügen</label>
 			<textarea ng-model="newStuff"></textarea>
 		</md-input-container>
 
-		<md-button ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'idea', text:newStuff})"> OK </md-button>
-		<md-button ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('review')"> FERTIG </md-button>
+		<md-button flex="50" ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'idea', text:newStuff})"> Hinzufügen </md-button>
+		<md-button flex="50" ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('review')"> Fertig </md-button>
 	</div>
 
-	<md-content flex="100" layout="column" layout-margin layout-padding>
-		<md-button flex class="bidos-button" ng-repeat="idea in vm.observation.stuff.ideas | reverse">
-			<span class="index new-stuff"> {{ vm.observation.stuff.ideas.length - $index }} </span> {{ idea.text }}
-		</md-button>
-		<md-button flex class="bidos-button" ng-repeat="idea in vm.observation.behaviour.ideas | reverse">
+	<md-content flex layout="column" layout-margin layout-padding>
+		<div class="newStuff" flex layout="row" layout-margin layout-padding ng-repeat="idea in vm.observation.stuff.ideas | reverse">
+			<div flex="20" class="index"> {{ vm.observation.stuff.ideas.length - $index }} </div>
+			<div flex="60"> {{ idea.text }} </div>
+			<div flex="20" class="delete" ng-click="vm.deleteStuff(idea)">Löschen</div>
+		</div>
+		<div flex ng-repeat="idea in vm.observation.behaviour.ideas | reverse">
 			<span class="index"> {{ vm.observation.behaviour.ideas.length - $index }} </span> {{ idea.text }}
-		</md-button>
+		</div>
 	</md-content>
 
 </md-content>

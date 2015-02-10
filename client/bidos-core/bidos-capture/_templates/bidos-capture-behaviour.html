@@ -1,37 +1,44 @@
-<md-content flex layout="row">
+<div>
+	<md-toolbar class="md-theme-light">
+		<h1 class="md-toolbar-tools">Bitte bestimmen sie das Niveau</h1>
+	</md-toolbar>
 
-	<div flex layout="column">
-		<div flex layout="row" layout-padding ng-repeat="behaviour in vm.observation.item.behaviours">
+	<md-list>
+		<md-item class="bidos-button md-whiteframe-z1" ng-repeat="behaviour in vm.observation.item.behaviours" ng-click="vm.select(behaviour)" layout layout-margin layout-padding>
 
-			<div flex="80" layout="column" layout-fill class="index">
-				<md-button flex layout="row" layout-align="center center" layout-fill class="md-raised bidos-button{{behaviour.item.subdomain.domain.id}} bidos-button-upper" ng-click="vm.select(behaviour)">
-					<div flex="20" class="index"> {{ $index + 1 }} </div>
-					<div flex="80" class="text"> {{ behaviour.text }} </div>
-				</md-button>
-				<md-button flex layout="row" layout-align="center center" layout-fill md-no-ink class="md-raised bidos-button bidos-button-lower bidos-example" ng-click="vm.nextExample(behaviour)">
-					<div flex="20" class="index"> Beispiel {{ behaviour.exId + 1 }} </div>
-					<div flex="80" class="text"> {{ behaviour.examples[behaviour.exId || 0].text }} </div>
-				</md-button>
-			</div>
+			<h3 flex="20"> Stufe {{ behaviour.niveau }} </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
 
-			<div flex="20" layout="column">
-				<div flex layout="column" ng-if="$first">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button bx-centered" ng-click="vm.select({type:'behaviour', niveau:0})">
-						<div flex="80" class="text"> weniger weit entwickelt </div>
-					</md-button>
+				<div flex="100"> {{ behaviour.text }} </div>
+
+				<div flex="100" class="example">
+					<span class="bx-kid-details-cat1"> Beispiel {{ behaviour.exId + 1 }}/{{ behaviour.examples.length }}: </span> {{ behaviour.examples[behaviour.exId || 0].text }}
 				</div>
-				<div flex layout="column" ng-if="$middle">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select({type:'behaviour', niveau:null})">
-						<div flex="80" class="text"> konnte nicht beobachtet werden </div>
-					</md-button>
-				</div>
-				<div flex layout="column" ng-if="$last">
-					<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button" ng-click="vm.select({type:'behaviour', niveau:0})">
-						<div flex="80" class="text"> weiter entwickelt </div>
-					</md-button>
-				</div>
-			</div>
-		</div>
 
-</md-content>
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bidos-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:0})" layout layout-margin layout-padding>
+			<h3 flex="20"> noch nicht </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das Verhalten des Kindes ist weniger weit entwickelt als das auf Stufe 1 beschriebene. </div>
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bidos-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:4})" layout layout-margin layout-padding>
+			<h3 flex="20"> weiter </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das Verhalten des Kindes ist weiter entwickelt als das auf Stufe 3 beschriebene. </div>
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bidos-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:4})" layout layout-margin layout-padding>
+			<h3 flex="20"> n/A </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das beschriebene Verhalten konnte bei diesem Kind in keinster Weise beobachtet werden. </div>
+			</md-item-content>
+		</md-item>
+
+	</md-list>
+</div>
 

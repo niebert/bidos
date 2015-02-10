@@ -16,7 +16,7 @@
   require('./auth');
   require('./bidos-core');
 
-  faker.locale = 'de';
+  // faker.locale = 'de';
 
   app.config(['$mdThemingProvider', function($mdThemingProvider) {
     $mdThemingProvider.theme('default')

@@ -10,7 +10,7 @@
   angular.module('bidos')
     .service('CaptureService', CaptureService);
 
-  function CaptureService($rootScope, ResourceService, $q, $state, $mdToast) {
+  function CaptureService($rootScope, ResourceService, $q, $state) {
 
     class Observation {
       constructor() {
@@ -25,8 +25,20 @@
         return _.all(deps, type => this.hasOwnProperty(type), this);
       }
 
-      get steps() {
-        return steps;
+      add(resource) {
+        if (!resource.hasOwnProperty('type')) {
+          console.warn('resource has no type');
+          return;
+        }
+
+        var types = resource.type + 's'; // pluralize
+
+        if (!this.stuff.hasOwnProperty(types)) {
+          this.stuff[types] = [];
+        }
+
+        // returns length of this.stuff[types]
+        return this.stuff[types].push(resource);
       }
 
       remove(resource) {
@@ -54,18 +66,12 @@
       select: select, // set a resource as selected
       get: get, // return observation to controller or whatever
       go: go, // go to resource (go to next w/o arg)
-      reset: reset,
-      add: add,
-      save: save
+      reset: reset
     };
 
     function reset() {
-      console.log('resetting observation');
       return $q(function(resolve) {
         o = new Observation();
-        $state.go('auth.capture.go', {
-          type: 'kid'
-        });
         resolve(o);
       });
     }
@@ -74,24 +80,6 @@
       return $q(resolve => resolve(o));
     }
 
-
-    function add(resource) {
-      if (!resource.hasOwnProperty('type')) {
-        console.warn('resource has no type');
-        return;
-      }
-
-      var types = resource.type + 's'; // pluralize
-
-      if (!o.stuff.hasOwnProperty(types)) {
-        o.stuff[types] = [];
-      }
-
-      // returns length of o.stuff[types]
-      return o.stuff[types].push(resource);
-    }
-
-
     function select(resource) {
       switch (resource.type) {
         case 'example':
@@ -99,7 +87,6 @@
           o.add(resource);
           break;
         default:
-          // debugger
           o[resource.type] = resource;
       }
       go();
@@ -114,48 +101,50 @@
       return $state.go('auth.capture.go', {
         type: resourceType || steps[i]
       });
-    }
 
-    function save() {
 
-      var obs = {
-        type: 'observation',
-        item_id: o.item.id,
-        kid_id: o.kid.id,
-        user_id: $rootScope.auth.id,
-        niveau: o.behaviour.niveau
-      };
 
-      if (o.help && o.help.value) {
-        obs.help = o.help.value;
-      }
+      // var c = currentStep();
+      // var i;
 
-      _.each(o.stuff.examples, function(example) {
-        example.behaviour_id = o.behaviour.id;
-        ResourceService.create(example)
-          .then(function(response) {
-            console.log(response);
-          });
-      });
+      // console.log('go(' + JSON.stringify(resourceType) + ')');
 
-      _.each(o.stuff.ideas, function(idea) {
-        idea.behaviour_id = o.behaviour.id;
-        ResourceService.create(idea)
-          .then(function(response) {
-            console.log(response);
-          });
-      });
+      // if (o.hasOwnProperty(type)) {
+      //   console.log('%c>>', 'color: #ca5f1b; font-weight: bolder; font-size: 1.3em;');
+      //   i++; // go to next
+      // } else if (steps.indexOf(type) >= i) {
+      //   console.log('a');
+      //   // must be true for the previous step to not go back
+      //   while (!o.hasOwnProperty(steps[i - 1]) && i > 0) {
+      //     console.log('b');
+      //     console.log('%c<<', 'color: #ca5f1b; font-weight: bolder; font-size: 1.3em;');
+      //     i--; // go one step back
+      //   }
+      // }
 
-      ResourceService.create(obs)
-        .then(function(response) {
-          console.log(response);
-          $mdToast.show($mdToast.simple()
-            .content('<pre class="resourceSuccess">Beobachtung erfolgreich erstellt</pre>')
-            .position('bottom right')
-            .hideDelay(3000));
 
-          this.reset();
-        }.bind(this));
+      // if (!arguments.length) {
+
+      //   // 1. get current position from $state.params.type
+      //   // 2. check if we need to rewind
+      //   // 3. go there
+      //   // -. dont go anywhere if the current position isnt satisfied
+
+      //   i++;
+      //   console.log('current step is', i, steps[i]);
+
+      //   // if i is -1 (not found), go to start
+      //   i = i < 0 ? 0 : i;
+
+      // } else {
+      //   i = steps.indexOf(resourceType);
+      // }
+
+      // console.log('next step is', i, steps[i]);
+
+      // $state.go('auth.capture.go', {
+      //   type: steps[i]
+      // });
     }
 
   }

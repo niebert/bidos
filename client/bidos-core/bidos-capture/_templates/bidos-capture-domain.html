@@ -1,6 +1,13 @@
-<md-content flex layout="column" layout-padding layout-margin>
-	<md-button flex layout="row" layout-align="center center" class="md-raised bidos-button{{domain.id}}" ng-repeat="domain in vm.domains" ng-click="vm.select(domain)">
-		<div flex="20" class="index"> {{vm.indexChar($index)}} </div>
-		<div flex="80" class="text"> {{ domain.name }} </div>
-	</md-button>
-</md-content>
+<div flex layout="column">
+	<md-toolbar class="md-theme-light">
+		<h1 class="md-toolbar-tools">Welchen Bereich möchten Sie beobachten?</h1>
+	</md-toolbar>
+
+	<md-list flex layout="column">
+		<md-item flex layout layout-margin layout-padding layout-align="center center" class="md-whiteframe-z1 bidos-button{{domain.id}}" ng-repeat="domain in vm.domains" ng-click="vm.select(domain)">
+			<div flex="20" class="index"> {{ $index + 1 }} </div>
+			<div flex="80" class="text"> {{ domain.name }} </div>
+		</md-item>
+	</md-list>
+</div>
+

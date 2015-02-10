@@ -30,13 +30,13 @@
         scope.vm.go(attr.type);
       } else {
         console.log('%c\nCAPTURE CONTROLLER : _', 'color: #161616; font-weight: bolder; font-size: 1.5em;');
-        if (scope.vm.observation) {
-          console.warn('DOES THIS EVER HAPPEN?');
-          console.log('deleting existing observation');
-          delete scope.vm.observation;
-        } else {
-          console.log('no existing observation');
-        }
+        // if (scope.$rootScope.observation) {
+        //   console.warn('DOES THIS EVER HAPPEN?');
+        //   console.log('deleting existing observation');
+        //   delete scope.$rootScope.observation;
+        // } else {
+        //   console.log('no existing observation');
+        // }
         scope.vm.reset();
       }
 
@@ -75,8 +75,7 @@
       })();
     }
 
-    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, CaptureService, ResourceService, STRINGS) {
-
+    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, CaptureService, ResourceService, STRINGS, $mdToast, $mdSidenav) {
       var vm = angular.extend(this, {
         add: add,
         remove: remove,
@@ -87,15 +86,39 @@
         isActive: isActive,
         isDisabled: isDisabled,
         indexChar: indexChar,
-
+        observation: $rootScope.observation,
         nextExample: nextExample,
-
+        deleteStuff: deleteStuff,
         kidFilter: kidFilter,
+        groupFilter: groupFilter,
         maxSkill: maxSkill,
+        toolbarState: $state.params.type,
+        save: save,
+        rightNav: rightNav
       });
+
+      // var toast = $mdToast.build();
+
+      function rightNav() {
+        $mdSidenav('right')
+          .toggle()
+          .then(function() {
+            console.log("toggle RIGHT is done");
+          });
+      }
 
       // should happen only once
       updateViewModel();
+
+      function toolbarState() {}
+
+      function save() {
+        CaptureService.save();
+      }
+
+      function deleteStuff(stuff) {
+        _.remove(vm.observation.stuff[stuff.type + 's'], stuff);
+      }
 
       function add(resource) {
         CaptureService.add(resource);
@@ -113,6 +136,14 @@
           type: 'start',
           value: new Date()
         });
+
+        // $mdToast.show(toast.content('Neue Beobachtung'));
+
+        $mdToast.show($mdToast.simple()
+          .content('Neue Beobachtung gestartet')
+          .position('bottom right')
+          .hideDelay(7000));
+
       }
 
       function remove() {
@@ -132,12 +163,12 @@
 
         ResourceService.get()
           .then(function(data) {
-            angular.extend(vm, data);
+            angular.extend(vm, data); // NOTE the extend
           });
 
         CaptureService.get()
           .then(function(observation) {
-            vm.observation = observation;
+            $rootScope.observation = observation;
           });
       }
 
@@ -146,8 +177,8 @@
       }
 
       function isDisabled(type) {
-        if (vm.hasOwnProperty('observation')) {
-          return vm.observation.steps.indexOf(type) >= vm.observation.steps.indexOf($state.params.type);
+        if ($rootScope.hasOwnProperty('observation')) {
+          return $rootScope.observation.steps.indexOf(type) >= $rootScope.observation.steps.indexOf($state.params.type);
         }
       }
 
@@ -155,6 +186,20 @@
         return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' [index];
       }
 
+      // function escapeRegExp(string) {
+      //   return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+      // }
+
+      // var regex;
+      // $scope.search = '';
+      // $scope.$watch('search', function(value) {
+      //   regex = new RegExp('\\b' + escapeRegExp(value), 'i');
+      // });
+
+      // $scope.filterBySearch = function(name) {
+      //   if (!$scope.search) return true;
+      //   return regex.test(name);
+      // };
 
       function kidFilter(filterObject) {
         if (!filterObject) {
@@ -164,21 +209,53 @@
         return function(kid) {
           var a = [];
 
-          if (filterObject.hasOwnProperty('name') && filterObject.name !== null) {
-            var re = new RegExp(filterObject.name, 'gi');
+          // NOTE: cleared input/select fields set null value to bound variable
+
+          if (filterObject.hasOwnProperty('kidName') && filterObject.kidName !== null) {
+            var re = new RegExp('\\b' + filterObject.kidName, 'i'); // leading word delimiter
             a.push(kid.name.match(re));
           }
 
-          if (filterObject.hasOwnProperty('sex') && filterObject.sex !== null) {
-            a.push(kid.sex === filterObject.sex);
+          if (filterObject.hasOwnProperty('kidId') && filterObject.kidId !== null) {
+            a.push(kid.id === filterObject.kidId);
           }
-          // console.slog(filterObject, _.all(a));
+
+          // 0 == male; 1 == female
+          if (filterObject.hasOwnProperty('kidSex') && filterObject.kidSex !== null) {
+            a.push(kid.sex === filterObject.kidSex);
+          }
+
+          return _.all(a);
+        };
+      }
+
+      function groupFilter(filterObject) {
+        if (!filterObject) {
+          return;
+        }
+
+        return function(group) {
+          var a = []; // wbr
+
+          // NOTE: cleared input/select fields set null value to bound variable
+
+          if (filterObject.hasOwnProperty('groupId') && filterObject.groupId !== null) {
+            a.push(group.id === filterObject.groupId);
+          }
+
+          var kidLength = _.without(group.kids, {
+              id: filterObject.kidId
+            })
+            .length;
+
+          a.push(kidLength);
+          console.log(_.all(a));
           return _.all(a);
         };
       }
 
       function maxSkill() {
-        return _.reduce(vm.observations, function(a, b) {
+        return _.reduce($rootScope.observations, function(a, b) {
           return a + b.niveau;
         });
       }
