@@ -62,7 +62,7 @@
       return $q(function(resolve) {
         o = new Observation();
         $state.go('auth.capture.go', {
-          type: 'start'
+          type: 'kid'
         });
         resolve(o);
       });
