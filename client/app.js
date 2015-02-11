@@ -13,10 +13,11 @@
     // 'ngCordova',
   ]);
 
+  // bidos here
+  require('./core');
   require('./auth');
-  require('./bidos-core');
 
-  // faker.locale = 'de';
+  // TODO clean up the junkyard below
 
   app.config(['$mdThemingProvider', function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
@@ -24,29 +25,10 @@
       .accentPalette('light-blue');
   }]);
 
-  Array.prototype.rotate = (function() {
-    // save references to array functions to make lookup faster
-    var push = Array.prototype.push;
-    var splice = Array.prototype.splice;
-
-    return function(count) {
-      var len = this.length >>> 0; // convert to uint
-      count = count >> 0; // convert to int
-
-      // convert count to value in range [0, len[
-      count = ((count % len) + len) % len;
-
-      // use splice.call() instead of this.splice() to make function generic
-      push.apply(this, splice.call(this, 0, count));
-      return this;
-    };
-  })();
-
   /* Register event listeners to keep track of our network status and make it
   /* available on $rootScope.networkStatus. */
 
-  app.constant('STRINGS', require('./strings'));
-
+  // NOTE neccessary to download json as blob (export fun)
   app.config(['$compileProvider', function($compileProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
   }]);

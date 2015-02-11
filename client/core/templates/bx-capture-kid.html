@@ -1,0 +1,46 @@
+<div layout="column" layout-fill>
+	<md-toolbar flex class="md-theme-light">
+		<h1 class="md-toolbar-tools">Welches Kind beobachten Sie?</h1>
+	</md-toolbar>
+
+    <md-autocomplete
+        md-selected-item="ctrl.selectedItem"
+        md-search-text="ctrl.searchText"
+        md-items="item in ctrl.querySearch(ctrl.searchText)"
+        md-item-text="display"
+        placeholder="What is your favorite US state?">
+      <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
+    </md-autocomplete>
+
+	<md-content style="height: 736px;" class="bx-capture-kid">
+		<section ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
+
+			<md-subheader>
+				<h2>{{ group.name }}</h2>
+			</md-subheader>
+
+			<md-list ng-show="kids.length">
+
+				<md-item class="md-whiteframe-z1" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(filterObject))" ng-click="vm.select(kid)" layout layout-margin layout-padding layout-align="space-between center" layout-wrap>
+
+					<div flex class="bx-capture-kid-name"> {{ kid.name }} </div>
+					<div flex="15" layout layout-align="space-between center">
+						<span class="bx-kid-details-cat1" ng-class="{'noSkill':kid.skill[0] === 0}"> {{ kid.skill[0] }} </span>
+						<span class="bx-kid-details-cat2" ng-class="{'noSkill':kid.skill[1] === 0}"> {{ kid.skill[1] }} </span>
+						<span class="bx-kid-details-cat3" ng-class="{'noSkill':kid.skill[2] === 0}"> {{ kid.skill[2] }} </span>
+						<span class="bx-kid-details-cat4" ng-class="{'noSkill':kid.skill[3] === 0}"> {{ kid.skill[3] }} </span>
+					</div>
+					<!--
+					<div flex="55">
+						Update am: <span class="bx-kid-details-hi"> {{ kid.modified_at | date }} </span> /
+						Beobachtungen: <span class="bx-kid-details-hi"> {{ kid.observations.length }} </span>
+					</div>
+ -->
+
+				</md-item>
+
+			</md-list>
+		</section>
+	</md-content>
+</div>
+

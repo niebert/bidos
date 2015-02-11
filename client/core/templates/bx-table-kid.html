@@ -1,0 +1,50 @@
+<md-content layout="column" flex>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="bx.home">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<h2 flex>Kinder</h2>
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+			<md-button ng-click="vm.createRandomKid()">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/social/svg/production/ic_plus_one_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-toolbar class="search-bar">
+		<span class="md-toolbar-tools">
+			<md-input-container flex>
+			  <label>Namen filtern</label>
+			  <input type="text" ng-model="query">
+			</md-input-container>
+		</span>
+	</md-toolbar>
+
+	<md-content flex style="height:632px;">
+		<table style="width: 100%;">
+			<thead>
+				<th ng-click="vm.sortOrder='id'; reverse=!reverse">ID</th>
+				<th ng-hide="bx.role==2" ng-click="vm.sortOrder='name'; reverse=!reverse">Name</th>
+				<th ng-hide="bx.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtstag</th>
+				<th ng-show="bx.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtsjahr</th>
+				<th ng-click="vm.sortOrder='sex'; reverse=!reverse">Geschlecht</th>
+				<th ng-click="vm.sortOrder='group_id'; reverse=!reverse">Gruppe</th>
+				<th ng-click="vm.sortOrder='created_at'; reverse=!reverse">erstellt</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="kid in vm.kids | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
+					<td> {{ kid.id }} </td>
+					<td ng-hide="bx.role==2"> {{ kid.name }} </td>
+					<td ng-hide="bx.role==2"> {{ kid.bday | date }} </td>
+					<td ng-show="bx.role==2"> {{ kid.bday | date:'yyyy' }} </td>
+					<td> {{ kid | sex }} </td>
+					<td> {{ kid | group }} </td>
+					<td> {{ kid.created_at | date }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</md-content>
+</md-content>

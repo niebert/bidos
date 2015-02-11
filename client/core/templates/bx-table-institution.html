@@ -1,0 +1,46 @@
+<md-content layout="column" flex>
+	<md-toolbar>
+		<h2 class="md-toolbar-tools">
+			<md-button ui-sref="bx.home">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<span flex>Institutionen</span>
+
+			<md-button ng-click="vm.dialog($event, {type:'institution'})">
+				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</h2>
+	</md-toolbar>
+
+
+	<md-toolbar class="search-bar padded">
+		<span class="md-toolbar-tools">
+			<md-input-container flex>
+			  <label>Suche</label>
+			  <input type="text" ng-model="query">
+			</md-input-container>
+		</span>
+	</md-toolbar>
+
+
+	<md-content flex style="height:632px;">
+		<table style="width: 100%;">
+			<thead>
+				<th ng-click="predicate='id'; reverse=!reverse"> ID </th>
+				<th ng-click="predicate='name'; reverse=!reverse"> Name </th>
+				<th ng-click="predicate='created_at'; reverse=!reverse"> Erstellt am </th>
+				<th ng-click="predicate='updated_at'; reverse=!reverse"> Bearbeitet am </th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="institution in vm.institutions | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, institution)">
+					<td> {{ institution.id }} </td>
+					<td> {{ institution.name }} </td>
+					<td> {{ institution.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+					<td> {{ institution.modified_at | date:'dd.MM.yyyy HH:mm' }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</md-content>
+</md-content>
+

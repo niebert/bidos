@@ -1,0 +1,44 @@
+<div>
+	<md-toolbar class="md-theme-light">
+		<h1 class="md-toolbar-tools">Bitte bestimmen sie das Niveau</h1>
+	</md-toolbar>
+
+	<md-list>
+		<md-item class="bx-button md-whiteframe-z1" ng-repeat="behaviour in vm.observation.item.behaviours" ng-click="vm.select(behaviour)" layout layout-margin layout-padding>
+
+			<h3 flex="20"> Stufe {{ behaviour.niveau }} </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+
+				<div flex="100"> {{ behaviour.text }} </div>
+
+				<div flex="100" class="example">
+					<span class="bx-kid-details-cat1"> Beispiel {{ behaviour.exId + 1 }}/{{ behaviour.examples.length }}: </span> {{ behaviour.examples[behaviour.exId || 0].text }}
+				</div>
+
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bx-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:0})" layout layout-margin layout-padding>
+			<h3 flex="20"> noch nicht </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das Verhalten des Kindes ist weniger weit entwickelt als das auf Stufe 1 beschriebene. </div>
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bx-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:4})" layout layout-margin layout-padding>
+			<h3 flex="20"> weiter </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das Verhalten des Kindes ist weiter entwickelt als das auf Stufe 3 beschriebene. </div>
+			</md-item-content>
+		</md-item>
+
+		<md-item class="bx-button md-whiteframe-z1" ng-click="vm.select({type:'behaviour', niveau:4})" layout layout-margin layout-padding>
+			<h3 flex="20"> n/A </h3>
+			<md-item-content flex layout="row" layout-fill layout-wrap>
+				<div flex="100"> Das beschriebene Verhalten konnte bei diesem Kind in keinster Weise beobachtet werden. </div>
+			</md-item-content>
+		</md-item>
+
+	</md-list>
+</div>
+

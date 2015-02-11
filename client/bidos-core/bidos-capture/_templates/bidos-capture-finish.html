@@ -1,8 +1,0 @@
-<md-content flex layout="column">
-	<div flex layout="column" layout-fill layout-padding layout-margin layout-align="center center">
-		<md-button flex class="md-raised domain-button{{subdomain.domain_id}}" ng-repeat="example in vm.observation.behaviour.examples" ng-click="vm.observation.select(subdomain)">
-			<span class="domain-char">{{ $index + 1 }}</span> {{ example.text }}
-		</md-button>
-	</div>
-</md-content>
-

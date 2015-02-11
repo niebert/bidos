@@ -8,8 +8,7 @@
   require('lodash');
   require('./services');
 
-  var roles = require('../strings')
-    .roles;
+  var roles = require('../config').roles;
 
   angular.module('auth.controller', [])
     .controller('AuthController', AuthController);

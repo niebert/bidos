@@ -1,0 +1,46 @@
+<md-content layout="column" flex>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="bx.home">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+
+			<h2 flex>Gruppen</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'group'})">
+				<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-toolbar class="search-bar padded">
+		<span class="md-toolbar-tools">
+			<md-input-container flex>
+			  <label>Suche</label>
+			  <input type="text" ng-model="query">
+			</md-input-container>
+		</span>
+	</md-toolbar>
+
+	<md-content flex style="height:632px;">
+		<table style="width: 100%;">
+			<thead>
+				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
+				<th ng-click="predicate='name'; reverse=!reverse">Name</th>
+				<th ng-click="predicate='institution_id'; reverse=!reverse">Institution</th>
+				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
+				<th ng-click="predicate='created_at'; reverse=!reverse">Bearbeitet</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="group in vm.groups | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, group)">
+					<td> {{ group.id }} </td>
+					<td> {{ group.name }} </td>
+					<td> {{ group | institution }} </td>
+					<td> {{ group.created_at | date }} </td>
+					<td> {{ group.modified_at | date }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</md-content>
+</md-content>
+

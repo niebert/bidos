@@ -8,6 +8,7 @@
   var concat = require('gulp-concat');
   var nodemon = require('gulp-nodemon');
   var traceur = require('gulp-traceur');
+  var rename = require('gulp-rename');
   var browserify = require('browserify');
   var prefix = require('gulp-autoprefixer');
   var transform = require('vinyl-transform');
@@ -44,15 +45,16 @@
       .pipe(browserified)
       .pipe(ngAnnotate())
       .pipe(traceur())
+      .pipe(rename('bidos.js'))
       .pipe(gulp.dest(targetDir))
       .pipe(uglify())
-      .pipe(concat('app.min.js'))
+      .pipe(concat('bidos.min.js'))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(targetDir));
   }
 
   function stylesheets() {
-    return sass(sourceDir + 'stylesheets/app.scss')
+    return sass(sourceDir + 'stylesheets/bidos.scss')
       .on('error', function(err) {
         console.error(err.message);
       })
@@ -74,7 +76,7 @@
         env: {
           NODE_ENV: 'development'
         }, // FIXME deprecated -> yargs, minimist
-        nodeArgs: ['--harmony']
+        nodeArgs: ['--harmony'] // FIXME remove?
       })
       .on('change', function() {
         console.log(chalk.red.bold('>> server restart ') + chalk.white.bold(new Date()));
