@@ -23,7 +23,7 @@ $female-color: #fcedff;
 $bidos-colors: #b72926, #e5bd71, #5f539f, #4b7fa2;
 $group-colors: #cd002b, #f5710b, #0f76b1, #abb609, #fec41e, #e01950, #421244, #1c8b5a, #feee1f, #ff4d2c, #1c99b4, #ff6e2b, #d00d4a, #e6bc0f, #2c672c;
 
-$button-index-size: 2.5rem;
+$button-index-size: 1rem;
 
 a {
     text-decoration: none;
@@ -48,22 +48,17 @@ body {
 @for $i from 1 through length($bidos-colors) {
   .bidos-button#{$i} {
     border-left: 10px solid nth($bidos-colors, $i);
-    background-color: lighten(nth($bidos-colors, $i), 20);
-    & > * {
-      padding: 1rem;
-      white-space: normal;
-      font-weight: normal;
-      text-transform: none;
-      color: rgba(0, 0, 0, 0.66);
-      color: rgba(0, 0, 0, 0.66);
-    }
+    color: lighten(nth($bidos-colors, $i), 20);
+
+    /* domain/subdomain/item buttons */
     & > .index {
-      font-size: $button-index-size;
+      text-align: center;
+      font-size: $button-index-size * 2;
       color: rgba(0, 0, 0, 0.50);
     };
     & > .text {
       text-align: left;
-      font-size: $button-index-size / 2;
+      font-size: $button-index-size * 1.4;
     };
   };
 };
@@ -71,7 +66,7 @@ body {
 /* plain button */
 
 .bidos-button {
-  border-left: 10px $color1;
+    border-left: 10px solid lighten($color1, 20);
   & > * {
     padding: 1rem;
     white-space: normal;
@@ -80,15 +75,18 @@ body {
     color: rgba(0, 0, 0, 0.66);
   }
   & > .index {
-    font-size: $button-index-size / 2;
+    font-size: $button-index-size * 2;
   };
   & > .text {
     text-align: left;
-    font-size: $button-index-size / 2;
+    font-size: $button-index-size;
+  };
+  & > .example-index {
+    font-size: $button-index-size;
   };
   & > .example {
     text-align: left;
-    font-size: $button-index-size / 6;
+    font-size: $button-index-size;
   };
 };
 
@@ -114,12 +112,6 @@ body {
   border-top-right-radius: 0 !important;
   border-bottom-left-radius: 3px !important;
   border-bottom-right-radius: 3px !important;
-}
-
-.new-stuff {
-  position: relative;
-  padding: 32px;
-  height: 20%;
 }
 
 $textarea-padding: 18px;
@@ -190,9 +182,42 @@ span.new-stuff {
   & > .index {
     font-size: .92rem;
     text-align: right;
+    padding-right: .92rem;
   }
 }
 
 .hasObs {
-    background-color: darken(#f6f6f6, 50);
+    // background-color: darken(#acd3ba, 10);
+}
+
+.kidCard > h3 {
+  margin: 24px 0px 4px 0px;
+}
+.kidDetails > p {
+  font-size: 0.92rem;
+  margin: 0px 2px;
+}
+
+.newStuff {
+  .index {
+    color: #e53c14;
+  }
+  .delete {
+    background-color: #fc4807;
+    font-weight: bold;
+    color: #fcf3e3;
+    text-align: center;
+  }
+}
+
+.resourceSuccess {
+  color: #e53c14;
+}
+
+.contentContainer {
+  margin: 24px;
+}
+
+.example {
+  margin-top: 16px;
 }
