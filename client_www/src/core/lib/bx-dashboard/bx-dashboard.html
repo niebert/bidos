@@ -1,0 +1,24 @@
+<md-content flex>
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button ng-click="vm.dialog($event, {type:'kid'})" flex>
+				<h2> BiDoS </h2>
+			</md-button>
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				{{ vm.networkStatus }}
+			</md-button>
+		</div>
+	</md-toolbar>
+
+	<md-grid-list md-cols="4" md-gutter="1em" md-row-height="fit" style="height:696px;">
+		<md-grid-tile md-colspan="{{tile.colSpan[0]}}" md-colspan-sm="{{tile.colSpan[1]}}" md-colspan-md="{{tile.colSpan[2]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.menu" class="bx-tile{{$index+1}}">
+			<span class="tileText">{{ tile.shortText }}</span>
+		</md-grid-tile>
+		<!-- <md-grid-tile md-colspan="0" md-colspan-sm="0" md-colspan-md="0" ng-click="" class="bx-tile">
+			{{ vm.networkStatus }}
+		</md-grid-tile> -->
+	</md-grid-list>
+
+</md-content>
+

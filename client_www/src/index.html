@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- manifest="build/manifest.appcache" -->
+<html ng-app="bidos" ng-strict-di>
+
+<head>
+	<title>BiDoS</title>
+	<meta charset="utf-8" />
+	<meta name="google" content="notranslate" />
+	<meta name="description" content="bidos/server" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="msapplication-tap-highlight" content="no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<!-- RobotoDraft:400,500,700,400italic -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=RobotoDraft:400" rel="stylesheet" type="text/css"> -->
+
+	<link rel="stylesheet" href="lib/angular-material/angular-material.css" />
+	<link rel="stylesheet" href="bidos.css" />
+</head>
+
+<body ng-controller="AuthController as auth">
+
+	<!-- single entry point to layout.html -->
+	<div id="layout" ui-view layout layout-fill>
+		<md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate">
+		</md-progress-circular>
+	</div>
+
+	<!-- Tools -->
+	<script src="lib/lodash/lodash.js"></script>
+	<script src="lib/Chart.js/Chart.js"></script>
+	<script src="lib/hammerjs/hammer.js"></script>
+	<script src="lib/traceur/traceur.js"></script>
+
+	<!-- Angular -->
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular-aria/angular-aria.js"></script>
+	<script src="lib/angular-jwt/dist/angular-jwt.js"></script>
+	<script src="lib/angular-animate/angular-animate.js"></script>
+	<script src="lib/angular-material/angular-material.js"></script>
+	<script src="lib/angular-messages/angular-messages.js"></script>
+	<script src="lib/angular-chart.js/dist/angular-chart.js"></script>
+	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
+	<script src="lib/ngstorage/ngStorage.js"></script>
+
+	<!-- Self -->
+	<script src="bidos.js"></script>
+
+</body>
+
+</html>
+

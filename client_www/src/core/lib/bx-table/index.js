@@ -1,0 +1,1 @@
+require ('./bx-table');
