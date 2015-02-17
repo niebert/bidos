@@ -1,1 +1,0 @@
-require ('./bx-resource-service');

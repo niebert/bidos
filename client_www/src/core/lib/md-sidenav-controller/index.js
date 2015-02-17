@@ -1,1 +1,0 @@
-require ('./md-sidenav-controller');
