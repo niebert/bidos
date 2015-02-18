@@ -21,7 +21,10 @@
 
   var app = koa();
 
-  app.use(cors({headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']}));
+  app.use(cors({
+    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
+  }));
 
   app.use(bodyparser());
   app.use(compress());
