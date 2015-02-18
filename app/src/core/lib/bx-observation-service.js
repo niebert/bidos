@@ -155,15 +155,13 @@
       });
 
       bxResources.create(obs)
-        .then(function(response) {
-          console.log(response);
+        .then(function() {
+          $state.go('bx.home');
           $mdToast.show($mdToast.simple()
             .content('<pre class="resourceSuccess">Beobachtung erfolgreich erstellt</pre>')
             .position('bottom right')
             .hideDelay(3000));
-
-          this.reset();
-        }.bind(this));
+        });
     }
 
   }
