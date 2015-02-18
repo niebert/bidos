@@ -14,6 +14,7 @@
   ]);
 
   // bidos here
+  require('./config');
   require('./core');
   require('./auth');
 
