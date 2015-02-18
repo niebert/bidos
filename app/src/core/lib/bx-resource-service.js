@@ -495,7 +495,6 @@
 
     return {
       countKids: countKids,
-      groupName: groupName,
       subdomainTitle: subdomainTitle,
       institutionName: institutionName,
       domainTitle: domainTitle,
@@ -508,15 +507,6 @@
           group_id: +groupId
         })
         .length;
-    }
-
-    function groupName(groupId) {
-      var groups = _.select(resources.groups, {
-        id: +groupId
-      });
-      if (groups.length) {
-        return groups[0].name;
-      }
     }
 
     function institutionName(institutionId) {
