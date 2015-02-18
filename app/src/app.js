@@ -20,6 +20,11 @@
 
   // TODO clean up the junkyard below
 
+  // cors
+  // app.config(['$httpProvider', function($httpProvider) {
+  //   $httpProvider.defaults.withCredentials = true;
+  // }]);
+
   app.config(function($mdIconProvider) {
     // Configure URLs for icons specified by [set:]id.
     $mdIconProvider

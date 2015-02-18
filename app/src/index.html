@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- manifest="build/manifest.appcache" -->
+<!-- manifest="manifest.appcache" -->
 <html ng-app="bidos" ng-strict-di>
 
 <head>
@@ -15,8 +15,8 @@
 	<!-- RobotoDraft:400,500,700,400italic -->
 	<!-- <link href="https://fonts.googleapis.com/css?family=RobotoDraft:400" rel="stylesheet" type="text/css"> -->
 
-	<link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="stylesheet" href="lib/angular-material/angular-material.css" />
+	<link rel="stylesheet" href="cordova.css" />
 	<link rel="stylesheet" href="bidos.css" />
 </head>
 
@@ -47,12 +47,14 @@
 	<script src="lib/ngstorage/ngStorage.js"></script>
 	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
-	<!-- Cordova (fails on desktop, cordova.js is copied during build) -->
+	<!-- Cordova (cordova.js fails on desktop, as it is copied during apk build) -->
 	<script src="cordova.js"></script>
 	<script src="cordova_init.js"></script>
 
 	<!-- Self -->
 	<script src="bidos.js"></script>
+
+	<!-- LiveReload -->
 
 </body>
 
