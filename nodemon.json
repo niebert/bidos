@@ -1,21 +1,14 @@
 {
   "restartable": "rs",
-  "ignore": [
-    ".git",
-    "node_modules/**/*",
-    "bower_components/**/*"
-  ],
-  "verbose": true,
+  "ignore": [],
+  "verbose": false,
   "execMap": {
     "js": "iojs --harmony"
   },
   "events": {
     "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
   },
-  "watch": [
-    "test/fixtures/",
-    "test/samples/"
-  ],
+  "watch": [],
   "env": {
     "NODE_ENV": "development"
   },

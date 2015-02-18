@@ -2,33 +2,23 @@
 #
 set -e
 
+function build-dist() {
+  gulp build 1>/dev/null
+}
+
+function build-apk() {
+  cd app/apk
+  cordova build 1>/dev/null
+}
+
 function prepare-cordova() {
-  pwd
-  read
-  cd app
-
-  cordova create apk de.uni-koblenz-landau.de.bidos BiDoS
-  cd apk
+  cordova create app/apk de.uni-koblenz-landau.de.bidos BiDoS --link-to=app/dist
+  cd app/apk
   cordova platform add android
+}
 
-  cd www
-
-  mkdir js
-  cd js
-  mv index.js cordova_init.js
-  ln -s ../../../dist/bidos.js
-  ln -s ../../dist/bidos.min.js
-  ln -s ../../dist/bidos.min.js.map
-
-  mkdir css
-  cd ../css
-  ln -s ../../../dist/bidos.css
-
-  cd ..
-  rm index.html
-  ln -s ../../src/index.html
-
-  mkdir templates && cd templates && for i in ../../../src/**/*.html; do ln -s $i; done
+function help() {
+  echo "prepare-cordova: create cordova project in app/apk and symlinks in app/apk/www"
 }
 
 $@

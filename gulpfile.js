@@ -1,56 +1,50 @@
 (function() {
   'use strict';
 
-  var NAME = require('./package.json')
-    .name;
-  var VERSION = require('./package.json')
-    .version;
-
   var gulp = require('gulp');
   var chalk = require('chalk');
   var gutil = require('gulp-util');
-  var shell = require('gulp-shell');
   var uglify = require('gulp-uglify');
   var concat = require('gulp-concat');
   var rename = require('gulp-rename');
+  var merge = require('merge-stream');
   var sass = require('gulp-ruby-sass');
+  var flatten = require('gulp-flatten');
+  // var connect = require('gulp-connect');
   var traceur = require('gulp-traceur');
   var nodemon = require('gulp-nodemon');
   var browserify = require('browserify');
+  var minify = require('gulp-minify-css');
   var prefix = require('gulp-autoprefixer');
   var transform = require('vinyl-transform');
   var sourcemaps = require('gulp-sourcemaps');
+  // var livereload = require('gulp-livereload');
   var ngAnnotate = require('gulp-ng-annotate');
 
-  var appDir = 'app';
-  var cordovaDir = appDir + '/apk/www';
-  var sourceDir = appDir + '/src';
-  var sources = sourceDir + '/**/*.js';
-  var templates = sourceDir + '/**/*.html';
-  var appIndex = sourceDir + '/app.js';
-  var appStylesheet = sourceDir + '/app.scss';
-  var targetDir = appDir + '/dist';
-  var appBuild = targetDir + '/bidos.js';
-  var appBuildMin = targetDir + '/bidos.min.js';
-  var apkFile = 'app/apk/platforms/android/ant-build/CordovaApp-debug.apk'
-  var APKFILE = NAME + '-' + VERSION + '.apk';
-  var apiServerFile = 'app/api/index.js';
+  var src = 'app/src';
+  var dist = 'app/dist';
 
   gulp.task('js', js);
   gulp.task('css', css);
   gulp.task('watch', watch);
-  gulp.task('manifest', manifest);
-  gulp.task('copyTemplatesToCordova', copyTemplatesToCordova);
-  gulp.task('copyFilesToCordova', copyFilesToCordova);
-  gulp.task('runFrontendServer', runFrontendServer);
-  gulp.task('copyApkToDist', copyApkToDist);
-  gulp.task('runApiServer', runApiServer);
+  gulp.task('templates', templates);
+  gulp.task('build', ['css', 'js', 'templates']);
 
-  gulp.task('build', ['css', 'js', 'manifest']);
+  gulp.task('www', www);
+  gulp.task('api', api);
+
   gulp.task('apk', ['build', 'copyFilesToCordova', 'copyTemplatesToCordova']);
-  gulp.task('development', ['build', 'watch', 'runApiServer', 'runFrontendServer']);
-  gulp.task('production', ['build', 'runApiServer']);
+  gulp.task('development', ['build', 'watch', 'api', 'www']);
+  gulp.task('production', ['build', 'api']);
   gulp.task('default', ['development']);
+
+  // gulp.task('connect', function() {
+  //   connect.server({
+  //     root: 'app/dist',
+  //     port: 3001,
+  //     livereload: true
+  //   });
+  // });
 
   gulp.task('version', function() {
     var config = require('./package.json');
@@ -64,19 +58,7 @@
       return b.bundle();
     });
 
-    // FIXME broken
-    var minFilename = function(filename) {
-      var a = filename.split('.')
-        .splice(1, 0, 'min')
-        .join('.');
-      console.log(a);
-      return a;
-      // return filename.split('.')
-      //   .splice(1, 0, 'min')
-      //   .join('.');
-    }
-
-    return gulp.src(appIndex)
+    return gulp.src(src + '/app.js') // browserify entry point
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(sourcemaps.init({
         loadMaps: true // loads map from browserify file
@@ -84,16 +66,17 @@
       .pipe(browserified)
       .pipe(ngAnnotate())
       .pipe(traceur())
-      .pipe(rename(appBuild))
+      .pipe(rename(dist + '/bidos.js'))
       .pipe(gulp.dest('.'))
       .pipe(uglify())
-      .pipe(concat(appBuildMin))
+      .pipe(concat(dist + '/bidos.min.js'))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest('.'));
+      // .pipe(livereload());
   }
 
   function css() {
-    return sass(appStylesheet)
+    return sass(src + '/app.scss') // sass entry point
       .on('error', gutil.log.bind(gutil, 'Sass Error'))
       .on('error', function(err) {
         console.error(err.message);
@@ -102,61 +85,49 @@
         cascade: true
       }))
       .pipe(rename('bidos.css'))
-      .pipe(gulp.dest(targetDir));
+      .pipe(gulp.dest(dist))
+      .pipe(sourcemaps.init({
+        loadMaps: true // loads map from browserify file
+      }))
+      .pipe(minify())
+      .pipe(concat('bidos.min.css'))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(dist));
+      // .pipe(livereload());
   }
 
-  // FIXME broken
-  function manifest() {
-    shell.task(['./bin/manifest.sh ./build']);
-  }
+  function templates() {
+    var _templates = gulp.src(src + '/*/**/*.html')
+      .pipe(flatten())
+      .pipe(gulp.dest(dist + '/templates'));
 
-  // copy files from dist to apk/www
-  function copyFilesToCordova() {
-    return gulp.src(targetDir + '/*')
-      .pipe(gulp.dest(cordovaDir));
-  }
+    var indexHtml = gulp.src(src + '/index.html')
+      .pipe(gulp.dest(dist));
 
-  // copy html templates from dist to apk/www/templates (flattened)
-  function copyTemplatesToCordova() {
-    return gulp.src(templates)
-      .pipe(gulp.dest(cordovaDir));
-  }
-
-  // copy html templates from dist to apk/www/templates (flattened)
-  function copyApkToDist() {
-    return gulp.src(apkFile)
-      .pipe(rename(APKFILE))
-      .pipe(gulp.dest(targetDir));
+    return merge(indexHtml, _templates);
   }
 
   function watch() {
-    gulp.watch(sources, ['js']);
-    gulp.watch(appStylesheet, ['css']);
-    gulp.watch(sourceDir + '/**/*.js', ['serverScripts']);
+    // livereload.listen();
+    // gulp.watch(src + '/**/*.html', livereload());
+    gulp.watch(src + '/**/*.js', ['js']);
+    gulp.watch(src + '/app.scss', ['css']);
   }
 
-  function runApiServer() {
+  function api() {
     nodemon({
-        script: apiServerFile,
-        watch: ['lib'],
-        env: {
-          NODE_ENV: 'development'
-        },
-        nodeArgs: ['--harmony']
+        script: 'app/api/index.js',
+        watch: ['app/api'],
       })
       .on('change', function() {
         console.log(chalk.red('>> api server restart ') + chalk.white.bold(new Date()));
       });
   }
 
-  function runFrontendServer() {
+  function www() {
     nodemon({
         script: 'bin/www_server.js',
-        watch: ['src'],
-        env: {
-          NODE_ENV: 'development'
-        },
-        nodeArgs: ['--harmony']
+        watch: ['app/src', 'bin/www_server.sh'],
       })
       .on('change', function() {
         console.log(chalk.red.bold('>> web front end server restart ') + chalk.white.bold(new Date()));
