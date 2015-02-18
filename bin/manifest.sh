@@ -1,28 +1,33 @@
 #!/usr/bin/env zsh
 
-# generate build/manifest.appcache
+# generate manifest.appcache
 
-client=($(find client -type f))
-build=($(find build -type f))
-bower=($(grep -Ehor 'lib/.[a-zA-Z0-9/\._-]+' client | grep '\.'))
-remote=($(grep -Ehor 'http[s]/[a-zA-Z0-9/\._-]+' client))
+DIST_DIR=./app/dist
 
-cached_files=($client $build $bower $remote)
+function cached_files() {
+  cd $DIST_DIR
+  ls -1 **/^manifest.appcache*(.) # dist files
+  grep -Eho 'lib/.[a-zA-Z0-9/\._-]+' index.html # bower components
+  grep -Eho 'http[s]://[a-zA-Z0-9/\.:?_=-]+' index.html # remote imports
+  cd -
+}
 
-cat << EOF > $1/manifest.appcache
 function build_number() {
   # get and increment build number <3
   build=$(awk '{print $NF+1}' .build)
   echo $build > .build
   echo $build
 }
+
+cat << EOF > $DIST_DIR/manifest.appcache
 CACHE MANIFEST
+# version: $(gulp version 2>&1 >/dev/null)
 # date: $(date +%x\ %X)
-# version: $(date +%s | md5sum | cut -d- -f1)
+# id: $(date +%s | md5sum | cut -d" " -f1)
 # build $(build_number)
 
 CACHE:
-$(print -l $cached_files)
+$(cached_files)
 
 NETWORK:
 http://*
@@ -31,5 +36,4 @@ https://*
 
 SETTINGS:
 prefer-online
-
 EOF
