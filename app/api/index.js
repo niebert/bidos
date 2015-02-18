@@ -73,8 +73,8 @@
   /*jshint -W030 */
   require.main === module ? listen() : module.exports = exports = listen;
 
-  function mountRoutes(routes, mountPoint) {
-    _.each(routes.private, function(d, i) {
+  function mountRoutes(_routes, mountPoint) {
+    _.each(_routes, function(d, i) {
       app.use(mount(mountPoint + i, d.middleware()));
     });
   }
