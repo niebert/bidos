@@ -230,7 +230,6 @@
       // --------------------------------------------------------------------------------
 
       _.each(resources.kids, function(kid) {
-        // if (kid.id == 36) debugger;
         if (!kid.hasOwnProperty('skill')) {
           Object.defineProperty(kid, 'skill', {
             get: function() {
@@ -272,7 +271,6 @@
                 }, 0)
                 .value(),
               ];
-              // if (kid.id === 36) debugger;
               return skill;
             }
           });
@@ -400,7 +398,6 @@
         }
       });
     }
-
     function createResource(resource) {
       var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
       return $q(function(resolve) {
@@ -422,7 +419,7 @@
           })
           .error(function(error) {
             resolve(error);
-            toast(error[0].content.detail);
+            toast(error[0].content.detail); // FIXME
             console.warn('%cget resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
           });
       });
@@ -450,7 +447,7 @@
           })
           .error(function(error) {
             resolve(error);
-            toast(error[0].content.detail);
+            toast(error[0].content.detail); // FIXME
             console.warn('%cupdate resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
           });
       });
@@ -474,7 +471,7 @@
           })
           .error(function(error) {
             resolve(error);
-            toast(error[0].content.detail);
+            toast(error[0].content.detail); // FIXME
             console.warn('%cdestroy resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
           });
       });

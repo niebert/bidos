@@ -5,12 +5,14 @@
 
   // resource service (ssot, very much core)
   require('./bx-resource-service');
-  require('./bx-resource-table'); // tables for resource management (/w edit/new dialog)
+
+  // tables for resource management (/w edit/new dialog)
+  require('./bx-table');
 
   // observation service and directives
   require('./bx-observation-service');
   require('./bx-observation-inbox'); // hook before new are available
-  require('./bx-observation-capture'); // make new obs
+  require('./bx-capture'); // make new obs
 
   // single page infochart w/ charts. kids and items can have these
   require('./bx-portfolio');

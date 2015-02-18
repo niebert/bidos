@@ -158,7 +158,7 @@
         .then(function() {
           $state.go('bx.home');
           $mdToast.show($mdToast.simple()
-            .content('<pre class="resourceSuccess">Beobachtung erfolgreich erstellt</pre>')
+            .content('Beobachtung erfolgreich erstellt')
             .position('bottom right')
             .hideDelay(3000));
         });

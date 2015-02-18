@@ -26,9 +26,10 @@
 
   gulp.task('js', js);
   gulp.task('css', css);
-  gulp.task('watch', watch);
   gulp.task('templates', templates);
   gulp.task('build', ['css', 'js', 'templates']);
+
+  gulp.task('watch', watch);
 
   gulp.task('www', www);
   gulp.task('api', api);
@@ -109,9 +110,9 @@
 
   function watch() {
     // livereload.listen();
-    // gulp.watch(src + '/**/*.html', livereload());
     gulp.watch(src + '/**/*.js', ['js']);
     gulp.watch(src + '/app.scss', ['css']);
+    gulp.watch(src + '/**/*.html', ['templates']);
   }
 
   function api() {

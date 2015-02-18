@@ -43,7 +43,7 @@
           template: function(stateParams) {
             if (_.isEmpty(stateParams)) {
               stateParams.type = 'kid';
-            }
+            } // FIXME weird bx.capture.go has bs-capture tag -> nested bx-capture tags! :/ oO
             return '<bx-capture layout="row" flex type="' + stateParams.type + '"></bx-capture>';
           }
         }
