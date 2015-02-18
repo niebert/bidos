@@ -45,23 +45,14 @@
 
 
       vm.menu = [{
-          shortText: 'Konfiguration',
-          longText: 'Persönliche Konfiguration',
-          description: 'Einstellungen', // some longer text
-          roles: ['admin', 'practitioner', 'scientist'],
-          onClick: function() {
-            return $state.go('bx.user-preferences')
-          },
-          colSpan: [0, 0, 0] // [md-colspan, md-colspan-sm, md-colspan-md]
-        }, {
           shortText: 'Profil',
           longText: 'Persönliches Profil',
           description: 'Eigene Resourcen und Tasks',
           roles: ['admin', 'practitioner', 'scientist'],
           onClick: function() {
-            return $state.go('bx.user-profile')
+            return $state.go('bx.user-profile');
           },
-          colSpan: [0, 0, 0]
+          colSpan: [1, 0, 0]
         }, {
           shortText: 'Neue Beobachtung',
           longText: 'Neue Beobachtung einstellen',
@@ -70,7 +61,16 @@
           onClick: function() {
             return $state.go('bx.capture', {
               type: 'kid'
-            })
+            });
+          },
+          colSpan: [2, 0, 0]
+        }, {
+          shortText: 'Eingehende Beobachtungen',
+          longText: 'Neu eingegange Beobachtungen ansehen',
+          description: '',
+          roles: ['admin', 'scientist'],
+          onClick: function() {
+            return $state.go('bx.observation-inbox');
           },
           colSpan: [2, 0, 0]
         }, {
@@ -79,7 +79,7 @@
           description: '',
           roles: ['admin', 'practitioner'],
           onClick: function() {
-            return $state.go('bx.portfolio')
+            return $state.go('bx.portfolio');
           },
           colSpan: [0, 0, 0]
         }, {
@@ -91,17 +91,6 @@
             return $state.go('bx.table', {
               type: 'observation'
             });
-          },
-          colSpan: [0, 0, 0]
-        },
-
-        {
-          shortText: 'Eingehende Beobachtungen',
-          longText: 'Neu eingegange Beobachtungen ansehen',
-          description: '',
-          roles: ['admin', 'scientist'],
-          onClick: function() {
-            return $state.go('bx.observation-inbox')
           },
           colSpan: [0, 0, 0]
         }, {
