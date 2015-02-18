@@ -402,7 +402,7 @@
     }
 
     function createResource(resource) {
-      var url = [RESOURCE_PATH, resource.type].join('/');
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
       return $q(function(resolve) {
 
         delete resource.type;
@@ -429,7 +429,7 @@
     }
 
     function updateResource(resource) {
-      var url = [RESOURCE_PATH, resource.type, resource.id].join('/');
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
       return $q(function(resolve) {
 
         delete resource.type;
@@ -457,7 +457,7 @@
     }
 
     function destroyResource(resource) {
-      var url = [RESOURCE_PATH, resource.type, resource.id].join('/');
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
       return $q(function(resolve) {
         $http.delete(url)
           .success(function(response) {
