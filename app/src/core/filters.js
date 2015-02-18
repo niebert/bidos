@@ -3,8 +3,6 @@
 (function() {
   'use strict';
 
-  var _ = require('lodash');
-
   var app = angular.module('bidos');
 
   app.filter('reverse', function() {

@@ -5,9 +5,6 @@
 (function() {
   'use strict';
 
-  // require('lodash');
-  // require('./bx-auth-services');
-
   var config = require('../../config');
   var roles = config.roles;
   var API = config.app.API;

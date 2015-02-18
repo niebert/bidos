@@ -1,4 +1,6 @@
-require('./app');
-require('./config');
-require('./core');
-require('./auth');
+(function() {
+  'use strict';
+
+  require('./app.js');
+
+}());
