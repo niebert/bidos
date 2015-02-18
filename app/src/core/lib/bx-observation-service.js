@@ -94,15 +94,22 @@
 
 
     function select(resource) {
-      switch (resource.type) {
+      var r = resource;
+
+      if (r.type === 'behaviour' && r.niveau === 0) {
+        go('idea');
+        return;
+      }
+
+      switch (r) {
         case 'example':
         case 'idea':
-          o.add(resource);
+          o.add(r);
           break;
         default:
-          // debugger
-          o[resource.type] = resource;
+          o[r.type] = r; // copy (by reference) selected resource to observation
       }
+
       go();
     }
 
