@@ -14,7 +14,7 @@
     // main route for anything bxenticated
       .state('bx', {
       url: '',
-      templateUrl: 'core/layout.html'
+      templateUrl: 'templates/layout.html'
     })
 
     // kind of a dashboard

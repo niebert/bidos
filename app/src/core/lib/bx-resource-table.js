@@ -14,7 +14,7 @@
       controller: controller,
       controllerAs: 'vm',
       templateUrl: function(elem, attrs) {
-        return 'core/lib/bx-table/bx-table-' + attrs.type + '.html';
+        return 'templates/bx-resource-table-' + attrs.type + '.html';
       }
     };
 

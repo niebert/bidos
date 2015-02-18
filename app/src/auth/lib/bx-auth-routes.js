@@ -13,14 +13,14 @@
 
       .state('public', {
       url: '',
-      templateUrl: 'auth/templates/layout.html'
+      templateUrl: 'templates/bx-auth-layout.html'
     })
 
     .state('public.login', {
       url: '/login',
       views: {
         main: {
-          templateUrl: 'auth/templates/login.html'
+          templateUrl: 'templates/bx-auth-login.html'
         }
       }
     })
@@ -29,7 +29,7 @@
       url: '/signup',
       views: {
         main: {
-          templateUrl: 'auth/templates/signup.html'
+          templateUrl: 'templates/bx-auth-signup.html'
         }
       }
     })
@@ -38,7 +38,7 @@
       url: '/thankyou',
       views: {
         main: {
-          templateUrl: 'auth/templates/thankyou.html'
+          templateUrl: 'templates/bx-auth-thankyou.html'
         }
       }
     })
@@ -47,7 +47,7 @@
       url: '/forgot',
       views: {
         main: {
-          templateUrl: 'auth/templates/forgot.html'
+          templateUrl: 'templates/bx-auth-forgot.html'
         }
       }
     })
@@ -56,7 +56,7 @@
       url: '/reset/:hash',
       views: {
         main: {
-          templateUrl: 'auth/templates/reset.html'
+          templateUrl: 'templates/bx-auth-reset.html'
         }
       }
     })

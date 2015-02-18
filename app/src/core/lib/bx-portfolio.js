@@ -13,7 +13,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'core/lib/bx-portfolio/bx-portfolio.html'
+      templateUrl: 'templates/bx-portfolio.html'
     };
 
     function controllerFn($rootScope, $mdDialog, $scope, bxResources) {

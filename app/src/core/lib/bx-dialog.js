@@ -14,7 +14,7 @@
           user: vm.bx
         },
         targetEvent: ev,
-        templateUrl: 'core/lib/bx-portfolio/bx-portfolio.dialog.html',
+        templateUrl: 'templates/bx-dialog.html',
       })
       .then(function() {
         // success

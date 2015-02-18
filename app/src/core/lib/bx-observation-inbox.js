@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'core/lib/bx-observation/bx-observation-inbox.html'
+      templateUrl: 'templates/bx-observation-inbox.html'
     };
 
     function controllerFn($rootScope, bxResources) {

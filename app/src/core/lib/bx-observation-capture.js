@@ -22,9 +22,9 @@
       console.log('template', attr.type);
       console.log('attr.type', attr.type);
       if (attr.type) {
-        return 'core/lib/bx-capture/bx-capture-' + attr.type + '.html';
+        return 'templates/bx-observation-capture-' + attr.type + '.html';
       } else {
-        return 'core/lib/bx-capture/bx-capture.html';
+        return 'templates/bx-observation-capture.html';
       }
     }
 

@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'core/lib/bx-user-profile/bx-user-profile.html'
+      templateUrl: 'templates/bx-user-profile.html'
     };
 
     function controllerFn($rootScope) {

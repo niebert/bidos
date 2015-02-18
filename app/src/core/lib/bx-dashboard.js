@@ -13,7 +13,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'core/lib/bx-dashboard/bx-dashboard.html'
+      templateUrl: 'templates/bx-dashboard.html'
     };
 
     function controllerFn($rootScope, $scope, UserFactory, $state, $window, bxResources) {

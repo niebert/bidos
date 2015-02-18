@@ -11,7 +11,7 @@
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'core/lib/bx-profile/bx-profile.html'
+      templateUrl: 'templates/bx-user-preferences.html'
     };
 
     function controllerFn($rootScope, $mdDialog) {
