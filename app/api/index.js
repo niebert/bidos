@@ -1,64 +1,44 @@
 //jshint esnext:true
 (function() {
-	'use strict';
-
-  var _ = require('lodash');
+  'use strict';
 
   var config = require('./config')[process.env.NODE_ENV || 'development'];
   var routes = require('./routes');
 
-  // node core
-  var path = require('path');
-
-  // koa itself
-  var app = require('koa')();
-
-  // colors and neat alignment! ^^
+  var _ = require('lodash');
   var chalk = require('chalk');
   var columnify = require('columnify');
 
-  // authentication
+  var koa = require('koa');
+  var pg = require('koa-pg');
   var jwt = require('koa-jwt');
-
-  // miscellaneous middleware
-  var mount = require('koa-mount');
-  var serve = require('koa-static');
-
-  app.use(require('koa-bodyparser')());
-  app.use(require('koa-compress')());
-  app.use(require('koa-validate')());
-
   var cors = require('koa-cors');
+  var mount = require('koa-mount');
+  var logger = require('koa-logger');
+  var compress = require('koa-compress');
+  var validate = require('koa-validate');
+  var bodyparser = require('koa-bodyparser');
+
+  var app = koa();
+
   app.use(cors());
+  app.use(bodyparser());
+  app.use(compress());
+  app.use(validate());
 
   if (require.main === module) {
-    app.use(require('koa-logger')());
+    app.use(logger());
   }
 
-  // database
-  app.use(require('koa-pg')(config.db.postgres.url));
-
-  // serve static dirs
-  // app.use(mount('/lib', serve(path.join(__dirname, 'bower_components'))));
-  // app.use(mount('/build', serve(path.join(__dirname, 'build'))));
-  app.use(mount('/', serve(path.join(__dirname, 'client')))); // TODO: .html only
-
-  // fancy console output
-  console.log('\n' + chalk.cyan('>> public routes'));
-  console.log(columnify(_.map(routes.public, function(d,i) {
-		return {
-			'PATH': '/' + i,
-			'request method': _(d.methods).map().tail().join(' ') };
-		}), { columnSplitter: ' | ' }));
+  // connect to database (TODO check if postgres is running!)
+  app.use(pg(config.db.postgres.url));
 
   // mount public routes
-  _.each(routes.public, function(d,i) {
-    app.use(mount('/' + i, d.middleware()));
-  });
+  mountRoutes(routes.public, '/');
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
-  app.use(function *(next) {
+  app.use(function*(next) {
     try {
       yield next; // -> jwt authorization
     } catch (err) {
@@ -72,33 +52,49 @@
     }
   });
 
-	// routes below the next loc are only accessible to authenticated clients.
-	// if the authorization succeeds, next is yielded and the following routes
-	// are reached. if it fails, it throws and the previous middleware will catch
-	// that error and send back status 401 and redirect to /login.
+  // routes below the next loc are only accessible to authenticated clients.
+  // if the authorization succeeds, next is yielded and the following routes
+  // are reached. if it fails, it throws and the previous middleware will catch
+  // that error and send back status 401 and redirect to /login.
 
-  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
-
-  // fancy console output
-  console.log('\n' + chalk.cyan('>> private routes'));
-	console.log(columnify(_.map(routes.private, function(d,i) {
-		return {
-			'PATH': '/v1/' + i,
-			'request method': _(d.methods).map().tail().join(' ') };
-		}), { columnSplitter: ' | ' }));
+  app.use(jwt({
+    secret: config.secret.key
+  })); // <-- decrypts
 
   // secured routes
-  _.each(routes.private, function(d,i) {
-    app.use(mount('/v1/' + i, d.middleware()));
-  });
+  mountRoutes(routes.private, '/v1/');
 
   // main
   var listen = function(port) {
-    console.log(chalk.green('>> api accessible on port ' + (port || config.app.port)));
+    console.log(chalk.red('>> api accessible on port ' + (port || config.app.port)));
     app.listen(port || config.app.port);
   };
 
   /*jshint -W030 */
   require.main === module ? listen() : module.exports = exports = listen;
-}());
 
+  function mountRoutes(routes, mountPoint) {
+    _.each(routes.private, function(d, i) {
+      app.use(mount(mountPoint + i, d.middleware()));
+    });
+  }
+
+  function logRoutes(routes, mountPoint, name) {
+    console.log('\n' + chalk.cyan('>> ' + name + ' routes'));
+    console.log(columnify(_.map(routes, function(d, i) {
+      return {
+        'PATH': mountPoint + i,
+        'request method': _(d.methods)
+          .map()
+          .tail()
+          .join(' ')
+      };
+    }), {
+      columnSplitter: ' | '
+    }));
+  }
+
+  logRoutes(routes.public, '/', 'public');
+  logRoutes(routes.private, '/v1/', 'private');
+
+}());

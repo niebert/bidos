@@ -4,32 +4,35 @@
   'use strict';
   // jshint esnext:true
 
-  var defaultPort = '3001';
-
   var path = require('path');
   var app = require('koa')();
   var chalk = require('chalk');
-  var mount = require('koa-mount');
   var serve = require('koa-static');
-  app.use(require('koa-cors')());
-  app.use(require('koa-compress')());
+  var logger = require('koa-logger');
+  var compress = require('koa-compress');
+  var livereload = require('koa-livereload');
+  var cors = require('koa-cors');
+  app.use(cors());
+
+  var PORT = process.env.PORT || 3001;
+  var DIST_DIR = path.join(__dirname, '../app/dist');
+
+  var lr = require('livereload');
+  var lrs = lr.createServer();
+  lrs.watch(DIST_DIR);
+
+  app.use(compress());
+  app.use(livereload());
 
   if (require.main === module) {
-    app.use(require('koa-logger')());
+    app.use(logger());
   }
 
-	var DIST_DIR = '../app/dist';
-	var TEMPLATE_DIR = '../app/src'; // NOT SO GOOD I GUESS
-	var BOWER_DIR = '../bower_components';
-
-  // serve static dirs
-  app.use(mount('/', serve(path.join(__dirname, DIST_DIR))));
-  app.use(mount('/', serve(path.join(__dirname, TEMPLATE_DIR))));
-  app.use(mount('/lib', serve(path.join(__dirname, BOWER_DIR))));
+  app.use(serve(DIST_DIR));
 
   // main
   var listen = function(port) {
-    port = port || defaultPort;
+    port = port || PORT;
     console.log(chalk.red('>> web front end running on http://localhost:' + port));
     app.listen(port);
   };
