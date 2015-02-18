@@ -14,7 +14,7 @@
       controller: controller,
       controllerAs: 'vm',
       templateUrl: function(elem, attrs) {
-        return 'templates/bx-resource-table-' + attrs.type + '.html';
+        return 'templates/bx-table-' + attrs.type + '.html';
       }
     };
 
@@ -107,7 +107,7 @@
               parentVm: vm
             },
             targetEvent: ev,
-            templateUrl: 'core/lib/bx-table/bx-table-' + resource.type + '-dialog.html'
+            templateUrl: 'templates/bx-table-' + resource.type + '-dialog.html'
           })
           .then(function(data) {
             updateViewModel(data);

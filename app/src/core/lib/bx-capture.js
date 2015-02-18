@@ -22,9 +22,9 @@
       console.log('template', attr.type);
       console.log('attr.type', attr.type);
       if (attr.type) {
-        return 'templates/bx-observation-capture-' + attr.type + '.html';
+        return 'templates/bx-capture-' + attr.type + '.html';
       } else {
-        return 'templates/bx-observation-capture.html';
+        return 'templates/bx-capture.html';
       }
     }
 
@@ -97,9 +97,27 @@
         groupFilter: groupFilter,
         maxSkill: maxSkill,
         toolbarState: $state.params.type,
+        abort: abort,
         save: save,
         rightNav: rightNav
       });
+
+      function abort(ev) {
+        var confirm = $mdDialog.confirm()
+          .title('Möchten Sie wirklich abbrechen?')
+          .content('Ihre Fortschritte werden nicht gespeichert!')
+          .ariaLabel('Abort Dialog')
+          .ok('Abbrechen')
+          .cancel('Nicht Abbrechen')
+          .targetEvent(ev);
+
+        $mdDialog.show(confirm)
+          .then(function() {
+            $scope.alert = 'You decided to get rid of your debt.';
+          }, function() {
+            $scope.alert = 'You decided to keep your debt.';
+          });
+      };
 
       // var toast = $mdToast.build();
 

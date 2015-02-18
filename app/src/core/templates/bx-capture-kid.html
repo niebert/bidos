@@ -1,18 +1,29 @@
 <div layout="column" layout-fill>
-	<md-toolbar flex class="md-theme-light">
-		<h1 class="md-toolbar-tools">Welches Kind beobachten Sie?</h1>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<h2 flex>Welches Kind beobachten Sie?</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+			</md-button>
+			<md-button ui-sref="bx.home">
+				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_cancel_48px.svg" class="s48" alt="Abbrechen"></md-icon>
+			</md-button>
+		</span>
 	</md-toolbar>
 
-    <md-autocomplete
-        md-selected-item="ctrl.selectedItem"
-        md-search-text="ctrl.searchText"
-        md-items="item in ctrl.querySearch(ctrl.searchText)"
-        md-item-text="display"
-        placeholder="What is your favorite US state?">
-      <span md-highlight-text="ctrl.searchText">{{item.display}}</span>
-    </md-autocomplete>
+	<div layout>
+		<md-input-container flex>
+			<label>Namen filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+		<md-input-container flex>
+			<label>ID filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+	</div layout>
 
-	<md-content style="height: 736px;" class="bx-capture-kid">
+	<md-content flex class="bx-content">
 		<section ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
 
 			<md-subheader>
@@ -30,17 +41,8 @@
 						<span class="bx-kid-details-cat3" ng-class="{'noSkill':kid.skill[2] === 0}"> {{ kid.skill[2] }} </span>
 						<span class="bx-kid-details-cat4" ng-class="{'noSkill':kid.skill[3] === 0}"> {{ kid.skill[3] }} </span>
 					</div>
-					<!--
-					<div flex="55">
-						Update am: <span class="bx-kid-details-hi"> {{ kid.modified_at | date }} </span> /
-						Beobachtungen: <span class="bx-kid-details-hi"> {{ kid.observations.length }} </span>
-					</div>
- -->
-
 				</md-item>
-
 			</md-list>
 		</section>
 	</md-content>
 </div>
-

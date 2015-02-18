@@ -1,0 +1,41 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<h2>Neues Beispiel hinzufügen</h2>
+			<span flex></span>
+		</span>
+	</md-toolbar>
+
+	<md-content flex layout class="bx-content">
+		<div flex layout="row" class="newStuffForm" layout-wrap>
+			<md-input-container flex="100" layout-fill>
+				<label>Neues Beispiel hinzufügen</label>
+				<textarea ng-model="newStuff"></textarea>
+			</md-input-container>
+
+			<md-button flex="50" ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newStuff})"> Hinzufügen </md-button>
+			<md-button flex="50" ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> Fertig </md-button>
+		</div>
+
+		<md-content flex layout-wrap layout-padding layout="column">
+
+			<h2> Neu hinzugefügte Beispiele: </h2>
+			<div flex layout="column">
+				<div layout ng-repeat="example in vm.observation.stuff.examples | reverse">
+					<div flex="20"> {{ vm.observation.stuff.examples.length - $index }} </div>
+					<div flex="80"> {{ example.text }} </div>
+				</div>
+			</div>
+
+			<h2> Weitere Beispiele: </h2>
+			<div flex layout="column">
+				<div layout ng-repeat="example in vm.observation.behaviour.examples | reverse">
+					<div flex="20"> {{ vm.observation.behaviour.examples.length - $index }} </div>
+					<div flex="80"> {{ example.text }} </div>
+				</div>
+			</div>
+
+		</md-content>
+	</md-content>
+</div>
+

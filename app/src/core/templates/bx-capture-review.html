@@ -1,0 +1,110 @@
+<md-content flex layout="row" class="review" layout-wrap layout-padding layout-margin>
+
+	<div flex="100" layout="column">
+		<div>
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Kind </div>
+				<div flex="75" layout="row" layout-align="start center"> </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Name </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.kid.name }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Geburtstag </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.kid.bday | date }} ({{ vm.observation.kid.age }} Jahre)</div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Gruppe </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.kid.group.name }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Institution </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.kid.group.institution.name }} </div>
+			</div>
+		</div>
+
+		<div>
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Baustein </div>
+				<div flex="75" layout="row" layout-align="start center"> </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Bereich </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.domain.name }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Teilbereich </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.subdomain.name }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Baustein </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.item.name }} </div>
+			</div>
+		</div>
+
+		<div>
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Verhalten </div>
+				<div flex="75" layout="row" layout-align="start center"> </div>
+			</div>
+
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Niveau {{ vm.observation.behaviour.niveau }}</div>
+				<div flex="75" layout="row" layout-align="start center"> {{ vm.observation.behaviour.text }} </div>
+			</div>
+		</div>
+
+		<div>
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Eigene Beispiele </div>
+				<div flex="75" layout="row" layout-align="start center"> </div>
+			</div>
+
+			<div flex class="stuff" layout="row" ng-repeat="example in vm.observation.stuff.examples" ng-if="vm.observation.stuff.examples.length">
+				<div flex="25" layout="row" layout-align="end center"> {{ $index + 1 }} </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ example.text }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row" ng-if="!vm.observation.stuff.examples.length">
+				<div flex="25" layout="row" layout-align="end center"> </div>
+				<div flex="75" layout="row" layout-align="start center"> keine </div>
+			</div>
+		</div>
+
+		<div ng-if="vm.observation.stuff.ideas.length">
+			<div flex class="stuff" layout="row">
+				<div flex="25" layout="row" layout-align="end center"> Eigene Ideen </div>
+				<div flex="75" layout="row" layout-align="start center"> </div>
+			</div>
+
+			<div flex class="stuff" layout="row" ng-repeat="idea in vm.observation.stuff.ideas">
+				<div flex="25" layout="row" layout-align="end center"> {{ $index + 1 }} </div>
+				<div flex="75" layout="row" layout-align="start center"> {{ idea.text }} </div>
+			</div>
+
+			<div flex class="stuff" layout="row" ng-if="!vm.observation.stuff.ideas.length">
+				<div flex="25" layout="row" layout-align="end center"> </div>
+				<div flex="75" layout="row" layout-align="start center"> keine </div>
+			</div>
+		</div>
+	</div>
+
+	<div flex="100" layout="row">
+		<md-button flex="50" class="md-raised domain-button md-warn" layout-fill ng-click="vm.abort()">
+			Verwerfen
+		</md-button>
+		<md-button flex="50" class="md-raised domain-button md-primary" layout-fill ng-click="vm.save()">
+			Speichern
+		</md-button>
+	</div>
+
+</md-content>
+
