@@ -1,61 +1,55 @@
 <md-dialog aria-label="create-kid-dialog">
 
-	<md-subheader class="md-sticky-no-effect dialog-header">{{ vm.kid.name }}</md-subheader>
-
-	<div class="dialog-sheet">
+	<!-- <div class="dialog-sheet">
 		<pre>{{ vm.kid | json }}</pre>
-	</div>
+	</div> -->
 
-	<md-content flex layout="column">
+	<md-content flex layout="column" style="min-height: 368px;">
+		<md-subheader class="md-sticky-no-effect">{{ vm.kid.name }}</md-subheader>
+
 		<form>
 			<div layout="column">
-				<div layout="row">
+				<div layout>
 
-					<md-input-container flex>
+					<md-input-container flex layout-padding layout-margin>
 						<label>Name</label>
 						<input type="text" ng-model="vm.kid.name">
 					</md-input-container>
 
-					<md-input-container flex>
+					<md-input-container flex layout-padding layout-margin>
 						<label>Geburtstag</label>
 						<input type="date" ng-model="vm.kid.bday"> </input>
 					</md-input-container>
 				</div>
 
-				<div layout="row">
-					<div flex layout="column">
-
-						<div flex style="margin-bottom: 24px;">
-							<span>Gruppe</span>
-							<select style="width: 90%;" ng-options="group.id as group.name for group in vm.parent.groups" ng-model="vm.kid.group_id"> </select>
-						</div>
-
-						<div flex style="margin-bottom: 24px;">
-							<span>Geschlecht</span>
-							<select style="width: 90%;" ng-options="sex.value as sex.text for sex in vm.parent.sexes" ng-model="vm.kid.sex"> </select>
-						</div>
-
+				<div layout layout-wrap>
+					<div flex="50" layout layout-fill layout-padding layout-margin>
+					  <label for="kidsGroup">Gruppe</label><br>
+						<select name="kidsGroup" ng-options="group.id as group.name for group in vm.parent.groups" ng-model="vm.kid.group_id"> </select>
 					</div>
-					<div flex layout="column">
 
-						<div flex style="margin-bottom: 24px;">
-							<span>Religion</span>
-							<select style="width: 90%;" ng-options="religion.value as religion.text for religion in vm.parent.religions" ng-model="vm.kid.religion"> </select>
-						</div>
+					<div flex="50" layout layout-fill layout-padding layout-margin>
+					  <label for="kidsSex">Geschlecht</label><br>
+						<select ng-options="sex.value as sex.text for sex in vm.parent.sexes" ng-model="vm.kid.sex"> </select>
+					</div>
 
-						<div flex style="margin-bottom: 24px;">
-							<span>Händigkeit</span>
-							<select style="width: 90%;" ng-options="hands.value as hands.text for hands in vm.parent.hands" ng-model="vm.kid.hands"> </select>
-						</div>
+					<div flex="50" layout layout-fill layout-padding layout-margin>
+					  <label for="kidsReligion">Religion</label><br>
+						<select ng-options="religion.value as religion.text for religion in vm.parent.religions" ng-model="vm.kid.religion"> </select>
+					</div>
 
+					<div flex="50" layout layout-fill layout-padding layout-margin>
+					  <label for="kidsHands">Händigkeit</label><br>
+						<select ng-options="hands.value as hands.text for hands in vm.parent.hands" ng-model="vm.kid.hands"> </select>
 					</div>
 				</div>
+
 
 			</div>
 		</form>
 	</md-content>
 
-	<div class="md-actions" layout="row">
+	<div class="md-actions" layout>
 		<md-button ng-show="vm.kid.id" ng-click="vm.destroy(vm.kid)" class="md-raised md-warn md-button md-default-theme">
 			Löschen
 		</md-button>
@@ -69,3 +63,4 @@
 	</div>
 
 </md-dialog>
+

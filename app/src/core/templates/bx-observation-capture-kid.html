@@ -1,0 +1,48 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<h2 flex>Welches Kind beobachten Sie?</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+			</md-button>
+			<md-button ui-sref="bx.home">
+				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_cancel_48px.svg" class="s48" alt="Abbrechen"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<div layout>
+		<md-input-container flex>
+			<label>Namen filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+		<md-input-container flex>
+			<label>ID filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+	</div layout>
+
+	<md-content flex class="bx-content">
+		<section ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
+
+			<md-subheader>
+				<h2>{{ group.name }}</h2>
+			</md-subheader>
+
+			<md-list ng-show="kids.length">
+
+				<md-item class="md-whiteframe-z1" ng-repeat="kid in kids = (group.kids | filter:vm.kidFilter(filterObject))" ng-click="vm.select(kid)" layout layout-margin layout-padding layout-align="space-between center" layout-wrap>
+
+					<div flex class="bx-capture-kid-name"> {{ kid.name }} </div>
+					<div flex="15" layout layout-align="space-between center">
+						<span class="bx-kid-details-cat1" ng-class="{'noSkill':kid.skill[0] === 0}"> {{ kid.skill[0] }} </span>
+						<span class="bx-kid-details-cat2" ng-class="{'noSkill':kid.skill[1] === 0}"> {{ kid.skill[1] }} </span>
+						<span class="bx-kid-details-cat3" ng-class="{'noSkill':kid.skill[2] === 0}"> {{ kid.skill[2] }} </span>
+						<span class="bx-kid-details-cat4" ng-class="{'noSkill':kid.skill[3] === 0}"> {{ kid.skill[3] }} </span>
+					</div>
+				</md-item>
+			</md-list>
+		</section>
+	</md-content>
+</div>
