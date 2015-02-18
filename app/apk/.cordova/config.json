@@ -1,0 +1,8 @@
+{
+    "lib": {
+        "www": {
+            "url": "/Users/asdf/Desktop/bidos/app/dist",
+            "link": true
+        }
+    }
+}
