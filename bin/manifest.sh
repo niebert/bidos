@@ -10,9 +10,16 @@ remote=($(grep -Ehor 'http[s]/[a-zA-Z0-9/\._-]+' client))
 cached_files=($client $build $bower $remote)
 
 cat << EOF > $1/manifest.appcache
+function build_number() {
+  # get and increment build number <3
+  build=$(awk '{print $NF+1}' .build)
+  echo $build > .build
+  echo $build
+}
 CACHE MANIFEST
 # date: $(date +%x\ %X)
 # version: $(date +%s | md5sum | cut -d- -f1)
+# build $(build_number)
 
 CACHE:
 $(print -l $cached_files)
