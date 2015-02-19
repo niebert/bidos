@@ -217,6 +217,15 @@
           });
         }
 
+        if (!observation.hasOwnProperty('behaviour')) {
+          Object.defineProperty(observation, 'behaviour', {
+            get: function() {
+              return _.filter(this.item.behaviours, {
+                niveau: this.niveau
+              })[0];
+            }
+          });
+        }
         if (!observation.hasOwnProperty('subdomain_id')) {
           Object.defineProperty(observation, 'subdomain_id', {
             get: function() {
