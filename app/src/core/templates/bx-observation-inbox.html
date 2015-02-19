@@ -1,36 +1,41 @@
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
-	<md-toolbar class="md-theme-light">
-		<h1 class="md-toolbar-tools">Neue Beobachtung</h1>
+<div layout="column" layout-fill>
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button ui-sref="bx.home">
+				<md-icon md-svg-src="{{ vm.icon('action', 'dashboard') }}" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+			<h2> Eingehenden Beobachtungen </h2>
+			<span flex></span>
+			<md-button>
+				<md-icon md-svg-src="{{ vm.icon('navigation', 'more_vert') }}" class="s48" alt="Observation Inbox Menu"></md-icon>
+			</md-button>
+		</div>
 	</md-toolbar>
 
-	<div ng-controller="LeftCtrl" class="md-padding" layout="column" layout-align="start center" style="height: 736px;">
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('kid')" ng-disabled="vm.isDisabled('kid')" ng-click="vm.go('kid')">
-			Kind
-			<br>
-			<small>
-						{{ ($root.observation.kid && !vm.isActive('kid')) ? $root.observation.kid.name : 'Bitte wählen Sie ein Kind aus' }}
-					</small>
-		</md-button>
+	<md-content flex class="bx-content">
 
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('domain')" ng-disabled="vm.isDisabled('domain')" ng-click="vm.go('domain')"> Bereich
-			<br><small>{{ $root.observation.domain.name }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('subdomain')" ng-disabled="vm.isDisabled('subdomain')" ng-click="vm.go('subdomain')"> Teilbereich
-			<br><small>{{ $root.observation.subdomain.name }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('item')" ng-disabled="vm.isDisabled('item')" ng-click="vm.go('item')"> Baustein
-			<br><small>{{ $root.observation.item.name }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('behaviour')" ng-disabled="vm.isDisabled('behaviour')" ng-click="vm.go('behaviour')"> Verhalten
-			<br><small ng-show="$root.observation.behaviour">Niveau: {{ $root.observation.behaviour.niveau }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('help')" ng-disabled="vm.isDisabled('help')" ng-click="vm.go('help')"> {{ $root.observation.help.value ? 'Mit' : 'Ohne' }} Hilfe
-			<br>
-		</md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('examples')" ng-disabled="vm.isDisabled('examples')" ng-click="vm.go('examples')"> Beispiele
-			<br><small ng-show="$root.observation.stuff.examples">+{{ $root.observation.stuff.examples ? $root.observation.stuff.examples.length : '' }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('ideas')" ng-disabled="vm.isDisabled('ideas')" ng-click="vm.go('ideas')"> Ideen
-			<br><small ng-show="$root.observation.stuff.ideas">+{{ $root.observation.stuff.ideas ? $root.observation.stuff.ideas.length : '' }}</small> </md-button>
-		<md-button flex md-no-ink class="bx-breadcrumb-button" ng-class="vm.isActive('review')" ng-disabled="vm.isDisabled('review')" ng-click="vm.go('review')"> Überprüfen </md-button>
+		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
+			<md-grid-tile ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)" class="bx-obs-tile-domain-{{ obs.domain.id }}">
 
-	</div>
-</md-sidenav>
+				<md-grid-tile-header>
+					<div layout layout-align="space-between center" layout-fill>
+						<div flex> {{ obs.user.name }} </div>
+						<div flex></div>
+					</div>
+				</md-grid-tile-header>
 
-<md-content layout="row" flex ui-view="capture-main"></md-content>
+				<div> {{ obs.item.name }} </div>
 
+				<md-grid-tile-footer>
+					<div layout layout-align="space-between center" layout-fill>
+						<div flex> {{ obs.kid.name }} </div>
+						<div flex> +{{ obs.niveau }} </div>
+					</div>
+				</md-grid-tile-footer>
+
+			</md-grid-tile>
+
+		</md-grid-list>
+	</md-content>
+</div>

@@ -92,7 +92,7 @@
       url: '/observation-inbox',
       views: {
         main: {
-          template: '<bx-observation-inbox></bx-observation-inbox>'
+          template: '<bx-observation-inbox layout-fill></bx-observation-inbox>'
         }
       }
     })
