@@ -1,30 +1,30 @@
-<md-content layout="column" flex>
+<div layout="column" layout-fill>
 	<md-toolbar>
-		<h2 class="md-toolbar-tools">
+		<span class="md-toolbar-tools">
 			<md-button ui-sref="bx.home">
-				<md-icon aria-label="add-item" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
-			<span flex>Institutionen</span>
+			<h2 flex>Institutionen</h2>
 
 			<md-button ng-click="vm.dialog($event, {type:'institution'})">
-				<md-icon aria-label="add-item" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
-		</h2>
-	</md-toolbar>
-
-
-	<md-toolbar class="search-bar padded">
-		<span class="md-toolbar-tools">
-			<md-input-container flex>
-			  <label>Suche</label>
-			  <input type="text" ng-model="query">
-			</md-input-container>
 		</span>
 	</md-toolbar>
 
+	<div layout>
+		<md-input-container flex>
+			<label>Namen filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+		<md-input-container flex>
+			<label>ID filtern</label>
+			<input type="text" ng-model="query">
+		</md-input-container>
+	</div>
 
-	<md-content flex style="height:632px;">
+	<md-content flex class="bx-content">
 		<table style="width: 100%;">
 			<thead>
 				<th ng-click="predicate='id'; reverse=!reverse"> ID </th>
@@ -42,5 +42,4 @@
 			</tbody>
 		</table>
 	</md-content>
-</md-content>
-
+</div>
