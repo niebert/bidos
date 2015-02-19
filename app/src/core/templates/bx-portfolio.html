@@ -1,30 +1,26 @@
-<div flex>
-	<md-toolbar flex>
-		<span class="md-toolbar-tools"  layout-fill>
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
 			<md-button ui-sref="bx.home">
-				<md-icon aria-label="add-child" icon="lib/material-design-icons/navigation/svg/production/ic_arrow_back_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
 			<h2 flex>Auswertung</h2>
 
-			<md-button ng-click="vm.dialog($event, {type:'group'})">
-				<md-icon aria-label="add-child" icon="lib/material-design-icons/content/svg/production/ic_add_24px.svg" style="width: 24px; height: 24px;"></md-icon>
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
 		</span>
 	</md-toolbar>
 
-	<div layout="row" flex>
-		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('kid')">
-			<span class="bold"> per Kind </span>
-		</md-whiteframe>
-		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('group')">
-			<span class="bold"> per Gruppe </span>
-		</md-whiteframe>
-		<md-whiteframe flex layout layout-align="center center" ng-class="{selected{{domain.id}}:vm.isSelected(domain)}" class="md-whiteframe-z1 button-card" ng-click="vm.selectChart('institution')">
-			<span class="bold"> per Institution </span>
-		</md-whiteframe>
-	</div>
+	<md-content flex class="bx-content">
+		<md-tabs md-selected="selectedIndex">
+			<md-tab ng-repeat="tab in vm.tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
+				<div class="demo-tab tab{{$index%4}}" layout="column" layout-fill layout-align="space-around center">
+					<canvas id="bar" class="chart chart-bar" data="data" labels="labels" legend="true" series="series"></canvas>
+				</div>
+			</md-tab>
+		</md-tabs>
+	</md-content>
+</div>
 
-	<div flex>
-		<canvas id="bar" class="chart chart-bar" data="data" labels="labels" legend="true" series="series"></canvas>
-	</div>

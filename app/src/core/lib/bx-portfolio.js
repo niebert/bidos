@@ -26,6 +26,18 @@
         selectChart: selectChart
       });
 
+      vm.tabs = [{
+        title: 'nach Kind',
+        action: vm.selectChart('kid')
+      }, {
+        title: 'nach Gruppe',
+        action: vm.selectChart('group')
+      }, {
+        title: 'nach Institution',
+        action: vm.selectChart('institution')
+      },
+      ];
+
       function selectChart(resourceType) {
         switch (resourceType) {
           case 'kid':
