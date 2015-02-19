@@ -228,6 +228,11 @@ $button-index-size: 1rem;
 /* bx-styled button */
 
 @for $i from 1 through length($bx-colors) {
+
+  .bx-obs-tile-domain-#{$i} {
+    background-color: lighten(nth($bx-colors, $i), 20);
+  };
+
   .bx-button#{$i} {
     border-left: 10px solid nth($bx-colors, $i);
     color: lighten(nth($bx-colors, $i), 20);
@@ -281,6 +286,56 @@ $button-index-size: 1rem;
     background-color: lighten(nth($group-colors, $i), 20);
   }
 };
+
+md-grid-tile {
+  transition: all 300ms ease-out 50ms;
+}
+
+md-grid-tile-footer {
+  background: rgba(0, 0, 0, 0.38);
+}
+
+// #layout > div > section > md-content > bx-observation-inbox > div > md-content > md-grid-list > md-grid-tile > figure > h3 {
+//   font-size: 12em;
+//   color: rgba(51, 51, 51, 0.1);
+//   text-align: right;
+//   position: relative;
+//   left: 40%;
+//   margin: 0;
+// }
+
+md-grid-tile > figure > div {
+  text-align: center;
+  padding: 10px;
+}
+
+md-grid-tile-header > figcaption,
+md-grid-tile-footer > figcaption {
+  width: 100%;
+  padding: 12px;
+  font-size: 0.9em;
+  & > div > div:first-child {
+    text-align: left;
+  }
+  & > div > div:last-child {
+    text-align: right;
+  }
+}
+
+md-dialog > md-content > ul {
+  padding: 10px;
+    & > li {
+      list-style-type: none;
+      padding: 2px;
+    }
+}
+
+md-dialog > md-content > h3 {
+  font-weight: 400;
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+  margin-bottom: -8px;
+}
 
 // .bx-button-upper {
 //   border-top-left-radius: 3px !important;

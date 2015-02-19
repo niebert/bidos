@@ -17,7 +17,9 @@
     colors: {
       firenze: ['#337754', '#ffed94', '#ffa029', '#ac3619', '#7f1b00'],
       phaedra: ['#ff4a25', '#ffff8b', '#b0e88e', '#63b17d', '#009376'],
-      custom1: ['#f7c6ff', '#fff7b4', '#3a90ff', '#ffc9af', '#c8ffd6']
+      custom1: ['#f7c6ff', '#fff7b4', '#3a90ff', '#ffc9af', '#c8ffd6'],
+      obs:     ['#52968d', '#efdc9d', '#ec6d58', '#f54337', '#c71b16'], // pomegranate explosion
+      bidos:   ['#b72926', '#de9624', '#5f539f', '#4b7fa2'] // copied from pdf
     },
 
     // capture steps
