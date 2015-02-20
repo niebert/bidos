@@ -170,7 +170,8 @@ SELECT users.id,
        email,
        role,
        password_hash,
-       enabled
+       disabled,
+       approved
 FROM users;
 
 -- list of usernames to check during registration process (front end)
