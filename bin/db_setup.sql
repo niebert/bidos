@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS ideas (
   behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
   observation_id    INT REFERENCES behaviours(id),
   text              TEXT,
-  approved          BOOLEAN DEFAULT FALSE
+  approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS observations (
   kid_id            INT REFERENCES kids(id),
   niveau            INT,
   help              BOOLEAN,
-  approved          BOOLEAN DEFAULT FALSE
+  approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
