@@ -420,7 +420,7 @@
         case 2:
           _.each(resources.kids, function(k) {
             var f = k.name.split(' ')[0]; // first name
-            k.name=f[0]f[1]f[f.length-1]; // <3
+            k.name=f[0] + f[1] + f[f.length-1] + k.id; // <3
             console.log(k.name);
           });
           // debugger
