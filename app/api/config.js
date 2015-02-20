@@ -10,7 +10,7 @@
       },
       db: {
         postgres: {
-          url: process.env.DB_URL || 'postgres://asdf@localhost/bidos_development'
+          url: process.env.DB_URL || 'postgres://asdf:asdf@localhost/bidos_development'
         }
       },
       secret: {
