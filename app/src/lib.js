@@ -1,0 +1,15 @@
+require('angular');
+require('angular-animate');
+require('angular-aria');
+require('angular-chart.js');
+require('angular-jwt');
+require('angular-material');
+require('angular-messages');
+require('ng-storage');
+require('ng-cordova');
+require('chart.js');
+require('jquery');
+require('traceur');
+require('hammerjs');
+require('lodash');
+_.mixin(require('lodash-deep'));
