@@ -3,7 +3,7 @@
 (function() {
   'use strict';
 
-var SERVER_URL = 'http://localhost:3001';
+var SERVER_URL = 'http://92.51.147.239:3001';
 
   var _ = require('lodash'),
     jwt = require('koa-jwt'),
