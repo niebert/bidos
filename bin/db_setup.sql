@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS items (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
   subdomain_id      INT REFERENCES subdomains(id) NOT NULL,
+  name              TEXT,
   text              TEXT,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
