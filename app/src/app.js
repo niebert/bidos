@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, navigator, window, document */
+  /* global angular, navigator, window, document, _ */
 
   var app = angular.module('bidos', [
     'auth', // bidos auth
