@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS examples (
   text              TEXT,
   approved          BOOLEAN DEFAULT FALSE
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS ideas (
   text              TEXT,
   approved          BOOLEAN DEFAULT FALSE
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
