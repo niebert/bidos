@@ -360,7 +360,7 @@
             }
           });
         }
-        if (!user.hasOwnProperty('roleName')) {
+        // if (!user.hasOwnProperty('roleName')) {
           Object.defineProperty(user, 'roleName', {
             get: function() {
               switch (this.role) {
@@ -373,7 +373,7 @@
               }
             }
           });
-        }
+        // }
       });
 
 
