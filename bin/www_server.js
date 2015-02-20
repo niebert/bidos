@@ -33,7 +33,7 @@
   // main
   var listen = function(port) {
     port = port || PORT;
-    console.log(chalk.red('>> web front end running on http://localhost:' + port));
+    console.log(chalk.red('>> web front end running on http://92.51.147.239:' + port));
     app.listen(port);
   };
 

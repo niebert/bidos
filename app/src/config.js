@@ -18,7 +18,8 @@
 
     // app config
     app: {
-      API: 'http://192.168.1.7:3000',
+      SERVER_IP: '92.51.147.239',
+      API: 'http://' + SERVER_IP + ':3000',
       RESOURCE_PATH: 'v1',
       DEFAULT_RESOURCE: 'resources/vanilla',
       TOKEN_KEY: 'auth_token'
