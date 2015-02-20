@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS items (
   subdomain_id      INT REFERENCES subdomains(id) NOT NULL,
   text              TEXT,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS behaviours (
   item_id           INT REFERENCES items(id) NOT NULL,
   niveau            INT NOT NULL, -- 0=notyet, 1, 2, 3, 4=advanced
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
