@@ -13,7 +13,7 @@
   angular.module('bx.auth.controller', [])
     .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, $mdToast, $stateParams, $location, UserFactory, $http, $q) {
+  function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -26,7 +26,10 @@
       signup: signup,
       roles: roles,
       forgot: forgot,
-      reset: reset
+      reset: reset,
+      next: next,
+      previous: previous,
+      selectedIndex: 1,
     });
 
     function getPublicData() {
@@ -47,22 +50,22 @@
     getPublicData();
 
     var ROUTES = {
-      AUTH_SUCCESS: '',
-      AUTH_FAILURE: 'public.login',
+      AUTH_SUCCESS: 'bx.home',
+      AUTH_FAILURE: 'public',
 
-      SIGNUP_SUCCESS: 'public.thankyou',
+      SIGNUP_SUCCESS: 'public',
       SIGNUP_FAILURE: '',
 
       LOGIN_SUCCESS: 'bx.home',
-      LOGIN_FAILURE: '',
+      LOGIN_FAILURE: 'public',
 
-      LOGOUT_SUCCESS: 'public.login',
+      LOGOUT_SUCCESS: 'public',
       LOGOUT_FAILURE: '',
 
-      FORGOT_SUCCESS: 'public.reset',
+      FORGOT_SUCCESS: 'reset',
       FORGOT_FAILURE: '',
 
-      RESET_SUCCESS: 'public.login',
+      RESET_SUCCESS: 'public',
       RESET_FAILURE: '',
     };
 
@@ -70,7 +73,7 @@
     /* INIT */
 
     /* Decrypt auth token and check if we're authenticated on every step.
-    /* FIXME: make sure this is done on every single request. */
+    /* This is done on every single request. */
 
     auth();
 
@@ -89,19 +92,23 @@
     function authSuccess(user) {
       console.log('%cAUTHORIZED', 'color: green; font-size: 1.2em', user);
       $rootScope.auth = user;
+      $state.go(ROUTES.AUTH_SUCCESS);
     }
 
     function authFailure() {
       console.log('%cNOT AUTHORIZED', 'color: green; font-size: 1.2em, padding: 16px;');
-      $state.go(ROUTES.AUTH_FAILURE);
-      $location.path('/');
+      if (location.hash.match(/reset/)) {
+        $state.go('reset');
+      } else {
+        $state.go(ROUTES.AUTH_FAILURE);
+        $location.path('/');
+      }
     }
 
 
     /* LOGIN */
     function login(formData) {
       console.log('[auth] login attempt', formData);
-
       UserFactory.login(formData)
         .then(loginSuccess, loginFailure);
     }
@@ -110,18 +117,13 @@
       console.info('[auth] login success', response);
       $rootScope.auth = response.data;
       $state.go(ROUTES.LOGIN_SUCCESS);
+      toast('Sie sind jetzt angemeldet');
     }
 
     function loginFailure(response) {
       console.warn('[auth] login failure', response);
-      $mdToast.show($mdToast.simple()
-        .content(response.config.method, response.config.url, 'FEHLER')
-        .position('bottom right')
-        .hideDelay(3000));
-
-
+      toast(response.data.error);
     }
-
 
     /* LOGOUT */
     function logout() {
@@ -135,10 +137,12 @@
       console.info('[auth] logout success', response);
       $state.go(ROUTES.LOGOUT_SUCCESS);
       $rootScope.auth = null;
+      toast('Erfolgreich abgemeldet');
     }
 
     function logoutFailure(response) {
       console.warn('[auth] login failure', response);
+      toast(response.data.error);
     }
 
 
@@ -155,14 +159,34 @@
     function signupSuccess(response) {
       console.info('[auth] signup success', response);
       $state.go(ROUTES.SIGNUP_SUCCESS);
-      vm.new = response.data[0];
+      vm.auth = response.data[0];
+      // previous(); // go to login tab
+      toast('Registrierung abgesendet. Überprüfen Sie Ihre E-Mails.');
       console.log('vm.auth', vm.auth);
     }
 
     function signupFailure(response) {
       console.warn('[auth] signup failure', response);
-    }
 
+      var err = response.data[0].content.detail;
+      console.error(err);
+
+      if (err) {
+        if (err.match(/Key.*email.*already exists/)) {
+          toast('E-Mail-Adresse bereits vergeben');
+        }
+
+        if (err.match(/Key.*name.*already exists/)) {
+          toast('Benutzername bereits vergeben');
+        }
+      }
+
+      if (response.data[0].content.code === '08P01') {
+        console.error('Database insert failed');
+        toast('Registrierung fehlgeschlagen. Bitte laden sie die Seite erneut und versuchen Sie es noch einmal.');
+      }
+
+    }
 
     /* PASSWORD FORGOT */
     function forgot(formData) {
@@ -174,16 +198,19 @@
 
     function forgotSuccess(response) {
       console.info('[auth] forgot success', response);
-      $state.go(ROUTES.FORGOT_SUCCESS);
+      toast('E-Mail versendet');
+      // $state.go(ROUTES.FORGOT_SUCCESS);
     }
 
     function forgotFailure(response) {
       console.warn('[auth] forgot failure', response);
+      toast('Das hat nicht geklappt');
     }
 
     /* PASSWORD RESET */
     function reset(formData) {
       console.log('[auth] reset attempt', formData);
+      debugger
       UserFactory.reset(formData, $stateParams.hash)
         .then(resetSuccess, resetFailure);
     }
@@ -196,6 +223,21 @@
     function resetFailure(response) {
       console.warn('[auth] reset failure', response);
     }
-  }
 
+    function next() {
+      vm.selectedIndex = Math.min(vm.selectedIndex + 1, 2);
+    }
+
+    function previous() {
+      vm.selectedIndex = Math.max(vm.selectedIndex - 1, 0);
+    }
+
+    function toast(message) {
+      $mdToast.show($mdToast.simple()
+        .content(message)
+        .position('bottom right')
+        .hideDelay(3000));
+    }
+
+  }
 }());

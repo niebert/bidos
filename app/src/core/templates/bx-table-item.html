@@ -2,13 +2,13 @@
 	<md-toolbar>
 		<span class="md-toolbar-tools">
 			<md-button ui-sref="bx.home">
-				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
+				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
 			<h2 flex>Bausteine</h2>
 
 			<md-button ng-click="vm.dialog($event, {type:'item'})">
-				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
 		</span>
 	</md-toolbar>
@@ -16,11 +16,26 @@
 	<div layout>
 		<md-input-container flex>
 			<label>Namen filtern</label>
-			<input type="text" ng-model="query">
+			<input type="text" ng-model="query.name">
 		</md-input-container>
+
 		<md-input-container flex>
 			<label>ID filtern</label>
-			<input type="text" ng-model="query">
+			<input type="text" ng-model="query.id">
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Institution </span>
+			<select ng-model="query.institution_id" ng-options="institution.id as institution.name for institution in vm.institutions">
+				<option value="saab">--- keine ---</option>
+			</select>
+		</md-input-container>
+
+		<md-input-container flex>
+			<span> Gruppe </span>
+			<select ng-model="user.group_id" ng-options="group.id as group.name for group in vm.groups">
+				<option value="saab">--- keine ---</option>
+			</select>
 		</md-input-container>
 	</div>
 
@@ -37,7 +52,7 @@
 				<th ng-click="vm.sortOrder='ideas.length'; reverse=!reverse">Ideen</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in vm.items | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, item)">
+				<tr ng-repeat="item in vm.items | filter:vm.viewFilter(query) | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, item)">
 					<td> {{ item.id }} </td>
 					<td> {{ item.name }} </td>
 					<td> {{ item.subdomain.name }} </td>
@@ -52,3 +67,4 @@
 
 	</md-content>
 </div>
+

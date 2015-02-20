@@ -16,3 +16,4 @@ node_modules
 npm-debug.log
 schema.json
 trash
+app/assets/material-design-icons

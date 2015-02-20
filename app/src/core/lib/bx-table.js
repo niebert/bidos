@@ -18,9 +18,10 @@
       }
     };
 
-    function controller(bxResources, $mdDialog, $scope, $rootScope) {
+    function controller(bxResources, $mdDialog, $scope, $rootScope, $http) {
       var vm = angular.extend(this, {
         dialog: dialog,
+        viewFilter: viewFilter,
         // createRandomKid: createRandomKid,
         // createRandomObservation: createRandomObservation
       });
@@ -39,59 +40,34 @@
 
       updateViewModel();
 
-      // function createRandomKid() {
-      //   bxResources.create({
-      //       type: 'kid',
-      //       name: faker.name.firstName() + ' ' + faker.name.lastName(),
-      //       bday: faker.date.between(faker.date.past(15), faker.date.past(10)),
-      //       sex: faker.random.number({
-      //         min: 1,
-      //         max: 2
-      //       }),
-      //       religion: faker.random.number({
-      //         min: 1,
-      //         max: 4
-      //       }),
-      //       hands: faker.random.number({
-      //         min: 1,
-      //         max: 3
-      //       }),
-      //       group_id: faker.random.number({
-      //         min: 1,
-      //         max: 10
-      //       })
-      //     })
-      //     .then(function(data) {
-      //       updateViewModel(data);
-      //     });
-      // }
+      function viewFilter(query) {
+        if (!query) {
+          return;
+        }
 
-      // function createRandomObservation() {
-      //   var observation = {
-      //     type: 'observation',
-      //     help: function() {
-      //       return faker.random.number({
-      //         min: 0,
-      //         max: 1
-      //       }) === 0 ? false : true;
-      //     },
-      //     niveau: faker.random.number({
-      //       min: 0,
-      //       max: 4
-      //     })
-      //   };
+        // NOTE: cleared input/select fields set null value to bound variable
 
-      //   var item = _.sample(vm.items);
-      //   observation.item_id = item.id;
+        return function(query, i, resource) {
+          var a = [];
+          // FIXME
+          // if (query.hasOwnProperty('name') && query.name !== null) {
+          //   var re = new RegExp('\\b' + query.name, 'i'); // leading word delimiter
+          //   a.push(resource.name.match(re));
+          // }
 
-      //   var kid = _.sample(vm.kids);
-      //   observation.kid_id = kid.id;
 
-      //   bxResources.create(observation)
-      //     .then(function(data) {
-      //       updateViewModel(data);
-      //     });
-      // }
+          // if (query.hasOwnProperty('institution_id') && query.institution_id !== null) {
+          //   a.push(resource.id === query.institution_id);
+          // }
+
+          // // 0 == male; 1 == female
+          // if (query.hasOwnProperty('resourceSex') && query.resourceSex !== null) {
+          //   a.push(resource.sex === query.kidSex);
+          // }
+
+          return _.all(a);
+        };
+      }
 
       function dialog(ev, resource) {
         if ($rootScope.auth.role === 2) {
@@ -123,11 +99,29 @@
           save: save,
           destroy: destroy,
           parent: parentVm,
-          toggleActivation: toggleActivation,
+          approveUser: approveUser,
+          toggleEnabled: toggleEnabled,
           formIsValid: formIsValid
         });
 
-        function toggleActivation(resource) {
+        function approveUser(user) {
+          var config = require('../../config');
+          var url = [config.app.API, 'auth/approve'].join('/');
+          $http.post(url, user).success(function(response) {
+            console.log(response);
+            vm[resource.type] = response;
+            resource = response;
+            $mdDialog.hide();
+            vm.parent.users.splice(_.findIndex(vm.parent.users, { id: response.id }), 1, response);
+          }).error(function(err) {
+            console.error(err);
+          });
+        }
+
+        function toggleEnabled(resource) { // TODO
+          if (resource.hasOwnProperty('disabled')) {
+            resource.disabled = !resource.disabled;
+          }
           if (resource.hasOwnProperty('enabled')) {
             resource.enabled = !resource.enabled;
           }
@@ -137,7 +131,14 @@
 
         vm.r = resource;
 
-        if (vm.r.type === 'item' && !vm.r.behaviours.length) {
+
+        function isEmptyItem(resource) {
+          return vm.r.type === 'item' && vm.r.behaviours && !vm.r.behaviours.length;
+        }
+
+        // WHAT IS THAT? WTF
+        // prepopulating empty items?
+        if (isEmptyItem(vm.r)) {
           vm.behaviours = [];
           _.each([1, 2, 3], function(i) {
             vm.behaviours.push({
@@ -194,6 +195,8 @@
         function addExampleToBehaviour(behaviour, example) {}
 
         function save(resource) {
+
+
 
           // update existing examples
           _.each(vm.r.examples, function(example) {

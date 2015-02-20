@@ -3,6 +3,19 @@
 
   module.exports = {
 
+    buttons: {},
+
+    icons: {
+      add:       'ic_add_48px.svg',
+      android:   'ic_android_48px.svg',
+      arrow:     'ic_arrow_back_48px.svg',
+      cancel:    'ic_cancel_48px.svg',
+      dashboard: 'ic_dashboard_48px.svg',
+      edit:      'ic_mode_edit_24px.svg',
+      menu:      'ic_menu_24px.svg',
+      settings:  'ic_settings_48px.svg'
+    },
+
     // app config
     app: {
       API: 'http://192.168.1.7:3000',
@@ -18,8 +31,8 @@
       firenze: ['#337754', '#ffed94', '#ffa029', '#ac3619', '#7f1b00'],
       phaedra: ['#ff4a25', '#ffff8b', '#b0e88e', '#63b17d', '#009376'],
       custom1: ['#f7c6ff', '#fff7b4', '#3a90ff', '#ffc9af', '#c8ffd6'],
-      obs:     ['#52968d', '#efdc9d', '#ec6d58', '#f54337', '#c71b16'], // pomegranate explosion
-      bidos:   ['#b72926', '#de9624', '#5f539f', '#4b7fa2'] // copied from pdf
+      obs: ['#52968d', '#efdc9d', '#ec6d58', '#f54337', '#c71b16'], // pomegranate explosion
+      bidos: ['#b72926', '#de9624', '#5f539f', '#4b7fa2'] // copied from pdf
     },
 
     // capture steps

@@ -1,0 +1,66 @@
+[refact] create type property in backend/db
+[refact] tilegenerator
+[fs] put html and js together per component, flatten for dist (decouple this logic. glob for js/html files, so it doesnt matter, what is where)
+[fs] remove bx- from filenames
+[capture] review toolbar is missing
+[icons] fix all icon paths
+[auth/css] fix login/signup screens
+[auth] passwort reset: after button click redirect doesn't work
+[capture] fix search/filter bar
+[capture] showNextExample not working
+[capture] when 'noch nicht', do not ask the help question
+[charts] broken! buggy css
+[ui] alle buttons und funktionen testen
+[email] redirect and toast after passwort reset
+[inbox service] get all data and filter out only the new ones
+[help/ui] überall einen hilfe button einbauen, auf den ein popup kommt (help-directive) (luxus, aber ja. help directive)
+[help/ui] store all strings in a strings.jsalle texte von bedienelementen softcoden
+[help/toasts] toast if form submit fails
+[roles] jeder sollte n anderes theme haben (vielleicht nicht möglich)
+
+[OFFLINE] OFFLINE CACHING (UH OH... MINIMAL IMPLEMENTIEREN)
+[HELP/FORMS/MESSAGES] HILFESTELLUNGEN BEI FORMULAREN (MÜSSTE GEHEN)
+[EXPORT] NESTED DATA AS JSON, RAW DATA AS CSV (COULD BE EASY BUT TIME-CONSUMING, SERVERSIDE?)
+[ROLES] DASHBOARD MUSS FÜR JEDEN ANDERS AUSSEHEN (SOLLTE GEHEN)
+
+[REGISTRATION/INBOX] LIKE REGISTRATION TABLE, BUT DIFFERENT VIEW: SIMPLE LIST WITH A BUTTON ON EACH OF ITS THICK ROWS (SORTED DESC BY CREATION DATE) /inbox/registrations
+[OBSERVATION /INBOX] LIKE OBSERVATION  TABLE, BUT DIFFERENT VIEW: SIMPLE LIST WITH A BUTTON ON EACH OF ITS THICK ROWS (SORTED DESC BY CREATION DATE) /inbox/observations
+[REGISTRATION/INBOX] ADMIN SEES NEW REGISTRATIONS IN THE REGISTRATION-INBOX (JUST A LIST WITH ENABLE/DISABLE BUTTONS PER ROW) !! COLOR USER LIST FOR ADMINS
+
+IMPORTANT
+[tables] search by id
+[resources] generate unique 3 letter ids for each child
+[new] implement registration inbox
+[new] personal profile
+[resources] verify that adding items works
+[resources] do not show items without behaviours (an item is complete when it has all three behaviours)
+[tables] fix all popups
+[ui] verify role specific views
+
+DONE
+[material] toasts don't hide automatically? FIXED
+[tables] fix all uppercase FIXED
+[capture] no redirect when done FIXED
+[capture] examples are not shown FIXED
+[capture] add ideas/examples buggy FIXED
+[capture] toolbar missing on capture-{help,ff} FIXED
+[capture] ugly FIXED
+[css] fix view height problems FIXED
+[tables] dialog sizes are screwed up FIXED
+[dashboard] mobile dashboard responsive buttons FIXED
+[emails] auth mails DONE
+[resources] observation.author is missing FIXED
+[new] implement observation inbox DONE
+[auth] fixed registration email stuff
+[auth] disabled unapproved user login
+
+OPT
+[refactor] split up css files
+[improv] stop and save capture time
+[setup] make server address configurable in app
+[material] toasts are all uppercase
+[ui] add loading indicator everywhere
+[ui] switchable views: [agenda, array, carousel, column, day, headline, list, module, quilt, stream, week] (see material design icons)
+[resource/inbox] toggle 'show only new' button for scientist on observation resource view
+[refact] create tables dynamically (-> one template for all)
+[resources] user.role is missing

@@ -6,7 +6,7 @@
 	</md-subheader>
 	<md-subheader ng-show="vm.errorMessage" class="md-sticky-no-effect dialog-header server-error">Fehler: {{ vm.errorMessage }}</md-subheader>
 
-	<md-content flex layout="column">
+	<md-content flex layout="column" style="min-height: 567px;">
 
 		<form name="itemForm">
 			<md-content layout="column">
@@ -56,9 +56,6 @@
 	</md-content>
 
 
-
-
-
 	<div class="md-actions" layout="row">
 
 		<md-button ng-show="vm.item.id" ng-click="vm.destroy(vm.item)" class="md-raised md-warn">
@@ -80,3 +77,4 @@
 
 <script type="text/ng-template" id="name-messages">
 </script>
+

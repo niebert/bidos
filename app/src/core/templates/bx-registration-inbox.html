@@ -3,12 +3,12 @@
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 			<md-button ui-sref="bx.home">
-				<md-icon md-svg-src="/img/ic_dashboard_48px.svg" class="s48" alt="BiDoS"></md-icon>
+				<md-icon md-svg-src="{{ ic.dashboard }}" class="s48" alt="BiDoS"></md-icon>
 			</md-button>
-			<h2> Eingehenden Beobachtungen </h2>
+			<h2> Eingehenden Registrierungen </h2>
 			<span flex></span>
 			<md-button>
-				<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="Observation Inbox Menu"></md-icon>
+				<md-icon md-svg-src="{{ ic.vert }}" class="s48" alt="Registration Inbox Menu"></md-icon>
 			</md-button>
 		</div>
 	</md-toolbar>
@@ -16,21 +16,21 @@
 	<md-content flex class="bx-content">
 
 		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-			<md-grid-tile ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)" class="bx-obs-tile-domain-{{ obs.domain.id }}">
+			<md-grid-tile ng-repeat="reg in vm.regervations" ng-click="vm.dialog($event, reg)" class="bx-reg-tile-domain-{{ reg.domain.id }}">
 
 				<md-grid-tile-header>
 					<div layout layout-align="space-between center" layout-fill>
-						<div flex> {{ obs.user.name }} </div>
+						<div flex> {{ reg.user.name }} </div>
 						<div flex></div>
 					</div>
 				</md-grid-tile-header>
 
-				<div> {{ obs.item.name }} </div>
+				<div> {{ reg.item.name }} </div>
 
 				<md-grid-tile-footer>
 					<div layout layout-align="space-between center" layout-fill>
-						<div flex> {{ obs.kid.name }} </div>
-						<div flex> +{{ obs.niveau }} </div>
+						<div flex> {{ reg.kid.name }} </div>
+						<div flex> +{{ reg.niveau }} </div>
 					</div>
 				</md-grid-tile-footer>
 

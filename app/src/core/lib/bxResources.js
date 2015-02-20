@@ -201,6 +201,15 @@
       // --------------------------------------------------------------------------------
 
       _.each(resources.observations, function(observation) {
+
+        if (!observation.hasOwnProperty('update')) {
+          Object.defineProperty(observation, 'update', {
+            get: function() {
+              return updateResource(this);
+            }
+          });
+        }
+
         if (!observation.hasOwnProperty('domain')) {
           Object.defineProperty(observation, 'domain', {
             get: function() {
@@ -338,8 +347,38 @@
       });
 
 
+      // --------------------------------------------------------------------------------
 
-      /* ROLE BASED CHANGES TO THE RESOURCE MODEL */
+      _.each(resources.users, function(user) {
+        if (!user.hasOwnProperty('kids')) {
+          Object.defineProperty(user, 'kids', {
+            get: function() {
+              return _.chain(user.groups)
+                .map('kids')
+                .flatten()
+                .value();
+            }
+          });
+        }
+        if (!user.hasOwnProperty('roleName')) {
+          Object.defineProperty(user, 'roleName', {
+            get: function() {
+              switch (this.role) {
+                case 0:
+                  return 'admin';
+                case 1:
+                  return 'practitioner';
+                case 2:
+                  return 'scientist';
+              }
+            }
+          });
+        }
+      });
+
+
+
+      /* ROLE BASED CHANGES TO THE RESOURCE MODEL FIXME SUCKS */
 
       switch ($rootScope.auth.role) {
 
@@ -379,6 +418,12 @@
           break;
 
         case 2:
+          _.each(resources.kids, function(k) {
+            var f = k.name.split(' ')[0]; // first name
+            k.name=f[0]f[1]f[f.length-1]; // <3
+            console.log(k.name);
+          });
+          // debugger
           break;
       }
     }
@@ -407,9 +452,19 @@
         }
       });
     }
+
+    function usernameFromEmail(resource) {
+      return resource.email.split('@')[0];
+    }
+
     function createResource(resource) {
       var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
       return $q(function(resolve) {
+
+        if (resource.type === 'user') {
+          resource.username = usernameFromEmail(resource);
+          debugger
+        }
 
         delete resource.type;
         resource.author_id = $rootScope.auth.id;

@@ -3,6 +3,8 @@
 (function() {
   'use strict';
 
+var SERVER_URL = 'http://localhost:3001';
+
   var _ = require('lodash'),
     jwt = require('koa-jwt'),
     secret = require('../config')[process.env.NODE_ENV].secret.key,
@@ -29,7 +31,46 @@
     .post('/signup', generateUsername, createResource('user'))
     .post('/forgot', forgotPassword)
     .get('/reset/:hash', resetPassword)
-    .post('/reset/:hash', setNewPassword);
+    .post('/reset/:hash', setNewPassword)
+    .post('/approve', approveUser);
+
+
+  function* approveUser(next) {
+    var result =
+      yield this.pg.db.client.query_('UPDATE users SET approved = true WHERE id = $1 RETURNING *', [this.request.body.id]);
+
+    if (result.rowCount) {
+      var user = result.rows[0];
+      user.type = 'user';
+      var payload = {
+        to: user.email,
+        toname: user.name,
+        from: 'admin@bidos',
+        subject: '[bidos] Zugang freigeschaltet',
+        text: 'Ihr Zugang ist jetzt freigeschaltet. Sie können sich mit Ihrem Benutzernamen "' + user.username + '" und Ihrem Passwort anmelden.',
+        html: 'Ihr Zugang ist jetzt freigeschaltet. Sie können sich mit Ihrem Benutzernamen "' + user.username + '" und Ihrem Passwort anmelden.'
+      };
+
+      sendgrid.send(payload, function(err, json) {
+        if (err) {
+          console.error(err);
+        }
+        this.status = 200;
+        console.log('email sent to ' + user.email);
+        console.log(json);
+      }.bind(this));
+      this.status = 200;
+      this.body = user;
+
+    } else {
+
+      this.status = 500;
+      this.body = {
+        error: 'failed'
+      };
+    }
+
+  }
 
   function* resetPassword(next) {
     var result =
@@ -74,6 +115,12 @@
       }];
     }
 
+    if (!password_reset.rows.length) {
+      this.status = 401;
+      this.body = {
+        error: 'password reset token not found'
+      };
+    }
     var query = 'UPDATE users SET (password_hash) = ($1) WHERE id=' + parseInt(password_reset.rows[0].user_id) + ' RETURNING *'; // pluralize
     var values = [this.request.body.password_hash];
 
@@ -110,6 +157,7 @@
         }];
       }
 
+      this.status = 200;
       this.body = result.rows;
 
     } catch (err) {
@@ -120,7 +168,7 @@
         content: err
       }];
     }
-  };
+  }
 
   function* forgotPassword(next) {
     var hash =
@@ -175,8 +223,8 @@
           toname: user.name,
           from: 'admin@bidos',
           subject: '[bidos] Passwort zurücksetzen',
-          text: 'Folgen Sie dem folgenden Link um Ihr Passwort zurückzusetzen: http://localhost:3000/auth/reset/' + hash.toString('hex'),
-          html: 'Klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen: <a href="http://localhost:3000/auth/reset/' + hash.toString('hex') + '">http://localhost:3000/auth/reset/' + hash.toString('hex') + '</a>'
+          text: 'Folgen Sie dem folgenden Link um Ihr Passwort zurückzusetzen: ' + SERVER_URL + '/#/reset/' + hash.toString('hex'),
+          html: 'Klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen: <a href="' + SERVER_URL + '/#/reset/' + hash.toString('hex') + '">' + SERVER_URL + '/auth/reset/' + hash.toString('hex') + '</a>'
         };
 
         sendgrid.send(payload, function(err, json) {
@@ -186,6 +234,8 @@
           this.status = 200;
           console.log(json);
         }.bind(this));
+
+        this.status = 200;
 
       } catch (err) {
         console.error(err);
@@ -198,7 +248,6 @@
 
     }
   }
-
 
   function* authenticate(next) {
     var bcrypt = require('co-bcrypt');
@@ -220,6 +269,14 @@
 
       user = result.rows[0];
       console.log(this.request.body, user);
+
+      if (!user.approved) {
+        this.status = 401;
+        this.body = {
+          error: 'Der Benutzer ist nicht freigeschaltet'
+        };
+      }
+
       if (
         yield bcrypt.compare(this.request.body.password, user.password_hash)) {
         yield next;
@@ -230,14 +287,16 @@
         };
       }
 
-      if (!user.enabled) {
+      if (user.disabled) {
         console.log(user);
         this.status = 401;
         this.body = {
-          error: 'Der Benutzer ist nicht aktiviert'
+          error: 'Der Benutzer ist deaktiviert'
         };
       }
 
+      this.status = 200;
+      this.body = user;
     }
   }
 
@@ -333,6 +392,25 @@
           });
 
           this.body = result.rows;
+          var user = result.rows[0];
+
+          var payload = {
+            to: user.email,
+            toname: user.name,
+            from: 'admin@bidos',
+            subject: '[bidos] Registrierung',
+            text: 'Ihre Registrierung war erfolgreich. Sobald ein Administrator Ihren Zugang freigeschaltet hat, erhalten Sie eine E-Mail and ' + user.email + '.',
+            html: 'Ihre Registrierung war erfolgreich. Sobald ein Administrator Ihren Zugang freigeschaltet hat, erhalten Sie eine E-Mail and ' + user.email + '.'
+          };
+
+          sendgrid.send(payload, function(err, json) {
+            if (err) {
+              console.error(err);
+            }
+            this.status = 200;
+            console.log(json);
+          }.bind(this));
+
 
         } catch (err) {
           console.error(err);

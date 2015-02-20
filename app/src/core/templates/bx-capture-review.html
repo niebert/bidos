@@ -1,4 +1,19 @@
-<md-content flex layout="row" class="review" layout-wrap layout-padding layout-margin>
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button ui-sref="bx.home">
+				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
+			</md-button>
+
+			<h2 flex>Überprüfen Sie Ihre Beobachtung</h2>
+
+			<md-button ng-click="vm.dialog($event, {type:'kid'})">
+				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-content flex layout class="bx-conten review" layout-wrap layout-padding layout-margin>
 
 	<div flex="100" layout="column">
 		<div>
@@ -106,5 +121,13 @@
 		</md-button>
 	</div>
 
-</md-content>
+	</md-content>
+</div>
 
+
+
+<!-- 
+
+<md-content >
+
+</md-content> -->

@@ -3,15 +3,15 @@
   /* global angular */
 
   angular.module('bidos')
-    .directive('bxUserPreferences', bxUserPreferences);
+    .directive('bxPreferences', bxPreferences);
 
-  function bxUserPreferences() {
+  function bxPreferences() {
     return {
       scope: {},
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'templates/bx-user-preferences.html'
+      templateUrl: 'templates/bx-preferences.html'
     };
 
     function controllerFn($rootScope, $mdDialog) {
@@ -31,7 +31,7 @@
               user: vm.auth
             },
             targetEvent: ev,
-            templateUrl: 'bx-core/bx-profile/bx-profile.dialog.html',
+            templateUrl: 'templates/bx-profile.dialog.html',
           })
           .then(function() {
             // success

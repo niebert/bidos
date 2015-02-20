@@ -1,0 +1,107 @@
+<div ng-controller="AppCtrl" class="tabsdemoStaticTabs sample" layout-fill>
+
+	<md-tabs class="md-accent" md-selected="vm.selectedIndex">
+		<md-tab id="tab1" aria-controls="tab1-content"> Anmelden </md-tab>
+		<md-tab id="tab2" aria-controls="tab2-content"> Registrieren </md-tab>
+		<md-tab id="tab3" aria-controls="tab3-content"> Hilfe </md-tab>
+	</md-tabs>
+
+	<ng-switch on="vm.selectedIndex" class="tabpanel-container">
+
+		<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2> Anmelden </h2>
+			<form name="loginForm">
+				<md-input-container>
+					<label> Benutzername </label>
+					<input name="username" ng-model="user.username">
+					<div ng-messages="loginForm.username.$error">
+						<!-- <div ng-message="required"> Bitte geben Sie Ihren Benutzernamen an </div> -->
+					</div>
+				</md-input-container>
+
+				<md-input-container>
+					<label> Passwort </label>
+					<input name="password" ng-model="user.password" type="password">
+					<div ng-messages="loginForm.password.$error">
+						<!-- <div ng-message="required"> Bitte geben Sie Ihr Passwort ein </div> -->
+					</div>
+				</md-input-container>
+
+				<md-button ng-click="auth.login(user)" class="md-raised md-primary"> Anmelden </md-button>
+			</form>
+		</div>
+
+		<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2> Registrieren </h2>
+			<form name="registrationForm">
+
+				<div>
+					<span> Gewünschte Rolle: </span>
+					<select ng-model="user.role" ng-options="role.value as role.text for role in auth.roles"> </select>
+				</div>
+
+				<div ng-show="user.role!==undefined">
+					<md-input-container>
+						<label> Vor- und Nachname </label>
+						<input name="name" ng-model="user.name" required>
+						<div ng-messages="registrationForm.username.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+							<div ng-message="required"> Bitte geben Sie Ihren Vor- und Nachnamen an </div>
+						</div>
+					</md-input-container>
+
+					<md-input-container>
+						<label> Passwort </label>
+						<input name="password" ng-model="user.password" type="password" required>
+						<div ng-messages="registrationForm.password.$error" ng-show="registrationForm.password.$dirty && registrationForm.password.$error">
+							<div ng-message="required"> Bitte geben Sie Ihr Passwort ein </div>
+						</div>
+					</md-input-container>
+
+					<md-input-container>
+						<label> E-Mail </label>
+						<input name="email" ng-model="user.email" type="email" required>
+						<div ng-messages="registrationForm.email.$error" ng-show="registrationForm.email.$dirty && registrationForm.email.$error">
+							<div ng-message="required"> Bitte geben Sie Ihre E-Mail-Adresse ein </div>
+						</div>
+					</md-input-container>
+				</div>
+
+				<md-input-container ng-show="user.role==1">
+					<span> Institution </span>
+					<select ng-model="user.institution_id" ng-options="institution.id as institution.name for institution in auth.institutions" required> </select>
+				</md-input-container>
+
+				<md-input-container ng-show="user.role==1">
+					<span> Gruppe </span>
+					<select ng-model="user.group_id" ng-options="group.id as group.name for group in auth.groups | filter:{institution_id:user.institution_id}"> </select>
+				</md-input-container>
+
+				<md-input-container ng-if="user.role==2">
+					<label> Stellung </label>
+					<input name="job" ng-model="user.job" required ng-minlength="5">
+					<div ng-messages="registrationForm.job.$error" ng-show="registrationForm.job.$dirty && registrationForm.job.$error">
+						<div ng-message="required"> Bitte machen Sie eine Angabe </div>
+						<div ng-message="minlength"> Bitte machen Sie eine sinnvolle Angabe </div>
+					</div>
+				</md-input-container>
+
+				<md-button ng-click="auth.signup(user)" class="md-raised md-primary"> Registrieren </md-button>
+			</form>
+		</div>
+
+		<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2> Passwort zurücksetzen </h2>
+			<form name="resetForm">
+				<md-input-container>
+					<label> E-Mail </label>
+					<input name="email" ng-model="user.email" type="email" required>
+					<div ng-messages="resetForm.email.$error" ng-show="resetForm.email.$dirty && resetForm.email.$error">
+						<div ng-message="required"> Bitte geben Sie Ihre E-Mail-Adresse ein </div>
+					</div>
+				</md-input-container>
+				<md-button ng-click="auth.forgot(user)" class="md-raised md-primary submit-button"> Zurücksetzen </md-button>
+			</form>
+		</div>
+	</ng-switch>
+</div>
+

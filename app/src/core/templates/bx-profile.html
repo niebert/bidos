@@ -1,0 +1,29 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button aria-label="home" ui-sref="bx.home">
+				<md-icon md-svg-src="/img/ic_dashboard_48px.svg" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+			<h2> Eigenes Profil </h2>
+			<span flex></span>
+			<!-- <md-button ng-click="vm.dialog($event, {type:'kid'})">
+				{{ vm.networkStatus }}
+			</md-button> -->
+			<md-button aria-label="settings" ui-sref="bx.settings">
+				<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+
+	<md-content flex class="bx-content">
+
+		<h2>Eigener Benutzer</h2>
+		<pre>{{ vm.me | json }}</pre>
+	<div ng-hide="$root.auth.role==1">
+		<h2>Daten exportieren</h2>
+		<pre><a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">{{ vm.resourceBlob.blob | json }}</a></pre>
+	</div>
+
+	</md-content>
+</div>
+

@@ -1,13 +1,16 @@
 <div layout="column" layout-fill>
 	<md-toolbar>
 		<span class="md-toolbar-tools">
-			<h2 flex>Welches Kind beobachten Sie?</h2>
+			<md-button ui-sref="bx.home">
+				<md-icon md-svg-src="/img/ic_dashboard_48px.svg" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+						<h2 flex>Welches Kind beobachten Sie?</h2>
 
 			<md-button ng-click="vm.dialog($event, {type:'kid'})">
-				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
 			<md-button ui-sref="bx.home">
-				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_cancel_48px.svg" class="s48" alt="Abbrechen"></md-icon>
+				<md-icon md-svg-src="/img/ic_cancel_48px.svg" class="s48" alt="Abbrechen"></md-icon>
 			</md-button>
 		</span>
 	</md-toolbar>

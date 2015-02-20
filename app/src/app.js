@@ -37,8 +37,8 @@
 
   app.config(['$mdThemingProvider', function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
-      .primaryPalette('teal')
-      .accentPalette('light-blue');
+      .primaryPalette('indigo')
+      .accentPalette('pink');
   }]);
 
   /* Register event listeners to keep track of our network status and make it

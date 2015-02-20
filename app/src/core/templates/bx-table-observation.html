@@ -2,18 +2,18 @@
 	<md-toolbar>
 		<span class="md-toolbar-tools">
 			<md-button ui-sref="bx.home">
-				<md-icon md-svg-src="/lib/material-design-icons/navigation/svg/production/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
+				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
 			<h2 flex>Beobachtungen</h2>
 
 			<md-button ng-click="vm.dialog($event, {type:'observation'})">
-				<md-icon md-svg-src="/lib/material-design-icons/content/svg/production/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
 		</span>
 	</md-toolbar>
 
-	<div layout>
+	<div class="searchbar" layout>
 		<md-input-container flex>
 			<label>Namen filtern</label>
 			<input type="text" ng-model="query">
@@ -33,7 +33,6 @@
 				<th ng-click="predicate='name'; reverse=!reverse">Bereich</th>
 				<th ng-click="predicate='name'; reverse=!reverse">Praktiker</th>
 				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
-				<th ng-click="predicate='created_at'; reverse=!reverse">Bearbeitet</th>
 			</thead>
 			<tbody>
 				<tr ng-repeat="observation in vm.observations | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, observation)">
@@ -43,7 +42,6 @@
 					<td> {{ observation.domain.name }} </td>
 					<td> {{ observation.user.name }} </td>
 					<td> {{ observation.created_at | date }} </td>
-					<td> {{ observation.modified_at | date }} </td>
 				</tr>
 			</tbody>
 		</table>

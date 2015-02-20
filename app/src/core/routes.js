@@ -70,20 +70,20 @@
       }
     })
 
-    .state('bx.user-profile', {
+    .state('bx.profile', {
       url: '/profile',
       views: {
         main: {
-          template: '<bx-profile></bx-profile>'
+          template: '<bx-profile layout-fill></bx-profile>'
         }
       }
     })
 
-    .state('bx.user-preferences', {
+    .state('bx.preferences', {
       url: '/prefs',
       views: {
         main: {
-          template: '<bx-user-preferences></bx-user-preferences>'
+          template: '<bx-preferences layout-fill></bx-preferences>'
         }
       }
     })

@@ -21,7 +21,7 @@
 
 			<h2> Neu hinzugefügte Beispiele: </h2>
 			<div flex layout="column">
-				<div layout ng-repeat="example in vm.observation.stuff.examples | reverse">
+				<div layout ng-repeat="example in vm.observation.stuff.examples | reverse" class="example">
 					<div flex="20"> {{ vm.observation.stuff.examples.length - $index }} </div>
 					<div flex="80"> {{ example.text }} </div>
 				</div>
@@ -29,7 +29,7 @@
 
 			<h2> Weitere Beispiele: </h2>
 			<div flex layout="column">
-				<div layout ng-repeat="example in vm.observation.behaviour.examples | reverse">
+				<div layout ng-repeat="example in vm.observation.behaviour.examples | reverse" class="example">
 					<div flex="20"> {{ vm.observation.behaviour.examples.length - $index }} </div>
 					<div flex="80"> {{ example.text }} </div>
 				</div>

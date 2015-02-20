@@ -7,7 +7,9 @@ SHELL = /usr/local/bin/zsh
 USER = $(shell whoami)
 OS = $(shell uname -s)
 REMOTE_HOST = 92.51.147.239
-DB_SETUP_FILE = ./db_setup.sql
+DB_SETUP_FILE = bin/db_setup.sql
+DB_DEFAULTS_FILE = bin/db_defaults.sql
+DB_SAMPLES_FILE = bin/db_samples.sql
 
 BASEDIR = .
 IGNOREFILE = $(BASEDIR)/.gitignore
@@ -67,8 +69,12 @@ dist: clean
 	@gulp build
 	@bin/manifest.sh
 	@ln -sFv ../../bower_components app/dist/lib
-	cp app/assets/cordova* app/dist
-	cp -r app/assets/img app/dist
+	@cp -v app/assets/cordova* app/dist
+	@cp -rv app/assets/img app/dist
+	@bin/copy_icons.sh
+
+
+
 
 # SETUP DATABASE
 
@@ -84,8 +90,12 @@ endif
 dbinit:
 ifeq ($(OS),Darwin)
 	psql -U bidos -f $(DB_SETUP_FILE) $(DATABASE)
+	psql -U bidos -f $(DB_DEFAULTS_FILE) $(DATABASE)
+	psql -U bidos -f $(DB_SAMPLES_FILE) $(DATABASE)
 else
 	psql -f $(DB_SETUP_FILE) $(DATABASE)
+	psql -f $(DB_DEFAULTS_FILE) $(DATABASE)
+	psql -f $(DB_SAMPLES_FILE) $(DATABASE)
 endif
 
 dbsetup:
