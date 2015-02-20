@@ -1,6 +1,9 @@
 (function() {
   'use strict';
 
+  var SERVER_IP = '92.51.147.239';
+
+
   module.exports = {
 
     buttons: {},
@@ -16,7 +19,6 @@
       settings:  'ic_settings_48px.svg'
     },
 
-       var SERVER_IP: '92.51.147.239',
 			// xxx
     // app config
     app: {
