@@ -1,6 +1,6 @@
 {
   "name": "bidos",
-  "version": "1.0.0-rc3",
+  "version": "1.0.5,
   "description": "bidos",
   "main": "server.js",
   "dependencies": {

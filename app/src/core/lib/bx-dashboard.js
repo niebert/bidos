@@ -16,7 +16,7 @@
       templateUrl: 'templates/bx-dashboard.html'
     };
 
-    function controllerFn($rootScope, $scope, UserFactory, $state, $window, bxResources) {
+    function controllerFn($rootScope, $scope, UserFactory, $state, $window, bxResources, $mdToast) {
 
       $scope.auth = $rootScope.auth;
 
