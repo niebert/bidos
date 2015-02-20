@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS examples (
   behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
   observation_id    INT REFERENCES behaviours(id),
   text              TEXT,
-  approved          BOOLEAN DEFAULT FALSE
+  approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
