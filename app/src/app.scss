@@ -219,6 +219,8 @@ md-content.bx-content {
 
 // body > div.md-dialog-container.ng-scope > md-dialog > md-content > form > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
 
+#layout > div > section > md-content > bx-table > div > md-content { padding-top: 0; }
+
 $color1: #333;
 $color2: #ccc;
 $bg-color: #d8f1ff;
