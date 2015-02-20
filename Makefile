@@ -2,59 +2,88 @@
 # Mon Feb 16 22:18:05 CET 2015
 #
 
+# sh
 SHELL = /usr/local/bin/zsh
+SHELLFLAGS = --extendedglob
 
+# env
 USER = $(shell whoami)
 OS = $(shell uname -s)
-REMOTE_HOST = 92.51.147.239
-DB_SETUP_FILE = bin/db_setup.sql
-DB_DEFAULTS_FILE = bin/db_defaults.sql
-DB_SAMPLES_FILE = bin/db_samples.sql
 
-BASEDIR = .
-IGNOREFILE = $(BASEDIR)/.gitignore
+# ch
+REMOTE_HOST = 92.51.147.239
+API_PORT_DEVELOPMENT = 3000
+WWW_PORT_DEVELOPMENT = 3001
+API_PORT_PRODUCTION = 3002
+WWW_PORT_PRODUCTION = 3003
+
+# db
+DB_SETUP = bin/db_setup.sql
+DB_DEFAULTS = bin/db_defaults.sql
+DB_SAMPLES = bin/db_samples.sql
+
+# pwd
+BASE_DIR = .
+
+# fs
+IGNOREFILE = $(BASE_DIR)/.gitignore
 REMOVEFILES = `cat $(IGNOREFILE)` *bz2
 
-NAME = bidos
+# proj
+NAME = $(shell jq -r '.name' package.json)
+VERSION = $(shell jq -r '.version' package.json)
+BUILD = $(shell cat .build)
 
-TARBALL = $(NAME)-`date '+%Y%m%d'`.tar.bz2
-REMOTE_PATH = $(NAME)
+# deploy
+DEPLOY_PATH = $(NAME)
+DEPLOY_CMD = "cd $(DEPLOY_PATH); make install"
 
-DEPLOY_CMD = "cd $(REMOTE_PATH); make install"
-START_CMD = "gulp"
+# pkg
+TARBALL = $(NAME)-$(VERSION)-$(BUILD).tar.gz
+BACKUP = $(NAME)-$(VERSION)-`date '+%Y%m%d%H%M%S'`.tar.bz2
 
+# dist
+DIST_DIR = $(BASE_DIR)/app/dist
+
+# build
+BUILD_DIR = $(BASE_DIR)/app/build
+
+# cordova
+CORDOVA_DIR = $(BASE_DIR)/app/apk
+APK_DIR = $(CORDOVA_DIR)/www
+APK_BUILD = $(CORDOVA_DIR)/platforms/android/ant-build/CordovaApp-debug.apk
+APK_DIST = $(BUILD_DIR)/$(NAME)-$(VERSION)-$(BUILD).apk
+# github
+GITHUB_REPOSITORY = https://github.com/rwilhelm/bidos.git
+
+# --------------------------------------------------------------------------------------------------
 
 ifeq (${NODE_ENV},production)
-	PORT=3001
-	DATABASE = bidos_production
+	PORT=$(WWW_PORT_PRODUCTION)
+	DATABASE = $(name)_production
 	ENVIRONMENT = --production
 else
-	PORT=3000
-	DATABASE = bidos_development
+	PORT=$(WWW_PORT_DEVELOPMENT)
+	DATABASE = $(name)_development
+	ENVIRONMENT = --development
 endif
 
-VERSION = $(shell gulp version 2>&1 >/dev/null)
-DIST_DIR = $(BASEDIR)/app/dist
-APK_BUILD = $(BASEDIR)/app/apk/platforms/android/ant-build/CordovaApp-debug.apk
-APK_DIST = $(DIST_DIR)/bidos-`gulp version 1>/dev/null`.apk
-CORDOVA_DIR = $(BASEDIR)/app/apk/www
-VERSION =($(grep '\bversion|\bname' package.json | cut -d: -f2- | sed 's/[",]//g'))
+# --------------------------------------------------------------------------------------------------
 
-install: npm bower
 build: dist
-db: dbreset dbinit dbsetup
 deploy: git-deploy
+install: npm bower
+db: dbreset dbinit dbsetup
 
-# START STUFF
+# --------------------------------------------------------------------------------------------------
 
-api:
-	nodemon app/api/index.js -w app/api
+# version
+version:
+	@echo $(NAME)
+	@echo $(VERSION)
+	@echo $(BUILD)
 
-www:
-	nodemon bin/www_server.js -w app/src
-
-# INSTALL DEPENDENCIES
-
+# install
 npm:
 	@echo installing node modules
 	@npm install $(ENVIRONMENT)
@@ -63,21 +92,49 @@ bower:
 	@echo installing bower components
 	@bower install
 
-# BUILD SOURCES AND PREPARE DIST DIR
+# build
+dist: clean js css templates img manifest link cordova
 
-dist: clean
-	@gulp build
-	@bin/manifest.sh
-	@ln -sFv ../../bower_components app/dist/lib
-	@cp -v app/assets/cordova* app/dist
-	@cp -rv app/assets/img app/dist
+icons:
 	@bin/copy_icons.sh
 
+cordova:
+	@cp -v app/assets/cordova* app/dist
 
+img:
+	@cp -rv app/assets/img app/dist
 
+css:
+	@gulp css
 
-# SETUP DATABASE
+js:
+	@gulp js
 
+manifest:
+	@bin/manifest
+
+link:
+	@ln -sFv ../../bower_components app/dist/lib
+
+# apk
+apk: dist
+	@test -d $(BUILD_DIR)
+	@cd $(CORDOVA_DIR) && cordova build 1>/dev/null
+	@cp $(APK_BUILD) $(APK_DIST)
+
+# templates
+templates:
+	@cp -v app/src/**/*.html app/dist/templates
+	@mv -v app/dist/templates/index.html app/dist
+
+# run
+api:
+	nodemon app/api/index.js -w app/api -d4
+
+www:
+	nodemon bin/www_server.js -w app/src -d4
+
+# db: drop database and create new
 dbreset:
 ifeq ($(OS),Darwin)
 	dropdb bidos_development
@@ -87,27 +144,27 @@ else
 	sudo -u postgres createdb -O $(USER) bidos_development
 endif
 
+# db: insert defaults from sql files
 dbinit:
 ifeq ($(OS),Darwin)
-	psql -U bidos -f $(DB_SETUP_FILE) $(DATABASE)
-	psql -U bidos -f $(DB_DEFAULTS_FILE) $(DATABASE)
-	psql -U bidos -f $(DB_SAMPLES_FILE) $(DATABASE)
+	psql -U bidos -f $(DB_SETUP) $(DATABASE)
+	psql -U bidos -f $(DB_DEFAULTS) $(DATABASE)
+	psql -U bidos -f $(DB_SAMPLES) $(DATABASE)
 else
-	psql -f $(DB_SETUP_FILE) $(DATABASE)
-	psql -f $(DB_DEFAULTS_FILE) $(DATABASE)
-	psql -f $(DB_SAMPLES_FILE) $(DATABASE)
+	psql -f $(DB_SETUP) $(DATABASE)
+	psql -f $(DB_DEFAULTS) $(DATABASE)
+	psql -f $(DB_SAMPLES) $(DATABASE)
 endif
 
+# db: add initial users via curl (for auth) TODO
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "enabled": true }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
-
-# CORDOVA STUFF
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "enabled": true }' localhost:$(PORT)/auth/signup | jq '.'
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup | jq '.'
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup | jq '.'
 
 apk-build: cordova-copy
 	echo "building (2/2)"
-	cd $(BASEDIR)/app/apk && cordova build 1>/dev/null
+	cd $(BASE_DIR)/app/apk && cordova build 1>/dev/null
 	echo done!
 	echo $(APK_DIST)
 
@@ -115,37 +172,35 @@ apk-build: cordova-copy
 apk-dist:
 	gulp copyApkToDist 1>/dev/null
 
-apk: src-build cordova-copy apk-build apk-dist
-	echo build successful
-
-# CLEANUP
+# clean
 clean:
 	rm -r app/dist
+	mkdir app/dist
 
-distclean:
+# mrproper
+distclean: clean
 	@rm -rf $(REMOVEFILES)
 
+# pkg
 tarball:
-	@tar cjpf $(TARBALL) --exclude-from=$(IGNOREFILE) --exclude=$(TARBALL) $(BASEDIR)
+	@tar czpf $(TARBALL) --exclude-from=$(IGNOREFILE) --exclude=$(TARBALL) $(BASE_DIR)
 
-# DEPLOY
+backup:
+	@tar cjpf $(BACKUP) --exclude-from=$(IGNOREFILE) --exclude=$(BACKUP) $(BASE_DIR)
 
-git-deploy:
-	ssh $(REMOTE_HOST) 'test -d bidos || git clone https://github.com/rwilhelm/bidos.git'
+# deploy
+deploy-git:
+	ssh $(REMOTE_HOST) 'test -d bidos || git clone $(GITHUB_REPOSITORY)'
 	ssh $(REMOTE_HOST) 'cd $(NAME) && git pull'
 	ssh $(REMOTE_HOST) 'cd $(NAME) && make install'
 	ssh $(REMOTE_HOST) 'cd $(NAME) && make db'
 	@echo running in $(NODE_ENV) mode
 	@echo open $(REMOTE_HOST):$(PATH)
 
-rsync-deploy:
+deploy-rsync:
 	@echo deploying to $(REMOTE_HOST):$(REMOTE_PATH)
-	@rsync -av $(BASEDIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
+	@rsync -av $(BASE_DIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
 	@ssh $(REMOTE_HOST)
 
-
-
-
-
-
+# TODO
 PHONY = .
