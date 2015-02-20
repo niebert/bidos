@@ -16,9 +16,10 @@
       settings:  'ic_settings_48px.svg'
     },
 
+       var SERVER_IP: '92.51.147.239',
+			// xxx
     // app config
     app: {
-      SERVER_IP: '92.51.147.239',
       API: 'http://' + SERVER_IP + ':3000',
       RESOURCE_PATH: 'v1',
       DEFAULT_RESOURCE: 'resources/vanilla',
