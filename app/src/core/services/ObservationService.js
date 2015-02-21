@@ -9,9 +9,9 @@
     .steps;
 
   angular.module('bidos')
-    .service('bxObservation', bxObservation);
+    .service('Observation', ObservationService);
 
-  function bxObservation($rootScope, Resources, $q, $state, $mdToast) {
+  function ObservationService($rootScope, Resources, $q, $state, $mdToast) {
 
     class Observation {
       constructor() {

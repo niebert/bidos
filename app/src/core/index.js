@@ -6,5 +6,6 @@
   require('./filters');
   require('./services');
   require('./directives');
+  require('./controllers');
 
 }());

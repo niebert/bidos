@@ -2,7 +2,7 @@
   'use strict';
   /* global angular, Blob, document, URL */
 
-  var APP_CONFIG = require('../../config');
+  var APP_CONFIG = require('../../../config');
 
   angular.module('bidos')
     .directive('bxDashboard', bxDashboard);

@@ -5,7 +5,7 @@
   angular.module('bidos')
     .directive('bxTable', bxTable);
 
-  var APP_CONFIG = require('../../config');
+  var APP_CONFIG = require('../../../config');
 
   function bxTable() {
     return {
@@ -105,7 +105,7 @@
         });
 
         function approveUser(user) {
-          var config = require('../../config');
+          var config = require('../../../config');
           var url = [config.app.API, 'auth/approve'].join('/');
           $http.post(url, user).success(function(response) {
             console.log(response);

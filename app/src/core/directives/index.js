@@ -3,14 +3,10 @@
 
   /* LOOSELY CHUNKED MVVC COMPONENTS WHERE CONTROLLERS COME WITH A DIRECTIVE */
 
-  // resource service (ssot, very much core)
-  require('./Resources');
-
   // tables for resource management (/w edit/new dialog)
   require('./bx-table');
 
   // observation service and directives
-  require('./bxObservation');
   require('./bx-observation-inbox'); // hook before new are available
   require('./bx-capture'); // make new obs
 
@@ -23,7 +19,6 @@
   require('./bx-preferences'); // "personal configuration", same same
 
   // other things
-  require('./md-sidenav-controller'); // angular material design sidenav
   require('./bx-dialog');
 
 }());

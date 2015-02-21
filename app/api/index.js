@@ -61,7 +61,7 @@
   // are reached. if it fails, it throws and the previous middleware will catch
   // that error and send back status 401 and redirect to /login.
 
-  // app.use(jwt({ secret: config.secret.key })); // <-- decrypts
+  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
 
   // secured routes
   mountRoutes(routes.private, '/v1/');

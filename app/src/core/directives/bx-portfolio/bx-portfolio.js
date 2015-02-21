@@ -5,7 +5,7 @@
   angular.module('bidos')
     .directive('bxPortfolio', bxPortfolio);
 
-  var APP_CONFIG = require('../../config');
+  var APP_CONFIG = require('../../../config');
 
   function bxPortfolio() {
     return {

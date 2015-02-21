@@ -1,12 +1,171 @@
-/* global angular, _ */
 
 (function() {
   'use strict';
+  /* global angular, _ */
 
   angular.module('bidos')
-    .service('PrepareResources', PrepareResources);
+    .service('Resources', ResourceService);
 
-  function PrepareResources($rootScope, $mdToast, $http, $q) {
+  function ResourceService($rootScope, $mdToast, $http, $q) {
+
+    /* Basic CRUD operations w/ HTTP calls to the back end. */
+
+    /* TODO: The back end should authenticate the user, check for it's group
+    /* and respond with the correct resource object the user is allowed to
+    /* get, and not more. */
+
+    // if (!$localStorage.hasOwnProperty('data')) {
+    //   $localStorage.data = {};
+    // } else {
+    //   console.log('%LOCAL DATA (PLAIN) FOUND', 'color: green; font-size: 1.2em', $localStorage.data);
+    // }
+
+    // if (!$localStorage.hasOwnProperty('resources')) {
+    //   $localStorage.resources = {};
+    // } else {
+    //   console.log('%LOCAL DATA (RESOURCES) FOUND', 'color: green; font-size: 1.2em', $localStorage.resources);
+    // }
+
+    // var data = $localStorage.data; // plain server response
+    // var resources = $localStorage.resources; // nested resources
+
+    var data = {}; // plain server response
+    var resources = {}; // nested resources
+    var config = require('../../config');
+
+    var defaultResource = [config.app.API, config.app.RESOURCE_PATH, config.app.DEFAULT_RESOURCE].join('/');
+
+    var toast = function(content) {
+      $mdToast.show($mdToast.simple()
+        .content(content)
+        .position('bottom right')
+        .hideDelay(3000));
+    };
+
+    return {
+      get: getResources,
+      create: createResource,
+      update: updateResource,
+      destroy: destroyResource,
+    };
+
+
+    // TODO sucks. we the outer scope flat data model to the
+    // response value diretly, but the outer resource model is set
+    // by a separate function
+    function updateData(response) {
+      data = response;
+      prepareResources();
+    }
+
+    function getResources(sync) {
+      return $q(function(resolve) {
+
+        // load resources only once, except when explicitly setting sync to something true
+        if (_.isEmpty(data) || sync) {
+
+          $http.get(defaultResource)
+            .success(function(response) {
+              updateData(response);
+              resolve(resources);
+            });
+        } else {
+          resolve(resources);
+        }
+      });
+    }
+
+    function usernameFromEmail(resource) {
+      return resource.email.split('@')[0];
+    }
+
+    function createResource(resource) {
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
+      return $q(function(resolve) {
+
+        if (resource.type === 'user') {
+          resource.username = usernameFromEmail(resource);
+          debugger
+        }
+
+        delete resource.type;
+        resource.author_id = $rootScope.auth.id;
+
+        $http.post(url, resource)
+          .success(function(response) {
+            _.each(response, function(d) {
+              data[d.type + 's'].push(d);
+            });
+
+            prepareResources();
+
+            resolve(response);
+            toast('Resource erfolgreich erstellt');
+            console.log('%cget resource ok', 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
+          })
+          .error(function(error) {
+            resolve(error);
+            toast(error[0].content.detail); // FIXME
+            console.warn('%cget resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
+          });
+      });
+    }
+
+    function updateResource(resource) {
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
+      return $q(function(resolve) {
+
+        delete resource.type;
+        resource.author_id = $rootScope.auth.id;
+
+        $http.patch(url, resource)
+          .success(function(response) {
+            var r = response[0]; // gets resource type from first of response array
+            data[r.type + 's'].splice(_.findIndex(data[r.type + 's'], { // pluralize
+              id: r.id
+            }), 1, r);
+
+            prepareResources();
+
+            resolve(response);
+            toast('Resource erfolgreich aktualisiert');
+            console.log('%cupdate resource ok: ' + r.type, 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
+          })
+          .error(function(error) {
+            resolve(error);
+            toast(error[0].content.detail); // FIXME
+            console.warn('%cupdate resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
+          });
+      });
+    }
+
+    function destroyResource(resource) {
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
+      return $q(function(resolve) {
+        $http.delete(url)
+          .success(function(response) {
+            var r = response[0]; // gets resource type from first of response array
+            data[r.type + 's'].splice(_.findIndex(data[r.type + 's'], { // pluralize
+              id: r.id
+            }), 1);
+
+            prepareResources();
+
+            resolve(response);
+            toast('Resource erfolgreich gelöscht');
+            console.log('%cupdate resource ok: ' + r.type, 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
+          })
+          .error(function(error) {
+            resolve(error);
+            toast(error[0].content.detail); // FIXME
+            console.warn('%cdestroy resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
+          });
+      });
+    }
+  }
+
+  // return prepared resource object
+  function prepareResources(resources) {
 
       /* Programatically add getter methods to resource objects. We traverse
       /* all resources and look for blabla_id, which refers to the parent id.
@@ -379,15 +538,5 @@
           break;
       }
   }
-
-}());
-
-(function() {
-  'use strict';
-
-  angular.module('bidos')
-    .service('someService', someService);
-
-  function someService($rootScope, $scope, $mdToast, $mdDialog, $http, $q, $state) {}
 
 }());

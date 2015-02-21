@@ -3,52 +3,57 @@
   /* global angular */
 
   angular.module('bidos')
-    .directive('bxRegistrationInbox', bxRegistrationInbox);
+    .directive('ObservationInbox', ObservationInbox);
 
-  function bxRegistrationInbox() {
+  function ObservationInbox() {
     return {
       scope: {},
       bindToController: true,
       controller: controllerFn,
       controllerAs: 'vm',
-      templateUrl: 'templates/bx-registration-inbox.html'
+      templateUrl: 'templates/bx-observation-inbox.html'
     };
 
     function controllerFn($rootScope, $mdDialog, $mdToast, Resources) {
       var vm = angular.extend(this, {
+        icon: icon,
         dialog: dialog
       });
 
-      vm.colors = require('../../config')
-        .colors.user;
+      vm.colors = require('../../../config')
+        .colors.obs;
 
       Resources.get()
         .then(function(data) {
 
           // get only what we need
-          vm.registrations = _.filter(data.users, function(user) {
-            return !user.approved;
+          vm.observations = _.filter(data.observations, function(obs) {
+            return obs.behaviour && !obs.approved;
           });
         });
 
-      function dialog(ev, user) {
+      function icon(category, name) {
+        return '/lib/material-design-icons/' + category + '/svg/production/ic_' + name + '_48px.svg';
+      }
+
+      function dialog(ev, obs) {
         $mdDialog.show({
-          templateUrl: 'templates/bx-registration-approve-dialog.html',
+          templateUrl: 'templates/bx-observation-approve-dialog.html',
           targetEvent: ev,
           bindToController: false,
           controllerAs: 'vm',
           locals: {
-            user: user,
+            obs: obs,
           },
-          controller: function($scope, $mdDialog, Resources, user) {
+          controller: function($scope, $mdDialog, Resources, obs) {
             angular.extend(this, {
               cancel: cancel,
               accept: accept,
               reject: reject,
-              user: user
+              obs: obs
             });
 
-            console.log(user);
+            console.log(obs);
 
             function cancel() {
               $mdDialog.cancel();
@@ -56,8 +61,8 @@
 
             function accept() {
               $mdDialog.hide(true);
-              user.approved = true;
-              Resources.update(user);
+              obs.approved = true;
+              Resources.update(obs);
               $mdToast.show(
                 $mdToast.simple()
                 .content('Beobachtung angenommen')
@@ -68,6 +73,8 @@
 
             function reject() {
               $mdDialog.hide(false);
+              obs.approved = false;
+              Resources.update(obs);
               $mdToast.show(
                 $mdToast.simple()
                 .content('Beobachtung abgelehnt')
@@ -79,7 +86,7 @@
         })
         .then(function dialogSuccess(accepted) {
           if (accepted) {
-            vm.registrations.splice(_.findIndex(vm.registrations, { id: user.id }), 1);
+            vm.observations.splice(_.findIndex(vm.observations, { id: obs.id }), 1);
           }
         }, function dialogAbort() {
           // ...

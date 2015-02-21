@@ -3,7 +3,7 @@
   /* jshint esnext:true */
   /* global angular, _, document */
 
-  var APP_CONFIG = require('../../config');
+  var APP_CONFIG = require('../../../config');
 
   angular.module('bidos')
     .directive('bxCapture', bxCapture);
@@ -79,7 +79,7 @@
       })();
     }
 
-    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, bxObservation, Resources) {
+    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, Observation, Resources) {
       var vm = angular.extend(this, {
         add: add,
         remove: remove,
@@ -134,7 +134,7 @@
       console.log($state);
 
       function save() {
-        bxObservation.save();
+        Observation.save();
       }
 
       function deleteStuff(stuff) {
@@ -142,17 +142,17 @@
       }
 
       function add(resource) {
-        bxObservation.add(resource);
+        Observation.add(resource);
         delete $scope.newStuff;
       }
 
       // reset and start over
       function reset() {
-        bxObservation.reset();
+        Observation.reset();
       }
 
       // function start() {
-      //   bxObservation.reset();
+      //   Observation.reset();
       //   this.go('bx.capture', {
       //     type: 'kid',
       //   });
@@ -166,15 +166,15 @@
       // }
 
       function remove() {
-        bxObservation.remove();
+        Observation.remove();
       }
 
       function go(type) {
-        bxObservation.go(type);
+        Observation.go(type);
       }
 
       function select(resource) {
-        bxObservation.select(resource);
+        Observation.select(resource);
       }
 
       function updateViewModel() {
@@ -185,7 +185,7 @@
             angular.extend(vm, data); // NOTE the extend
           });
 
-        bxObservation.get()
+        Observation.get()
           .then(function(observation) {
             $rootScope.observation = observation;
           });

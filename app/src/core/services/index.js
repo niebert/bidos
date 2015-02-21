@@ -6,9 +6,10 @@
   // http://stackoverflow.com/a/17944367/220472
 
   // resource service (ssot, very much core)
-  require('./ResourceService');
   require('./ObservationService');
+  require('./IndexedDBService');
+  require('./ResourceService');
+  require('./HelpService');
   require('./CRUDService');
-  require('./DBService');
 
 }());
