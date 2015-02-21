@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- ng-strict-di manifest="manifest.appcache" -->
-<html ng-app="bidos">
+<html ng-strict-di ng-app="bidos">
+<!-- manifest="manifest.appcache" -->
 
 <head>
 	<title>BiDoS</title>
@@ -28,29 +28,9 @@
 		</md-progress-circular>
 	</div>
 
-	<!-- Tools -->
-	<script src="lib.js"></script>
-
-	<!-- Angular -->
-	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular-animate/angular-animate.js"></script>
-	<script src="lib/angular-aria/angular-aria.js"></script>
-	<script src="lib/angular-chart.js/dist/angular-chart.js"></script>
-	<script src="lib/angular-jwt/dist/angular-jwt.js"></script>
+	<script src="vendor.js"></script>
 	<script src="lib/angular-material/angular-material.js"></script>
-	<script src="lib/angular-messages/angular-messages.js"></script>
-	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
-	<script src="lib/ngstorage/ngStorage.js"></script>
-	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
-
-	<!-- Cordova (cordova.js fails on desktop, as it is copied during apk build) -->
-	<script src="cordova.js"></script>
-	<script src="cordova_init.js"></script>
-
-	<!-- Self -->
 	<script src="bidos.js"></script>
-
-	<!-- LiveReload -->
 
 </body>
 

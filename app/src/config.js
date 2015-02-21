@@ -1,8 +1,9 @@
 (function() {
   'use strict';
 
-  var SERVER_IP = '92.51.147.239';
-
+  // CONFIGURE TODO use envify
+  var SERVER_IP = 'localhost';
+  var SERVER_PORT = 3000;
 
   module.exports = {
 

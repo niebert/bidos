@@ -19,7 +19,7 @@ function build_number() {
   echo $build
 }
 
-cat << EOF > $DIST_DIR/manifest.appcache
+cat << EOF
 CACHE MANIFEST
 # version: $(gulp version 2>&1 >/dev/null)
 # date: $(date +%x\ %X)

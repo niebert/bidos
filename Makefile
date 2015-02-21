@@ -44,6 +44,7 @@ BACKUP = $(NAME)-$(VERSION)-`date '+%Y%m%d%H%M%S'`.tar.bz2
 
 # dist
 DIST_DIR = $(BASE_DIR)/app/dist
+DIST_TEMPLATES = $(DIST_DIR)/templates
 
 # build
 BUILD_DIR = $(BASE_DIR)/app/build
@@ -53,6 +54,7 @@ CORDOVA_DIR = $(BASE_DIR)/app/apk
 APK_DIR = $(CORDOVA_DIR)/www
 APK_BUILD = $(CORDOVA_DIR)/platforms/android/ant-build/CordovaApp-debug.apk
 APK_DIST = $(BUILD_DIR)/$(NAME)-$(VERSION)-$(BUILD).apk
+
 # github
 GITHUB_REPOSITORY = https://github.com/rwilhelm/bidos.git
 
@@ -70,10 +72,20 @@ endif
 
 # --------------------------------------------------------------------------------------------------
 
-build: dist
+# HOW TO DO THIS
+# 1. make install: installs dependencies
+# 2. make dist: build stuff and put it into app/dist
+# 3. make api: run api
+# 4. make db: get the database ready
+# 4. make www: run web server that serves app/dist
+# 5. go to http://$(REMOTE_HOST):$(PORT)
+# 6. play with the database: psql bidos_development
+
+default: js-app css templates
 deploy: git-deploy
 install: npm bower
 db: dbreset dbinit dbsetup
+js: js-vendor js-app
 
 # --------------------------------------------------------------------------------------------------
 
@@ -92,40 +104,55 @@ bower:
 	@echo installing bower components
 	@bower install
 
-# build
-dist: clean js css templates img manifest link cordova
+# things are served from here
+dist: clean js css templates img manifest
+	@echo "done"
 
 icons:
+	@echo "copying icons"
 	@bin/copy_icons.sh
 
-cordova:
-	@cp -v app/assets/cordova* app/dist
+# cordova:
+# 	@echo "copying cordova css file"
+# 	@cp app/assets/cordova/cordova.css app/dist
 
 img:
-	@cp -rv app/assets/img app/dist
+	@echo "copying images"
+	@cp -r app/assets/img app/dist
 
 css:
-	@gulp css
+	@echo "running sass"
+	@gulp css 1>/dev/null
 
-js:
-	@gulp js
+js-app:
+	@echo "bundling project scripts"
+	@gulp js-app 1>/dev/null
+
+js-vendor:
+	@echo "bundling vendor scripts"
+	@gulp js-vendor 1>/dev/null
 
 manifest:
-	@bin/manifest
+	@echo generating manifest
+	@bin/manifest.sh > $(DIST_DIR)/manifest.appcache
 
 link:
-	@ln -sFv ../../bower_components app/dist/lib
+	@echo "creating symlinks"
+	@ln -sF ../../bower_components app/dist/lib
 
 # apk
 apk: dist
-	@test -d $(BUILD_DIR)
+	@echo building apk
+	@test -d $(BUILD_DIR) || mkdir $(BUILD_DIR)
 	@cd $(CORDOVA_DIR) && cordova build 1>/dev/null
 	@cp $(APK_BUILD) $(APK_DIST)
 
 # templates
 templates:
-	@cp -v app/src/**/*.html app/dist/templates
-	@mv -v app/dist/templates/index.html app/dist
+	@echo copying templates
+	@test -d $(DIST_TEMPLATES) || mkdir $(DIST_TEMPLATES)
+	@cp app/src/**/*.html $(DIST_TEMPLATES)
+	@mv $(DIST_TEMPLATES)/index.html app/dist
 
 # run
 api:
@@ -133,6 +160,15 @@ api:
 
 www:
 	nodemon bin/www_server.js -w app/src -d4
+
+run-on-lg:
+  DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp"
+
+www-simple:
+	NODE_ENV=development iojs --harmony bin/www_server.sh
+
+api-simple:
+	NODE_ENV=development iojs --harmony app/api
 
 # db: drop database and create new
 dbreset:
@@ -158,7 +194,7 @@ endif
 
 # db: add initial users via curl (for auth) TODO
 dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "enabled": true }' localhost:$(PORT)/auth/signup | jq '.'
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "approved": true }' localhost:$(PORT)/auth/signup | jq '.'
 	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup | jq '.'
 	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup | jq '.'
 
@@ -168,14 +204,11 @@ apk-build: cordova-copy
 	echo done!
 	echo $(APK_DIST)
 
-# cp -v $(APK_BUILD) $(APK_DIST)
-apk-dist:
-	gulp copyApkToDist 1>/dev/null
-
 # clean
 clean:
-	rm -r app/dist
-	mkdir app/dist
+	@echo "cleaning up"
+	@rm -r app/dist
+	@mkdir app/dist
 
 # mrproper
 distclean: clean
@@ -201,6 +234,9 @@ deploy-rsync:
 	@echo deploying to $(REMOTE_HOST):$(REMOTE_PATH)
 	@rsync -av $(BASE_DIR) $(REMOTE_HOST):$(REMOTE_PATH) --exclude-from=$(IGNOREFILE)
 	@ssh $(REMOTE_HOST)
+
+test:
+	./node_modules/mocha/bin/mocha --harmony test/apiSpec.js -u bdd -R spec --reporter=list -w
 
 # TODO
 PHONY = .
