@@ -9,10 +9,25 @@
   require('traceur/bin/traceur-runtime');
   // require('traceur');
 
+
+  /*
+
+
+    NOTE: lots of stuff failing. use bower. more easy.
+
+
+  */
+
+
+
+
+  // NOTE angular-material and traceur are from bower as angular-material has no
+  // proper up-to-date npm package. and traceur should not be bundled iirc MHM
+
   require('jquery');
   require('hammerjs');
 
-  require('lodash');
+  var _ = require('lodash');
   _.mixin(require('lodash-deep'));
 
   // built on angular 1.3
@@ -23,7 +38,7 @@
   require('angular-aria');
 
   // charts
-  require('chart.js');
+  // require('chart.js/Chart.js');
   require('angular-chart.js');
 
   require('angular-messages');
@@ -70,10 +85,5 @@
   };
 
   cordovaInit.initialize();
-
-  // NOTE angular-material and traceur are from bower as angular-material has no
-  // proper up-to-date npm package. and traceur should not be bundled iirc
-
-  // require('./app.js');
 
 }());
