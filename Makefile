@@ -104,8 +104,12 @@ bower:
 	@echo installing bower components
 	@bower install
 
+# dev build iteration
+dev: js css templates manifest
+	@echo "done"
+
 # things are served from here
-dist: clean js css templates img manifest cordova
+dist: clean js css templates manifest cordova img icons
 	@echo "done"
 
 icons:
@@ -213,7 +217,6 @@ clean:
 	@rm -r app/dist
 	@mkdir app/dist
 
-# mrproper
 distclean: clean
 	@rm -rf $(REMOVEFILES)
 
