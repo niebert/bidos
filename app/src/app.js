@@ -7,7 +7,6 @@
 
     'ngMaterial', // material design
     'ngMessages', // form error messages
-    'ngStorage', // offline storage
 
     'ui.router',
     'chart.js',
