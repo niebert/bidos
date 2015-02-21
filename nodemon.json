@@ -2,7 +2,7 @@
   "restartable": "rs",
   "ignore": [],
   "verbose": false,
-  "execMap": {
+  "_execMap": {
     "js": "iojs --harmony"
   },
   "events": {
