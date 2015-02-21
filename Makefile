@@ -81,11 +81,11 @@ endif
 # 5. go to http://$(REMOTE_HOST):$(PORT)
 # 6. play with the database: psql bidos_development
 
-default: js-app css templates
+default: dist
 deploy: git-deploy
 install: npm bower
 db: dbreset dbinit dbsetup
-js: js-vendor js-app
+js: js-app
 
 # --------------------------------------------------------------------------------------------------
 
@@ -105,16 +105,16 @@ bower:
 	@bower install
 
 # things are served from here
-dist: clean js css templates img manifest
+dist: clean js css templates img manifest cordova
 	@echo "done"
 
 icons:
 	@echo "copying icons"
 	@bin/copy_icons.sh
 
-# cordova:
-# 	@echo "copying cordova css file"
-# 	@cp app/assets/cordova/cordova.css app/dist
+cordova:
+	@echo "copying cordova files"
+	@cp app/assets/cordova/* app/dist
 
 img:
 	@echo "copying images"
@@ -131,6 +131,9 @@ js-app:
 js-vendor:
 	@echo "bundling vendor scripts"
 	@gulp js-vendor 1>/dev/null
+
+js-vendor-alt:
+	@browserify app/src/lib.js | tee app/dist/vendor.js | uglifyjs > app/dist/vendor.min.js
 
 manifest:
 	@echo generating manifest

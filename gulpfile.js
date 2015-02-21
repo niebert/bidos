@@ -7,7 +7,7 @@
   var concat = require('gulp-concat');
   var rename = require('gulp-rename');
   var sass = require('gulp-ruby-sass');
-  // var traceur = require('gulp-traceur');
+  var traceur = require('gulp-traceur');
   var browserify = require('browserify');
   var minify = require('gulp-minify-css');
   var prefix = require('gulp-autoprefixer');
@@ -49,10 +49,10 @@
       }))
       .pipe(browserified)
       .pipe(ngAnnotate())
-      // .pipe(traceur())
+      .pipe(traceur())
       .pipe(rename(dist + '/bidos.js'))
       .pipe(gulp.dest('.'))
-      // .pipe(uglify())
+      .pipe(uglify())
       .pipe(concat(dist + '/bidos.min.js'))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest('.'));

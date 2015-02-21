@@ -7,23 +7,9 @@
 
   module.exports = {
 
-    buttons: {},
-
-    icons: {
-      add:       'ic_add_48px.svg',
-      android:   'ic_android_48px.svg',
-      arrow:     'ic_arrow_back_48px.svg',
-      cancel:    'ic_cancel_48px.svg',
-      dashboard: 'ic_dashboard_48px.svg',
-      edit:      'ic_mode_edit_24px.svg',
-      menu:      'ic_menu_24px.svg',
-      settings:  'ic_settings_48px.svg'
-    },
-
-			// xxx
     // app config
     app: {
-      API: 'http://' + SERVER_IP + ':3000',
+      API: 'http://' + SERVER_IP + ':' + SERVER_PORT,
       RESOURCE_PATH: 'v1',
       DEFAULT_RESOURCE: 'resources/vanilla',
       TOKEN_KEY: 'auth_token'
