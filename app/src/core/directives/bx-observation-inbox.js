@@ -14,7 +14,7 @@
       templateUrl: 'templates/bx-observation-inbox.html'
     };
 
-    function controllerFn($rootScope, $mdDialog, $mdToast, bxResources) {
+    function controllerFn($rootScope, $mdDialog, $mdToast, Resources) {
       var vm = angular.extend(this, {
         icon: icon,
         dialog: dialog
@@ -23,7 +23,7 @@
       vm.colors = require('../../config')
         .colors.obs;
 
-      bxResources.get()
+      Resources.get()
         .then(function(data) {
 
           // get only what we need
@@ -45,7 +45,7 @@
           locals: {
             obs: obs,
           },
-          controller: function($scope, $mdDialog, bxResources, obs) {
+          controller: function($scope, $mdDialog, Resources, obs) {
             angular.extend(this, {
               cancel: cancel,
               accept: accept,
@@ -62,7 +62,7 @@
             function accept() {
               $mdDialog.hide(true);
               obs.approved = true;
-              bxResources.update(obs);
+              Resources.update(obs);
               $mdToast.show(
                 $mdToast.simple()
                 .content('Beobachtung angenommen')
@@ -74,7 +74,7 @@
             function reject() {
               $mdDialog.hide(false);
               obs.approved = false;
-              bxResources.update(obs);
+              Resources.update(obs);
               $mdToast.show(
                 $mdToast.simple()
                 .content('Beobachtung abgelehnt')

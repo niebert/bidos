@@ -74,7 +74,7 @@
 
 
   // item -> domainTitle
-  app.filter('domainTitle', function(bxResources) {
+  app.filter('domainTitle', function(Resources) {
     return function(item) {
       if (!item) {
         return;
@@ -85,7 +85,7 @@
         return;
       }
 
-      var subdomain = _.select(bxResources.get()
+      var subdomain = _.select(Resources.get()
         .subdomains, {
           id: item.subdomain_id
         })[0];
@@ -99,7 +99,7 @@
         return;
       }
 
-      return _.select(bxResources.get()
+      return _.select(Resources.get()
         .domains, {
           id: subdomain.domain_id
         })[0].title;
@@ -109,7 +109,7 @@
 
 
   // item -> subdomainTitle
-  app.filter('subdomainTitle', function(bxResources) {
+  app.filter('subdomainTitle', function(Resources) {
     return function(item) {
       if (!item) {
         return;
@@ -120,7 +120,7 @@
         return;
       }
 
-      var subdomain = _.select(bxResources.get()
+      var subdomain = _.select(Resources.get()
         .subdomains, {
           id: item.subdomain_id
         })[0];
@@ -140,13 +140,13 @@
 
 
   // item -> subdomainTitle XXX FIXME
-  app.filter('subdomainTitleById', function(bxResources) {
+  app.filter('subdomainTitleById', function(Resources) {
     return function(subdomain_id) {
       if (!subdomain_id) {
         return;
       }
 
-      return _.select(bxResources.get()
+      return _.select(Resources.get()
         .subdomains, {
           id: subdomain_id
         })[0].title;
@@ -164,9 +164,9 @@
   });
 
 
-  app.filter('groupNameById', function(bxResources) {
+  app.filter('groupNameById', function(Resources) {
     return function(group_id) {
-      return _.select(bxResources.get()
+      return _.select(Resources.get()
         .groups, {
           id: group_id
         })[0].name;
@@ -175,9 +175,9 @@
 
 
 
-  app.filter('itemTitle', function(bxResources) {
+  app.filter('itemTitle', function(Resources) {
     return function(item_id) {
-      return _.select(bxResources.get()
+      return _.select(Resources.get()
         .items, {
           id: item_id
         })[0].name;
@@ -185,10 +185,10 @@
   });
 
 
-  app.filter('groupName', function(bxResources) {
+  app.filter('groupName', function(Resources) {
     return function(group_id) {
-      return bxResources.getGroupNameById(group_id);
-      // bxResources.get().then(function(data) {
+      return Resources.getGroupNameById(group_id);
+      // Resources.get().then(function(data) {
       //   console.log(data);
       //   return _.select(data.groups, {
       //     id: user.group_id
@@ -198,9 +198,9 @@
   });
 
 
-  app.filter('kidName', function(bxResources) {
+  app.filter('kidName', function(Resources) {
     return function(kid_id) {
-      return _.select(bxResources.get()
+      return _.select(Resources.get()
         .kids, {
           id: kid_id
         })[0].name;

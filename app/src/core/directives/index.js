@@ -4,7 +4,7 @@
   /* LOOSELY CHUNKED MVVC COMPONENTS WHERE CONTROLLERS COME WITH A DIRECTIVE */
 
   // resource service (ssot, very much core)
-  require('./bxResources');
+  require('./Resources');
 
   // tables for resource management (/w edit/new dialog)
   require('./bx-table');

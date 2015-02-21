@@ -24,7 +24,7 @@
   }
 
 
-  function dialogController($mdDialog, bxResources, data, user) {
+  function dialogController($mdDialog, Resources, data, user) {
     angular.extend(this, {
       cancel: cancel,
       update: update,
@@ -37,7 +37,7 @@
     }
 
     function update(user) {
-      bxResources.update('user', user)
+      Resources.update('user', user)
         .then(function(response) {
           console.log('resource created:', user);
           $mdDialog.hide(response);

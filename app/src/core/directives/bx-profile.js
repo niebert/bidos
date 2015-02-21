@@ -15,12 +15,12 @@
     };
 
     /*@ngInject*/
-    function controllerFn($rootScope, bxResources) {
+    function controllerFn($rootScope, Resources) {
       var vm = angular.extend(this, {
         date: new Date().toJSON().replace(/[:T]/g, '-').replace(/[Z]/g, '')
       });
 
-      bxResources.get()
+      Resources.get()
         .then(function(resources) {
           vm.resources = resources;
           vm.me = getUser(resources);

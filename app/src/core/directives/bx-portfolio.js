@@ -16,7 +16,7 @@
       templateUrl: 'templates/bx-portfolio.html'
     };
 
-    function controllerFn($rootScope, $mdDialog, $scope, bxResources) {
+    function controllerFn($rootScope, $mdDialog, $scope, Resources) {
 
       var vm = angular.extend(this, {
         auth: $rootScope.auth,
@@ -65,7 +65,7 @@
       }
 
       function updateViewModel() {
-        bxResources.get()
+        Resources.get()
           .then(function(data) {
             angular.extend(vm, data);
             angular.extend(vm, APP_CONFIG);

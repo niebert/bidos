@@ -79,7 +79,7 @@
       })();
     }
 
-    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, bxObservation, bxResources) {
+    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, bxObservation, Resources) {
       var vm = angular.extend(this, {
         add: add,
         remove: remove,
@@ -180,7 +180,7 @@
       function updateViewModel() {
         angular.extend(vm, APP_CONFIG);
 
-        bxResources.get()
+        Resources.get()
           .then(function(data) {
             angular.extend(vm, data); // NOTE the extend
           });

@@ -18,7 +18,7 @@
       }
     };
 
-    function controller(bxResources, $mdDialog, $scope, $rootScope, $http) {
+    function controller(Resources, $mdDialog, $scope, $rootScope, $http) {
       var vm = angular.extend(this, {
         dialog: dialog,
         viewFilter: viewFilter,
@@ -31,7 +31,7 @@
       $scope.auth = $rootScope.auth;
 
       function updateViewModel() {
-        bxResources.get()
+        Resources.get()
           .then(function(data) {
             angular.extend(vm, data);
             angular.extend(vm, APP_CONFIG);
@@ -184,7 +184,7 @@
         }
 
         function destroy(resource) {
-          bxResources.destroy(resource)
+          Resources.destroy(resource)
             .then(function(response) {
               $mdDialog.hide(response);
             }, function(error) {});
@@ -202,14 +202,14 @@
           _.each(vm.r.examples, function(example) {
             if (example.hasOwnProperty('id')) {
 
-              bxResources.update(example)
+              Resources.update(example)
                 .then(function(response) {
                   $mdDialog.hide(response);
                 });
 
             } else {
 
-              bxResources.create(example)
+              Resources.create(example)
                 .then(function(response) {
                   $mdDialog.hide(response);
                 });
@@ -224,7 +224,7 @@
               var examples = behaviour.examples;
               delete behaviour.examples;
 
-              bxResources.create(behaviour)
+              Resources.create(behaviour)
                 .then(function(response) {
 
                   var id = response[0].id;
@@ -233,7 +233,7 @@
                     example.behaviour_id = id;
                     example.type = 'example';
 
-                    bxResources.create(example)
+                    Resources.create(example)
                       .then(function(response) {
                         $mdDialog.hide(response);
                       });
@@ -247,14 +247,14 @@
           if (vm.r.type !== 'item') {
             if (vm.r.id) {
 
-              bxResources.update(resource)
+              Resources.update(resource)
                 .then(function(response) {
                   $mdDialog.hide(response);
                 });
 
             } else {
 
-              bxResources.create(resource)
+              Resources.create(resource)
                 .then(function(response) {
                   $mdDialog.hide(response);
                 });

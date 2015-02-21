@@ -14,7 +14,7 @@
       templateUrl: 'templates/bx-registration-inbox.html'
     };
 
-    function controllerFn($rootScope, $mdDialog, $mdToast, bxResources) {
+    function controllerFn($rootScope, $mdDialog, $mdToast, Resources) {
       var vm = angular.extend(this, {
         dialog: dialog
       });
@@ -22,7 +22,7 @@
       vm.colors = require('../../config')
         .colors.user;
 
-      bxResources.get()
+      Resources.get()
         .then(function(data) {
 
           // get only what we need
@@ -40,7 +40,7 @@
           locals: {
             user: user,
           },
-          controller: function($scope, $mdDialog, bxResources, user) {
+          controller: function($scope, $mdDialog, Resources, user) {
             angular.extend(this, {
               cancel: cancel,
               accept: accept,
@@ -57,7 +57,7 @@
             function accept() {
               $mdDialog.hide(true);
               user.approved = true;
-              bxResources.update(user);
+              Resources.update(user);
               $mdToast.show(
                 $mdToast.simple()
                 .content('Beobachtung angenommen')

@@ -16,7 +16,7 @@
       templateUrl: 'templates/bx-dashboard.html'
     };
 
-    function controllerFn($rootScope, $scope, UserFactory, $state, $window, bxResources, $mdToast) {
+    function controllerFn($rootScope, $scope, UserFactory, $state, $window, Resources, $mdToast) {
 
       $scope.auth = $rootScope.auth;
 
@@ -33,7 +33,7 @@
       });
 
 
-      bxResources.get()
+      Resources.get()
         .then(function(resources) {
 
           vm.resources = resources;
@@ -215,7 +215,7 @@
       // TODO EXPORT!
 
       function sync() { // TODO
-        bxResources.sync();
+        Resources.sync();
       }
 
       /* LOGOUT */
@@ -237,7 +237,7 @@
       }
 
       function exportData() {
-        bxResources.get()
+        Resources.get()
           .then(function(data) {
 
             vm.downloadLink = window.URL.createObjectURL(new Blob([downloadableResource()], {

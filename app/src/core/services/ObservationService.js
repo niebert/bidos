@@ -11,7 +11,7 @@
   angular.module('bidos')
     .service('bxObservation', bxObservation);
 
-  function bxObservation($rootScope, bxResources, $q, $state, $mdToast) {
+  function bxObservation($rootScope, Resources, $q, $state, $mdToast) {
 
     class Observation {
       constructor() {
@@ -140,7 +140,7 @@
 
       _.each(o.stuff.examples, function(example) {
         example.behaviour_id = o.behaviour.id;
-        bxResources.create(example)
+        Resources.create(example)
           .then(function(response) {
             console.log(response);
           });
@@ -148,13 +148,13 @@
 
       _.each(o.stuff.ideas, function(idea) {
         idea.behaviour_id = o.behaviour.id;
-        bxResources.create(idea)
+        Resources.create(idea)
           .then(function(response) {
             console.log(response);
           });
       });
 
-      bxResources.create(obs)
+      Resources.create(obs)
         .then(function() {
           $state.go('bx.home');
           $mdToast.show($mdToast.simple()
