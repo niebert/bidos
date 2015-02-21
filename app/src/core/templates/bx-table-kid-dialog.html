@@ -50,14 +50,14 @@
 	</md-content>
 
 	<div class="md-actions" layout>
-		<md-button ng-show="vm.kid.id" ng-click="vm.destroy(vm.kid)" class="md-raised md-warn md-button md-default-theme">
+		<md-button aria-label="destroy" ng-show="vm.kid.id" ng-click="vm.destroy(vm.kid)" class="md-raised md-warn md-button md-default-theme">
 			Löschen
 		</md-button>
 		<span flex></span>
-		<md-button ng-click="vm.cancel()" class="md-raised md-button md-default-theme">
+		<md-button aria-label="cancel" ng-click="vm.cancel()" class="md-raised md-button md-default-theme">
 			Abbrechen
 		</md-button>
-		<md-button ng-click="vm.save(vm.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vm.kid.name || !vm.kid.group_id" ng-click="vm.createResource(vm.kid)">
+		<md-button aria-label="save" ng-click="vm.save(vm.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vm.kid.name || !vm.kid.group_id" ng-click="vm.createResource(vm.kid)">
 			Speichern
 		</md-button>
 	</div>

@@ -67,7 +67,7 @@
 			</md-content>
 		</form>
 
-		<md-button ng-show="!vm.user.approved && vm.user.id!==1" ng-click="vm.approveUser(vm.user)" class="md-hue-1 md-warn">
+		<md-button aria-label="approve" ng-show="!vm.user.approved && vm.user.id!==1" ng-click="vm.approveUser(vm.user)" class="md-hue-1 md-warn">
 			Benutzer zulassen
 		</md-button>
 
@@ -75,21 +75,21 @@
 
 	<div class="md-actions" layout="row">
 
-		<md-button ng-show="vm.user.id !== 1 && vm.user.approved" ng-click="vm.toggleEnabled(vm.user)" class="md-raised" ng-class="{'md-accent':!vm.user.disabled, 'md-warn':!vm.user.approved}">
+		<md-button aria-label="toggle-enabled" ng-show="vm.user.id !== 1 && vm.user.approved" ng-click="vm.toggleEnabled(vm.user)" class="md-raised" ng-class="{'md-accent':!vm.user.disabled, 'md-warn':!vm.user.approved}">
 			{{ !vm.user.disabled ? 'Sperren' : 'Entsperren' }}
 		</md-button>
 
-		<md-button ng-show="vm.user.id && vm.user.id!==1" ng-click="vm.destroy(vm.user)" class="md-raised md-warn">
+		<md-button aria-label="delete-user" ng-show="vm.user.id && vm.user.id!==1" ng-click="vm.destroy(vm.user)" class="md-raised md-warn">
 			Löschen
 		</md-button>
 
 		<span flex></span>
 
-		<md-button ng-click="vm.cancel()" class="md-raised">
+		<md-button aria-label="cancel-dialog" ng-click="vm.cancel()" class="md-raised">
 			Abbrechen
 		</md-button>
 
-		<md-button ng-show="vm.user.id!==1" ng-click="vm.save(vm.user)" class="md-raised md-primary md-button" ng-disabled="!vm.formIsValid(vm.user)">
+		<md-button aria-label="save-user" ng-show="vm.user.id!==1" ng-click="vm.save(vm.user)" class="md-raised md-primary md-button" ng-disabled="!vm.formIsValid(vm.user)">
 			Speichern
 		</md-button>
 	</div>

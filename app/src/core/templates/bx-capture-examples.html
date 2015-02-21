@@ -13,8 +13,8 @@
 				<textarea ng-model="newStuff"></textarea>
 			</md-input-container>
 
-			<md-button flex="50" ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newStuff})"> Hinzufügen </md-button>
-			<md-button flex="50" ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> Fertig </md-button>
+			<md-button aria-label="add-example" flex="50" ng-disabled="!newStuff" class="md-colored md-primary md-raised" ng-click="vm.add({type:'example', text:newStuff})"> Hinzufügen </md-button>
+			<md-button aria-label="go-to-ideas" flex="50" ng-disabled="newStuff" class="md-colored md-accent md-raised" ng-click="vm.go('ideas')"> Fertig </md-button>
 		</div>
 
 		<md-content flex layout-wrap layout-padding layout="column">

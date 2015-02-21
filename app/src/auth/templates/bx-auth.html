@@ -27,7 +27,7 @@
 					</div>
 				</md-input-container>
 
-				<md-button ng-click="auth.login(user)" class="md-raised md-primary"> Anmelden </md-button>
+				<md-button aria-label="login" ng-click="auth.login(user)" class="md-raised md-primary"> Anmelden </md-button>
 			</form>
 		</div>
 
@@ -85,7 +85,7 @@
 					</div>
 				</md-input-container>
 
-				<md-button ng-click="auth.signup(user)" class="md-raised md-primary"> Registrieren </md-button>
+				<md-button aria-label="signup" ng-click="auth.signup(user)" class="md-raised md-primary"> Registrieren </md-button>
 			</form>
 		</div>
 
@@ -99,7 +99,7 @@
 						<div ng-message="required"> Bitte geben Sie Ihre E-Mail-Adresse ein </div>
 					</div>
 				</md-input-container>
-				<md-button ng-click="auth.forgot(user)" class="md-raised md-primary submit-button"> Zurücksetzen </md-button>
+				<md-button aria-label="forgot" ng-click="auth.forgot(user)" class="md-raised md-primary submit-button"> Zurücksetzen </md-button>
 			</form>
 		</div>
 	</ng-switch>

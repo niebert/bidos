@@ -30,17 +30,17 @@
 
 	<div class="md-actions" layout="row">
 
-		<md-button ng-show="vm.institution.id" ng-click="vm.destroy(vm.institution)" class="md-raised md-warn">
+		<md-button aria-label="destroy" ng-show="vm.institution.id" ng-click="vm.destroy(vm.institution)" class="md-raised md-warn">
 			Löschen
 		</md-button>
 
 		<span flex></span>
 
-		<md-button ng-click="vm.cancel()" class="md-raised">
+		<md-button aria-label="cancel" ng-click="vm.cancel()" class="md-raised">
 			Abbrechen
 		</md-button>
 
-		<md-button ng-click="vm.save(vm.institution)" class="md-raised md-primary md-button" ng-disabled="!vm.institution.name">
+		<md-button aria-label="save" ng-click="vm.save(vm.institution)" class="md-raised md-primary md-button" ng-disabled="!vm.institution.name">
 			Speichern
 		</md-button>
 	</div>

@@ -1,13 +1,13 @@
 <div layout="column" layout-fill>
 	<md-toolbar>
 		<span class="md-toolbar-tools">
-			<md-button ui-sref="bx.home">
+			<md-button aria-label="home" ui-sref="bx.home">
 				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
 			<h2 flex>Beobachtungen</h2>
 
-			<md-button ng-click="vm.dialog($event, {type:'observation'})">
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'observation'})">
 				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
 			</md-button>
 		</span>

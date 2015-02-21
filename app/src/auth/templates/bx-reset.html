@@ -1,7 +1,7 @@
 <div ng-controller="AppCtrl" class="tabsdemoStaticTabs sample" layout-fill>
 
 	<md-tabs class="md-accent" md-selected="vm.selectedIndex">
-		<md-button ui-sref="public">
+		<md-button aria-label="public" ui-sref="public">
 			<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Zurück"></md-icon>
 		</md-button>
 		<md-tab id="tab1" aria-controls="tab1-content"> Passwort zurücksetzen </md-tab>
@@ -21,7 +21,7 @@
 					</div>
 				</md-input-container>
 
-				<md-button ng-click="auth.reset(user)" class="md-raised md-primary"> Neues Passwort speichern </md-button>
+				<md-button aria-label="reset" ng-click="auth.reset(user)" class="md-raised md-primary"> Neues Passwort speichern </md-button>
 			</form>
 		</div>
 	</ng-switch>
