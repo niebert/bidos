@@ -14,6 +14,7 @@
       templateUrl: 'templates/bx-profile.html'
     };
 
+    /*@ngInject*/
     function controllerFn($rootScope, bxResources) {
       var vm = angular.extend(this, {
         date: new Date().toJSON().replace(/[:T]/g, '-').replace(/[Z]/g, '')
