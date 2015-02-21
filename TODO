@@ -1,3 +1,11 @@
+
+    /* TODO: The back end should authenticate the user, check for it's group
+    /* and respond with the correct resource object the user is allowed to
+    /* get, and not more. */
+
+
+
+
 CRITICAL
 [offline] offline caching (uh oh... minimal implementieren)
 [capture] fix search/filter bar
@@ -30,14 +38,14 @@ LOW
 [resources] user.role is missing WONTFIX (make roles as strings and save the hassle)
 [auth] we need more complex permissions
 [resources] provide 3 resources: flat (vanilla), nested (automatic getters), anonymized, rolified
-[fs] put html and js together per component, flatten for dist (decouple this logic. glob for js/html files, so it doesnt matter, what is where)
 [sidenav] make (automatically) nested sidenav (limit to n levels)
-[roles] jeder sollte n anderes theme haben (vielleicht nicht möglich)
+[roles] jeder sollte n anderes theme haben (vielleicht nicht so ohne weiteres möglich)
 [refact] tile factory
 [fs] remove bx- from filenames
 [resources] create explicit inbox service get all data and filter out only the new ones
 [help/ui] alle texte von bedienelementen softcoden (strings.js)
 [resources] auto generate fake data in api
+[api] use redis for caching and sync redis with indexeddb (?)
 
 DONE
 [capture] review toolbar is missing FIXED
@@ -69,3 +77,4 @@ DONE
 [material] toasts are all uppercase FIXED
 [export] nested data as json DONE
 [auth/css] fix login/signup screens FIXED
+[fs] put html and js together per component, flatten for dist (decouple this logic. glob for js/html files) DONE

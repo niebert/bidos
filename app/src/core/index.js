@@ -4,6 +4,7 @@
   // stuff
   require('./routes');
   require('./filters');
-  require('./lib');
+  require('./services');
+  require('./directives');
 
 }());

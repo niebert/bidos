@@ -4,53 +4,10 @@
   'use strict';
 
   angular.module('bidos')
-    .service('bxResources', bxResources)
-    .service('bxResourceHelper', bxResourceHelper);
+    .service('PrepareResources', PrepareResources);
 
-  function bxResources($rootScope, $mdToast, $http, $q) {
+  function PrepareResources($rootScope, $mdToast, $http, $q) {
 
-    /* Basic CRUD operations w/ HTTP calls to the back end. */
-
-    /* TODO: The back end should authenticate the user, check for it's group
-    /* and respond with the correct resource object the user is allowed to
-    /* get, and not more. */
-
-    // if (!$localStorage.hasOwnProperty('data')) {
-    //   $localStorage.data = {};
-    // } else {
-    //   console.log('%LOCAL DATA (PLAIN) FOUND', 'color: green; font-size: 1.2em', $localStorage.data);
-    // }
-
-    // if (!$localStorage.hasOwnProperty('resources')) {
-    //   $localStorage.resources = {};
-    // } else {
-    //   console.log('%LOCAL DATA (RESOURCES) FOUND', 'color: green; font-size: 1.2em', $localStorage.resources);
-    // }
-
-    // var data = $localStorage.data; // plain server response
-    // var resources = $localStorage.resources; // nested resources
-
-    var data = {}; // plain server response
-    var resources = {}; // nested resources
-    var config = require('../../config');
-
-    var defaultResource = [config.app.API, config.app.RESOURCE_PATH, config.app.DEFAULT_RESOURCE].join('/');
-
-    var toast = function(content) {
-      $mdToast.show($mdToast.simple()
-        .content(content)
-        .position('bottom right')
-        .hideDelay(3000));
-    };
-
-    return {
-      get: getResources,
-      create: createResource,
-      update: updateResource,
-      destroy: destroyResource,
-    };
-
-    function prepareResources() {
       /* Programatically add getter methods to resource objects. We traverse
       /* all resources and look for blabla_id, which refers to the parent id.
       /* On the parent we create the getter blablas() then. */
@@ -161,7 +118,6 @@
       // --------------------------------------------------------------------------------
 
       // the next one requires the get subdomain property to be set on each domain resource
-
       _.each(resources.items, function(item) {
         if (!item.hasOwnProperty('domain')) {
           Object.defineProperty(item, 'domain', {
@@ -242,7 +198,6 @@
             }
           });
         }
-
       });
 
       // --------------------------------------------------------------------------------
@@ -346,7 +301,6 @@
         }
       });
 
-
       // --------------------------------------------------------------------------------
 
       _.each(resources.users, function(user) {
@@ -375,8 +329,6 @@
           });
         }
       });
-
-
 
       /* ROLE BASED CHANGES TO THE RESOURCE MODEL FIXME SUCKS */
 
@@ -420,203 +372,22 @@
         case 2:
           _.each(resources.kids, function(k) {
             var f = k.name.split(' ')[0]; // first name
-            k.name=f[0] + f[1] + f[f.length-1] + k.id; // <3
+            k.name = f[0] + f[1] + f[f.length - 1] + k.id; // <3
             console.log(k.name);
           });
           // debugger
           break;
       }
-    }
-
-    // TODO sucks. we the outer scope flat data model to the
-    // response value diretly, but the outer resource model is set
-    // by a separate function
-    function updateData(response) {
-      data = response;
-      prepareResources();
-    }
-
-    function getResources(sync) {
-      return $q(function(resolve) {
-
-        // load resources only once, except when explicitly setting sync to something true
-        if (_.isEmpty(data) || sync) {
-
-          $http.get(defaultResource)
-            .success(function(response) {
-              updateData(response);
-              resolve(resources);
-            });
-        } else {
-          resolve(resources);
-        }
-      });
-    }
-
-    function usernameFromEmail(resource) {
-      return resource.email.split('@')[0];
-    }
-
-    function createResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
-      return $q(function(resolve) {
-
-        if (resource.type === 'user') {
-          resource.username = usernameFromEmail(resource);
-          debugger
-        }
-
-        delete resource.type;
-        resource.author_id = $rootScope.auth.id;
-
-        $http.post(url, resource)
-          .success(function(response) {
-            _.each(response, function(d) {
-              data[d.type + 's'].push(d);
-            });
-
-            prepareResources();
-
-            resolve(response);
-            toast('Resource erfolgreich erstellt');
-            console.log('%cget resource ok', 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
-          })
-          .error(function(error) {
-            resolve(error);
-            toast(error[0].content.detail); // FIXME
-            console.warn('%cget resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
-          });
-      });
-    }
-
-    function updateResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
-      return $q(function(resolve) {
-
-        delete resource.type;
-        resource.author_id = $rootScope.auth.id;
-
-        $http.patch(url, resource)
-          .success(function(response) {
-            var r = response[0]; // gets resource type from first of response array
-            data[r.type + 's'].splice(_.findIndex(data[r.type + 's'], { // pluralize
-              id: r.id
-            }), 1, r);
-
-            prepareResources();
-
-            resolve(response);
-            toast('Resource erfolgreich aktualisiert');
-            console.log('%cupdate resource ok: ' + r.type, 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
-          })
-          .error(function(error) {
-            resolve(error);
-            toast(error[0].content.detail); // FIXME
-            console.warn('%cupdate resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
-          });
-      });
-    }
-
-    function destroyResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
-      return $q(function(resolve) {
-        $http.delete(url)
-          .success(function(response) {
-            var r = response[0]; // gets resource type from first of response array
-            data[r.type + 's'].splice(_.findIndex(data[r.type + 's'], { // pluralize
-              id: r.id
-            }), 1);
-
-            prepareResources();
-
-            resolve(response);
-            toast('Resource erfolgreich gelöscht');
-            console.log('%cupdate resource ok: ' + r.type, 'color: #77d598; font-weight: bolder; font-size: 1.1em;', response);
-          })
-          .error(function(error) {
-            resolve(error);
-            toast(error[0].content.detail); // FIXME
-            console.warn('%cdestroy resource failure: ' + error, 'color: #ca6164; font-weight: bolder; font-size: 1.1em;');
-          });
-      });
-    }
-
   }
 
-  function bxResourceHelper(bxResources) {
+}());
 
-    var resources = null; // datamodel
+(function() {
+  'use strict';
 
-    if (!resources) {
-      bxResources.get()
-        .then(function(data) {
-          resources = data;
-        });
-    }
+  angular.module('bidos')
+    .service('someService', someService);
 
-    return {
-      countKids: countKids,
-      subdomainTitle: subdomainTitle,
-      institutionName: institutionName,
-      domainTitle: domainTitle,
-      group: group,
-      institution: institution
-    };
-
-    function countKids(groupId) {
-      return _.select(resources.kids, {
-          group_id: +groupId
-        })
-        .length;
-    }
-
-    function institutionName(institutionId) {
-      var institutions = _.select(resources.institutions, {
-        id: +institutionId
-      });
-      if (institutions.length) {
-        return institutions[0].name;
-      }
-    }
-
-    function group(resource) {
-      var groups = _.select(resources.groups, {
-        id: +resource.group_id
-      });
-      if (groups.length) {
-        return groups[0];
-      }
-    }
-
-    function institution(resource) {
-      var institutionId = resource.institution_id || this.group(resource);
-
-      if (institutionId) {
-        return this.institutionName(institutionId);
-      }
-    }
-
-    function subdomainTitle(subdomainId) {
-      var subdomains = _.select(resources.subdomains, {
-        id: +subdomainId
-      });
-      if (subdomains.length) {
-        return subdomains[0].title;
-      }
-    }
-
-    function domainTitle(resource) {
-      if (resource.hasOwnProperty('subdomain_id')) {
-        var domainId = _.select(resources.subdomains, {
-          id: resource.subdomain_id
-        })[0].domain_id;
-
-        return _.select(resources.domains, {
-          id: +domainId
-        })[0].title;
-      }
-    }
-
-  }
+  function someService($rootScope, $scope, $mdToast, $mdDialog, $http, $q, $state) {}
 
 }());
