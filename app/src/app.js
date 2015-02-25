@@ -1,15 +1,12 @@
 (function() {
   'use strict';
-  /* global angular, navigator, window, document, _ */
+  /* global angular, navigator, window, document */
 
   var app = angular.module('bidos', [
-    'auth', // bidos auth
-
+    'auth',
     'ngMaterial', // material design
     'ngMessages', // form error messages
-
-    'ui.router',
-    'chart.js',
+    'ui.router'
   ]);
 
   // bidos here
@@ -18,36 +15,27 @@
   require('./core');
   require('./auth');
 
-  // TODO clean up the junkyard below
-
-  // cors
+  // more secure cors (not really neccessary) TODO
   // app.config(['$httpProvider', function($httpProvider) {
   //   $httpProvider.defaults.withCredentials = true;
   // }]);
 
-  app.config(function($mdIconProvider) {
-    // Configure URLs for icons specified by [set:]id.
-    $mdIconProvider
-      .defaultIconSet('my/app/icons.svg') // Register a default set of SVG icons
-      .iconSet('social', 'my/app/social.svg') // Register a named icon set of SVGs
-      .icon('android', 'lib/material-design-icons/action/svg/design/ic_android_48px.svg') // Register a specific icon (by name)
-      .icon('work:chair', 'my/app/chair.svg'); // Register icon in a specific set
-  });
-
+  // angular material themes
   app.config(['$mdThemingProvider', function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('indigo')
       .accentPalette('pink');
   }]);
 
-  /* Register event listeners to keep track of our network status and make it
-  /* available on $rootScope.networkStatus. */
-
-  // NOTE neccessary to download json as blob (export fun)
+  // allow downloading json as blob
   app.config(['$compileProvider', function($compileProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
   }]);
 
+  // detect if the app is online/offline. exposes:
+  // $rootScope.online Boolean
+  // $rootScope.offline Boolean
+  // $rootScope.network String
   app.run(function($rootScope) {
 
     if (navigator.onLine) {
@@ -56,44 +44,46 @@
       console.log('%cOFFLINE', 'color: red; font-size: 1.2em');
     }
 
-    $rootScope.networkStatus = navigator.onLine ? 'online' : 'offline';
+    $rootScope.network = navigator.onLine ? 'online' : 'offline';
     $rootScope.$apply();
 
     if (window.addEventListener) {
 
       window.addEventListener('online', function() {
-        $rootScope.networkStatus = 'online';
+        $rootScope.online = true;
+        $rootScope.offline = false;
         $rootScope.$apply();
       }, true);
 
       window.addEventListener('offline', function() {
-        $rootScope.networkStatus = 'offline';
+        $rootScope.online = false;
+        $rootScope.offline = true;
         $rootScope.$apply();
       }, true);
 
     } else {
 
       document.body.ononline = function() {
-        $rootScope.networkStatus = 'online';
+        $rootScope.online = true;
+        $rootScope.offline = false;
         $rootScope.$apply();
       };
 
       document.body.onoffline = function() {
-        $rootScope.networkStatus = 'offline';
+        $rootScope.online = false;
+        $rootScope.offline = true;
         $rootScope.$apply();
       };
 
     }
   });
 
+  // disable angular's debugging stuff for perfomance improvement
   app.config(function($logProvider) {
     $logProvider.debugEnabled(true);
   });
 
-  app.run(function($rootScope, $log) {
-    $rootScope.$log = $log;
-  });
-
+  // broadcast on $http operations to be able to show loading indicators TODO
   app.config(function($httpProvider) {
     $httpProvider.interceptors.push(function($q, $rootScope) {
       return {
@@ -109,6 +99,7 @@
     });
   });
 
+  // broken TODO
   app.directive('loadingIndicator', function() {
     return {
       restrict: 'A',

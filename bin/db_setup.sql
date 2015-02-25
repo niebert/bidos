@@ -181,6 +181,9 @@ FROM users;
 CREATE VIEW usernames AS
 SELECT username FROM users;
 
+CREATE VIEW authors AS
+SELECT id, name, role FROM users;
+
 
 ----------------------------------------------------------------------------------------------------
 

@@ -17,7 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular-chart.js": "~0.5.1",
     "angular-jwt": "~0.0.6",
     "angular-material": "master",
     "angular-messages": "~1.3.13",
@@ -29,7 +28,8 @@
     "ngCordova": "~0.1.12-alpha",
     "material-design-icons": "~1.0.1",
     "jquery": "~2.1.3",
-    "chart.js": "~0.1.0"
+    "Chart.js": "~1.0.1",
+    "pluralize": "~1.1.2"
   },
   "resolutions": {
     "angular": "1.3.13"

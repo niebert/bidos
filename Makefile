@@ -2,6 +2,11 @@
 # Mon Feb 16 22:18:05 CET 2015
 #
 
+NO_COLOR=\x1b[0m
+OK_COLOR=\x1b[32;06m
+ERROR_COLOR=\x1b[31;01m
+WARN_COLOR=\x1b[33;01m
+
 # sh
 SHELL = /usr/local/bin/zsh
 SHELLFLAGS = --extendedglob
@@ -58,6 +63,11 @@ APK_DIST = $(BUILD_DIR)/$(NAME)-$(VERSION)-$(BUILD).apk
 # github
 GITHUB_REPOSITORY = https://github.com/rwilhelm/bidos.git
 
+# wildcards
+TEMPLATES = app/src/**/*.html
+SCRIPTS = app/src/**/*.js
+STYLESHEETS = app/src/**/*.css
+
 # --------------------------------------------------------------------------------------------------
 
 ifeq (${NODE_ENV},production)
@@ -105,12 +115,17 @@ bower:
 	@bower install
 
 # dev build iteration
-dev: js css templates manifest
-	@echo "done"
+dev: dist-light
+	@fswatch -0 -r -o app/src | xargs -0 -n1 -I{} make dist-light
+
+dist-light: js css templates manifest
+	@afplay /System/Library/Sounds/Morse.aiff
+	@echo "`DATE` $(OK_COLOR) done $(NO_COLOR)"
 
 # things are served from here
 dist: clean js css templates manifest cordova img icons
 	@echo "done"
+	@osascript -e 'display notification "done" with title "Title"'
 
 icons:
 	@echo "copying icons"
@@ -122,26 +137,27 @@ cordova:
 
 img:
 	@echo "copying images"
-	@cp -r app/assets/img app/dist
+	@time cp -r app/assets/img app/dist
 
 css:
 	@echo "running sass"
-	@gulp css 1>/dev/null
+	@time gulp css 1>/dev/null &
 
 js-app:
+	@afplay -r .08 /System/Library/Sounds/Morse.aiff &
 	@echo "bundling project scripts"
-	@gulp js-app 1>/dev/null
+	@time gulp js-app 1>/dev/null
 
 js-vendor:
 	@echo "bundling vendor scripts"
-	@gulp js-vendor 1>/dev/null
+	@time gulp js-vendor 1>/dev/null
 
 js-vendor-alt:
 	@browserify app/src/lib.js | tee app/dist/vendor.js | uglifyjs > app/dist/vendor.min.js
 
 manifest:
 	@echo generating manifest
-	@bin/manifest.sh > $(DIST_DIR)/manifest.appcache
+	@time bin/manifest.sh > $(DIST_DIR)/manifest.appcache
 
 link:
 	@echo "creating symlinks"
@@ -165,8 +181,9 @@ templates:
 api:
 	nodemon app/api/index.js -w app/api -d4
 
+# just server static directories. there should be no need to listen for file changes
 www:
-	nodemon bin/www_server.js -w app/src -d4
+	while iojs --harmony bin/www_server.js; do sleep 3; done
 
 run-on-lg:
   DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp"

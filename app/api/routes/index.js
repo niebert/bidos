@@ -13,17 +13,18 @@
   };
 
   var resourceTypes = [
+    'author',
     'behaviour',
     'domain',
     'example',
     'group',
+    'idea',
+    'institution',
     'item',
     'kid',
     'observation',
     'subdomain',
-    'user',
-    'idea',
-    'institution'
+    'user'
   ];
 
   if (routesAreEmpty()) {
@@ -39,13 +40,14 @@
   module.exports = exports = routes;
 
   function routesAreEmpty() {
-    return !Object.keys(routes.private)
-      .length && !Object.keys(routes.public)
-      .length;
+    return !Object.keys(routes.private).length &&
+           !Object.keys(routes.public).length;
   }
 
   function excludeFiles(file) {
-    return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file !== '_router.js');
+    return (file.indexOf('.') !== 0) &&
+           (file !== 'index.js') &&
+           (file !== '_router.js');
   }
 
   function populateRoutes(file) {

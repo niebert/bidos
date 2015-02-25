@@ -65,20 +65,26 @@
       text: 'SELECT * FROM institutions'
     });
 
+    var author = yield this.pg.db.client.query_({
+      name: 'getAllauthors',
+      text: 'SELECT * FROM authors'
+    });
+
     // NOTE: things are getting pluralized here
 
     var resources = {
+      authors: author.rows,
       behaviours: behaviour.rows,
       domains: domain.rows,
       examples: example.rows,
-      institutions: institution.rows,
       groups: group.rows,
-      users: user.rows,
+      ideas: idea.rows,
+      institutions: institution.rows,
       items: item.rows,
       kids: kid.rows,
-      ideas: idea.rows,
       observations: observation.rows,
-      subdomains: subdomain.rows
+      subdomains: subdomain.rows,
+      users: user.rows,
     };
 
     _.each(resources, function(resource,i) {

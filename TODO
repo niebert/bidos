@@ -1,9 +1,13 @@
 
+
+    // TODO refactor the whole resource model. no key:value stuff
+    // all over the place but arrays and objs w/ property key:
+    // 'kid'. we have that anyway!
+
+
     /* TODO: The back end should authenticate the user, check for it's group
     /* and respond with the correct resource object the user is allowed to
     /* get, and not more. */
-
-
 
 
 CRITICAL

@@ -181,8 +181,8 @@
         angular.extend(vm, APP_CONFIG);
 
         Resources.get()
-          .then(function(data) {
-            angular.extend(vm, data); // NOTE the extend
+          .then(function(resources) {
+            angular.extend(vm, resources); // NOTE the extend
           });
 
         Observation.get()
