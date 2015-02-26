@@ -135,7 +135,7 @@
             return /_id/.test(refKey) && refId; // no null
           });
 
-          if (_.size(refs)) {
+          if (true /*_.size(refs)*/ ) {
             _.each(refs, function(refId, _refKey) {
 
               // TODO compare to refKey.split('_')[0]
