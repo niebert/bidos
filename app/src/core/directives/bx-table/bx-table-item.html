@@ -56,9 +56,9 @@
 					<td> {{ item.id }} </td>
 					<td> {{ item.name }} </td>
 					<td> {{ item.subdomain.name }} </td>
-					<td> {{ item.domain.name }} </td>
-					<td> {{ item.behaviours.length }} </td>
-					<td> {{ item.observations.length }} </td>
+					<td> {{ item.subdomain.domain.name }} </td>
+					<td> {{ item.behaviours.length || '0' }} </td>
+					<td> {{ item.observations.length || '0' }} </td>
 					<td> {{ item.examples.length }} </td>
 					<td> {{ item.ideas.length }} </td>
 				</tr>
