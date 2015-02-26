@@ -21,9 +21,9 @@
 
     return {
       get: getAllResourcesFromCache,
-      // create: createResource,
-      // update: updateResource,
-      // destroy: destroyResource
+      create: createResourcesInCache,
+      update: updateResourceInCache,
+      destroy: destroyResourceInCache
     };
 
     // autogenerate schema from keys
@@ -179,5 +179,46 @@
       return data;
 
     }
+    function createResourcesInCache(resources) {
+      return $q(function(resolve, reject) {
+        _.each(resources, function(resource) {
+          let key = pluralize(resource.type);
+          db[key].add(resource).then(function(response) {
+            resolve(response);
+          }).catch(function(err) {
+            reject(err);
+          });
+        });
+      });
+    }
+
+    function updateResourceInCache(resources) {
+      return $q(function(resolve, reject) {
+        _.each(resources, function(resource) {
+          let key = pluralize(resource.type);
+          db[key].update(resource.id, resource).then(function(updated) {
+            if (updated) {
+              resolve(resource);
+            } else {
+              reject();
+            }
+          });
+        });
+      });
+    }
+
+    function destroyResourceInCache(resources) {
+      return $q(function(resolve, reject) {
+        _.each(resources, function(resource) {
+          let key = pluralize(resource.type);
+          db[key].delete(resource.id).then(function() {
+            resolve(resource);
+          }).catch(function() {
+            reject();
+          });
+        });
+      });
+    }
+
   }
 }());
