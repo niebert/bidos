@@ -36,7 +36,16 @@
     }
 
     function createResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
+
+      // TODO split resource properties into the ones that need to go to the
+      // server side and the ones that do not. alternatively we could just
+      // sent the whole thing to the api and let it weed out these things.
+
+      var type = resource.type;
+      delete resource.type;
+
+      var url = [config.app.API, config.app.RESOURCE_PATH, type].join('/');
+
       return $q(function(resolve, reject) {
         $http.post(url, resource)
           .success(function(response) {
@@ -51,7 +60,11 @@
     }
 
     function updateResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
+
+      var type = resource.type;
+      delete resource.type;
+
+      var url = [config.app.API, config.app.RESOURCE_PATH, type, resource.id].join('/');
       return $q(function(resolve, reject) {
         $http.patch(url, resource)
           .success(function(response) {
