@@ -106,7 +106,7 @@
       });
     }
 
-    // TODO inside of linkResources the naming is correct. out here it is not.
+    // TODO inside of linkResources the naming is correct. out here it is mostly not.
 
     // link to ref and back
     function prepare(data) {
@@ -172,6 +172,7 @@
 
             });
           }
+
         });
       });
 

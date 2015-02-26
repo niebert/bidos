@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, Blob, document, URL */
+  /* global angular, Blob */
 
   var APP_CONFIG = require('../../../config');
 
@@ -21,8 +21,7 @@
       $scope.auth = $rootScope.auth;
 
       var vm = angular.extend(this, {
-        colors: APP_CONFIG
-          .colors,
+        colors: APP_CONFIG.colors,
         networkStatus: $rootScope.networkStatus,
         online: $rootScope.networkStatus === 'online',
         date: new Date().toJSON().replace(/[:]/g, '-'),
@@ -212,8 +211,6 @@
         rowSpan: [0, 0, 0]
       }];
 
-      // TODO EXPORT!
-
       function sync() { // TODO
         Resources.sync();
       }
@@ -239,26 +236,13 @@
       function exportData() {
         Resources.get()
           .then(function(data) {
-
             vm.downloadLink = window.URL.createObjectURL(new Blob([downloadableResource()], {
               type: 'application/json'
             }));
             console.log(vm.downloadLink);
-
-            // var json = JSON.stringify(data);
-            // var blob = new Blob([json], {
-            //   type: 'application/json'
-            // });
-
-            // // $window.URL.createObjectURL(new Blob([vm.data], {type: 'application/json'}));
-
-            // var url = $window.URL.createObjectURL(blob);
-            // var a = document.createElement('a');
-            // a.download = 'bx-data-export.json';
-            // a.href = url;
-            // a.textContent = 'Export Data';
           });
       }
+
     }
   }
 
