@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html ng-strict-di ng-app="bidos">
 <!-- manifest="manifest.appcache" -->
-
 <head>
 	<title>BiDoS</title>
 	<meta charset="utf-8" />
@@ -12,11 +11,24 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 
+
+    <meta name="description" content="">
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Set a shorter title for iOS6 devices when saved to home screen -->
+    <meta name="apple-mobile-web-app-title" content="Seven Minute">
+
+
 	<!-- RobotoDraft:400,500,700,400italic -->
 	<!-- <link href="https://fonts.googleapis.com/css?family=RobotoDraft:400" rel="stylesheet" type="text/css"> -->
 
 	<link rel="stylesheet" href="lib/angular-material/angular-material.css" />
 	<link rel="stylesheet" href="bidos.css" />
+
 </head>
 
 <body ng-controller="AuthController as auth">

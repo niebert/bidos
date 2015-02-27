@@ -80,7 +80,7 @@
 
   // disable angular's debugging stuff for perfomance improvement
   app.config(function($logProvider) {
-    $logProvider.debugEnabled(true);
+    $logProvider.debugEnabled(false);
   });
 
   // broadcast on $http operations to be able to show loading indicators TODO

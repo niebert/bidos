@@ -19,10 +19,27 @@
 
 		<h2>Eigener Benutzer</h2>
 		<pre>{{ vm.me | json }}</pre>
-	<div ng-hide="$root.auth.role==1">
-		<h2>Daten exportieren</h2>
-		<pre><a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">{{ vm.resourceBlob.blob | json }}</a></pre>
-	</div>
+
+		<div ng-hide="$root.auth.role==1">
+			<h2>Daten exportieren</h2>
+			<pre><a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">{{ vm.resourceBlob.blob | json }}</a></pre>
+		</div>
+
+		<h2>Ungesendete Daten <small ng-click="vm.sync()" class="bx-sync">synchronisieren</small></h2>
+		<ol>
+			<li ng-repeat="item in vm.outbox">
+				<strong>{{ item.operation }}</strong> <small>{{ item.date | date }}</small>
+				<pre>{{ item.resource | json }}</pre>
+			</li>
+		</ol>
+
+		<h2>Ungeprüfte Beobachtungen</h2>
+		<ol>
+			<li ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)">
+				<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small><br>
+				<small>{{ obs.item.name }}</small>
+			</li>
+		</ol>
 
 	</md-content>
 </div>

@@ -35,7 +35,7 @@
 				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="observation in vm.observations | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, observation)">
+				<tr ng-repeat="observation in vm.observations track by $index | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, observation)">
 					<td> {{ observation.id }} </td>
 					<td> {{ observation.kid.name }} </td>
 					<td> {{ observation.niveau }} </td>

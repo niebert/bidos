@@ -96,7 +96,7 @@
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
-      }, {
+      },/* {
         footer: 'Eingehende Beobachtungen',
         tooltip: 'Neu eingegange Beobachtungen ansehen',
         description: '',
@@ -107,7 +107,7 @@
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
-      }, {
+      }, */{
         footer: 'Neue Beobachtung',
         tooltip: 'Neue Beobachtung einstellen',
         description: 'Sie können eine neue Beobachtung erstellen, indem sie ein Kind und ein Baustein auswählen und das Niveau des beobachteten Verhalten des Kindes auf einer Skala von 1-3 (eigentlich 0-4) bewerten. Fügen Sie optional noch eigene Beispiele und Ideen hinzu.',

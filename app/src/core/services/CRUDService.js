@@ -20,17 +20,17 @@
     };
 
     function getResources() {
-      console.time('CRUD get');
+      console.time('[crud] getting resources from api');
       var url = [config.app.API, config.app.RESOURCE_PATH, config.app.DEFAULT_RESOURCE].join('/');
       return $q(function(resolve, reject) {
         $http.get(url)
-          .success(function(response) {
-            resolve(response);
-            console.log(response);
+          .success(function(data) {
+            resolve(data);
+            console.timeEnd('[crud] getting resources from api', data);
           })
           .error(function(err) {
             reject(err);
-            console.warn('CRUD GET: ', err);
+            console.warn('[crud] getting resources from api', err);
           });
       });
     }
@@ -46,11 +46,15 @@
 
       var url = [config.app.API, config.app.RESOURCE_PATH, type].join('/');
 
+      if (type === 'user') {
+        resource.username = resource.email.split('@')[0];
+      }
+
       return $q(function(resolve, reject) {
         $http.post(url, resource)
           .success(function(response) {
             resolve(response);
-            Help.log('create resource: ' + response[0].type, response);
+            Help.log('create resource: ', response);
           })
           .error(function(err) {
             reject(err);
@@ -69,7 +73,7 @@
         $http.patch(url, resource)
           .success(function(response) {
             resolve(response);
-            Help.log('update resource: ' + response[0].type, response);
+            Help.log('update resource: ', response);
           })
           .error(function(err) {
             reject(err);
@@ -84,7 +88,7 @@
         $http.delete(url)
           .success(function(response) {
             resolve(response);
-            Help.log('destroy resource: ' + response[0].type, response);
+            Help.log('destroy resource: ', response);
           })
           .error(function(err) {
             reject(err);

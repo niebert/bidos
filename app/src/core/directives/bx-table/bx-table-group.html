@@ -34,10 +34,10 @@
 				<th ng-click="predicate='created_at'; reverse=!reverse">Bearbeitet</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="group in vm.groups | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, group)">
+				<tr ng-repeat="group in vm.groups track by $index | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, group)">
 					<td> {{ group.id }} </td>
 					<td> {{ group.name }} </td>
-					<td> {{ group | institution }} </td>
+					<td> {{ group.institution.name }} </td>
 					<td> {{ group.created_at | date }} </td>
 					<td> {{ group.modified_at | date }} </td>
 				</tr>

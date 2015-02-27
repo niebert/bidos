@@ -14,6 +14,8 @@
       templateUrl: 'templates/bx-observation-inbox.html'
     };
 
+    debugger
+
     function controllerFn($rootScope, $mdDialog, $mdToast, Resources) {
       var vm = angular.extend(this, {
         icon: icon,
@@ -25,7 +27,6 @@
 
       Resources.get()
         .then(function(data) {
-
           // get only what we need
           vm.observations = _.filter(data.observations, function(obs) {
             return obs.behaviour && !obs.approved;

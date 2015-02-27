@@ -1,58 +1,126 @@
 (function() {
   'use strict';
-  /* globals angular, _ */
+  /* globals angular, Dexie, pluralize, _ */
 
   angular.module('bidos')
     .service('Outbox', OutboxService);
 
-  function OutboxService($rootScope, $q, CRUD, Cache, Help) {
+  function OutboxService($q, CRUD) {
 
     const VERSION = 1;
-    const DATABASE_NAME = 'bidos_development';
-    const OBJECTSTORE_NAME = 'outbox';
+    const DATABASE_NAME = 'bidos_outbox';
+    const OUTBOX_TABLE = 'outbox';
+
+    let db = new Dexie(DATABASE_NAME);
+
+    init();
 
     return {
-      add: addResource, // add resource to outbox
-      remove: removeResource, // remove resource from outbox
-      push: pushResources // push resources to back end
+      init: init,
+      add: add,
+      get: get,
+      sync: sync,
+      remove: remove
     };
 
-    function addResource(resource) {
 
-      // store the db operation (create, update, destroy) inside of the
-      // resource as well as other stuff we'd like to remember and put the
-      // resource into our outbox IndexedDB
+    function remove(id) {
+      console.time('[outbox] removing successfully pushed outbox item');
 
-      debugger
-
-    }
-
-    function removeResource(resource) {
-
-      debugger
-
-    }
-
-    function pushResources() {
-      if ($rootScope.online) {
-
-        // get resources from database TODO
-        var resources;
-
-        // must store the operation somewhere, to remember what to do with
-        // resources in the outbox TODO
-        var op = resources.op;
-
-        _.each(resources, function(resource) {
-          CRUD[op](resource).then(function(response) {
-            Help.warn('Successfully pushed outbox resource to back end');
-            Cache.add(response);
-          }).catch(function(err) {
-            Help.warn('Failure pushing outbox resource to back end', err);
-          });
-        });
-
+      if (!db.open()) {
+        db.open();
       }
+
+      return $q(function(resolve, reject) {
+        db.on('ready', function() {
+
+          db.table('outbox').delete(id).then(function() {
+            resolve();
+          }).catch(function() {
+            reject();
+          });
+
+          resolve();
+          console.timeEnd('[outbox] removing successfully pushed outbox item');
+        });
+      });
+    }
+
+    function sync() {
+      console.time('[outbox] push outbox items to server');
+
+      // must be opened to read from it
+      // must be closed to write schema
+      if (!db.open()) {
+        db.open();
+      }
+
+      return $q(function(resolve) {
+        db.on('ready', function() {
+
+          _.each(db.outbox.toArray(), function(outboxItem) {
+            CRUD[outboxItem.operation](outboxItem.resource);
+          });
+
+          resolve();
+          console.timeEnd('[cache] push outbox items to server');
+        });
+      });
+    }
+
+    function get() {
+      console.time('[cache] get all data from cache');
+
+      // must be opened to read from it
+      // must be closed to write schema
+      if (!db.open()) {
+        db.open();
+      }
+
+      return $q(function(resolve) {
+        db.on('ready', function() {
+          resolve(db.outbox.toArray());
+          console.timeEnd('[cache] get all data from cache');
+        });
+      });
+    }
+
+    function init() {
+      let schema = {
+        [OUTBOX_TABLE]: '++id, operation, resource, date'
+      };
+
+      db.version(VERSION).stores(schema);
+
+      if (!db.open()) {
+        db.open();
+      }
+
+      console.log('[outbox] outbox initialized');
+    }
+
+    function add(operation, resource) {
+      return $q(function(resolve, reject) {
+        db.transaction('rw', db.outbox, function() {
+
+          db.outbox.add({
+            operation: operation,
+            resource: resource,
+            date: Date()
+          });
+
+        }).then(function() {
+
+          resolve();
+          console.log('[outbox] operation added to outbox');
+
+        }).catch(function() {
+
+          reject();
+
+        });
+      });
+
     }
 
   }

@@ -52,7 +52,7 @@
 				<th ng-click="vm.sortOrder='ideas.length'; reverse=!reverse">Ideen</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in vm.items | filter:vm.viewFilter(query) | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, item)">
+				<tr ng-repeat="item in vm.items track by $index | filter:vm.viewFilter(query) | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, item)">
 					<td> {{ item.id }} </td>
 					<td> {{ item.name }} </td>
 					<td> {{ item.subdomain.name }} </td>

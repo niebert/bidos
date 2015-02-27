@@ -27,7 +27,7 @@
 
 
 		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-			<md-grid-tile ng-repeat="user in vm.users | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, user)" ng-class="{'superuser':user.id==1, 'blocked':!user.approved}" class="bx-tile-{{ user.role }}">
+			<md-grid-tile ng-repeat="user in vm.users track by $index | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, user)" ng-class="{'superuser':user.id==1, 'blocked':!user.approved}" class="bx-tile-{{ user.role }}">
 
 				<md-grid-tile-header>
 					<div layout layout-align="space-between center" layout-fill>

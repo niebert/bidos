@@ -36,7 +36,7 @@
 				<th ng-click="vm.sortOrder='created_at'; reverse=!reverse">erstellt</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="kid in vm.kids | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
+				<tr ng-repeat="kid in vm.kids track by $index | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
 					<td> {{ kid.id }} </td>
 					<td ng-hide="bx.role==2"> {{ kid.name }} </td>
 					<td ng-hide="bx.role==2"> {{ kid.bday | date }} </td>

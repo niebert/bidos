@@ -37,6 +37,8 @@
     onDeviceReady: function() {
       angular.bootstrap(document, ['bidos']);
       app.receivedEvent('deviceready');
+      navigator.splashscreen.hide();
+
     },
 
     // Update DOM on a Received Event

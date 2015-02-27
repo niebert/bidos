@@ -54,7 +54,10 @@
       .pipe(gulp.dest('.'))
       .pipe(uglify())
       .pipe(concat(dist + '/bidos.min.js'))
-      .pipe(sourcemaps.write('.'))
+      .pipe(sourcemaps.write({
+        includeContent: false,
+        sourceRoot: '.'
+      }))
       .pipe(gulp.dest('.'));
   }
 
