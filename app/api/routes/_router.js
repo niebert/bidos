@@ -78,6 +78,11 @@
         this.status = 500;
       } else {
 
+        if (this.request.body.hasOwnProperty('type')) {
+          resourceType = this.request.body.type;
+          delete this.request.body.type;
+        }
+
         var keys = _.keys(this.request.body);
         var values = _.values(this.request.body);
         var indices = Array.apply(0, new Array(keys.length))
