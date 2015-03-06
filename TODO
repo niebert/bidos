@@ -11,7 +11,6 @@
 
 
 CRITICAL
-[offline] offline caching (uh oh... minimal implementieren)
 [capture] fix search/filter bar
 [tables] search by id (fix viewFilter!)
 
@@ -52,6 +51,7 @@ LOW
 [api] use redis for caching and sync redis with indexeddb (?)
 
 DONE
+[offline] offline caching DONE
 [capture] review toolbar is missing FIXED
 [resources] observation.author is missing FIXED
 [auth] passwort reset: after button click redirect doesn't work FIXED

@@ -6,7 +6,8 @@
     'auth',
     'ngMaterial', // material design
     'ngMessages', // form error messages
-    'ui.router'
+    'ui.router',
+    'chart.js'
   ]);
 
   // bidos here

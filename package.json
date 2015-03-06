@@ -4,6 +4,7 @@
   "description": "bidos",
   "main": "server.js",
   "dependencies": {
+    "bluebird": "^2.9.13",
     "chalk": "*",
     "chart.js": "^1.0.1",
     "co-bcrypt": "^1.0.0",
@@ -31,6 +32,7 @@
     "pg": "^4.3.0",
     "pluralize": "^1.1.2",
     "sendgrid": "^1.6.0",
+    "superagent": "^0.21.0",
     "traceur": "0.0.85"
   },
   "devDependencies": {

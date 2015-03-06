@@ -17,3 +17,5 @@ npm-debug.log
 schema.json
 trash
 app/assets/material-design-icons
+app/apk/plugins
+*.tar
