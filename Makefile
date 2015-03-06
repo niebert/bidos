@@ -17,10 +17,15 @@ OS = $(shell uname -s)
 
 # ch
 REMOTE_HOST = 92.51.147.239
-API_PORT_DEVELOPMENT = 3000
-WWW_PORT_DEVELOPMENT = 3001
-API_PORT_PRODUCTION = 3002
-WWW_PORT_PRODUCTION = 3003
+
+API_PORT_PRODUCTION = 3000
+WWW_PORT_PRODUCTION = 3001
+
+API_PORT_DEVELOPMENT = 3002
+WWW_PORT_DEVELOPMENT = 3003
+
+API_PORT_TEST = 3004
+WWW_PORT_TEST = 3005
 
 # db
 DB_SETUP = bin/db_setup.sql
@@ -72,11 +77,15 @@ STYLESHEETS = app/src/**/*.css
 
 ifeq (${NODE_ENV},production)
 	PORT=$(WWW_PORT_PRODUCTION)
-	DATABASE = $(name)_production
+	DATABASE = $(NAME)_production
 	ENVIRONMENT = --production
+else ifeq (${NODE_ENV},test)
+	PORT=$(WWW_PORT_TEST)
+	DATABASE = $(NAME)_test
+	ENVIRONMENT = --test
 else
 	PORT=$(WWW_PORT_DEVELOPMENT)
-	DATABASE = $(name)_development
+	DATABASE = $(NAME)_development
 	ENVIRONMENT = --development
 endif
 
@@ -89,7 +98,7 @@ endif
 # 4. make db: get the database ready
 # 4. make www: run web server that serves app/dist
 # 5. go to http://$(REMOTE_HOST):$(PORT)
-# 6. play with the database: psql bidos_development
+# 6. play with the database: psql $(DATABASE)
 
 default: dist
 deploy: git-deploy
@@ -186,7 +195,7 @@ www:
 	while iojs --harmony bin/www_server.js; do sleep 3; done
 
 run-on-lg:
-  DB_URL=postgres://postgres:liveandgov@localhost/bidos_development PORT=3105 gulp"
+  DB_URL=postgres://postgres:liveandgov@localhost/$(DATABASE) PORT=3105 gulp"
 
 www-simple:
 	NODE_ENV=development iojs --harmony bin/www_server.sh
@@ -197,30 +206,40 @@ api-simple:
 # db: drop database and create new
 dbreset:
 ifeq ($(OS),Darwin)
-	dropdb bidos_development
-	createdb -O $(USER) bidos_development
+	dropdb $(DATABASE)
+	createdb -O $(USER) $(DATABASE)
 else
-	sudo -u postgres dropdb bidos_development
-	sudo -u postgres createdb -O $(USER) bidos_development
+	sudo -u postgres dropdb $(DATABASE)
+	sudo -u postgres createdb -O $(USER) $(DATABASE)
 endif
 
 # db: insert defaults from sql files
 dbinit:
 ifeq ($(OS),Darwin)
 	psql -U bidos -f $(DB_SETUP) $(DATABASE)
-	psql -U bidos -f $(DB_DEFAULTS) $(DATABASE)
-	psql -U bidos -f $(DB_SAMPLES) $(DATABASE)
 else
 	psql -f $(DB_SETUP) $(DATABASE)
+endif
+
+dbdefaults:
+ifeq ($(OS),Darwin)
+	psql -U bidos -f $(DB_DEFAULTS) $(DATABASE)
+else
 	psql -f $(DB_DEFAULTS) $(DATABASE)
+endif
+
+dbsamples:
+ifeq ($(OS),Darwin)
+	psql -U bidos -f $(DB_SAMPLES) $(DATABASE)
+else
 	psql -f $(DB_SAMPLES) $(DATABASE)
 endif
 
 # db: add initial users via curl (for auth) TODO
-dbsetup:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "approved": true }' localhost:$(PORT)/auth/signup | jq '.'
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup | jq '.'
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup | jq '.'
+dbusers:
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "approved": true }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup
+	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
 
 apk-build: cordova-copy
 	echo "building (2/2)"
