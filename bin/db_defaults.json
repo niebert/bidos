@@ -288,11 +288,81 @@
           },
           {
             "type": "item",
-            "name": "Vertreten der eigenen Interessen und Meinungen"
+            "name": "Vertreten der eigenen Interessen und Meinungen",
+            "behaviours": [
+              {
+                "type": "behaviour",
+                "niveau": 1,
+                "text": "äußert die eigene Meinung und die eigenen Interessen",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "„Mir gefällt das Bild.“"
+                  }
+                ]
+              },
+              {
+                "type": "behaviour",
+                "niveau": 2,
+                "text": "erläutert die eigene Meinung und die eigenen Interessen differenziert",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "„Mir gefällt das Bild nicht so gut, weil da so viel blau dabei ist“"
+                  }
+                ]
+              },
+              {
+                "type": "behaviour",
+                "niveau": 3,
+                "text": "erläutert die eigene Meinung und die eigenen Interessen differenziert auch unabhängig von Anderen",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "„Mir gefällt das Bild gar nicht gut, weil da so viel blau dabei ist, auch wenn es Pia gut gefällt.“"
+                  }
+                ]
+              }
+            ]
           },
           {
             "type": "item",
-            "name": "Durchsetzung eigener Interessen"
+            "name": "Durchsetzung eigener Interessen",
+            "behaviours": [
+              {
+                "type": "behaviour",
+                "niveau": 1,
+                "text": "setzt einfache Strategien zur Durchsetzung eigener Interessen ein",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "stellt sich schnell ganz vorne in die Reihe, damit es gleich drankommt."
+                  }
+                ]
+              },
+              {
+                "type": "behaviour",
+                "niveau": 2,
+                "text": "setzt differenzierte Strategien zur Durchsetzung eigener Interessen ein",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "setzt differenzierte Strategien zur Durchsetzung eigener Interessen ein"
+                  }
+                ]
+              },
+              {
+                "type": "behaviour",
+                "niveau": 3,
+                "text": "setzt differenzierte verbale Strategien zur Durchsetzung eigener Interessen ein",
+                "examples": [
+                  {
+                    "type": "example",
+                    "text": "„Ich bin fast nie als erste dran; lass mich bitte heute vor, weil ich doch so lang krank war.“"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
