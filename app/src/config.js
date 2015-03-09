@@ -3,7 +3,7 @@
 
   // CONFIGURE TODO use envify
   var SERVER_IP = '92.51.147.239';
-  var SERVER_PORT = 3002;
+  var SERVER_PORT = 3000;
 
   module.exports = {
 
