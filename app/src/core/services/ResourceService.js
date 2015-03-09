@@ -127,7 +127,8 @@
               Cache.add(resources)
                 .then(function(data) {
                   preparedData = prepare(data);
-                  resolve(preparedData);
+                  // resolve(preparedData); // FIXME ?
+                  resolve(resources); // FIXME ?
                 }).catch(function(err) {
                   reject(err);
                 });
@@ -266,7 +267,7 @@
             return /_id/.test(refKey) && refId; // no null
           });
 
-          if (true /*_.size(refs)*/ ) {
+          if (/*true*/ _.size(refs)) {
             _.each(refs, function(refId, _refKey) {
 
               // TODO compare to refKey.split('_')[0]
@@ -275,12 +276,19 @@
                 id: refId
               })[0];
 
+              // FIXME sometimes ref is not defined because resources are added later(?)
+              if (!ref) { return; } // no no, dont do this (but it works?) FIXME!
+
               // link to ref <3 √
               if (!resource.hasOwnProperty(resource.type)) {
                 Object.defineProperty(resource, ref.type, {
                   get: function() {
                     return ref;
-                  }
+
+                    // Angular will JSON.parse() this at one point ant throw
+                    // circular reference error. So don't do this here (and we
+                    // don't need it at all, I guess).
+                  }, enumerable: false
                 });
               }
 
@@ -297,7 +305,7 @@
                       [ref.type + '_id']: ref.id
                     });
                     return children;
-                  }
+                  }, enumerable: true
                 });
               }
 
@@ -331,7 +339,7 @@
                 .map('examples')
                 .flatten()
                 .value();
-            }
+            }, enumerable: true
           });
         }
 
@@ -342,7 +350,7 @@
                 .map('ideas')
                 .flatten()
                 .value();
-            }
+            }, enumerable: true
           });
         }
 
@@ -357,7 +365,7 @@
               return _.filter(this.item.behaviours, {
                 niveau: this.niveau
               })[0];
-            }
+            }, enumerable: true
           });
         }
       });
@@ -391,7 +399,7 @@
                 }, 0).value()
               ];
               return skill;
-            }
+            }, enumerable: true
           });
         }
 
@@ -406,7 +414,7 @@
                 age--;
               }
               return age;
-            }
+            }, enumerable: true
           });
         }
       });
@@ -418,7 +426,7 @@
           Object.defineProperty(group, 'observations', {
             get: function() {
               return _.chain(group.kids).map('observations').flatten().value();
-            }
+            }, enumerable: true
           });
         }
       });
@@ -438,7 +446,7 @@
                   return d.length;
                 })
                 .value();
-            }
+            }, enumerable: true
           });
         }
       });
@@ -454,7 +462,7 @@
                 .map('kids')
                 .flatten()
                 .value();
-            }
+            }, enumerable: true
           });
         }
         if (!user.hasOwnProperty('roleName')) {
@@ -468,7 +476,7 @@
                 case 2:
                   return 'scientist';
               }
-            }
+            }, enumerable: true
           });
         }
       });
