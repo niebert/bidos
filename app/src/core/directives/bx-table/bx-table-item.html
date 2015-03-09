@@ -12,33 +12,7 @@
 			</md-button>
 		</span>
 	</md-toolbar>
-<!-- 
-	<div layout>
-		<md-input-container flex>
-			<label>Namen filtern</label>
-			<input type="text" ng-model="query.name">
-		</md-input-container>
 
-		<md-input-container flex>
-			<label>ID filtern</label>
-			<input type="text" ng-model="query.id">
-		</md-input-container>
-
-		<md-input-container flex>
-			<span> Institution </span>
-			<select ng-model="query.institution_id" ng-options="institution.id as institution.name for institution in vm.institutions">
-				<option value="saab">--- keine ---</option>
-			</select>
-		</md-input-container>
-
-		<md-input-container flex>
-			<span> Gruppe </span>
-			<select ng-model="user.group_id" ng-options="group.id as group.name for group in vm.groups">
-				<option value="saab">--- keine ---</option>
-			</select>
-		</md-input-container>
-	</div>
- -->
 	<md-content flex class="bx-content">
 		<table style="width: 100%;">
 			<thead>
@@ -46,7 +20,6 @@
 				<th ng-click="vm.sortOrder='name'; reverse=!reverse">Titel</th>
 				<th ng-click="vm.sortOrder='subdomain'; reverse=!reverse">Teilbereich</th>
 				<th ng-click="vm.sortOrder='domain'; reverse=!reverse">Bereich</th>
-				<th ng-click="vm.sortOrder='behaviours.length'; reverse=!reverse">Verhalten</th>
 				<th ng-click="vm.sortOrder='observations.length'; reverse=!reverse">Beobachtungen</th>
 				<th ng-click="vm.sortOrder='examples.length'; reverse=!reverse">Beispiele</th>
 				<th ng-click="vm.sortOrder='ideas.length'; reverse=!reverse">Ideen</th>
@@ -57,7 +30,6 @@
 					<td> {{ item.name }} </td>
 					<td> {{ item.subdomain.name }} </td>
 					<td> {{ item.subdomain.domain.name }} </td>
-					<td> {{ item.behaviours.length || '0' }} </td>
 					<td> {{ item.observations.length || '0' }} </td>
 					<td> {{ item.examples.length }} </td>
 					<td> {{ item.ideas.length }} </td>
