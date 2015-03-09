@@ -36,6 +36,7 @@
     };
 
     postRequest(payload).then(function(response) {
+    console.log(`[${response[0].type} #${response[0].id}] ${response[0].name}`);
       _.each(domain.subdomains, function(subdomain) {
         let payload = {
           name: subdomain.name,
@@ -45,6 +46,7 @@
         payload[response[0].type + '_id'] = response[0].id;
 
         postRequest(payload).then(function(response) {
+          console.log(`[${response[0].type} #${response[0].id}] ${response[0].name}`);
           _.each(subdomain.items, function(item) {
             let payload = {
               name: item.name,
@@ -54,6 +56,7 @@
             payload[response[0].type + '_id'] = response[0].id;
 
             postRequest(payload).then(function(response) {
+              console.log(`[${response[0].type} #${response[0].id}] ${response[0].name}`);
               _.each(item.behaviours, function(behaviour) {
                 let payload = {
                   text: behaviour.text,
@@ -64,6 +67,7 @@
                 payload[response[0].type + '_id'] = response[0].id;
 
                 postRequest(payload).then(function(response) {
+                  console.log(`[${response[0].type} #${response[0].id}] ${response[0].text} (${response[0].niveau})`);
                   _.each(behaviour.examples, function(example) {
                     let payload = {
                       text: example.text,
@@ -72,7 +76,9 @@
 
                     payload[response[0].type + '_id'] = response[0].id;
 
-                    postRequest(payload);
+                    postRequest(payload).then(function(response) {
+                      console.log(`[${response[0].type} #${response[0].id}] ${response[0].text}`);
+                    });
 
                   });
                 });
