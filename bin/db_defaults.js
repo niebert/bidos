@@ -7,7 +7,12 @@
   let request = require('superagent');
   let domains = require('./db_defaults.json');
 
-  const API = 'localhost:3002/v1';
+	if (!process.env.API) {
+		console.error('specify API env, e.g. API=92.51.147.239:3000');
+		process.exit(1);
+	}
+
+  const API = process.env.API;
 
   function postRequest(payload) {
     return new Promise(function(resolve, reject) {
