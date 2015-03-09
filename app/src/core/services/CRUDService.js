@@ -41,12 +41,13 @@
       // server side and the ones that do not. alternatively we could just
       // sent the whole thing to the api and let it weed out these things.
 
-      var type = resource.type;
-      delete resource.type;
+      if (!resource.type) {
+        debugger
+      }
 
-      var url = [config.app.API, config.app.RESOURCE_PATH, type].join('/');
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
 
-      if (type === 'user') {
+      if (resource.type === 'user') {
         resource.username = resource.email.split('@')[0];
       }
 
@@ -65,10 +66,11 @@
 
     function updateResource(resource) {
 
-      var type = resource.type;
-      delete resource.type;
+      if (!resource.type) {
+        debugger
+      }
 
-      var url = [config.app.API, config.app.RESOURCE_PATH, type, resource.id].join('/');
+      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
       return $q(function(resolve, reject) {
         $http.patch(url, resource)
           .success(function(response) {
