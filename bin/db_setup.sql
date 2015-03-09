@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS ideas (
 CREATE TABLE IF NOT EXISTS observations (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
+  user_id           INT REFERENCES users(id),
   item_id           INT REFERENCES items(id),
   kid_id            INT REFERENCES kids(id),
   niveau            INT,
