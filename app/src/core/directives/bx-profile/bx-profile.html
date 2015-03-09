@@ -41,6 +41,14 @@
 			</li>
 		</ol>
 
+		<h2>Eigene Notizen <small ng-click="vm.addNote()" class="bx-sync">neu</small></h2>
+		<ol>
+			<li ng-repeat="note in vm.notes" ng-click="vm.dialog($event, note)">
+				<strong>{{ note.created_at | date }}</strong> {{ note.text }} <br>
+				<span ng-click="vm.deleteNote(note)">löschen</span>
+			</li>
+		</ol>
+
 	</md-content>
 </div>
 

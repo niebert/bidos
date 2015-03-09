@@ -70,6 +70,11 @@
       text: 'SELECT * FROM authors'
     });
 
+    var note = yield this.pg.db.client.query_({
+      name: 'getAllnotes',
+      text: 'SELECT * FROM notes'
+    });
+
     // NOTE: things are getting pluralized here
 
     var resources = {
@@ -82,6 +87,7 @@
       institutions: institution.rows,
       items: item.rows,
       kids: kid.rows,
+      notes: note.rows,
       observations: observation.rows,
       subdomains: subdomain.rows,
       users: user.rows,

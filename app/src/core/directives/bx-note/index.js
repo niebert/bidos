@@ -1,6 +1,6 @@
 (function() {
   'use strict';
 
-  require('./bx-dialog');
+  require('./bx-note.js');
 
 }());

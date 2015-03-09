@@ -19,6 +19,6 @@
   require('./bx-preferences'); // "personal configuration", same same
 
   // other things
-  require('./bx-dialog');
+  require('./bx-note');
 
 }());

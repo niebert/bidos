@@ -147,6 +147,16 @@ CREATE TABLE IF NOT EXISTS observations (
 );
 
 
+CREATE TABLE IF NOT EXISTS notes (
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  user_id           INT REFERENCES users(id),
+  text              TEXT NOT NULL,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
 

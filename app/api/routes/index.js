@@ -24,7 +24,8 @@
     'kid',
     'observation',
     'subdomain',
-    'user'
+    'user',
+    'note'
   ];
 
   if (routesAreEmpty()) {
