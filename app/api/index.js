@@ -8,7 +8,7 @@
   var _ = require('lodash');
   var chalk = require('chalk');
   var bunyan = require('bunyan');
-  var columnify = require('columnify');
+  // var columnify = require('columnify');
 
   var koa = require('koa');
   var pg = require('koa-pg');
@@ -102,7 +102,7 @@
 
   // main
   var listen = function(port) {
-    console.log(chalk.red('>> api accessible on port ' + (port || config.app.port)));
+    console.log(chalk.red.bold(`[${new Date().toLocaleTimeString()}] `) + chalk.red('API running on localhost:' + (port || config.app.port)) + ' (' + process.env.NODE_ENV.toUpperCase() + ')');
     app.listen(port || config.app.port);
   };
 
@@ -115,22 +115,22 @@
     });
   }
 
-  function logRoutes(routes, mountPoint, name) {
-    console.log('\n' + chalk.cyan('>> ' + name + ' routes'));
-    console.log(columnify(_.map(routes, function(d, i) {
-      return {
-        'PATH': mountPoint + i,
-        'request method': _(d.methods)
-          .map()
-          .tail()
-          .join(' ')
-      };
-    }), {
-      columnSplitter: ' | '
-    }));
-  }
+  // function logRoutes(routes, mountPoint, name) {
+  //   console.log('\n' + chalk.cyan('>> ' + name + ' routes'));
+  //   console.log(columnify(_.map(routes, function(d, i) {
+  //     return {
+  //       'PATH': mountPoint + i,
+  //       'request method': _(d.methods)
+  //         .map()
+  //         .tail()
+  //         .join(' ')
+  //     };
+  //   }), {
+  //     columnSplitter: ' | '
+  //   }));
+  // }
 
-  logRoutes(routes.public, '/', 'public');
-  logRoutes(routes.private, '/v1/', 'private');
+  // logRoutes(routes.public, '/', 'public');
+  // logRoutes(routes.private, '/v1/', 'private');
 
 }());

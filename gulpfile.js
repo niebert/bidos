@@ -9,11 +9,13 @@
   var sass = require('gulp-ruby-sass');
   var traceur = require('gulp-traceur');
   var browserify = require('browserify');
+  var nodemon = require('gulp-nodemon');
   var minify = require('gulp-minify-css');
   var prefix = require('gulp-autoprefixer');
   var transform = require('vinyl-transform');
   var sourcemaps = require('gulp-sourcemaps');
   var ngAnnotate = require('gulp-ng-annotate');
+  var shell = require('gulp-shell')
 
   var src = 'app/src';
   var dist = 'app/dist';
@@ -23,17 +25,23 @@
 
   gulp.task('css', css);
   gulp.task('watch', watch);
-  gulp.task('js', ['build-js-app', 'build-js-vendor']);
+  gulp.task('js', ['js-app', 'js-vendor']);
   gulp.task('build', ['css', 'js']);
+  gulp.task('serve', ['serve-api', 'serve-www']);
   gulp.task('apk', ['build', 'copyFilesToCordova', 'copyTemplatesToCordova']);
-  gulp.task('development', ['build', 'watch', 'api', 'www']);
+  gulp.task('development', ['css', 'js', 'serve']);
   gulp.task('production', ['build', 'api']);
   gulp.task('default', ['development']);
 
+  gulp.task('manifest', shell.task([
+    'bin/manifest.sh > app/dist/manifest.appcache'
+  ]))
+
   function watch() {
     gulp.watch(src + '/**/*.js', ['js']);
-    gulp.watch(src + '/app.scss', ['css']);
+    gulp.watch(src + '/**/*.scss', ['css']);
     gulp.watch(src + '/**/*.html', ['templates']);
+    gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
   }
 
   function jsApp() {
@@ -102,4 +110,29 @@
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(dist));
   }
+
+  gulp.task('serve-api', function() {
+    nodemon({
+        script: 'app/api/index.js',
+        watch: ['app/api'],
+        env: {
+          NODE_ENV: process.env.NODE_ENV || 'development'
+        },
+        nodeArgs: ['--harmony']
+      })
+      .on('change', []);
+  });
+
+  gulp.task('serve-www', function() {
+    nodemon({
+        script: 'bin/www_server.js',
+        watch: ['bin/www_server.js'],
+        env: {
+          NODE_ENV: process.env.NODE_ENV || 'development'
+        },
+        nodeArgs: ['--harmony']
+      })
+      .on('change', []);
+  });
+
 }());

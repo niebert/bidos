@@ -132,7 +132,7 @@ dist-light: js css templates manifest
 	@echo "`DATE` $(OK_COLOR) done $(NO_COLOR)"
 
 # things are served from here
-dist: clean js css templates manifest cordova img icons
+dist: clean js css templates img icons manifest
 	@echo "done"
 	@osascript -e 'display notification "done" with title "Title"'
 
