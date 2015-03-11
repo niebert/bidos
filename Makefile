@@ -27,11 +27,6 @@ WWW_PORT_DEVELOPMENT = 3003
 API_PORT_TEST = 3004
 WWW_PORT_TEST = 3005
 
-# db
-DB_SETUP = bin/db_setup.sql
-DB_DEFAULTS = bin/db_defaults.sql
-DB_SAMPLES = bin/db_samples.sql
-
 # pwd
 BASE_DIR = .
 
@@ -103,7 +98,6 @@ endif
 default: dist
 deploy: git-deploy
 install: npm bower
-db: dbreset dbinit dbsetup
 js: js-app
 
 # --------------------------------------------------------------------------------------------------
@@ -202,44 +196,6 @@ www-simple:
 
 api-simple:
 	NODE_ENV=development iojs --harmony app/api
-
-# db: drop database and create new
-dbreset:
-ifeq ($(OS),Darwin)
-	dropdb $(DATABASE)
-	createdb -O $(USER) $(DATABASE)
-else
-	sudo -u postgres dropdb $(DATABASE)
-	sudo -u postgres createdb -O $(USER) $(DATABASE)
-endif
-
-# db: insert defaults from sql files
-dbinit:
-ifeq ($(OS),Darwin)
-	psql -U bidos -f $(DB_SETUP) $(DATABASE)
-else
-	psql -f $(DB_SETUP) $(DATABASE)
-endif
-
-dbdefaults:
-ifeq ($(OS),Darwin)
-	psql -U bidos -f $(DB_DEFAULTS) $(DATABASE)
-else
-	psql -f $(DB_DEFAULTS) $(DATABASE)
-endif
-
-dbsamples:
-ifeq ($(OS),Darwin)
-	psql -U bidos -f $(DB_SAMPLES) $(DATABASE)
-else
-	psql -f $(DB_SAMPLES) $(DATABASE)
-endif
-
-# db: add initial users via curl (for auth) TODO
-dbusers:
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "approved": true }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 1, "name": "René Wilhelm", "email": "rene.wilhelm@gmail.com", "password": "123", "group_id": 7 }' localhost:$(PORT)/auth/signup
-	@curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 2, "name": "Hans Jonas", "email": "hjonasd@uni-freiburg.de", "password": "123" }' localhost:$(PORT)/auth/signup
 
 apk-build: cordova-copy
 	echo "building (2/2)"
