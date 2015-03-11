@@ -7,9 +7,8 @@
 
   var _ = require('lodash');
   var chalk = require('chalk');
-  // var columnify = require('columnify');
 
-  var koa = require('koa');
+  var app = require('koa')();
   var pg = require('koa-pg');
   var jwt = require('koa-jwt');
   var cors = require('koa-cors');
@@ -19,7 +18,6 @@
   var validate = require('koa-validate');
   var bodyparser = require('koa-bodyparser');
 
-  var app = koa();
   // catch authorization failure and custom 401 handling to hide koa-jwt
   // errors from users: instantly moves on to the next middleware and handles
   // eventually thrown errors.
@@ -37,10 +35,6 @@
     }
   }
 
-  app.use(cors({
-    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
-  }));
   // catches database error
   function* db(next) {
     try {
@@ -55,24 +49,34 @@
     }
   }
 
-  app.use(bodyparser());
+  function mountRoutes(_routes, mountPoint) {
+    _.each(_routes, function(d, i) {
+      app.use(mount(mountPoint + i, d.middleware()));
+    });
+  }
+
   app.use(compress());
   app.use(validate());
+  app.use(bodyparser());
 
   app.use(require('./logger')());
   if (require.main === module) {
     app.use(logger());
   }
 
-  // mount public routes
-  mountRoutes(routes.public, '/');
-	console.log(routes.public);
+  // inject cors headers
+  app.use(cors({
+    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
+  }));
 
   // connect to database
   app.use(function*(next) {
     yield db.call(this, pg(config.db.postgres.url).call(this, next));
   });
 
+  // mount public routes
+  mountRoutes(routes.public, '/');
 
   // routes below the next loc are only accessible to authenticated clients.
   // if the authorization succeeds, next is yielded and the following routes
@@ -89,34 +93,9 @@
 
   // main
   var listen = function(port) {
-    console.log(chalk.red.bold(`[${new Date().toLocaleTimeString()}] `) + chalk.red('API running on localhost:' + (port || config.app.port)) + ' (' + process.env.NODE_ENV.toUpperCase() + ')');
     app.listen(port || config.app.port);
+    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API running on localhost:${chalk.green(port || config.app.port)} (${process.env.NODE_ENV.toUpperCase()})`);
   };
-
-
-  function mountRoutes(_routes, mountPoint) {
-    _.each(_routes, function(d, i) {
-      app.use(mount(mountPoint + i, d.middleware()));
-    });
-  }
-
-  // function logRoutes(routes, mountPoint, name) {
-  //   console.log('\n' + chalk.cyan('>> ' + name + ' routes'));
-  //   console.log(columnify(_.map(routes, function(d, i) {
-  //     return {
-  //       'PATH': mountPoint + i,
-  //       'request method': _(d.methods)
-  //         .map()
-  //         .tail()
-  //         .join(' ')
-  //     };
-  //   }), {
-  //     columnSplitter: ' | '
-  //   }));
-  // }
-
-  // logRoutes(routes.public, '/', 'public');
-  // logRoutes(routes.private, '/v1/', 'private');
 
   module.parent ? module.exports = exports = listen : listen();
 }());
