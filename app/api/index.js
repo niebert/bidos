@@ -7,7 +7,6 @@
 
   var _ = require('lodash');
   var chalk = require('chalk');
-  var bunyan = require('bunyan');
   // var columnify = require('columnify');
 
   var koa = require('koa');
@@ -31,6 +30,7 @@
   app.use(compress());
   app.use(validate());
 
+  app.use(require('./logger')());
   if (require.main === module) {
     app.use(logger());
   }
@@ -43,34 +43,7 @@
 	console.log(routes.public);
 
   app.use(function*(next) {
-    debugger
-    this.log = bunyan.createLogger({
-      name: 'bidos',
-      streams: [{
-        level: 'error',
-        path: 'log/development.log',
-      }, {
-        level: 'warn',
-        path: 'log/development.log',
-      }, {
-        level: 'info',
-        path: 'log/development.log',
-      }, {
-        level: 'debug',
-        path: 'log/development.log',
-      }],
-    });
-
-    this.log.info({
-      headers: this.headers,
-      request: {
-        ip: this.request.ip,
-        body: this.request.body,
-        method: this.request.method
-      }
-    });
-
-    yield next;
+    yield db.call(this, pg(config.db.postgres.url).call(this, next));
   });
 
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
