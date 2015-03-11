@@ -20,35 +20,10 @@
   var bodyparser = require('koa-bodyparser');
 
   var app = koa();
-
-  app.use(cors({
-    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
-  }));
-
-  app.use(bodyparser());
-  app.use(compress());
-  app.use(validate());
-
-  app.use(require('./logger')());
-  if (require.main === module) {
-    app.use(logger());
-  }
-
-  // connect to database (TODO check if postgres is running!)
-  app.use(pg(config.db.postgres.url));
-
-  // mount public routes
-  mountRoutes(routes.public, '/');
-	console.log(routes.public);
-
-  app.use(function*(next) {
-    yield db.call(this, pg(config.db.postgres.url).call(this, next));
-  });
-
-  // custom 401 handling to hide koa-jwt errors from users: instantly moves on
-  // to the next middleware and returns here, if that fails.
-  app.use(function*(next) {
+  // catch authorization failure and custom 401 handling to hide koa-jwt
+  // errors from users: instantly moves on to the next middleware and handles
+  // eventually thrown errors.
+  function* auth(next) {
     try {
       yield next; // -> jwt authorization
     } catch (err) {
@@ -60,14 +35,54 @@
         throw err;
       }
     }
+  }
+
+  app.use(cors({
+    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
+  }));
+  // catches database error
+  function* db(next) {
+    try {
+      yield next;
+    } catch (err) {
+      if ('ECONNREFUSED' === err.code) {
+        this.log.error('Database offline');
+      } else {
+        this.log.error('Database error');
+      }
+      this.throw(err);
+    }
+  }
+
+  app.use(bodyparser());
+  app.use(compress());
+  app.use(validate());
+
+  app.use(require('./logger')());
+  if (require.main === module) {
+    app.use(logger());
+  }
+
+  // mount public routes
+  mountRoutes(routes.public, '/');
+	console.log(routes.public);
+
+  // connect to database
+  app.use(function*(next) {
+    yield db.call(this, pg(config.db.postgres.url).call(this, next));
   });
+
 
   // routes below the next loc are only accessible to authenticated clients.
   // if the authorization succeeds, next is yielded and the following routes
   // are reached. if it fails, it throws and the previous middleware will catch
   // that error and send back status 401 and redirect to /login.
-
-  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
+  app.use(function*(next) {
+    yield auth.call(this, jwt({
+      secret: config.secret.key
+    }).call(this, next));
+  });
 
   // secured routes
   mountRoutes(routes.private, '/v1/');
