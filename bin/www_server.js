@@ -44,6 +44,5 @@
     app.listen(port);
   };
 
-  /*jshint -W030 */
-  require.main === module ? listen() : module.exports = exports = listen;
+  module.parent ? module.exports = exports = listen : listen();
 }());

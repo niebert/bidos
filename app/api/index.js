@@ -93,8 +93,6 @@
     app.listen(port || config.app.port);
   };
 
-  /*jshint -W030 */
-  require.main === module ? listen() : module.exports = exports = listen;
 
   function mountRoutes(_routes, mountPoint) {
     _.each(_routes, function(d, i) {
@@ -120,4 +118,5 @@
   // logRoutes(routes.public, '/', 'public');
   // logRoutes(routes.private, '/v1/', 'private');
 
+  module.parent ? module.exports = exports = listen : listen();
 }());
