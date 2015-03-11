@@ -305,7 +305,7 @@
                       [ref.type + '_id']: ref.id
                     });
                     return children;
-                  }, enumerable: true
+                  }, enumerable: false
                 });
               }
 
@@ -339,7 +339,7 @@
                 .map('examples')
                 .flatten()
                 .value();
-            }, enumerable: true
+            }, enumerable: false
           });
         }
 
@@ -350,7 +350,7 @@
                 .map('ideas')
                 .flatten()
                 .value();
-            }, enumerable: true
+            }, enumerable: false
           });
         }
 
@@ -365,7 +365,7 @@
               return _.filter(this.item.behaviours, {
                 niveau: this.niveau
               })[0];
-            }, enumerable: true
+            }, enumerable: false
           });
         }
       });
@@ -399,7 +399,7 @@
                 }, 0).value()
               ];
               return skill;
-            }, enumerable: true
+            }, enumerable: false
           });
         }
 
@@ -414,7 +414,7 @@
                 age--;
               }
               return age;
-            }, enumerable: true
+            }, enumerable: false
           });
         }
       });
@@ -426,14 +426,13 @@
           Object.defineProperty(group, 'observations', {
             get: function() {
               return _.chain(group.kids).map('observations').flatten().value();
-            }, enumerable: true
+            }, enumerable: false
           });
         }
       });
     }
 
     function addInstitutionHandlers(data) {
-
       _.each(data.institutions, function(institution) {
         if (!institution.hasOwnProperty('observations')) {
           Object.defineProperty(institution, 'observations', {
@@ -446,14 +445,13 @@
                   return d.length;
                 })
                 .value();
-            }, enumerable: true
+            }, enumerable: false
           });
         }
       });
     }
 
     function addUserHandlers(data) {
-
       _.each(data.users, function(user) {
         if (!user.hasOwnProperty('kids')) {
           Object.defineProperty(user, 'kids', {
@@ -462,7 +460,7 @@
                 .map('kids')
                 .flatten()
                 .value();
-            }, enumerable: true
+            }, enumerable: false
           });
         }
         if (!user.hasOwnProperty('roleName')) {
@@ -476,7 +474,7 @@
                 case 2:
                   return 'scientist';
               }
-            }, enumerable: true
+            }, enumerable: false
           });
         }
       });
