@@ -38,6 +38,12 @@
           vm.resources = resources;
           vm.me = getUser(resources);
 
+          vm.tiles = {};
+          vm.tiles.resources = _.chain(resources).keys().map(function(key) {
+            return new ResourceTile(key)
+          }).value()
+          debugger
+
           // the user should get only the resources he's allowed to get, e.g.
           // anonymized stuff for scientists
           var blob = new Blob([JSON.stringify(resources)], {
@@ -85,6 +91,24 @@
         return _.includes(tile.roles, vm.me.roleName);
       }
 
+      function ResourceTile(type) {
+        type = type.slice(0,-1);
+        return {
+          footer: type,
+          tooltip: '',
+          description: '',
+          icon: '',
+          roles: ['admin', 'practitioner', 'scientist'],
+          onClick: function() {
+            return $state.go('bx.table', {
+              type: type
+            });
+          },
+          colSpan: [0, 0, 0],
+          rowSpan: [0, 0, 0]
+        }
+      }
+
       vm.menu = [{
         footer: 'Profil',
         tooltip: 'Persönliches Profil',
@@ -128,84 +152,6 @@
         roles: ['admin', 'practitioner'],
         onClick: function() {
           return $state.go('bx.portfolio');
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Beobachtungen',
-        tooltip: 'Beobachtungen ansehen',
-        description: '',
-        icon: '/img/ic_assignment_turned_in_48px.svg',
-        roles: ['admin', 'practitioner'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'observation'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Kinder',
-        tooltip: 'Kinder verwalten',
-        description: '',
-        icon: '/img/ic_account_child_48px.svg',
-        roles: ['admin', 'practitioner', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'kid'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Gruppen',
-        tooltip: 'Gruppen verwalten',
-        description: '',
-        icon: '/img/ic_group_work_48px.svg',
-        roles: ['admin', 'practitioner'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'group'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Benutzer',
-        tooltip: 'Benutzer verwalten',
-        description: '',
-        icon: '/img/ic_account_circle_48px.svg',
-        roles: ['admin'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'user'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Bausteine',
-        tooltip: 'Bausteine verwalten: Bereiche, Teilbereiche, Verhalten, Beispiele',
-        description: '',
-        icon: '/img/ic_extension_48px.svg',
-        roles: ['admin', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'item'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Institutionen',
-        tooltip: 'Resource \"Institution\" verwalten',
-        description: '',
-        icon: '/img/ic_business_48px.svg',
-        roles: ['admin', 'practitioner'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'institution'
-          });
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
