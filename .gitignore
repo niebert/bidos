@@ -19,3 +19,7 @@ trash
 app/assets/material-design-icons
 app/apk/plugins
 *.tar
+
+*.log
+
+dist-files
