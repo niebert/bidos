@@ -9,9 +9,9 @@
   var faker = require('faker');
 
   module.exports = exports = new Router()
-    .get('faker', '/fake/:resource', faker);
+    .get('fake', '/fake/:resource', createFakeResource);
 
-  function* faker() {
+  function* createFakeResource() {
 
     this.log.info('faker test');
 
