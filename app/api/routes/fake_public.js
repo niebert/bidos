@@ -8,15 +8,16 @@
 
   var faker = require('faker');
 
+  var request = require('superagent');
+
   module.exports = exports = new Router()
-    .get('fake', '/fake/:resource', createFakeResource);
+    .get('/:resource', createFakeResource);
 
   function* createFakeResource() {
 
     this.log.info('faker test');
 
-    var test =
-      yield request
+    request
       .post('/api/pet')
       .send({
         name: 'Manny',
@@ -25,10 +26,13 @@
       .set('X-API-Key', 'foobar')
       .set('Accept', 'application/json')
       .end(function(err, res) {
+        if (err) {
+          this.log.error(err);
+        } else {
+          this.log.info(res);
+        }
+      }.bind(this));
 
-      });
-
-    this.body = test;
   }
 
 }());
