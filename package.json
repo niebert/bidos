@@ -12,6 +12,7 @@
     "co-crypto": "^0.9.1",
     "columnify": "^1.4.1",
     "diacritics": "^1.2.1",
+    "faker": "^2.1.2",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.1.0",
     "gulp-concat": "^2.5.2",
