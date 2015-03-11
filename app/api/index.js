@@ -7,6 +7,7 @@
 
   var _ = require('lodash');
   var chalk = require('chalk');
+  var bunyan = require('bunyan');
   var columnify = require('columnify');
 
   var koa = require('koa');
@@ -40,6 +41,37 @@
   // mount public routes
   mountRoutes(routes.public, '/');
 
+  app.use(function*(next) {
+    debugger
+    this.log = bunyan.createLogger({
+      name: 'bidos',
+      streams: [{
+        level: 'error',
+        path: 'log/development.log',
+      }, {
+        level: 'warn',
+        path: 'log/development.log',
+      }, {
+        level: 'info',
+        path: 'log/development.log',
+      }, {
+        level: 'debug',
+        path: 'log/development.log',
+      }],
+    });
+
+    this.log.info({
+      headers: this.headers,
+      request: {
+        ip: this.request.ip,
+        body: this.request.body,
+        method: this.request.method
+      }
+    });
+
+    yield next;
+  });
+
   // custom 401 handling to hide koa-jwt errors from users: instantly moves on
   // to the next middleware and returns here, if that fails.
   app.use(function*(next) {
@@ -49,7 +81,7 @@
       if (401 === err.status) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
-        console.log('user is not authenticated');
+        this.log.warn('user is not authenticated');
       } else {
         throw err;
       }
@@ -61,7 +93,9 @@
   // are reached. if it fails, it throws and the previous middleware will catch
   // that error and send back status 401 and redirect to /login.
 
-  app.use(jwt({ secret: config.secret.key })); // <-- decrypts
+  app.use(jwt({
+    secret: config.secret.key
+  })); // <-- decrypts
 
   // secured routes
   mountRoutes(routes.private, '/v1/');
