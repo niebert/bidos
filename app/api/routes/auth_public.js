@@ -369,17 +369,13 @@
             return '$' + (i + 1);
           }); // <3
 
-        var query = {
-          name: 'create_' + resourceType,
-          text: 'INSERT INTO ' + resourceType + 's (' + keys + ') VALUES (' + indices + ') RETURNING *',
-          values: values
-        };
+        var query = 'INSERT INTO ' + resourceType + 's (' + keys + ') VALUES (' + indices + ') RETURNING *';
 
         console.log(query);
 
         try {
           var result =
-            yield this.pg.db.client.query_(query);
+            yield this.pg.db.client.query_(query, values);
 
           _.each(result.rows, function(r) {
             r.type = resourceType;
