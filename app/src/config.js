@@ -1,15 +1,28 @@
 (function() {
   'use strict';
 
-  // CONFIGURE TODO use envify
-  var SERVER_IP = '92.51.147.239';
-  var SERVER_PORT = 3000;
+  var config = {
+    development: {
+      api: {
+        address: process.env.API || 'localhost',
+        port: process.env.PORT || 3000
+      }
+    },
+    production: {
+      api: {
+        address: process.env.API || '92.51.147.239',
+        port: process.env.PORT || 3002
+      }
+    }
+  }
+
+  var c = config[process.env.NODE_ENV];
 
   module.exports = {
 
     // app config
     app: {
-      API: 'http://' + SERVER_IP + ':' + SERVER_PORT,
+      API: `${c.api.address}:${c.api.port}`,
       RESOURCE_PATH: 'v1',
       DEFAULT_RESOURCE: 'resources/vanilla',
       TOKEN_KEY: 'auth_token'

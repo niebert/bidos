@@ -15,7 +15,7 @@
   var cors = require('koa-cors');
   app.use(cors());
 
-  var PORT = process.env.PORT || 3001;
+  var PORT = process.env.PORT || 3003;
   var DIST_DIR = path.join(__dirname, '../app/dist');
   var BOWER_DIR = path.join(__dirname, '../bower_components');
 

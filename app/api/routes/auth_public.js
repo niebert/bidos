@@ -3,16 +3,16 @@
 (function() {
   'use strict';
 
-var SERVER_URL = 'http://92.51.147.239:3001';
+  var config = require('../config');
+  var secret = config.secret.key;
 
   var _ = require('lodash'),
     jwt = require('koa-jwt'),
-    secret = require('../config')[process.env.NODE_ENV].secret.key,
     Router = require('koa-router'),
     user;
 
-  var sendgrid = require("sendgrid")('bidos', 'COEvNvaCcIkgOdDELr5gS');
 
+  var sendgrid = require('sendgrid')(config.app.name, config.sendgrid.key);
   var crypto = require('co-crypto');
 
   var removeDiacritics = require('diacritics')
