@@ -3,100 +3,63 @@
 
   var gulp = require('gulp');
   var gutil = require('gulp-util');
-  var uglify = require('gulp-uglify');
   var concat = require('gulp-concat');
+  var minify = require('gulp-minify-css');
+  var ngAnnotate = require('gulp-ng-annotate');
+  var sourcemaps = require('gulp-sourcemaps');
+  var prefix = require('gulp-autoprefixer');
+  var nodemon = require('gulp-nodemon');
+  var traceur = require('gulp-traceur');
   var rename = require('gulp-rename');
   var sass = require('gulp-ruby-sass');
-  var traceur = require('gulp-traceur');
-  var browserify = require('browserify');
-  var nodemon = require('gulp-nodemon');
-  var minify = require('gulp-minify-css');
-  var prefix = require('gulp-autoprefixer');
-  var transform = require('vinyl-transform');
-  var sourcemaps = require('gulp-sourcemaps');
-  var ngAnnotate = require('gulp-ng-annotate');
+  var uglify = require('gulp-uglify');
   var shell = require('gulp-shell')
 
-  var src = 'app/src';
-  var dist = 'app/dist';
+  var envify = require('envify');
+  var watchify = require('watchify');
+  var reactify = require('reactify');
+  var browserify = require('browserify');
 
-  gulp.task('js-app', jsApp);
-  gulp.task('js-vendor', jsVendor);
+  var source = require('vinyl-source-stream');
+  var transform = require('vinyl-transform');
+  var buffer = require('vinyl-buffer');
 
-  gulp.task('css', css);
-  gulp.task('watch', watch);
-  gulp.task('js', ['js-app', 'js-vendor']);
-  gulp.task('build', ['css', 'js']);
-  gulp.task('serve', ['serve-api', 'serve-www']);
-  gulp.task('apk', ['build', 'copyFilesToCordova', 'copyTemplatesToCordova']);
-  gulp.task('development', ['css', 'js', 'serve']);
-  gulp.task('production', ['build', 'api']);
-  gulp.task('default', ['development']);
+  var dist = './app/dist';
+  var src = './app/src';
 
-  gulp.task('manifest', shell.task([
-    'bin/manifest.sh > app/dist/manifest.appcache'
-  ]))
+  var bundler = watchify(browserify(src, watchify.args)); // src -> index.js
 
-  function watch() {
-    gulp.watch(src + '/**/*.js', ['js']);
-    gulp.watch(src + '/**/*.scss', ['css']);
-    gulp.watch(src + '/**/*.html', ['templates']);
-    gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
-  }
+  bundler.on('update', bundle);
+  bundler.on('log', gutil.log);
+  bundler
+    .transform('brfs')
+    .transform('envify')
+    .transform('reactify');
 
-  function jsApp() {
-    var browserified = transform(function(filename) {
-      var b = browserify(filename);
-      return b.bundle();
-    });
-
-    return gulp.src(src + '/app.js') // browserify entry point
+  function bundle() {
+    return bundler.bundle()
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+      .pipe(source('bidos.js'))
+      .pipe(buffer())
       .pipe(sourcemaps.init({
-        loadMaps: true // loads map from browserify file
+        loadMaps: true
       }))
-      .pipe(browserified)
       .pipe(ngAnnotate())
       .pipe(traceur())
-      .pipe(rename(dist + '/bidos.js'))
-      .pipe(gulp.dest('.'))
+      .pipe(gulp.dest('app/dist/'))
       .pipe(uglify())
-      .pipe(concat(dist + '/bidos.min.js'))
-      .pipe(sourcemaps.write({
-        includeContent: false,
-        sourceRoot: '.'
-      }))
-      .pipe(gulp.dest('.'));
+      .pipe(rename('bidos.min.js'))
+      .pipe(sourcemaps.write('./'), {
+        includeContent: false
+      })
+      .pipe(gulp.dest('app/dist/'));
   }
 
-  function jsVendor() {
-    var browserified = transform(function(filename) {
-      var b = browserify(filename);
-      return b.bundle();
-    });
+  gulp.task('js', bundle);
 
-    return gulp.src(src + '/lib.js') // browserify entry point
-      .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(sourcemaps.init({
-        loadMaps: true // loads map from browserify file
-      }))
-      .pipe(browserified)
-      // .pipe(ngAnnotate())
-      // .pipe(traceur())
-      .pipe(rename(dist + '/vendor.js'))
-      .pipe(gulp.dest('.'))
-      .pipe(uglify())
-      .pipe(concat(dist + '/vendor.min.js'))
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest('.'));
-  }
-
-  function css() {
+  gulp.task('css', function() {
     return sass(src + '/app.scss') // sass entry point
       .on('error', gutil.log.bind(gutil, 'Sass Error'))
-      .on('error', function(err) {
-        console.error(err.message);
-      })
       .pipe(prefix(['last 2 version', '> 1%', 'ie 8', 'ie 7'], {
         cascade: true
       }))
@@ -109,12 +72,12 @@
       .pipe(concat('bidos.min.css'))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(dist));
-  }
+  });
 
-  gulp.task('serve-api', function() {
+  gulp.task('api', function() {
     nodemon({
         script: 'app/api/index.js',
-        watch: ['app/api'],
+        watch: ['app/api/**/*'],
         env: {
           NODE_ENV: process.env.NODE_ENV || 'development'
         },
@@ -123,7 +86,7 @@
       .on('change', []);
   });
 
-  gulp.task('serve-www', function() {
+  gulp.task('www', function() {
     nodemon({
         script: 'bin/www_server.js',
         watch: ['bin/www_server.js'],
@@ -134,5 +97,19 @@
       })
       .on('change', []);
   });
+
+  gulp.task('watch', function() {
+    gulp.watch(src + '/**/*.js', ['js']);
+    gulp.watch(src + '/**/*.scss', ['css']);
+    gulp.watch(src + '/**/*.html', ['templates']);
+    gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
+  });
+
+  gulp.task('manifest', shell.task([
+    'bin/manifest.sh > app/dist/manifest.appcache'
+  ]))
+
+  // --
+  gulp.task('default', ['css', 'js', 'watch', 'www']);
 
 }());
