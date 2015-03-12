@@ -5,13 +5,13 @@
     development: {
       api: {
         address: process.env.API || 'localhost',
-        port: process.env.PORT || 3000
+        port: process.env.PORT || 3002
       }
     },
     production: {
       api: {
         address: process.env.API || '92.51.147.239',
-        port: process.env.PORT || 3002
+        port: process.env.PORT || 3000
       }
     }
   }
@@ -22,7 +22,7 @@
 
     // app config
     app: {
-      API: `${c.api.address}:${c.api.port}`,
+      API: `http://${c.api.address}:${c.api.port}`,
       RESOURCE_PATH: 'v1',
       DEFAULT_RESOURCE: 'resources/vanilla',
       TOKEN_KEY: 'auth_token'

@@ -4,8 +4,8 @@
 
   var app = angular.module('bidos', [
     'auth',
-    'ngMaterial', // material design
-    'ngMessages', // form error messages
+    'ngMaterial', /* material design */
+    'ngMessages', /* form error messages */
     'ui.router',
     'chart.js'
   ]);

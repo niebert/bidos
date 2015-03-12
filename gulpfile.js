@@ -9,19 +9,21 @@
   var sourcemaps = require('gulp-sourcemaps');
   var prefix = require('gulp-autoprefixer');
   var nodemon = require('gulp-nodemon');
+  var flatten = require('gulp-flatten');
   var traceur = require('gulp-traceur');
   var rename = require('gulp-rename');
   var sass = require('gulp-ruby-sass');
   var uglify = require('gulp-uglify');
-  var shell = require('gulp-shell')
+  var shell = require('gulp-shell');
 
+  var brfs = require('brfs');
   var envify = require('envify');
   var watchify = require('watchify');
   var reactify = require('reactify');
   var browserify = require('browserify');
 
   var source = require('vinyl-source-stream');
-  var transform = require('vinyl-transform');
+  // var transform = require('vinyl-transform');
   var buffer = require('vinyl-buffer');
 
   var dist = './app/dist';
@@ -32,9 +34,9 @@
   bundler.on('update', bundle);
   bundler.on('log', gutil.log);
   bundler
-    .transform('brfs')
-    .transform('envify')
-    .transform('reactify');
+    .transform(brfs)
+    .transform(envify)
+    .transform(reactify);
 
   function bundle() {
     return bundler.bundle()
@@ -105,11 +107,24 @@
     gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
   });
 
+  gulp.task('templates', function() {
+    gulp.src([src + '/layout.html', src + '/*/**/*.html'])
+    .pipe(flatten())
+    .pipe(gulp.dest(dist + '/templates'));
+
+    gulp.src([src + '/index.html'])
+    .pipe(gulp.dest(dist));
+  });
+
   gulp.task('manifest', shell.task([
     'bin/manifest.sh > app/dist/manifest.appcache'
-  ]))
+  ]));
+
+  gulp.task('icons', shell.task([
+    'bin/copy_icons.sh'
+  ]));
 
   // --
-  gulp.task('default', ['css', 'js', 'watch', 'www']);
+  gulp.task('default', ['templates', 'icons', 'css', 'js', 'watch', 'www']);
 
 }());

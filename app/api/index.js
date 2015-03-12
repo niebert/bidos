@@ -75,7 +75,6 @@
     yield db.call(this, pg(config.db.postgres.url).call(this, next));
   });
 
-
   // mount public routes
   mountRoutes(routes.public, '/');
 
@@ -95,7 +94,7 @@
   // main
   var listen = function(port) {
     app.listen(port || config.app.port);
-    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API running on localhost:${chalk.green(port || config.app.port)} (${process.env.NODE_ENV.toUpperCase()})`);
+    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.app.port)} (${process.env.NODE_ENV.toUpperCase()})`);
   };
 
   module.parent ? module.exports = exports = listen : listen();

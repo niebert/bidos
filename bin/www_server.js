@@ -40,7 +40,7 @@
   // main
   var listen = function(port) {
     port = port || PORT;
-    console.log(chalk.red.bold(`[${new Date().toLocaleTimeString()}] `) + chalk.red('Front end running on localhost:' + port) + ' (' + process.env.NODE_ENV.toUpperCase() + ') ' + (lrMsg || ''));
+    console.log(`[${chalk.red(new Date().toLocaleTimeString())}] Front end server running on localhost:${chalk.red(port || process.env.PORT)} (${process.env.NODE_ENV.toUpperCase()}) ${lrMsg || ''}`);
     app.listen(port);
   };
 
