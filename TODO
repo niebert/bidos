@@ -49,6 +49,10 @@ LOW
     /* get, and not more. (?)
 
 
+	  // logging out is done on the clients side by deleting the token.
+	  // TODO: keep track of deployed tokens
+
+
 
 DONE
 [resources] verify that adding items works DONE

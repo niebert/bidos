@@ -6,25 +6,20 @@
   var config = require('../config');
   var secret = config.secret.key;
 
-  var _ = require('lodash'),
-    jwt = require('koa-jwt'),
-    Router = require('koa-router'),
-    user;
+  var _ = require('lodash');
 
-
+  var jwt = require('koa-jwt');
+  var Router = require('koa-router');
+  var removeDiacritics = require('diacritics').remove;
   var sendgrid = require('sendgrid')(config.app.name, config.sendgrid.key);
   var crypto = require('co-crypto');
 
-  var removeDiacritics = require('diacritics')
-    .remove;
+  var user;
 
   Date.prototype.addHours = function(h) {
     this.setTime(this.getTime() + (h * 60 * 60 * 1000));
     return this;
   };
-
-  // logging out is done on the clients side by deleting the token.
-  // TODO: keep track of deployed tokens
 
   module.exports = exports = new Router()
     .post('/login', authenticate, tokenize)
@@ -33,7 +28,6 @@
     .get('/reset/:hash', resetPassword)
     .post('/reset/:hash', setNewPassword)
     .post('/approve', approveUser);
-
 
   function* approveUser(next) {
     var result =

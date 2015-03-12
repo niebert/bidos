@@ -1,6 +1,6 @@
-//jshint esnext:true
 (function() {
   'use strict';
+  //jshint esnext:true
 
   var config = require('./config');
   var routes = require('./routes');
@@ -74,6 +74,7 @@
   app.use(function*(next) {
     yield db.call(this, pg(config.db.postgres.url).call(this, next));
   });
+
 
   // mount public routes
   mountRoutes(routes.public, '/');
