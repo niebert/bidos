@@ -11,8 +11,7 @@
   ]);
 
   // bidos here
-  require('./strings');
-  require('./config');
+  require('../config');
   require('./core');
   require('./auth');
 

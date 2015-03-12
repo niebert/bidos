@@ -90,8 +90,8 @@
 
   gulp.task('www', function() {
     nodemon({
-        script: 'bin/www_server.js',
-        watch: ['bin/www_server.js'],
+        script: 'bin/www.js',
+        watch: ['bin/www.js'],
         env: {
           NODE_ENV: process.env.NODE_ENV || 'development'
         },

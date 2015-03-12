@@ -60,9 +60,9 @@
           id: $rootScope.auth.id
         })[0];
 
-        return _.merge($rootScope.auth, user, {
-          roleName: user.roleName
-        });
+        // return _.merge($rootScope.auth, user, {
+        //   roleName: user.roleName
+        // });
       }
 
 
@@ -106,7 +106,7 @@
           },
           colSpan: [0, 0, 0],
           rowSpan: [0, 0, 0]
-        }
+        };
       }
 
       vm.menu = [{
@@ -118,8 +118,8 @@
         onClick: function() {
           return $state.go('bx.profile');
         },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
+        colSpan: [1, 2, 3],
+        rowSpan: [1, 2, 3]
       }, {
         footer: 'Eingehende Beobachtungen',
         tooltip: 'Neu eingegange Beobachtungen ansehen',
@@ -129,8 +129,8 @@
         onClick: function() {
           return $state.go('bx.observation-inbox');
         },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
+        colSpan: [1, 2, 3],
+        rowSpan: [1, 2, 3]
       }, {
         footer: 'Neue Beobachtung',
         tooltip: 'Neue Beobachtung einstellen',
@@ -142,8 +142,8 @@
             type: 'kid'
           });
         },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
+        colSpan: [1, 2, 3],
+        rowSpan: [1, 2, 3]
       }, {
         footer: 'Portfolios',
         tooltip: 'Portfolios ansehen',
@@ -153,8 +153,8 @@
         onClick: function() {
           return $state.go('bx.portfolio');
         },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
+        colSpan: [1, 2, 3],
+        rowSpan: [1, 2, 3]
       }];
 
       function sync() { // TODO

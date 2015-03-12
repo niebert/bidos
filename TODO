@@ -8,24 +8,28 @@ HIGH
 [ui] alle buttons und funktionen testen
 
 MEDIUM
+[ui] unify all toolbars
 [tables] add tabs to views
 [help/toasts] toast everywhere
-[refact] create type property in backend/db
 [resources] show automated resource tables in single tabbed view (less crowded dashboard)
+
+[refact] create type property in backend/db
 [help/ui] überall einen hilfe button einbauen, auf den ein dialog kommt (help-directive) (luxus, aber ja. help directive dialog)
+[ui] check in every view/directive for neccessary resources and display a warning if something's missing
 
 LOW
+[refact] create tables dynamically (-> one template for all)
+[resource/inbox] toggle 'show only new' button for scientist on observation resource view
+[sidenav] make (automatically) nested sidenav (limit to n levels)
+
 [refactor] split up css files
 [improv] stop and save capture time
 [setup] make server address configurable in app
 [ui] add loading indicator everywhere
 [ui] switchable views: [agenda, array, carousel, column, day, headline, list, module, quilt, stream, week] (see material design icons)
-[resource/inbox] toggle 'show only new' button for scientist on observation resource view
-[refact] create tables dynamically (-> one template for all)
 [resources] user.role is missing WONTFIX (make roles as strings and save the hassle)
 [auth] we need more complex permissions (do we?)
 [resources] provide 3 resources: flat (vanilla), nested (automatic getters), anonymized, rolified (SUCKS! shared mutable state is the root of all evil!)
-[sidenav] make (automatically) nested sidenav (limit to n levels)
 [roles] jeder sollte n anderes theme haben (vielleicht nicht so ohne weiteres möglich)
 [resources] generate unique 3 letter ids for each child
 [refact] tile factory
@@ -33,7 +37,6 @@ LOW
 [resources] create abstract inbox service / get all data and filter out only the new ones
 [inbox] have an inbox with just a list of all the stuff happening
 [help/ui] alle texte von bedienelementen softcoden (strings.js)
-[resources] generate fake data in api on api call
 [api] use redis for caching and sync redis with indexeddb (?) WONTFIX
 [export] raw data as csv (could be easy but time-consuming, serverside?)
 
@@ -55,6 +58,7 @@ LOW
 
 
 DONE
+[resources] generate fake data in api on api call DONE
 [resources] verify that adding items works DONE
 [offline] offline caching DONE
 [capture] review toolbar is missing FIXED

@@ -1,23 +1,6 @@
 (function() {
   'use strict';
 
-  var config = {
-    development: {
-      api: {
-        address: process.env.API || 'localhost',
-        port: process.env.PORT || 3002
-      }
-    },
-    production: {
-      api: {
-        address: process.env.API || '92.51.147.239',
-        port: process.env.PORT || 3000
-      }
-    }
-  }
-
-  var c = config[process.env.NODE_ENV];
-
   module.exports = {
 
     // app config
@@ -134,4 +117,5 @@
       }]
     }
   };
+
 }());

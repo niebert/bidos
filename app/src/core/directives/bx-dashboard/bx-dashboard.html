@@ -1,3 +1,4 @@
+]
 <div layout="column" layout-fill>
 
 	<md-toolbar>
@@ -36,9 +37,6 @@
 					<div> {{ tile.footer }} </div>
 				</md-grid-tile-footer>
 			</md-grid-tile>
-		</md-grid-list>
-
-		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="4:7" md-row-height-sm="4:1" md-row-height="5:4" md-gutter="8px" md-gutter-gt-sm="8px">
 			<md-grid-tile md-colspan="{{tile.colSpan[0]}}" md-colspan-sm="{{tile.colSpan[1]}}" md-colspan-md="{{tile.colSpan[2]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.resources" class="bx-tile{{$index+1}}">
 
 				<md-grid-tile-header ng-show="tile.header">
@@ -55,6 +53,7 @@
 				</md-grid-tile-footer>
 			</md-grid-tile>
 		</md-grid-list>
+
 	</md-content>
 </div>
 

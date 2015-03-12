@@ -2,9 +2,8 @@
   'use strict';
   //jshint esnext:true
 
-  var config = require('./config');
+  var config = require('../../config');
   var routes = require('./routes');
-
   var _ = require('lodash');
   var chalk = require('chalk');
 

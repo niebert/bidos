@@ -1,11 +1,11 @@
 (function() {
   'use strict';
-  /* global angular, faker, _ */
+  /* global angular, _ */
 
   angular.module('bidos')
     .directive('bxTable', bxTable);
 
-  var APP_CONFIG = require('../../../config');
+  // var APP_CONFIG = require('../../../config');
 
   function bxTable() {
     return {
@@ -34,7 +34,7 @@
         Resources.get()
           .then(function(data) {
             angular.extend(vm, data);
-            angular.extend(vm, APP_CONFIG);
+            // angular.extend(vm, APP_CONFIG);
           });
       }
 

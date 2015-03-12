@@ -31,7 +31,7 @@
         }
       });
       yield next;
-    }
+    };
   };
 
   module.parent ? module.exports = exports = main : main();
