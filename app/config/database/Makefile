@@ -30,9 +30,6 @@ else ifeq (${NODE_ENV},development)
 	PORT=$(WWW_PORT_DEVELOPMENT)
 	DATABASE = $(NAME)_development
 	ENVIRONMENT = --development
-else
-	echo you need to set NODE_ENV=[development|production|test]
-	exit 1
 endif
 
 # --------------------------------------------------------------------------------------------------

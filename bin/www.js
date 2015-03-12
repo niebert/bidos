@@ -1,8 +1,8 @@
 #!/usr/local/bin/iojs --harmony
-
 (function() {
   'use strict';
   // jshint esnext:true
+  var config = require('../app/config');
 
   var os = require("os");
   var path = require('path');
@@ -15,7 +15,7 @@
   var cors = require('koa-cors');
   app.use(cors());
 
-  var PORT = process.env.PORT || 3003;
+  var PORT = process.env.PORT || config.app.port || 3001;
   var DIST_DIR = path.join(__dirname, '../app/dist');
   var BOWER_DIR = path.join(__dirname, '../bower_components');
 
