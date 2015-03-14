@@ -20,7 +20,7 @@ fake() {
 	curl -s lo:3002/fake/$1 | curl -s -XPOST -H "Content-Type: application/json" -d @- lo:3002/v1/$1
 };
 
-cd bin/db
+cd app/config/database
 make dbdrop dbcreate dbschema
 
 repeat 03 fake institution
