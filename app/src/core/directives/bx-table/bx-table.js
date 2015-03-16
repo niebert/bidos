@@ -5,8 +5,6 @@
   angular.module('bidos')
     .directive('bxTable', bxTable);
 
-  // var APP_CONFIG = require('../../../config');
-
   function bxTable() {
     return {
       scope: {},
@@ -93,7 +91,7 @@
           });
       }
 
-      function dialogController($mdDialog, parentVm, resource) {
+      function dialogController($mdDialog, parentVm, resource, CONFIG) {
         var vm = angular.extend(this, {
           cancel: cancel,
           save: save,
@@ -105,14 +103,12 @@
         });
 
         function approveUser(user) {
-          var config = require('../../../config');
-          var url = [config.app.API, 'auth/approve'].join('/');
+          var url = [CONFIG.api, 'auth/approve'].join('/');
           $http.post(url, user).success(function(response) {
             console.log(response);
             vm[resource.type] = response;
             resource = response;
             $mdDialog.hide();
-            debugger
             vm.parent.users.splice(_.findIndex(vm.parent.users, {
               id: response.id
             }), 1, response);
@@ -212,7 +208,8 @@
         function save(formResource) {
 
           // Certain resource types (e.g. nested ones) need to be handled a
-          // little bit differently.
+          // little bit differently. -- NB: OMG OMG NO NO, don't do such
+          // things. TODO REFACTOR
 
           switch (formResource.type) {
             case 'item':

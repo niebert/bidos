@@ -5,8 +5,6 @@
   angular.module('bidos')
     .directive('bxPortfolio', bxPortfolio);
 
-  var APP_CONFIG = require('../../../config');
-
   function bxPortfolio() {
     return {
       scope: {},
@@ -120,7 +118,7 @@
         Resources.get()
           .then(function(data) {
             angular.extend(vm, data);
-            angular.extend(vm, APP_CONFIG);
+            // angular.extend(vm, APP_CONFIG); // FIXME wtf
             chartB();
           });
       }

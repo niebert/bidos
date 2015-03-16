@@ -14,19 +14,19 @@ tmux new-window -k -t bidos:1 -n api
 tmux send-keys -t bidos:1 "cd $BASEDIR && gulp api" C-m
 
 tmux new-window -k -t bidos:2 -n www
-tmux send-keys -t bidos:2 "cd $BASEDIR && gulp www" C-m
+if [[ $NODE_ENV -ne "development" ]]; then
+	tmux send-keys -t bidos:2 "cd $BASEDIR && gulp www" C-m
+else
+	tmux send-keys -t bidos:2 "cd $BASEDIR && gulp" C-m
+fi
 
-fake() {
-	curl -s lo:3002/fake/$1 | curl -s -XPOST -H "Content-Type: application/json" -d @- lo:3002/v1/$1
-};
+tmux new-window -k -t bidos:3 -n log
+tmux send-keys -t bidos:3 "cd $BASEDIR && tail -F log/$NODE_ENV.log | ./node_modules/.bin/bunyan" C-m
+
+createuser bidos
+createdb bidos_production
+createdb bidos_test
+createdb bidos_development
 
 cd app/config/database
-make dbdrop dbcreate dbschema
-
-repeat 03 fake institution
-repeat 12 fake group
-repeat 64 fake kid
-
-curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@bidos", "password": "123", "username": "admin", "approved": true }' lo:3002/auth/signup
-
-repeat 5 curl -s lo:3002/fake/user | curl -s -XPOST -H "Content-Type: application/json" -d @- lo:3002/auth/signup
+PORT=3010 NODE_ENV=development make dbdrop dbcreate dbschema dbusers && NODE_ENV="development" iojs seeds.js seeds.json && ./fake.sh

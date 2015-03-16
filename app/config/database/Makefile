@@ -19,17 +19,17 @@ NAME = bidos
 # --------------------------------------------------------------------------------------------------
 
 ifeq (${NODE_ENV},production)
-	PORT=$(WWW_PORT_PRODUCTION)
+	PORT=3000
 	DATABASE = $(NAME)_production
 	ENVIRONMENT = --production
-else ifeq (${NODE_ENV},test)
-	PORT=$(WWW_PORT_TEST)
-	DATABASE = $(NAME)_test
-	ENVIRONMENT = --test
 else ifeq (${NODE_ENV},development)
-	PORT=$(WWW_PORT_DEVELOPMENT)
+	PORT=3010
 	DATABASE = $(NAME)_development
 	ENVIRONMENT = --development
+else ifeq (${NODE_ENV},test)
+	PORT=3020
+	DATABASE = $(NAME)_test
+	ENVIRONMENT = --test
 endif
 
 # --------------------------------------------------------------------------------------------------

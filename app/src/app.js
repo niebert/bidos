@@ -11,11 +11,11 @@
   ]);
 
   // bidos here
-  require('../config');
+  require('./config');
   require('./core');
   require('./auth');
 
-  // more secure cors (not really neccessary) TODO
+  // more secure cors (not really neccessary)
   // app.config(['$httpProvider', function($httpProvider) {
   //   $httpProvider.defaults.withCredentials = true;
   // }]);

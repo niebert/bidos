@@ -5,15 +5,10 @@
 (function() {
   'use strict';
 
-  var config = require('../../config');
-  var roles = config.roles;
-  var API = config.app.API;
-  console.log('API', API);
-
   angular.module('bx.auth.controller', [])
     .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q) {
+  function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q, CONFIG) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -24,19 +19,18 @@
       login: login,
       logout: logout,
       signup: signup,
-      roles: roles,
       forgot: forgot,
       reset: reset,
       next: next,
       previous: previous,
-      selectedIndex: 1,
+      selectedIndex: 1
     });
 
     function getPublicData() {
       var queries = [
-        $http.get(API + '/public/groups'),
-        $http.get(API + '/public/usernames'),
-        $http.get(API + '/public/institutions'),
+        $http.get(CONFIG.url + '/public/groups'),
+        $http.get(CONFIG.url + '/public/usernames'),
+        $http.get(CONFIG.url + '/public/institutions'),
       ];
 
       $q.all(queries)

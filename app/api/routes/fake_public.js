@@ -101,6 +101,8 @@
           password: '123' // faker.internet.password()
         };
 
+        console.log(this.body);
+
         break;
       default:
         this.body = {

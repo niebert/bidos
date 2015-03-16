@@ -4,14 +4,14 @@
   'use strict';
 
   var config = require('../config');
-  var secret = config.secret.key;
 
   var _ = require('lodash');
 
   var jwt = require('koa-jwt');
   var Router = require('koa-router');
   var removeDiacritics = require('diacritics').remove;
-  var sendgrid = require('sendgrid')(config.app.name, config.sendgrid.key);
+  var sendgrid = require('sendgrid')(config.sendgrid.user, config.sendgrid.key);
+
   var crypto = require('co-crypto');
 
   var user;
@@ -63,7 +63,6 @@
         error: 'failed'
       };
     }
-
   }
 
   function* resetPassword(next) {
@@ -296,7 +295,7 @@
 
   function* tokenize() {
     this.body = _.merge(user, {
-      token: jwt.sign(user, secret, {
+      token: jwt.sign(user, config.secret, {
         expiresInMinutes: 60 * 24 * 7 // one week
       })
     });

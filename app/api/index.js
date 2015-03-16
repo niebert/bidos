@@ -2,10 +2,11 @@
   'use strict';
   //jshint esnext:true
 
-  var config = require('../../config');
+  var config = require('./config');
   var routes = require('./routes');
-  var _ = require('lodash');
+
   var chalk = require('chalk');
+  var _ = require('lodash');
 
   var app = require('koa')();
   var pg = require('koa-pg');
@@ -71,7 +72,7 @@
 
   // connect to database
   app.use(function*(next) {
-    yield db.call(this, pg(config.db.postgres.url).call(this, next));
+    yield db.call(this, pg(config.db).call(this, next));
   });
 
   // mount public routes
@@ -81,19 +82,19 @@
   // if the authorization succeeds, next is yielded and the following routes
   // are reached. if it fails, it throws and the previous middleware will catch
   // that error and send back status 401 and redirect to /login.
-  app.use(function*(next) {
-    yield auth.call(this, jwt({
-      secret: config.secret.key
-    }).call(this, next));
-  });
+  //app.use(function*(next) {
+  //  yield auth.call(this, jwt({
+  //    secret: config.secret
+  //  }).call(this, next));
+  //});
 
   // secured routes
   mountRoutes(routes.private, '/v1/');
 
   // main
   var listen = function(port) {
-    app.listen(port || config.app.port);
-    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.app.port)} (${process.env.NODE_ENV.toUpperCase()})`);
+    app.listen(port || config.port);
+    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
   };
 
   module.parent ? module.exports = exports = listen : listen();

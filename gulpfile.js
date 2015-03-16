@@ -23,7 +23,6 @@
   var browserify = require('browserify');
 
   var source = require('vinyl-source-stream');
-  // var transform = require('vinyl-transform');
   var buffer = require('vinyl-buffer');
 
   var dist = './app/dist';

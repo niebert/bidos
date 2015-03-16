@@ -2,7 +2,6 @@
 (function() {
   'use strict';
   // jshint esnext:true
-  var config = require('../app/config');
 
   var os = require("os");
   var path = require('path');
@@ -15,7 +14,8 @@
   var cors = require('koa-cors');
   app.use(cors());
 
-  var PORT = process.env.PORT || config.app.port || 3001;
+  var config = require('../app/api/config');
+  var PORT = config.port + 1;
   var DIST_DIR = path.join(__dirname, '../app/dist');
   var BOWER_DIR = path.join(__dirname, '../bower_components');
 
@@ -40,7 +40,7 @@
   // main
   var listen = function(port) {
     port = port || PORT;
-    console.log(`[${chalk.red(new Date().toLocaleTimeString())}] Front end server running on localhost:${chalk.red(port || process.env.PORT)} (${process.env.NODE_ENV.toUpperCase()}) ${lrMsg || ''}`);
+    console.log(`[${chalk.red(new Date().toLocaleTimeString())}] Front end server running on localhost:${chalk.red(port)} (${process.env.NODE_ENV.toUpperCase()}) ${lrMsg || ''}`);
     app.listen(port);
   };
 

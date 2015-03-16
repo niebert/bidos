@@ -1,34 +1,30 @@
-/* global angular */
-
 (function() {
   'use strict';
-
-  var API = require('../../config').app.API;
-  var TOKEN_KEY = require('../../config').app.TOKEN_KEY;
+  /* global angular */
 
   angular.module('bx.auth.services', [
     'angular-jwt', // json web token
   ])
 
-  .factory('UserFactory', function($http, AuthTokenFactory) {
+  .factory('UserFactory', function($http, AuthTokenFactory, CONFIG) {
 
     function login(credentials) {
-      return $http.post(API + '/auth/login', credentials)
+      return $http.post(CONFIG.url + '/auth/login', credentials)
         .success(function(response) {
           return AuthTokenFactory.setToken(response.token);
         });
     }
 
     function signup(formData) {
-      return $http.post(API + '/auth/signup', formData);
+      return $http.post(CONFIG.url + '/auth/signup', formData);
     }
 
     function forgot(formData) {
-      return $http.post(API + '/auth/forgot', formData);
+      return $http.post(CONFIG.url + '/auth/forgot', formData);
     }
 
     function reset(formData, hash) {
-      return $http.post(API + '/auth/reset/' + hash, formData);
+      return $http.post(CONFIG.url + '/auth/reset/' + hash, formData);
     }
 
     function logout() {
@@ -49,10 +45,10 @@
     };
   })
 
-  .factory('AuthTokenFactory', function($window, $q, jwtHelper) {
+  .factory('AuthTokenFactory', function($window, $q, jwtHelper, CONFIG) {
 
     var store = $window.localStorage;
-    var key = TOKEN_KEY;
+    var key = CONFIG.token_key;
 
     function getToken() {
 

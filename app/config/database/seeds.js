@@ -5,22 +5,22 @@
   let _ = require('lodash');
   let Promise = require('bluebird');
   let request = require('superagent');
-  let domains = require('./defaults.json');
+  let domains = require('./seeds.json');
 
-	if (!process.env.API) {
-		console.error('specify API env, e.g. API=92.51.147.239:3000');
-		process.exit(1);
-	}
+  let config = require('../../api/config');
 
-  const API = process.env.API;
+  // disable auth before running this
 
   function postRequest(payload) {
-    console.log([API, payload.type].join('/'));
+    let url = [config.api, payload.type].join('/');
     return new Promise(function(resolve, reject) {
       request
-        .post([API, payload.type].join('/'))
+        .post(url)
         .send(payload)
-        .end(function(res) {
+        .end(function(err, res) {
+          if (err) {
+            reject(new Error(err));
+          }
           if (res.ok) {
             resolve(res.body);
           } else {

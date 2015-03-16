@@ -6,11 +6,9 @@
   angular.module('bidos')
     .service('CRUD', CRUDService);
 
-  function CRUDService($http, $q, Help) {
+  function CRUDService($http, $q, Help, CONFIG) {
 
     /* Basic CRUD operations doing HTTP calls to the back end. */
-
-    var config = require('../../config');
 
     return {
       get: getResources,
@@ -21,7 +19,7 @@
 
     function getResources() {
       console.time('[crud] getting resources from api');
-      var url = [config.app.API, config.app.RESOURCE_PATH, config.app.DEFAULT_RESOURCE].join('/');
+      var url = [CONFIG.resources].join('/');
       return $q(function(resolve, reject) {
         $http.get(url)
           .success(function(data) {
@@ -45,7 +43,7 @@
         debugger
       }
 
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type].join('/');
+      var url = [CONFIG.api, resource.type].join('/');
 
       if (resource.type === 'user') {
         resource.username = resource.email.split('@')[0];
@@ -70,7 +68,7 @@
         debugger
       }
 
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
+      var url = [CONFIG.api, resource.type, resource.id].join('/');
       return $q(function(resolve, reject) {
         $http.patch(url, resource)
           .success(function(response) {
@@ -85,7 +83,7 @@
     }
 
     function destroyResource(resource) {
-      var url = [config.app.API, config.app.RESOURCE_PATH, resource.type, resource.id].join('/');
+      var url = [CONFIG.api, resource.type, resource.id].join('/');
       return $q(function(resolve, reject) {
         $http.delete(url)
           .success(function(response) {
