@@ -202,7 +202,11 @@ md-content.bx-content {
 .search-bar,
 #layout > div > section > md-content > * > div > md-content,
 #layout > div > section > md-content > * > div > div:nth-child(2) {
-  margin-top: 64px + 20px;
+  margin-top: 40px;
+}
+
+#dashboard {
+  margin-top: 84px !important;
 }
 
 #layout > div > section > md-content > * > div > md-toolbar {
@@ -835,4 +839,8 @@ md-dialog > md-content > h3 {
 
 #layout > div > section > md-content > bx-profile > div > md-content > ol > li {
   padding: 10px;
+}
+
+md-tabs {
+  margin-top: 64px;
 }

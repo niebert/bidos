@@ -20,7 +20,7 @@
 		</div>
 	</md-toolbar>
 
-	<md-content flex class="bx-content">
+	<md-content flex class="bx-content" id="dashboard">
 		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="4:7" md-row-height-sm="4:1" md-row-height="5:4" md-gutter="8px" md-gutter-gt-sm="8px">
 			<md-grid-tile md-colspan="{{tile.colSpan[0]}}" md-colspan-sm="{{tile.colSpan[1]}}" md-colspan-md="{{tile.colSpan[2]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.menu" class="bx-tile{{$index+1}}">
 
