@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular */
+  /* global angular, _ */
 
   angular.module('bidos')
     .directive('ObservationInbox', ObservationInbox);
@@ -14,7 +14,7 @@
       templateUrl: 'templates/bx-observation-inbox.html'
     };
 
-    debugger
+    // debugger
 
     function controllerFn($rootScope, $mdDialog, $mdToast, Resources) {
       var vm = angular.extend(this, {

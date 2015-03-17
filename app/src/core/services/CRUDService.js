@@ -24,6 +24,7 @@
         $http.get(url)
           .success(function(data) {
             resolve(data);
+            console.info('FRESH RESOURCES!', data);
             console.timeEnd('[crud] getting resources from api', data);
           })
           .error(function(err) {
@@ -40,7 +41,7 @@
       // sent the whole thing to the api and let it weed out these things.
 
       if (!resource.type) {
-        debugger
+        // debugger;
       }
 
       var url = [CONFIG.api, resource.type].join('/');
@@ -65,7 +66,7 @@
     function updateResource(resource) {
 
       if (!resource.type) {
-        debugger
+        // debugger
       }
 
       var url = [CONFIG.api, resource.type, resource.id].join('/');

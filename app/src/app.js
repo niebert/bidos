@@ -100,24 +100,24 @@
   });
 
   // broken TODO
-  app.directive('loadingIndicator', function() {
-    return {
-      restrict: 'A',
-      template: '<md-progress-linear class="md-warn" md-mode="indeterminate"></md-progress-linear>',
-      link: function(scope, element, attrs) {
-        scope.$on('loading-started', function(e) {
-          element.css({
-            'display': ''
-          });
-        });
-        scope.$on('loading-complete', function(e) {
-          element.css({
-            'display': 'none'
-          });
-        });
-      }
-    };
-  });
+  // app.directive('loadingIndicator', function() {
+  //   return {
+  //     restrict: 'A',
+  //     template: '<md-progress-linear class="md-warn" md-mode="indeterminate"></md-progress-linear>',
+  //     link: function(scope, element, attrs) {
+  //       scope.$on('loading-started', function(e) {
+  //         element.css({
+  //           'display': ''
+  //         });
+  //       });
+  //       scope.$on('loading-complete', function(e) {
+  //         element.css({
+  //           'display': 'none'
+  //         });
+  //       });
+  //     }
+  //   };
+  // });
 
 
 }());

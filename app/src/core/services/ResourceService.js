@@ -18,7 +18,7 @@
     };
 
     function syncOutbox() {
-      return $q(function(resolve, reject) {
+      return $q(function(resolve) {
         Outbox.get().then(function(outbox) {
 
           var promises = [];
@@ -522,7 +522,7 @@
           _.each(data.kids, function(k) {
             var f = k.name.split(' ')[0]; // first name
             k.name = f[0] + f[1] + f[f.length - 1] + k.id; // <3
-            console.log(k[resources].name);
+            // console.log(k[resources].name);
           });
           // debugger
           break;

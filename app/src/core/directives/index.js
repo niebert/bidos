@@ -18,7 +18,4 @@
   require('./bx-profile'); // "personal profile", kind of a menu with stuff
   require('./bx-preferences'); // "personal configuration", same same
 
-  // other things
-  require('./bx-note');
-
 }());

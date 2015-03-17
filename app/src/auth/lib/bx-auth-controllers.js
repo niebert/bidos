@@ -1,5 +1,5 @@
 /* jshint unused:false */
-/* global angular, _ */
+/* global angular, _, location */
 /* exported AuthController */
 
 (function() {
@@ -204,7 +204,7 @@
     /* PASSWORD RESET */
     function reset(formData) {
       console.log('[auth] reset attempt', formData);
-      debugger
+      // CHECKME
       UserFactory.reset(formData, $stateParams.hash)
         .then(resetSuccess, resetFailure);
     }

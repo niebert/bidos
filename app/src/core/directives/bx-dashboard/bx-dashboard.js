@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular, Blob */
+  /* global angular, Blob, window, _ */
 
   var APP_CONFIG = require('../../../config');
 
@@ -27,8 +27,7 @@
         date: new Date().toJSON().replace(/[:]/g, '-'),
         exportData: exportData,
         logout: logout,
-        hidden: hidden,
-        sync: sync // TODO
+        hidden: hidden
       });
 
 
@@ -39,10 +38,6 @@
           vm.me = getUser(resources);
 
           vm.tiles = {};
-          vm.tiles.resources = _.chain(resources).keys().map(function(key) {
-            return new ResourceTile(key)
-          }).value()
-          debugger
 
           // the user should get only the resources he's allowed to get, e.g.
           // anonymized stuff for scientists
@@ -56,13 +51,9 @@
         });
 
       function getUser(resources) {
-        var user = _.filter(resources.users, {
+        return _.filter(resources.users, {
           id: $rootScope.auth.id
         })[0];
-
-        // return _.merge($rootScope.auth, user, {
-        //   roleName: user.roleName
-        // });
       }
 
 
@@ -73,40 +64,11 @@
           .hideDelay(3000));
       }
 
-
-      // $scope.$watch('$rootScope.networkStatus',
-      //   function(newValue, oldValue) {
-      //     if (newValue !== oldValue) {
-      //       console.log('offline!');
-      //       // Only increment the counter if the value changed
-      //       // $scope.foodCounter = $scope.foodCounter + 1;
-      //     }
-      //   }
-      // );
-
       function hidden(tile) {
         if (!vm.me) {
           return false;
         }
         return _.includes(tile.roles, vm.me.roleName);
-      }
-
-      function ResourceTile(type) {
-        type = type.slice(0,-1);
-        return {
-          footer: type,
-          tooltip: '',
-          description: '',
-          icon: '',
-          roles: ['admin', 'practitioner', 'scientist'],
-          onClick: function() {
-            return $state.go('bx.table', {
-              type: type
-            });
-          },
-          colSpan: [0, 0, 0],
-          rowSpan: [0, 0, 0]
-        };
       }
 
       vm.menu = [{
@@ -118,8 +80,8 @@
         onClick: function() {
           return $state.go('bx.profile');
         },
-        colSpan: [1, 2, 3],
-        rowSpan: [1, 2, 3]
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
       }, {
         footer: 'Eingehende Beobachtungen',
         tooltip: 'Neu eingegange Beobachtungen ansehen',
@@ -129,8 +91,8 @@
         onClick: function() {
           return $state.go('bx.observation-inbox');
         },
-        colSpan: [1, 2, 3],
-        rowSpan: [1, 2, 3]
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
       }, {
         footer: 'Neue Beobachtung',
         tooltip: 'Neue Beobachtung einstellen',
@@ -142,8 +104,73 @@
             type: 'kid'
           });
         },
-        colSpan: [1, 2, 3],
-        rowSpan: [1, 2, 3]
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
+        footer: 'Kinder',
+        tooltip: 'Kinder verwalten',
+        description: '',
+        icon: '/img/ic_account_child_48px.svg',
+        roles: ['admin', 'practitioner', 'scientist'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'kid'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
+        footer: 'Gruppen',
+        tooltip: 'Gruppen verwalten',
+        description: '',
+        icon: '/img/ic_group_work_48px.svg',
+        roles: ['admin', 'practitioner'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'group'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
+        footer: 'Benutzer',
+        tooltip: 'Benutzer verwalten',
+        description: '',
+        icon: '/img/ic_account_circle_48px.svg',
+        roles: ['admin'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'user'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
+        footer: 'Bausteine',
+        tooltip: 'Bausteine verwalten: Bereiche, Teilbereiche, Verhalten, Beispiele',
+        description: '',
+        icon: '/img/ic_extension_48px.svg',
+        roles: ['admin', 'scientist'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'item'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
+        footer: 'Institutionen',
+        tooltip: 'Resource \"Institution\" verwalten',
+        description: '',
+        icon: '/img/ic_business_48px.svg',
+        roles: ['admin', 'practitioner'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'institution'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
       }, {
         footer: 'Portfolios',
         tooltip: 'Portfolios ansehen',
@@ -153,13 +180,9 @@
         onClick: function() {
           return $state.go('bx.portfolio');
         },
-        colSpan: [1, 2, 3],
-        rowSpan: [1, 2, 3]
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
       }];
-
-      function sync() { // TODO
-        Resources.sync();
-      }
 
       /* LOGOUT */
       function logout() {
@@ -168,7 +191,7 @@
         UserFactory.logout();
         $state.go('public');
         $rootScope.auth = null;
-        toast('Sie sind jetzt abgemeldet')
+        toast('Sie sind jetzt abgemeldet');
       }
 
       function downloadableResource() {
@@ -181,7 +204,7 @@
 
       function exportData() {
         Resources.get()
-          .then(function(data) {
+          .then(function() {
             vm.downloadLink = window.URL.createObjectURL(new Blob([downloadableResource()], {
               type: 'application/json'
             }));

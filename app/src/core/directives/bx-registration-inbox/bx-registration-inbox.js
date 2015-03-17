@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* global angular */
+  /* global angular, _ */
 
   angular.module('bidos')
     .directive('bxRegistrationInbox', bxRegistrationInbox);

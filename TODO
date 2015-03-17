@@ -1,6 +1,3 @@
-CRITICAL
-[tables+capture] fix search/filter bar/search by id (fix viewFilter!)
-
 HIGH
 [capture] showNextExample not working
 [capture] when 'noch nicht', do not ask the help question
@@ -11,9 +8,8 @@ MEDIUM
 [ui] unify all toolbars
 [tables] add tabs to views
 [help/toasts] toast everywhere
-[resources] show automated resource tables in single tabbed view (less crowded dashboard)
 
-[refact] create type property in backend/db
+[refact] create type property in backend/db ??? 
 [help/ui] überall einen hilfe button einbauen, auf den ein dialog kommt (help-directive) (luxus, aber ja. help directive dialog)
 [ui] check in every view/directive for neccessary resources and display a warning if something's missing
 
@@ -58,6 +54,9 @@ LOW
 
 
 DONE
+[resources] show automated resource tables in single tabbed view (less crowded dashboard) WONTFIX
+[build] not all icons are found/copied FIXED
+[tables+capture] fix search/filter bar/search by id (fix viewFilter!) DONE
 [resources] generate fake data in api on api call DONE
 [resources] verify that adding items works DONE
 [offline] offline caching DONE

@@ -117,7 +117,7 @@
           }, function() {
             $scope.alert = 'You decided to keep your debt.';
           });
-      };
+      }
 
       // var toast = $mdToast.build();
 

@@ -1,4 +1,4 @@
-/* global angular */
+/* global angular, _ */
 
 // everything with bx is "inside" === authed. the rest is not.
 

@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  /* globals angular, Dexie, pluralize, _ */
+  /* globals angular, Dexie, _ */
 
   angular.module('bidos')
     .service('Outbox', OutboxService);
