@@ -15,40 +15,71 @@
 		</div>
 	</md-toolbar>
 
-	<md-content flex class="bx-content">
 
-		<h2>Eigener Benutzer</h2>
-		<pre>{{ vm.me | json }}</pre>
+	<md-tabs class="md-accent" md-selected="data.selectedIndex">
+		<md-tab id="tab1" aria-controls="tab1-content">
+			Benutzerdaten
+		</md-tab>
+		<md-tab id="tab2" aria-controls="tab2-content" ng-disabled="data.secondLocked">
+			Beobachtungen
+		</md-tab>
+		<md-tab id="tab3" aria-controls="tab3-content">
+			Notizen
+		</md-tab>
+		<md-tab id="tab4" aria-controls="tab4-content">
+			Sync &amp; Export
+		</md-tab>
+	</md-tabs>
 
-		<div ng-hide="$root.auth.role==1">
-			<h2>Daten exportieren</h2>
-			<pre><a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">{{ vm.resourceBlob.blob | json }}</a></pre>
+
+	<ng-switch on="data.selectedIndex" class="tabpanel-container">
+
+		<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
+			<pre>{{ vm.me | json }}</pre>
 		</div>
 
-		<h2>Ungesendete Daten <small ng-click="vm.sync()" class="bx-sync">synchronisieren</small></h2>
-		<ol>
-			<li ng-repeat="item in vm.outbox">
-				<strong>{{ item.operation }}</strong> <small>{{ item.date | date }}</small>
-				<pre>{{ item.resource | json }}</pre>
-			</li>
-		</ol>
+		<div role="tabpanel" id="tab2-content" aria-labelledby="tab2" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2>Ungeprüfte Beobachtungen</h2>
+			<ol>
+				<li ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)">
+					<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small>
+					<br>
+					<small>{{ obs.item.name }}</small>
+				</li>
+			</ol>
+		</div>
 
-		<h2>Ungeprüfte Beobachtungen</h2>
-		<ol>
-			<li ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)">
-				<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small><br>
-				<small>{{ obs.item.name }}</small>
-			</li>
-		</ol>
+		<div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2>Eigene Notizen <small ng-click="vm.addNote()" class="bx-sync">neu</small></h2>
+			<ol>
+				<li ng-repeat="note in vm.resources.notes" ng-click="vm.dialog($event, note)">
+					<strong>{{ note.created_at | date }}</strong> {{ note.text }}
+					<br>
+					<span ng-click="vm.deleteNote(note)">löschen</span>
+				</li>
+			</ol>
+		</div>
 
-		<h2>Eigene Notizen <small ng-click="vm.addNote()" class="bx-sync">neu</small></h2>
-		<ol>
-			<li ng-repeat="note in vm.notes" ng-click="vm.dialog($event, note)">
-				<strong>{{ note.created_at | date }}</strong> {{ note.text }} <br>
-				<span ng-click="vm.deleteNote(note)">löschen</span>
-			</li>
-		</ol>
+		<div role="tabpanel" id="tab4-content" aria-labelledby="tab4" ng-switch-when="3" md-swipe-left="next()" md-swipe-right="previous()">
+			<div ng-hide="$root.auth.role==1">
+				<h2>Alle Daten
+					<small ng-click="vm.sync()" class="bx-sync">
+						<a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">exportieren</a>
+					</small>
+				</h2>
+				<pre>{{ vm.resourceBlob.blob | json }}</pre>
+			</div>
 
-	</md-content>
+			<h2>Ungesendete Daten <small ng-click="vm.sync()" class="bx-sync">synchronisieren</small></h2>
+			<ol>
+				<li ng-repeat="item in vm.outbox">
+					<strong>{{ item.operation }}</strong> <small>{{ item.date | date }}</small>
+					<pre>{{ item.resource | json }}</pre>
+				</li>
+			</ol>
+		</div>
+
+	</ng-switch>
+
 </div>
 

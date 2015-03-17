@@ -6,6 +6,7 @@
     .directive('bxProfile', bxProfile, window);
 
   function bxProfile() {
+
     return {
       scope: {},
       bindToController: true,
@@ -22,7 +23,7 @@
         obsDialog: obsDialog,
         noteDialog: noteDialog,
         addNote: addNote,
-        deleteNote: deleteNote
+        deleteNote: deleteNote,
       });
 
       Outbox.get()
@@ -39,7 +40,6 @@
           vm.observations = _.filter(resources.observations, function(obs) {
             return obs.behaviour && !obs.approved;
           });
-
         });
 
       function sync() {
@@ -71,113 +71,118 @@
       }
 
       function addNote(ev) {
-        noteDialog({type: 'note'}, ev);
+        noteDialog({
+          type: 'note'
+        }, ev);
       }
 
       function deleteNote(note) {
-        vm.notes.splice(_.findIndex(vm.notes, { id: note.id }), 1);
+        vm.resources.notes.splice(_.findIndex(vm.resources.notes, {
+          id: note.id
+        }), 1);
+        Resources.destroy(note);
       }
 
       function obsDialog(ev, obs) {
         $mdDialog.show({
-          templateUrl: 'templates/bx-observation-approve.dialog.html',
-          targetEvent: ev,
-          bindToController: false,
-          controllerAs: 'vm',
-          locals: {
-            obs: obs,
-          },
-          controller: function($scope, $mdDialog, Resources, obs) {
-            angular.extend(this, {
-              cancel: cancel,
-              accept: accept,
-              reject: reject,
-              obs: obs
-            });
+            templateUrl: 'templates/bx-observation-approve.dialog.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              obs: obs,
+            },
+            controller: function($scope, $mdDialog, Resources, obs) {
+              angular.extend(this, {
+                cancel: cancel,
+                accept: accept,
+                reject: reject,
+                obs: obs
+              });
 
-            console.log(obs);
+              console.log(obs);
 
-            function cancel() {
-              $mdDialog.cancel();
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function accept() {
+                $mdDialog.hide(true);
+                obs.approved = true;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung angenommen')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
+              function reject() {
+                $mdDialog.hide(false);
+                obs.approved = false;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung abgelehnt')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
             }
-
-            function accept() {
-              $mdDialog.hide(true);
-              obs.approved = true;
-              Resources.update(obs);
-              $mdToast.show(
-                $mdToast.simple()
-                .content('Beobachtung angenommen')
-                .position('bottom right')
-                .hideDelay(3000)
-              );
+          })
+          .then(function dialogSuccess(accepted) {
+            if (accepted) {
+              vm.observations.splice(_.findIndex(vm.observations, {
+                id: obs.id
+              }), 1);
             }
-
-            function reject() {
-              $mdDialog.hide(false);
-              obs.approved = false;
-              Resources.update(obs);
-              $mdToast.show(
-                $mdToast.simple()
-                .content('Beobachtung abgelehnt')
-                .position('bottom right')
-                .hideDelay(3000)
-              );
-            }
-          }
-        })
-        .then(function dialogSuccess(accepted) {
-          if (accepted) {
-            vm.observations.splice(_.findIndex(vm.observations, { id: obs.id }), 1);
-          }
-        }, function dialogAbort() {
-          // ...
-        });
+          }, function dialogAbort() {
+            // ...
+          });
       }
 
       function noteDialog(note, ev) {
         $mdDialog.show({
-          templateUrl: 'templates/bx-note.html',
-          targetEvent: ev,
-          bindToController: false,
-          controllerAs: 'vm',
-          locals: {note: note},
-          controller: function($scope, $mdDialog, Resources) {
-            angular.extend(this, {
-              cancel: cancel,
-              save: save
-            });
+            templateUrl: 'templates/bx-note.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              note: note
+            },
+            controller: function($scope, $mdDialog, Resources) {
+              angular.extend(this, {
+                cancel: cancel,
+                save: save
+              });
 
-            function cancel() {
-              $mdDialog.cancel();
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function save(note) {
+                note.type = 'note';
+                $mdDialog.hide(true);
+                Resources.create(note);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Notiz hinzugefügt')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
             }
-
-            function save(note) {
-              note.type = 'note';
-              $mdDialog.hide(true);
-              Resources.create(note);
-              $mdToast.show(
-                $mdToast.simple()
-                .content('Notiz hinzugefügt')
-                .position('bottom right')
-                .hideDelay(3000)
-              );
+          })
+          .then(function dialogSuccess(accepted) {
+            if (accepted) {
+              // ...
             }
-
-          }
-        })
-        .then(function dialogSuccess(accepted) {
-          if (accepted) {
-          // ...
-          }
-        }, function dialogAbort() {
-          // ...
-        });
+          }, function dialogAbort() {
+            // ...
+          });
       }
-
-
-
-
 
     }
   }
