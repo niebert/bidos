@@ -13,33 +13,39 @@
 		</span>
 	</md-toolbar>
 
-	<md-input-container flex>
-		<label>Namen filtern</label>
-		<input type="text" ng-model="query">
-	</md-input-container>
-	<md-input-container flex>
-		<label>ID filtern</label>
-		<input type="text" ng-model="query">
-	</md-input-container>
-
 	<md-content flex class="bx-content">
+		<div layout class="search-bar">
+			<md-input-container flex>
+				<label>Namen filtern</label>
+				<input type="text" ng-model="stuff.name">
+			</md-input-container>
+			<md-input-container flex>
+				<label>Gruppe filtern</label>
+				<input type="text" ng-model="stuff.group">
+			</md-input-container>
+			<md-input-container flex>
+				<label>ID filtern</label>
+				<input type="text" ng-model="stuff.id">
+			</md-input-container>
+		</div>
+
 		<table>
 			<thead>
-				<th ng-click="vm.sortOrder='id'; reverse=!reverse">ID</th>
-				<th ng-hide="bx.role==2" ng-click="vm.sortOrder='name'; reverse=!reverse">Name</th>
-				<th ng-hide="bx.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtstag</th>
-				<th ng-show="bx.role==2" ng-click="vm.sortOrder='age'; reverse=!reverse">Geburtsjahr</th>
-				<th ng-click="vm.sortOrder='sex'; reverse=!reverse">Geschlecht</th>
-				<th ng-click="vm.sortOrder='group_id'; reverse=!reverse">Gruppe</th>
-				<th ng-click="vm.sortOrder='created_at'; reverse=!reverse">erstellt</th>
+				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
+				<th ng-click="predicate='name'; reverse=!reverse" ng-hide="bx.role==2">Name</th>
+				<th ng-click="predicate='age'; reverse=!reverse" ng-hide="bx.role==2">Geburtstag</th>
+				<th ng-click="predicate='age'; reverse=!reverse" ng-show="bx.role==2">Geburtsjahr</th>
+				<th ng-click="predicate='sex'; reverse=!reverse">Geschlecht</th>
+				<th ng-click="predicate='group_id'; reverse=!reverse">Gruppe</th>
+				<th ng-click="predicate='created_at'; reverse=!reverse">erstellt</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="kid in vm.kids track by $index | filter:query | orderBy:vm.sortOrder:reverse" ng-click="vm.dialog($event, kid)">
+				<tr ng-repeat="kid in vm.kids | filter:myFilter | orderBy:predicate:reverse track by $index" ng-click="vm.dialog($event, kid)">
 					<td> {{ kid.id }} </td>
 					<td ng-hide="bx.role==2"> {{ kid.name }} </td>
 					<td ng-hide="bx.role==2"> {{ kid.bday | date }} </td>
 					<td ng-show="bx.role==2"> {{ kid.bday | date:'yyyy' }} </td>
-					<td> {{ kid | sex }} </td>
+					<td> {{ kid.gender }} </td>
 					<td> {{ kid.group.name }} </td>
 					<td> {{ kid.created_at | date }} </td>
 				</tr>
@@ -47,4 +53,3 @@
 		</table>
 	</md-content>
 </div>
-

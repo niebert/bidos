@@ -1,9 +1,11 @@
 (function() {
   'use strict';
-  /* global angular, _ */
+  /* global angular, faker, _ */
 
   angular.module('bidos')
     .directive('bxTable', bxTable);
+
+  var APP_CONFIG = require('../../../config');
 
   function bxTable() {
     return {
@@ -19,12 +21,50 @@
     function controller(Resources, CRUD, $mdDialog, $scope, $rootScope, $http) {
       var vm = angular.extend(this, {
         dialog: dialog,
-        viewFilter: viewFilter,
-        // createRandomKid: createRandomKid,
-        // createRandomObservation: createRandomObservation
+        viewFilter: viewFilter
       });
 
       vm.sortOrder = 'id';
+      $scope.stuff = {};
+      $scope.myFilter = function() {
+        let q = [];
+
+        if ($scope.stuff.id) {
+          q.push(compareNum($scope.stuff.id, arguments[0].id));
+        };
+
+        if ($scope.stuff.name) {
+          q.push(compareString($scope.stuff.name, arguments[0].name));
+        }
+
+        if ($scope.stuff.title) {
+          q.push(compareString($scope.stuff.title, arguments[0].title));
+        }
+
+        if ($scope.stuff.group && arguments[0].group) {
+          q.push(compareString($scope.stuff.group, (arguments[0].group.name || '')));
+        }
+
+        if ($scope.stuff.institution) {
+          q.push(compareString($scope.stuff.institution, arguments[0].institution.name));
+        }
+
+        return _.all(q);
+
+        function compareNum(a, b) {
+          if (a && b) {
+            return parseInt(a) === parseInt(b);
+          }
+          return true;
+        }
+
+        function compareString(a, b) {
+          if (a && b) {
+            return b.match(new RegExp(a, 'gi'));
+          }
+          return true;
+        }
+      };
 
       $scope.auth = $rootScope.auth;
 
@@ -32,7 +72,7 @@
         Resources.get()
           .then(function(data) {
             angular.extend(vm, data);
-            // angular.extend(vm, APP_CONFIG);
+            angular.extend(vm, APP_CONFIG);
           });
       }
 
@@ -91,7 +131,7 @@
           });
       }
 
-      function dialogController($mdDialog, parentVm, resource, CONFIG) {
+      function dialogController($mdDialog, parentVm, resource) {
         var vm = angular.extend(this, {
           cancel: cancel,
           save: save,
@@ -103,12 +143,14 @@
         });
 
         function approveUser(user) {
-          var url = [CONFIG.api, 'auth/approve'].join('/');
+          var config = require('../../../../api/config');
+          var url = [config.url, 'auth/approve'].join('/');
           $http.post(url, user).success(function(response) {
             console.log(response);
             vm[resource.type] = response;
             resource = response;
             $mdDialog.hide();
+            // debugger
             vm.parent.users.splice(_.findIndex(vm.parent.users, {
               id: response.id
             }), 1, response);
@@ -208,8 +250,7 @@
         function save(formResource) {
 
           // Certain resource types (e.g. nested ones) need to be handled a
-          // little bit differently. -- NB: OMG OMG NO NO, don't do such
-          // things. TODO REFACTOR
+          // little bit differently.
 
           switch (formResource.type) {
             case 'item':

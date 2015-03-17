@@ -13,28 +13,32 @@
 		</span>
 	</md-toolbar>
 
-	<div layout>
-		<md-input-container flex>
-			<label>Namen filtern</label>
-			<input type="text" ng-model="query">
-		</md-input-container>
-		<md-input-container flex>
-			<label>ID filtern</label>
-			<input type="text" ng-model="query">
-		</md-input-container>
-	</div>
-
 	<md-content flex class="bx-content">
+		<div layout class="search-bar">
+			<md-input-container flex>
+				<label>Namen filtern</label>
+				<input type="text" ng-model="stuff.name">
+			</md-input-container>
+			<md-input-container flex>
+				<label>Institution filtern</label>
+				<input type="text" ng-model="stuff.institution">
+			</md-input-container>
+			<md-input-container flex>
+				<label>ID filtern</label>
+				<input type="text" ng-model="stuff.id">
+			</md-input-container>
+		</div>
+
 		<table>
 			<thead>
 				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
 				<th ng-click="predicate='name'; reverse=!reverse">Name</th>
 				<th ng-click="predicate='institution_id'; reverse=!reverse">Institution</th>
 				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
-				<th ng-click="predicate='created_at'; reverse=!reverse">Bearbeitet</th>
+				<th ng-click="predicate='modified_at'; reverse=!reverse">Bearbeitet</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="group in vm.groups track by $index | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, group)">
+				<tr ng-repeat="group in vm.groups | filter:myFilter | orderBy:predicate:reverse track by $index" ng-click="vm.dialog($event, group)">
 					<td> {{ group.id }} </td>
 					<td> {{ group.name }} </td>
 					<td> {{ group.institution.name }} </td>
@@ -45,4 +49,3 @@
 		</table>
 	</md-content>
 </div>
-

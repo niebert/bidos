@@ -13,50 +13,22 @@
 		</span>
 	</md-toolbar>
 
-	<div layout class="search-bar">
-		<md-input-container flex>
-			<label>Namen filtern</label>
-			<input type="text" ng-model="query">
-		</md-input-container>
-		<md-input-container flex>
-			<label>ID filtern</label>
-			<input type="text" ng-model="query">
-		</md-input-container>
-	</div>
+	<md-content flex class="bx-content">
+		<div layout class="search-bar">
+			<md-input-container flex>
+				<label>Namen filtern</label>
+				<input type="text" ng-model="stuff.name">
+			</md-input-container>
+			<md-input-container flex>
+				<label>Gruppe filtern</label>
+				<input type="text" ng-model="stuff.group">
+			</md-input-container>
+			<md-input-container flex>
+				<label>ID filtern</label>
+				<input type="text" ng-model="stuff.id">
+			</md-input-container>
+		</div>
 
-
-
-		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter="8px" md-gutter-gt-sm="4px">
-			<md-grid-tile ng-repeat="user in vm.users track by $index | filter:query | orderBy:predicate:reverse" ng-click="vm.dialog($event, user)" ng-class="{'superuser':user.id==1, 'blocked':!user.approved}" class="bx-tile-{{ user.role }}">
-
-				<md-grid-tile-header>
-					<div layout layout-align="space-between center" layout-fill>
-						<div flex> </div>
-						<div flex>
-							<span ng-show="!user.approved" md-svg-src="/img/ic_block_48px.svg" class="s48 unapproved-label" alt="Blockert Icon">NEU</span>
-							<!-- <md-icon ng-show="user.disabled" md-svg-src="/img/ic_block_48px.svg" class="s48 disabled" alt="Blockert Icon"></md-icon> -->
-							<span ng-show="user.id!=1 && user.disabled" md-svg-src="/img/ic_block_48px.svg" class="s48 disabled" alt="Blockert Icon">GESPERRT</span>
-						</div>
-					</div>
-				</md-grid-tile-header>
-
-				<div> {{ user.name }} </div>
-
-				<md-grid-tile-footer>
-					<div layout layout-align="space-between center" layout-fill>
-						<div flex> </div>
-						<div flex> {{ user.roleName }} </div>
-					</div>
-				</md-grid-tile-footer>
-
-			</md-grid-tile>
-
-		</md-grid-list>
-
-
-
-
-<!-- 	<md-content flex class="bx-content">
 		<table style="width: 100%;">
 			<thead>
 				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
@@ -71,19 +43,18 @@
 				<th ng-click="predicate='created_at'; reverse=!reverse">Bearbeitet</th>
 			</thead>
 			<tbody>
-				<tr >
+				<tr ng-repeat="user in vm.users | filter:myFilter | orderBy:vm.sortOrder:reverse track by $index" ng-click="vm.dialog($event, user)">
 					<td> {{ user.id }} </td>
 					<td> {{ user.name }} </td>
 					<td> {{ user.email }} </td>
 					<td> {{ user.username }} </td>
 					<td> {{ user.role }} </td>
-					<td> {{ user.enabled }} </td>
-					<td> {{ user.institution.name }} </td>
+					<td> {{ (user.approved && !user.disabled) ? 'JA' : 'NEIN' }} </td>
+					<td> {{ user.group.institution.name }} </td>
 					<td> {{ user.group.name }} </td>
 					<td> {{ user.created_at | date }} </td>
 				</tr>
 			</tbody>
 		</table>
 	</md-content>
- -->
 </div>
