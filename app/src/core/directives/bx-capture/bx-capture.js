@@ -197,7 +197,6 @@
 
       function isDisabled(type) {
         if ($rootScope.hasOwnProperty('observation')) {
-          return $rootScope.observation.steps.indexOf(type) >= $rootScope.observation.steps.indexOf($state.params.type);
         }
       }
 

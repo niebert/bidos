@@ -3,14 +3,6 @@
 
   module.exports = {
 
-    // app config
-    app: {
-      API: `http://${c.api.address}:${c.api.port}`,
-      RESOURCE_PATH: 'v1',
-      DEFAULT_RESOURCE: 'resources/vanilla',
-      TOKEN_KEY: 'auth_token'
-    },
-
     // colors
     // http://codepen.io/benknight/full/nADpy/
     // https://color.adobe.com/explore/most-popular/?time=all

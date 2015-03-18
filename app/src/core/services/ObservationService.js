@@ -5,13 +5,10 @@
   'use strict';
   var APP_CONFIG = require('../../config');
 
-  var steps = APP_CONFIG
-    .steps;
-
   angular.module('bidos')
     .service('Observation', ObservationService);
 
-  function ObservationService($rootScope, Resources, $q, $state, $mdToast) {
+  function ObservationService($rootScope, Resources, $q, $state, $mdToast, STRINGS) {
 
     class Observation {
       constructor() {
@@ -21,13 +18,9 @@
 
       get satisfaction() {
         var type = $state.params.type;
-        var index = steps.indexOf(type);
-        var deps = steps.slice(0, index + 1);
+        var index = STRINGS.steps.indexOf(type);
+        var deps = STRINGS.steps.slice(0, index + 1);
         return _.all(deps, type => this.hasOwnProperty(type), this);
-      }
-
-      get steps() {
-        return steps;
       }
 
       remove(resource) {
@@ -115,12 +108,12 @@
 
     // no arg: go to next step
     function go(resourceType) {
-      var i = $state.params.type ? steps.indexOf($state.params.type) : 0;
+      var i = $state.params.type ? STRINGS.steps.indexOf($state.params.type) : 0;
 
       o.satisfaction ? i++ : i = 0;
 
       return $state.go('bx.capture.go', {
-        type: resourceType || steps[i]
+        type: resourceType || STRINGS.steps[i]
       });
     }
 
