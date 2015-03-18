@@ -89,7 +89,7 @@
         icon: '/img/ic_assignment_returned_48px.svg',
         roles: ['admin', 'scientist'],
         onClick: function() {
-          return $state.go('bx.observation-inbox');
+          return $state.go('bx.obs');
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
