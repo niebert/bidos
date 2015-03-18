@@ -34,13 +34,6 @@
         scope.vm.go(attr.type);
       } else {
         console.log('%c\nCAPTURE CONTROLLER : _', 'color: #161616; font-weight: bolder; font-size: 1.5em;');
-        // if (scope.$rootScope.observation) {
-        //   console.warn('DOES THIS EVER HAPPEN?');
-        //   console.log('deleting existing observation');
-        //   delete scope.$rootScope.observation;
-        // } else {
-        //   console.log('no existing observation');
-        // }
         scope.vm.reset();
       }
 
@@ -86,7 +79,6 @@
         select: select,
         go: go,
         reset: reset,
-        // start: start,
         isActive: isActive,
         isDisabled: isDisabled,
         indexChar: indexChar,
@@ -150,20 +142,6 @@
       function reset() {
         Observation.reset();
       }
-
-      // function start() {
-      //   Observation.reset();
-      //   this.go('bx.capture', {
-      //     type: 'kid',
-      //   });
-
-      //   // $mdToast.show(toast.content('Neue Beobachtung'));
-
-      //   $mdToast.show($mdToast.simple()
-      //     .content('Neue Beobachtung gestartet')
-      //     .position('bottom right')
-      //     .hideDelay(7000));
-      // }
 
       function remove() {
         Observation.remove();
@@ -264,7 +242,7 @@
         });
       }
 
-      function nextExample(behaviour) {
+      function nextExample(behaviour) { // FIXME
         if (!behaviour.hasOwnProperty('exId')) {
           behaviour.exId = 1;
         } else {

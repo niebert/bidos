@@ -127,8 +127,7 @@
               Cache.add(resources)
                 .then(function(data) {
                   preparedData = prepare(data);
-                  // resolve(preparedData); // FIXME ?
-                  resolve(resources); // FIXME ?
+                  resolve(resources);// TODO why not resolve(preparedData); ???
                 }).catch(function(err) {
                   reject(err);
                 });
@@ -221,7 +220,7 @@
           console.log('[resources] preparedData available and ready');
           // just get the already prepared data model w/o any further actions
         } else {
-          console.warn('[resource] preparedData is not ready');
+          console.warn('[resource] preparedData is not ready. please wait ...'); // TODO check this data loading s/t very slow
           initResources().then(function(preparedData) {
             resolve(preparedData);
           }).catch(function(err) {
@@ -276,8 +275,7 @@
                 id: refId
               })[0];
 
-              // FIXME sometimes ref is not defined because resources are added later(?)
-              if (!ref) { return; } // no no, dont do this (but it works?) FIXME!
+              if (!ref) { return; } // TODO check this
 
               // link to ref <3 √
               if (!resource.hasOwnProperty(resource.type)) {
@@ -321,6 +319,7 @@
       addGroupHandlers(data);
       addInstitutionHandlers(data);
       addUserHandlers(data);
+      makeRoleModifications(data);
 
       console.timeEnd('[resource] prepare data');
       return data;
