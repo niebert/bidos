@@ -41,7 +41,7 @@
 		<div role="tabpanel" id="tab2-content" aria-labelledby="tab2" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
 			<h2>Ungeprüfte Beobachtungen</h2>
 			<ol>
-				<li ng-repeat="obs in vm.observations" ng-click="vm.dialog($event, obs)">
+				<li ng-repeat="obs in vm.observations" ng-click="vm.obsDialog($event, obs)" class="obs">
 					<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small>
 					<br>
 					<small>{{ obs.item.name }}</small>
@@ -52,7 +52,7 @@
 		<div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
 			<h2>Eigene Notizen <small ng-click="vm.addNote()" class="bx-sync">neu</small></h2>
 			<ol>
-				<li ng-repeat="note in vm.resources.notes" ng-click="vm.dialog($event, note)">
+				<li ng-repeat="note in vm.resources.notes" ng-click="vm.noteDialog($event, note)">
 					<strong>{{ note.created_at | date }}</strong> {{ note.text }}
 					<br>
 					<span ng-click="vm.deleteNote(note)">löschen</span>
