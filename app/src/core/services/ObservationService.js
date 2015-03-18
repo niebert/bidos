@@ -89,8 +89,10 @@
     function select(resource) {
       var r = resource;
 
-      if (r.type === 'behaviour' && r.niveau === 0) {
-        go('idea');
+      debugger
+      if (r.type === 'behaviour' && (r.niveau === 0 || r.niveau === null)) {
+        o.behaviour = r;
+        go('examples');
         return;
       }
 
