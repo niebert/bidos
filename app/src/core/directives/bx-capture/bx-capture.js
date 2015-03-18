@@ -79,7 +79,7 @@
       })();
     }
 
-    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, Observation, Resources) {
+    function controllerFn($rootScope, $scope, $state, $stateParams, $mdDialog, $mdToast, $mdSidenav, Observation, Resources, CONFIG, STRINGS) {
       var vm = angular.extend(this, {
         add: add,
         remove: remove,
@@ -197,6 +197,7 @@
 
       function isDisabled(type) {
         if ($rootScope.hasOwnProperty('observation')) {
+          return STRINGS.steps.indexOf(type) >= STRINGS.steps.indexOf($state.params.type);
         }
       }
 
