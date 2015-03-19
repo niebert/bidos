@@ -7,7 +7,7 @@
   let request = require('superagent');
   let domains = require('./seeds.json');
 
-  let config = require('../../api/config');
+  let config = require('../../app/api/config');
 
   // disable auth before running this
 
