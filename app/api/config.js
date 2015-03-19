@@ -5,21 +5,21 @@
     const env = {
       production: {
         port: 3000,
-        host: '92.51.147.239',
+        host: 'bidos.uni-koblenz.de',
         secret: 'ahciexef6xooDi9Qua8kaimah0de5oeyei0hooph6oosah7thiesh2ki0zie7kee',
-        db: 'postgres://asdf:asdf@localhost/bidos_production'
+        db: 'postgres://bidos:bidos@localhost/bidos_production'
       },
       development: {
         port: 3010,
-        host: 'localhost',
+        host: 'bidos.uni-koblenz.de',
         secret: 'tea1Ba8ed0tooyiquoWoomeej6eexeeyohmeo5Chie0eesohroo9iyooquuohoso',
-        db: 'postgres://asdf:asdf@localhost/bidos_development'
+        db: 'postgres://bidos:bidos@localhost/bidos_development'
       },
       test: {
         port: 3020,
-        host: 'localhost',
+        host: 'bidos.uni-koblenz.de',
         secret: 'dae3wai8AhcaeCh5ahXaib5bahfapeehoh3moo7Ohng9rei0chai0exie0phe7Oo',
-        db: 'postgres://asdf:asdf@localhost/bidos_test'
+        db: 'postgres://bidos:bidos@localhost/bidos_test'
       }
     };
 
