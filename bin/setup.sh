@@ -1,32 +1,68 @@
 #!/usr/local/bin/zsh
+#Thu Mar 19 04:04:48 CET 2015
 
-if ! which tmux >/dev/null; then
-	echo tmux not found; exit 1
-fi
+NAME=bidos
+HOST=$(hostname -f)
 
-export PORT=3002
-export NODE_ENV=development
-local BASEDIR=.
+case $NODE_ENV in
+	"production")   PORT=3000  ;;
+	"development")  PORT=3010  ;;
+	"test")         PORT=3020  ;;
+	*)
+		echo "Usage NODE_ENV={production|development|test} $0"
+		exit 1
+		;;
+esac
 
-tmux new-session -d -s bidos
+export NODE_ENV
+export PORT
 
-tmux new-window -k -t bidos:1 -n api
-tmux send-keys -t bidos:1 "cd $BASEDIR && gulp api" C-m
+URL=http://$HOST:$PORT
 
-tmux new-window -k -t bidos:2 -n www
-if [[ $NODE_ENV -ne "development" ]]; then
-	tmux send-keys -t bidos:2 "cd $BASEDIR && gulp www" C-m
-else
-	tmux send-keys -t bidos:2 "cd $BASEDIR && gulp" C-m
-fi
+cat << EOF | column -t
+NODE_ENV: $NODE_ENV
+PORT: $PORT
+NAME: $NAME
+HOST: $HOST
+URL: $URL
+EOF
 
-tmux new-window -k -t bidos:3 -n log
-tmux send-keys -t bidos:3 "cd $BASEDIR && tail -F log/$NODE_ENV.log | ./node_modules/.bin/bunyan" C-m
+echo "press enter to continue"; read
 
-createuser bidos
-createdb bidos_production
-createdb bidos_test
-createdb bidos_development
+sudo -u postgres dropdb ${NAME}_${NODE_ENV}
+sudo -u postgres dropuser $NAME
 
-cd app/config/database
-PORT=3010 NODE_ENV=development make dbdrop dbcreate dbschema dbusers && NODE_ENV="development" iojs seeds.js seeds.json && ./fake.sh
+sudo -u postgres createuser $NAME
+sudo -u postgres psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
+sudo -u postgres createdb -O $NAME ${NAME}_${NODE_ENV}
+
+cd ~/$NAME/bin/db
+
+psql -U $NAME -e -f schema.sql ${NAME}_${NODE_ENV}
+curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@$NAME", "password": "123", "username": "admin", "approved": true }' $URL/auth/signup
+
+iojs seeds.js seeds.json
+
+function fake() {
+	if [[ $1 == "user" ]]; then
+		url="$URL/auth/signup"
+	else
+		url="$URL/v1/$1"
+	fi
+
+	curl -qs $URL/fake/$1 | curl -s -XPOST -H "Content-Type: application/json" -d @- $url
+}
+
+#if [[ $NODE_ENV == "production" ]]; then
+#	echo -e "\e[0;35m$NODE_ENV no fake data"
+#	exit 0
+#fi
+
+repeat  2    fake institution
+repeat  4    fake group
+repeat  64   fake kid
+repeat  128  fake observation
+repeat  4    fake user
+
+echo -e " \e[0;32m$NODE_ENV setup done"
+
