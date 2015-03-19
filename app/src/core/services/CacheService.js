@@ -5,10 +5,10 @@
   angular.module('bidos')
     .service('Cache', CacheService);
 
-  function CacheService($rootScope, $q) {
+  function CacheService($rootScope, $q, CONFIG) {
 
     const VERSION = 1;
-    const DATABASE_NAME = 'bidos_development';
+    const DATABASE_NAME = [CONFIG.name, process.env.NODE_ENV].join('_');
 
     let db = new Dexie(DATABASE_NAME);
 

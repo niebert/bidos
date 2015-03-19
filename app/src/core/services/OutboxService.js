@@ -5,10 +5,10 @@
   angular.module('bidos')
     .service('Outbox', OutboxService);
 
-  function OutboxService($q, CRUD) {
+  function OutboxService($q, CRUD, CONFIG) {
 
     const VERSION = 1;
-    const DATABASE_NAME = 'bidos_outbox';
+    const DATABASE_NAME = [CONFIG.name, 'outbox', process.env.NODE_ENV].join('_');
     const OUTBOX_TABLE = 'outbox';
 
     let db = new Dexie(DATABASE_NAME);
