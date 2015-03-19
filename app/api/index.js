@@ -59,7 +59,7 @@
   app.use(validate());
   app.use(bodyparser());
 
-  app.use(require('./logger')());
+  //app.use(require('./logger')()); FIXME too many open files and krbwschzfsch
   if (require.main === module) {
     app.use(logger());
   }
