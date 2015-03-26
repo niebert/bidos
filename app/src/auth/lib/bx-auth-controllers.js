@@ -8,7 +8,7 @@
   angular.module('bx.auth.controller', [])
     .controller('AuthController', AuthController);
 
-  function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q, CONFIG) {
+  function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q, CONFIG, STRINGS) {
 
     // make the current state available to everywhere
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -23,7 +23,8 @@
       reset: reset,
       next: next,
       previous: previous,
-      selectedIndex: 1
+      selectedIndex: 1,
+      STRINGS, STRINGS
     });
 
     function getPublicData() {

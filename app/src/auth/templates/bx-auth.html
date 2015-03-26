@@ -1,4 +1,4 @@
-<div ng-controller="AppCtrl" class="tabsdemoStaticTabs sample" layout-fill>
+<div ng-controller="AuthController" class="tabsdemoStaticTabs sample" layout-fill>
 
 	<md-tabs class="md-accent" md-selected="vm.selectedIndex">
 		<md-tab id="tab1" aria-controls="tab1-content"> Anmelden </md-tab>
@@ -37,7 +37,7 @@
 
 				<div>
 					<span> Gewünschte Rolle: </span>
-					<select ng-model="user.role" ng-options="role.value as role.text for role in auth.roles"> </select>
+					<select ng-model="user.role" ng-options="role.value as role.text for role in auth.STRINGS.roles"> </select>
 				</div>
 
 				<div ng-show="user.role!==undefined">
