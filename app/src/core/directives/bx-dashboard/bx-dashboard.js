@@ -159,6 +159,19 @@
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
       }, {
+        footer: 'Beobachtungen',
+        tooltip: 'Resource \"Beobachtungen\" verwalten',
+        description: '',
+        icon: '/img/ic_business_48px.svg',
+        roles: ['admin', 'scientist'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'observation'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }, {
         footer: 'Institutionen',
         tooltip: 'Resource \"Institution\" verwalten',
         description: '',
