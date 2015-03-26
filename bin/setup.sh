@@ -53,10 +53,10 @@ function fake() {
 	curl -qs $URL/fake/$1 | curl -s -XPOST -H "Content-Type: application/json" -d @- $url
 }
 
-#if [[ $NODE_ENV == "production" ]]; then
-#	echo -e "\e[0;35m$NODE_ENV no fake data"
-#	exit 0
-#fi
+if [[ $NODE_ENV == "production" ]]; then
+	echo -e "\e[0;35m$NODE_ENV no fake data"
+	exit 0
+fi
 
 repeat  2    fake institution
 repeat  4    fake group
