@@ -24,7 +24,7 @@
       next: next,
       previous: previous,
       selectedIndex: 1,
-      STRINGS, STRINGS
+      STRINGS: STRINGS
     });
 
     function getPublicData() {
