@@ -18,7 +18,7 @@
       }
     };
 
-    function controller(Resources, CRUD, $mdDialog, $scope, $rootScope, $http) {
+    function controller(Resources, CRUD, $mdDialog, $scope, $rootScope, $http, STRINGS) {
       var vm = angular.extend(this, {
         dialog: dialog,
         viewFilter: viewFilter
@@ -118,7 +118,8 @@
             controllerAs: 'vm',
             locals: {
               resource: resource,
-              parentVm: vm
+              parentVm: vm,
+							STRINGS: STRINGS
             },
             targetEvent: ev,
             templateUrl: 'templates/bx-table-' + resource.type + '-dialog.html'
@@ -131,16 +132,19 @@
           });
       }
 
-      function dialogController($mdDialog, parentVm, resource) {
+      function dialogController($mdDialog, parentVm, resource, STRINGS) {
         var vm = angular.extend(this, {
           cancel: cancel,
           save: save,
           destroy: destroy,
           parent: parentVm,
+					STRINGS: STRINGS,
           approveUser: approveUser,
           toggleEnabled: toggleEnabled,
           formIsValid: formIsValid
         });
+
+				console.log(vm.STRINGS);
 
         function approveUser(user) {
           var config = require('../../../../api/config');
