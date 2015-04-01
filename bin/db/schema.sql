@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS kids (
   group_id          INT REFERENCES groups(id),
   enabled           BOOLEAN DEFAULT TRUE,
   bday              DATE,
+  sex               INT,
   gender            INT,
   religion          INT,
   hands             INT

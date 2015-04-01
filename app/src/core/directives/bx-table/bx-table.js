@@ -21,8 +21,11 @@
     function controller(Resources, CRUD, $mdDialog, $scope, $rootScope, $http, STRINGS) {
       var vm = angular.extend(this, {
         dialog: dialog,
-        viewFilter: viewFilter
+        viewFilter: viewFilter,
+				roles: STRINGS.roles
       });
+
+			console.log('ROLES', vm.roles);
 
       vm.sortOrder = 'id';
       $scope.stuff = {};
