@@ -848,3 +848,19 @@ md-tabs {
 .obs {
   padding-bottom: 8px;
 }
+
+#content_tab_001 > div > div,
+#content_tab_002 > div > div,
+#content_tab_003 > div > div,
+#content_tab_004 > div > div {
+  width: 100%;
+}
+
+#layout > div > section > md-content > bx-portfolio > div > md-content > md-tabs {
+  margin-top: 24px;
+}
+
+#layout > div > section > md-content > bx-portfolio > div > md-content {
+  margin-left: 0;
+  margin-right: 0;
+}

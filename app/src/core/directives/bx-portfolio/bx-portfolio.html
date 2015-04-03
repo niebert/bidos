@@ -14,7 +14,7 @@
 	</md-toolbar>
 
 	<md-content flex class="bx-content">
-		<md-tabs md-selected="selectedIndex">
+		<md-tabs md-selected="selectedIndex" md-stretch-tabs>
 			<md-tab ng-repeat="tab in vm.tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
 				<div class="demo-tab tab{{$index%4}}" layout="column" layout-fill layout-align="space-around center">
 					<canvas id="bar" class="chart chart-bar" data="data" labels="labels" legend="true" series="series"></canvas>
