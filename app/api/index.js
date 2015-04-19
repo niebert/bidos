@@ -13,7 +13,6 @@
   var jwt = require('koa-jwt');
   var cors = require('koa-cors');
   var mount = require('koa-mount');
-  var logger = require('koa-logger');
   var compress = require('koa-compress');
   var validate = require('koa-validate');
   var bodyparser = require('koa-bodyparser');
@@ -59,9 +58,9 @@
   app.use(validate());
   app.use(bodyparser());
 
-  //app.use(require('./logger')()); FIXME too many open files and krbwschzfsch
   if (require.main === module) {
-    app.use(logger());
+    app.use(require('./logger')()); // FIXME too many open files and krbwschzfsch
+    app.use(require('koa-logger')()); // use bunyan only
   }
 
   // inject cors headers
@@ -82,11 +81,11 @@
   // if the authorization succeeds, next is yielded and the following routes
   // are reached. if it fails, it throws and the previous middleware will catch
   // that error and send back status 401 and redirect to /login.
-  //app.use(function*(next) {
-  //  yield auth.call(this, jwt({
-  //    secret: config.secret
-  //  }).call(this, next));
-  //});
+  app.use(function*(next) {
+    yield auth.call(this, jwt({
+      secret: config.secret
+    }).call(this, next));
+  });
 
   // secured routes
   mountRoutes(routes.private, '/v1/');
