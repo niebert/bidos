@@ -16,6 +16,9 @@
 
   var config = require('../app/api/config');
   var PORT = config.port + 1;
+
+	var PORT = process.env.NODE_ENV === 'production' ? 80 : config.port + 1;
+
   var DIST_DIR = path.join(__dirname, '../app/dist');
   var BOWER_DIR = path.join(__dirname, '../bower_components');
 
