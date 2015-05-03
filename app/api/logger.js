@@ -9,30 +9,32 @@
         name: 'bidos',
         streams: [{
           level: 'error',
-          path: 'log/development.log',
+          path: `log/${process.env.NODE_ENV}.log`
         }, {
           level: 'warn',
-          path: 'log/development.log',
+          path: `log/${process.env.NODE_ENV}.log`
         }, {
           level: 'info',
-          path: 'log/development.log',
+          path: `log/${process.env.NODE_ENV}.log`
         }, {
           level: 'debug',
-          path: 'log/development.log',
+          path: `log/${process.env.NODE_ENV}.log`
         }],
       });
 
-      this.log.info({
-        headers: this.headers,
-        request: {
-          ip: this.request.ip,
-          body: this.request.body,
-          method: this.request.method
-        }
-      });
+      //this.log.info({
+      //  headers: this.headers,
+      //  request: {
+      //    ip: this.request.ip,
+      //    body: this.request.body,
+      //    method: this.request.method
+      //  }
+      //});
+
       yield next;
     };
   };
 
   module.parent ? module.exports = exports = main : main();
 }());
+
