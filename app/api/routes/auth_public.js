@@ -12,7 +12,8 @@
   var removeDiacritics = require('diacritics').remove;
   var sendgrid = require('sendgrid')(config.sendgrid.user, config.sendgrid.key);
 
-  var crypto = require('co-crypto');
+  var crypto = require('co-crypto'); // to generate a random string
+	var bcrypt = require('co-bcrypt'); // to do password hashing
 
   var user;
 
@@ -243,53 +244,112 @@
   }
 
   function* authenticate(next) {
-    var bcrypt = require('co-bcrypt');
 
-    console.log('auth request: ', this.request.body.username, '//', this.request.body.password);
+		// log every auth request
+
+		this.log.info({
+			type: 'auth request',
+			username: this.request.body.username,
+			password: this.request.body.password
+		});
+
+		// try to find the specified user in the database
 
     var result =
-      yield this.pg.db.client.query_({
-        name: 'readUser',
-        text: 'SELECT * FROM auth WHERE username = $1'
-      }, [this.request.body.username]);
+      yield this.pg.db.client.query_(
+				'SELECT * FROM auth WHERE username = $1',
+				[this.request.body.username]);
+
+		// rowcount will be zero if no matching user was found
 
     if (!result.rowCount) {
+
+			this.log.warn({
+				type: 'username unknown',
+				username: this.request.body.username,
+				password: this.request.body.password
+			});
+
       this.status = 401;
+
       this.body = {
         error: 'Unbekannter Benutzername'
       };
+
     } else {
 
+			// user was found in database
+
       user = result.rows[0];
-      console.log(this.request.body, user);
+
+			// if the user has not been approved, yet
 
       if (!user.approved) {
+
+				this.log.warn({
+					type: 'user not approved',
+					username: this.request.body.username,
+					password: this.request.body.password
+				});
+
         this.status = 401;
+
         this.body = {
           error: 'Der Benutzer ist nicht freigeschaltet'
         };
+
       }
 
-      if (
-        yield bcrypt.compare(this.request.body.password, user.password_hash)) {
-        yield next;
-      } else {
-        this.status = 401;
-        this.body = {
-          error: 'Falsches Passwort'
-        };
-      }
+			// if the user is disabled
 
       if (user.disabled) {
-        console.log(user);
+
+				this.log.warn({
+					type: 'user disabled',
+					username: this.request.body.username,
+					password: this.request.body.password
+				});
+
         this.status = 401;
+
         this.body = {
           error: 'Der Benutzer ist deaktiviert'
         };
       }
 
-      this.status = 200;
-      this.body = user;
+			// compare passwords
+
+      if (yield bcrypt.compare(this.request.body.password, user.password_hash)) {
+
+				this.log.info({
+					type: 'auth success',
+					username: this.request.body.username,
+					password: this.request.body.password
+				});
+
+				//this.status = 200;
+				//this.body = user;
+
+				yield next;
+
+			} else {
+
+				// password is not correct
+
+				this.log.warn({
+					type: 'password failure',
+					username: this.request.body.username,
+					password: this.request.body.password
+				});
+
+        this.status = 401;
+
+        this.body = {
+          error: 'Falsches Passwort'
+        };
+
+      }
+
     }
   }
 
