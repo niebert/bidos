@@ -1,0 +1,47 @@
+<div layout="column" layout-fill>
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+
+			<md-button aria-label="dashboard" ui-sref="bx.home">
+				<md-icon md-svg-src="{{ ic.dashboard }}" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+
+			<h2>Resourcen Verwalten</h2>
+
+			<span flex></span>
+
+			<md-button aria-label="menu">
+				<md-icon md-svg-src="{{ ic.vert }}" class="s48" alt="Some Menu"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-content flex class="bx-content">
+		<div>
+
+			<h2>Institutionen</h2>
+			<ul ng-repeat="institution in vm.institutions">
+				<li><md-icon md-svg-src="/img/ic_business_48px.svg"></md-icon> {{institution.name}}</li>
+				<!-- <pre>{{institution | json}}</pre> -->
+
+				<h3>Gruppen</h3>
+				<ul ng-repeat="group in institution.groups">
+					<li>{{group.name}}</li>
+					<!-- <pre>{{group | json}}</pre> -->
+
+					<h4>Kinder</h4>
+					<ul ng-repeat="kid in group.kids">
+						<li>{{kid.name}}</li>
+						<!-- <pre>{{kid | json}}</pre> -->
+
+					</ul>
+				</ul>
+			</ul>
+		</div>
+
+</div>
+</md-content>
+</div>
+
