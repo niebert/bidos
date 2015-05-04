@@ -27,7 +27,8 @@
         date: new Date().toJSON().replace(/[:]/g, '-'),
         exportData: exportData,
         logout: logout,
-        hidden: hidden
+        hidden: hidden,
+				userDialog: userDialog
       });
 
 
@@ -36,6 +37,8 @@
 
           vm.resources = resources;
           vm.me = getUser(resources);
+
+					console.info(vm.me);
 
           vm.tiles = {};
 
@@ -222,6 +225,63 @@
               type: 'application/json'
             }));
             console.log(vm.downloadLink);
+          });
+      }
+
+      function userDialog(ev, me) {
+        $mdDialog.show({
+            templateUrl: 'templates/bx-user.dialog.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              me: me,
+            },
+            controller: function($scope, $mdDialog, Resources, me) {
+              angular.extend(this, {
+                logout: logout,
+                me: me
+              });
+
+              console.log(me);
+
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function accept() {
+                $mdDialog.hide(true);
+                obs.approved = true;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung angenommen')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
+              function reject() {
+                $mdDialog.hide(false);
+                obs.approved = false;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung abgelehnt')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+            }
+          })
+          .then(function dialogSuccess(accepted) {
+            if (accepted) {
+              vm.observations.splice(_.findIndex(vm.observations, {
+                id: obs.id
+              }), 1);
+            }
+          }, function dialogAbort() {
+            // ...
           });
       }
 
