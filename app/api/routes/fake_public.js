@@ -57,7 +57,7 @@
           type: resource,
           name: `${faker.name.firstName()} ${faker.name.lastName()}`,
           bday: faker.date.between(maxAge, minAge),
-          gender: _.random(1, 3),
+          sex: _.random(1, 3),
           hands: _.random(1, 3),
           religion: _.random(0, 9),
           group_id: _.sample(groupIds)

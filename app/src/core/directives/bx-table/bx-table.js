@@ -22,10 +22,10 @@
       var vm = angular.extend(this, {
         dialog: dialog,
         viewFilter: viewFilter,
-				roles: STRINGS.roles
+        roles: STRINGS.roles
       });
 
-			console.log('ROLES', vm.roles);
+      console.log('ROLES', vm.roles);
 
       vm.sortOrder = 'id';
       $scope.stuff = {};
@@ -76,6 +76,16 @@
           .then(function(data) {
             angular.extend(vm, data);
             angular.extend(vm, APP_CONFIG);
+
+            vm.me = getUser(data);
+            console.log(vm.me);
+
+            function getUser(resources) {
+              return _.filter(resources.users, {
+                id: $rootScope.auth.id
+              })[0];
+            }
+
           });
       }
 
@@ -122,7 +132,7 @@
             locals: {
               resource: resource,
               parentVm: vm,
-							STRINGS: STRINGS
+              STRINGS: STRINGS
             },
             targetEvent: ev,
             templateUrl: 'templates/bx-table-' + resource.type + '-dialog.html'
@@ -141,13 +151,13 @@
           save: save,
           destroy: destroy,
           parent: parentVm,
-					STRINGS: STRINGS,
+          STRINGS: STRINGS,
           approveUser: approveUser,
           toggleEnabled: toggleEnabled,
           formIsValid: formIsValid
         });
 
-				console.log(vm.STRINGS);
+        console.log(vm.STRINGS);
 
         function approveUser(user) {
           var config = require('../../../../api/config');

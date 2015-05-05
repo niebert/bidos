@@ -1,3 +1,6 @@
+<!-- bidos dashboard -->
+<!-- header stuff -->
+<!-- date -->
 
 <div layout="column" layout-fill>
 
@@ -12,7 +15,7 @@
 				abmelden
 			</md-button>
 
-			<md-button aria-label="dialog" ng-click="vm.userDialog($event, {})">
+			<md-button aria-label="dialog" ng-click="vm.userDialog($event, vm.me)">
 				{{ vm.me.name }} / {{ vm.me.roleName }}
 			</md-button>
 
@@ -21,7 +24,12 @@
 
 	<md-content flex class="bx-content" id="dashboard">
 		<md-grid-list md-cols-sm="1" md-cols-md="3" md-cols-gt-md="6" md-row-height-gt-md="4:7" md-row-height-sm="4:1" md-row-height="5:4" md-gutter="8px" md-gutter-gt-sm="8px">
-			<md-grid-tile md-colspan="{{tile.colSpan[0]}}" md-colspan-sm="{{tile.colSpan[1]}}" md-colspan-md="{{tile.colSpan[2]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.menu" class="bx-tile{{$index+1}}">
+
+
+
+			<!-- Admin only -->
+
+			<md-grid-tile md-colspan="{{tile.colSpan[2]}}" md-colspan-sm="{{tile.colSpan[0]}}" md-colspan-md="{{tile.colSpan[1]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.admin" class="bx-tile bx-tile-admin" ng-if="vm.hidden(tile)"> <!-- {{$index+1}} -->
 
 				<md-grid-tile-header ng-show="tile.header">
 					<div layout layout-align="space-between center" layout-fill>
@@ -32,11 +40,16 @@
 
 				<md-icon md-svg-src="{{ tile.icon }}" class="s48"></md-icon>
 
-				<md-grid-tile-footer ng-show="tile.footer">
+				<md-grid-tile-footer ng-show="tile.footer" class="tile-footer">
 					<div> {{ tile.footer }} </div>
 				</md-grid-tile-footer>
 			</md-grid-tile>
-			<md-grid-tile md-colspan="{{tile.colSpan[0]}}" md-colspan-sm="{{tile.colSpan[1]}}" md-colspan-md="{{tile.colSpan[2]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.resources" class="bx-tile{{$index+1}}">
+
+
+
+			<!-- A -->
+
+			<md-grid-tile md-colspan="{{tile.colSpan[2]}}" md-colspan-sm="{{tile.colSpan[0]}}" md-colspan-md="{{tile.colSpan[1]}}" md-rowspan="{{tile.rowSpan[2]}}" md-rowspan-sm="{{tile.rowSpan[0]}}" md-rowspan-md="{{tile.rowSpan[1]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.a" class="bx-tile bx-tile-resources">
 
 				<md-grid-tile-header ng-show="tile.header">
 					<div layout layout-align="space-between center" layout-fill>
@@ -47,12 +60,53 @@
 
 				<md-icon md-svg-src="{{ tile.icon }}" class="s48"></md-icon>
 
-				<md-grid-tile-footer ng-show="tile.footer">
+				<md-grid-tile-footer ng-show="tile.footer" class="tile-footer">
 					<div> {{ tile.footer }} </div>
 				</md-grid-tile-footer>
 			</md-grid-tile>
+
+
+
+			<!-- Items and statistics about them in relation to a resource -->
+
+			<md-grid-tile md-colspan="{{tile.colSpan[2]}}" md-colspan-sm="{{tile.colSpan[0]}}" md-colspan-md="{{tile.colSpan[1]}}" md-rowspan="{{tile.rowSpan[2]}}" md-rowspan-sm="{{tile.rowSpan[0]}}" md-rowspan-md="{{tile.rowSpan[1]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.c" class="bx-tile bx-tile-items"> <!-- {{$index+1}} -->
+
+				<md-grid-tile-header ng-show="tile.header">
+					<div layout layout-align="space-between center" layout-fill>
+						<div flex> {{ tile.header }} </div>
+						<div flex></div>
+					</div>
+				</md-grid-tile-header>
+
+				<md-icon md-svg-src="{{ tile.icon }}" class="s48"></md-icon>
+
+				<md-grid-tile-footer ng-show="tile.footer" class="tile-footer">
+					<div> {{ tile.footer }} </div>
+				</md-grid-tile-footer>
+			</md-grid-tile>
+
+
+			<!-- Observation Stuff-->
+
+			<md-grid-tile md-colspan="{{tile.colSpan[2]}}" md-colspan-sm="{{tile.colSpan[0]}}" md-colspan-md="{{tile.colSpan[1]}}" md-rowspan="{{tile.rowSpan[2]}}" md-rowspan-sm="{{tile.rowSpan[0]}}" md-rowspan-md="{{tile.rowSpan[1]}}" ng-click="tile.onClick()" ng-repeat="tile in vm.tiles.b" class="bx-tile bx-tile-obs">
+
+				<md-grid-tile-header ng-show="tile.header">
+					<div layout layout-align="space-between center" layout-fill>
+						<div flex> {{ tile.header }} </div>
+						<div flex></div>
+					</div>
+				</md-grid-tile-header>
+
+				<md-icon md-svg-src="{{ tile.icon }}" class="s48"></md-icon>
+
+				<md-grid-tile-footer ng-show="tile.footer" class="tile-footer">
+					<div> {{ tile.footer }} </div>
+				</md-grid-tile-footer>
+			</md-grid-tile>
+
+
+
 		</md-grid-list>
-
 	</md-content>
 </div>
 

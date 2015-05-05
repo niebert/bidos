@@ -86,7 +86,6 @@
         nextExample: nextExample,
         deleteStuff: deleteStuff,
         kidFilter: kidFilter,
-        groupFilter: groupFilter,
         maxSkill: maxSkill,
         toolbarState: $state.params.type,
         abort: abort,
@@ -211,30 +210,98 @@
         };
       }
 
-      function groupFilter(filterObject) {
-        if (!filterObject) {
-          return;
-        }
+      $scope.stuff = {};
 
+      $scope.groupFilter = function(filterObject) {
+        if (!filterObject) return;
+
+        // we return a function that returns true if the child matches and
+        // false if not
         return function(group) {
-          var a = []; // wbr
+          var a = [];
 
-          // NOTE: cleared input/select fields set null value to bound variable
-
+          // NOTE: cleared input/select fields are set to null value to
+          // bound variable!                              ^^^^
           if (filterObject.hasOwnProperty('groupId') && filterObject.groupId !== null) {
             a.push(group.id === filterObject.groupId);
           }
 
           var kidLength = _.without(group.kids, {
-              id: filterObject.kidId
-            })
-            .length;
+            id: filterObject.kidId
+          }).length;
 
           a.push(kidLength);
-          console.log(_.all(a));
+          console.log('groupFilter', a, _.all(a));
           return _.all(a);
         };
-      }
+      };
+
+      $scope.myFilter = function() {
+
+        /*
+           NOTE TO WHOEVER MAY SEE THIS: Things here may be kind of tricky.
+
+           - argument[0] is any resource object that you want to filter, i.e.
+           - a kid or a group
+
+           - hooking things up via $scope is much more easy than going the
+           - vm.whatever road. it's much more plug-and-play
+
+          - arguments[0].group.id is possible because of that funny method in
+          - our ResourceService. For every resource objects key that ends with
+          - '_id', e.g. 'group_id' we add a getter method named 'group'
+          - (removing the suffix). That getter method is only called when
+          - called, and then resolves the actual resource the _id key is
+          - referring to. Iirc some things didn't work out so well (looping
+          - and calling these getters via ng-repeat?), but apparently it just
+          - works now. May be due to enumerable:false being set in these
+          - getters; see MDN on defineProperty/enumerable
+          - https://goo.gl/JolS3o
+        */
+
+        let q = [];
+
+        if ($scope.stuff.id) {
+          q.push(compareNumber($scope.stuff.id, arguments[0].id));
+        };
+
+        if ($scope.stuff.name) {
+          q.push(compareString($scope.stuff.name, arguments[0].name));
+        }
+
+        if ($scope.stuff.title) {
+          q.push(compareString($scope.stuff.title, arguments[0].title));
+        }
+
+        if ($scope.stuff.group && arguments[0].group) {
+          q.push(compareString($scope.stuff.group, (arguments[0].group.name || '')));
+        }
+
+        if ($scope.stuff.group_id && arguments[0].group_id) {
+          q.push(compareNumber($scope.stuff.group_id, (arguments[0].group.id || '')));
+        }
+
+        if ($scope.stuff.institution) {
+          q.push(compareString($scope.stuff.institution, arguments[0].institution.name));
+        }
+
+        return _.all(q);
+
+        function compareNumber(a, b) {
+          if (a && b) {
+            return parseInt(a) === parseInt(b);
+          }
+          return true;
+        }
+
+        function compareString(a, b) {
+          if (a && b) {
+            return b.match(new RegExp(a, 'gi'));
+          }
+          return true;
+        }
+      };
+
 
       function maxSkill() {
         return _.reduce($rootScope.observations, function(a, b) {

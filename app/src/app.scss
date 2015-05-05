@@ -172,15 +172,36 @@ body > div.md-dialog-container.ng-scope > md-dialog > md-content > form > div > 
   padding-left: 10px;
 }
 
-/* dashboard tiles */
+/* dashboard tiles green */
+$dashboard-colors-green: #525D3F #FFEE6E #D1D178 #929C6D #3C463A;
+@for $i from 1 through length($dashboard-colors-green) {
+  .bx-tile-green#{$i} {
+    background: lighten(nth($dashboard-colors-green, $i), 10);
+    font-weight: 300;
+    font-size: 1.2em;
+  };
+};
+
+/* dashboard tiles red */
+$dashboard-colors-red: #8FB0FF #A1FF36 #FD2D11 #BB280E #91280F;
+@for $i from 1 through length($dashboard-colors-red) {
+  .bx-tile-red#{$i} {
+    background: lighten(nth($dashboard-colors-red, $i), 10);
+    font-weight: 300;
+    font-size: 1.2em;
+  };
+};
+
+/* dashboard tiles c */
 $dashboard-colors: #e248ff #53c4ff #fc4b7c #66fffe #fd8c60 #72ff93 #cfa0ff #2f80ff #a1e6ff #6cff41 #fb6738 #578fff;
 @for $i from 1 through length($dashboard-colors) {
-  .bx-tile#{$i} {
+  .bx-tile-bla#{$i} {
     background: lighten(nth($dashboard-colors, $i), 10);
     font-weight: 300;
     font-size: 1.2em;
   };
 };
+
 
 /* IMPORTANT every content container (stuff below the toolbars) must have this */
 md-content.bx-content {
@@ -869,3 +890,60 @@ md-tabs {
 	margin: 0px;
 }
 
+#dashboard > md-grid-list > md-grid-tile:nth-child(1) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(2) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(3) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(4) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(5) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(6) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(7) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(8) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(9) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(10) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(11) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(12) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(13) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(14) > figure > md-grid-tile-footer,
+#dashboard > md-grid-list > md-grid-tile:nth-child(15) > figure > md-grid-tile-footer {
+  height: 48px;
+}
+
+.bx-tile:hover {
+}
+
+.bx-tile {
+  font-weight: 200;
+  font-size: 32px;
+}
+
+.bx-tile-admin {
+  background-color: #FF4A25;
+  color: #FF4A25;
+}
+
+.bx-tile-items {
+  background-color: #528BA2;
+  color: #528BA2;
+}
+
+.bx-tile-obs {
+  background-color: #A04B93;
+  color: #A04B93;
+}
+
+.bx-tile-resources {
+  background-color: #7F913A;
+  color: lighten(#7F913A, 20);
+}
+
+md-dialog {
+  padding: 32px;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}

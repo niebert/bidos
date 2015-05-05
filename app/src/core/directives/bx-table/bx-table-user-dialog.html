@@ -67,9 +67,7 @@
 			</md-content>
 		</form>
 
-		<md-button aria-label="approve" ng-show="!vm.user.approved && vm.user.id!==1" ng-click="vm.approveUser(vm.user)" class="md-hue-1 md-warn">
-			Benutzer zulassen
-		</md-button>
+
 
 	</md-content>
 
@@ -81,6 +79,10 @@
 
 		<md-button aria-label="delete-user" ng-show="vm.user.id && vm.user.id!==1" ng-click="vm.destroy(vm.user)" class="md-raised md-warn">
 			Löschen
+		</md-button>
+
+		<md-button aria-label="approve" ng-show="!vm.user.approved && vm.user.id!==1" ng-click="vm.approveUser(vm.user)" class="md-raised md-hue-2 md-warn">
+			Benutzer zulassen
 		</md-button>
 
 		<span flex></span>

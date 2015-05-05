@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS kids (
   enabled           BOOLEAN DEFAULT TRUE,
   bday              DATE,
   sex               INT,
-  gender            INT,
   religion          INT,
   hands             INT
 );

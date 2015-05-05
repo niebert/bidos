@@ -16,7 +16,7 @@
       templateUrl: 'templates/bx-dashboard.html'
     };
 
-    function controllerFn($rootScope, $scope, UserFactory, $state, $window, Resources, $mdToast) {
+    function controllerFn($rootScope, $scope, UserFactory, $state, $window, Resources, $mdToast, $mdDialog) {
 
       $scope.auth = $rootScope.auth;
 
@@ -28,7 +28,7 @@
         exportData: exportData,
         logout: logout,
         hidden: hidden,
-				userDialog: userDialog
+        userDialog: userDialog
       });
 
 
@@ -37,10 +37,10 @@
 
           vm.resources = resources;
           vm.me = getUser(resources);
+          $rootScope.me = vm.me;
+          console.info(vm.me);
 
-					console.info(vm.me);
-
-          vm.tiles = {};
+          // vm.tiles = {};
 
           // the user should get only the resources he's allowed to get, e.g.
           // anonymized stuff for scientists
@@ -74,68 +74,23 @@
         return _.includes(tile.roles, vm.me.roleName);
       }
 
-      vm.menu = [{
-        footer: 'Profil',
-        tooltip: 'Persönliches Profil',
-        description: 'Eigene Resourcen und Tasks',
-        icon: '/img/ic_settings_48px.svg',
-        roles: ['admin', 'practitioner', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.profile');
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Eingehende Beobachtungen',
-        tooltip: 'Neu eingegange Beobachtungen ansehen',
-        description: '',
-        icon: '/img/ic_assignment_returned_48px.svg',
-        roles: ['admin', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.obs');
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Neue Beobachtung',
-        tooltip: 'Neue Beobachtung einstellen',
-        description: 'Sie können eine neue Beobachtung erstellen, indem sie ein Kind und ein Baustein auswählen und das Niveau des beobachteten Verhalten des Kindes auf einer Skala von 1-3 (eigentlich 0-4) bewerten. Fügen Sie optional noch eigene Beispiele und Ideen hinzu.',
-        icon: '/img/ic_assignment_48px.svg',
-        roles: ['admin', 'practitioner'],
-        onClick: function() {
-          return $state.go('bx.capture', {
-            type: 'kid'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Kinder',
-        tooltip: 'Kinder verwalten',
-        description: '',
-        icon: '/img/ic_account_child_48px.svg',
-        roles: ['admin', 'practitioner', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'kid'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Gruppen',
-        tooltip: 'Gruppen verwalten',
-        description: '',
-        icon: '/img/ic_group_work_48px.svg',
-        roles: ['admin', 'practitioner'],
-        onClick: function() {
-          return $state.go('bx.table', {
-            type: 'group'
-          });
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }, {
+      // TODO move this to some kind of configuration file (have something
+      // like a generator? `generate tile --footer="Some text"`)
+
+      vm.tiles = {};
+
+      // really, they're just called a, b and c instead of resources,
+      // observations and general-menu-stuff. i could spend an hour now
+      // thinking about good names. f that
+
+      // TODO
+      // vm.grid = [
+      //   ['institutions', 'groups', 'kids', 'users'],
+      //   ['make-obs', 'obs-inbox', 'obervations'],
+      //   ['portfolios', 'items']
+      // ];
+
+      vm.tiles.admin = [{
         footer: 'Benutzer',
         tooltip: 'Benutzer verwalten',
         description: '',
@@ -146,18 +101,72 @@
             type: 'user'
           });
         },
-        colSpan: [0, 0, 0],
+        colSpan: [0, 2, 2],
         rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Bausteine',
-        tooltip: 'Bausteine verwalten: Bereiche, Teilbereiche, Verhalten, Beispiele',
+      }];
+
+      vm.tiles.a = [/*{
+        footer: 'Kinder',
+        tooltip: 'Kinder verwalten',
         description: '',
-        icon: '/img/ic_extension_48px.svg',
-        roles: ['admin', 'scientist'],
+        icon: '/img/ic_account_child_48px.svg',
+        roles: ['admin', 'practitioner', 'scientist'],
         onClick: function() {
           return $state.go('bx.table', {
-            type: 'item'
+            type: 'kid'
           });
+        },
+        colSpan: [0, 0, 2],
+        rowSpan: [0, 0, 0]
+      }, */{
+        footer: 'Kinder & Gruppen',
+        tooltip: 'Institutionen & Gruppen verwalten',
+        description: '',
+        icon: '/img/ic_group_work_48px.svg',
+        roles: ['admin', 'practitioner'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'group'
+          });
+        },
+        colSpan: [0, 2, 2],
+        rowSpan: [0, 0, 0]
+      }/*, {
+        footer: 'Institutionen',
+        tooltip: 'Resource \"Institution\" verwalten',
+        description: '',
+        icon: '/img/ic_business_48px.svg',
+        roles: ['admin', 'practitioner'],
+        onClick: function() {
+          return $state.go('bx.table', {
+            type: 'institution'
+          });
+        },
+        colSpan: [0, 0, 0],
+        rowSpan: [0, 0, 0]
+      }*/];
+
+      vm.tiles.b = [{
+        footer: 'Neue Beobachtung',
+        tooltip: 'Neue Beobachtung einstellen',
+        description: 'Sie können eine neue Beobachtung erstellen, indem sie ein Kind und ein Baustein auswählen und das Niveau des beobachteten Verhalten des Kindes auf einer Skala von 1-3 (eigentlich 0-4) bewerten. Fügen Sie optional noch eigene Beispiele und Ideen hinzu.',
+        icon: '/img/ic_assignment_48px.svg',
+        roles: ['admin', 'practitioner'],
+        onClick: function() {
+          return $state.go('bx.capture', {
+            type: 'kid'
+          });
+        },
+        colSpan: [0, 0, 2],
+        rowSpan: [0, 2, 0]
+      }, {
+        footer: 'Eingehende Beobachtungen',
+        tooltip: 'Neu eingegange Beobachtungen ansehen',
+        description: '',
+        icon: '/img/ic_assignment_returned_48px.svg',
+        roles: ['admin', 'scientist'],
+        onClick: function() {
+          return $state.go('bx.obs');
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
@@ -174,15 +183,17 @@
         },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
-      }, {
-        footer: 'Institutionen',
-        tooltip: 'Resource \"Institution\" verwalten',
+      }];
+
+      vm.tiles.c = [ {
+        footer: 'Bausteine',
+        tooltip: 'Bausteine verwalten: Bereiche, Teilbereiche, Verhalten, Beispiele',
         description: '',
-        icon: '/img/ic_business_48px.svg',
-        roles: ['admin', 'practitioner'],
+        icon: '/img/ic_extension_48px.svg',
+        roles: ['admin', 'scientist'],
         onClick: function() {
           return $state.go('bx.table', {
-            type: 'institution'
+            type: 'item'
           });
         },
         colSpan: [0, 0, 0],
@@ -196,9 +207,23 @@
         onClick: function() {
           return $state.go('bx.portfolio');
         },
+        colSpan: [0, 2, 0],
+        rowSpan: [0, 0, 0]
+      }];
+
+      vm.tiles.d = [{
+        footer: 'Profil',
+        tooltip: 'Persönliches Profil',
+        description: 'Eigene Resourcen und Tasks',
+        icon: '/img/ic_settings_48px.svg',
+        roles: ['admin', 'practitioner', 'scientist'],
+        onClick: function() {
+          return $state.go('bx.profile');
+        },
         colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
       }];
+
 
       /* LOGOUT */
       function logout() {
@@ -237,9 +262,10 @@
             locals: {
               me: me,
             },
-            controller: function($scope, $mdDialog, Resources, me) {
+            controller: function($rootScope, $scope, $mdDialog, Resources, me) {
               angular.extend(this, {
-                logout: logout,
+                cancel: cancel,
+                save: save,
                 me: me
               });
 
@@ -249,29 +275,17 @@
                 $mdDialog.cancel();
               }
 
-              function accept() {
+              function save(user) {
                 $mdDialog.hide(true);
-                obs.approved = true;
-                Resources.update(obs);
+                Resources.update(user);
                 $mdToast.show(
                   $mdToast.simple()
-                  .content('Beobachtung angenommen')
+                  .content('Änderungen gespeichert')
                   .position('bottom right')
                   .hideDelay(3000)
                 );
               }
 
-              function reject() {
-                $mdDialog.hide(false);
-                obs.approved = false;
-                Resources.update(obs);
-                $mdToast.show(
-                  $mdToast.simple()
-                  .content('Beobachtung abgelehnt')
-                  .position('bottom right')
-                  .hideDelay(3000)
-                );
-              }
             }
           })
           .then(function dialogSuccess(accepted) {

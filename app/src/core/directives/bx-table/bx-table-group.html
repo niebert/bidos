@@ -5,10 +5,19 @@
 				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
-			<h2 flex>Gruppen</h2>
+			<h2 flex>Kinder</h2>
 
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})" ng-if="vm.me.role == 0">
+				NEUE INSTITUTION
+			</md-button>
 			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})">
-				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neue Gruppe"></md-icon>
+				NEUE GRUPPE
+			</md-button>
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})">
+				NEUES KIND
+			</md-button>
+			<md-button aria-label="dialog" ng-click="vm.userDialog($event, {})">
+				{{ vm.me.name }} / {{ vm.me.roleName }}
 			</md-button>
 		</span>
 	</md-toolbar>
@@ -27,25 +36,26 @@
 				<label>ID filtern</label>
 				<input type="text" ng-model="stuff.id">
 			</md-input-container>
+			<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
+				<md-option value="{{ group.id }}" ng-repeat="group in vm.groups">{{ group.name }}</md-option>
+			</md-select>
 		</div>
 
-		<table>
-			<thead>
-				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
-				<th ng-click="predicate='name'; reverse=!reverse">Name</th>
-				<th ng-click="predicate='institution_id'; reverse=!reverse">Institution</th>
-				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
-				<th ng-click="predicate='modified_at'; reverse=!reverse">Bearbeitet</th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="group in vm.groups | filter:myFilter | orderBy:predicate:reverse track by $index" ng-click="vm.dialog($event, group)">
-					<td> {{ group.id }} </td>
-					<td> {{ group.name }} </td>
-					<td> {{ group.institution.name }} </td>
-					<td> {{ group.created_at | date }} </td>
-					<td> {{ group.modified_at | date }} </td>
-				</tr>
-			</tbody>
-		</table>
+		<div ng-repeat="institution in vm.institutions">
+			<h2 ng-click="vm.dialog($event, institution)">{{institution.name}}</h2>
+
+			<md-list ng-repeat="group in institution.groups | filter:myFilter">
+				<md-subheader class="md-no-sticky" ng-click="vm.dialog($event, group)">{{group.name}} ({{ group.kids.length }})</md-subheader>
+				<md-list-item ng-repeat="kid in group.kids | filter:myFilter | orderBy:predicate:reverse track by $index">
+					<!-- <md-checkbox ng-model="message.selected"></md-checkbox> -->
+					<p  ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
+					<p  ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
+					<p  ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
+					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
+				</md-list-item>
+			</md-list>
+
+		</div>
 	</md-content>
 </div>
+
