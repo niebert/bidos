@@ -4,10 +4,10 @@
 
 			<h2 flex>Welches Kind beobachten Sie?</h2>
 
-			<md-button aria-label="cancel"  ui-sref="bx.home">
-				abbrechen
-			</md-button>
 
+			<md-button aria-label="dialog" ng-click="vm.userDialog($event, vm.me)">
+				{{ vm.me.name }} / {{ vm.me.roleName }}
+			</md-button>
 		</span>
 	</md-toolbar>
 
@@ -24,12 +24,12 @@
 	<md-content flex class="bx-content">
 		<div layout class="search-bar">
 			<md-input-container flex>
-				<label>Namen filtern</label>
+				<label>Suchen</label>
 				<input type="text" ng-model="stuff.name">
 			</md-input-container>
-			<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
+			<!-- <md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
 				<md-option value="{{ group.id }}" ng-repeat="group in vm.groups">{{ group.name }}</md-option>
-			</md-select>
+			</md-select> -->
 		</div>
 
 		<section ng-repeat="group in vm.groups | filter:vm.groupFilter(filterObject)">
@@ -42,12 +42,12 @@
 
 					<div flex class="bx-capture-kid-name"> {{ kid.name }} </div>
 
-					<div flex="15" layout layout-align="space-between center">
+					<!-- <div flex="15" layout layout-align="space-between center">
 						<span class="bx-kid-details-cat1" ng-class="{'noSkill':kid.skill[0] === 0}"> {{ kid.skill[0] }} </span>
 						<span class="bx-kid-details-cat2" ng-class="{'noSkill':kid.skill[1] === 0}"> {{ kid.skill[1] }} </span>
 						<span class="bx-kid-details-cat3" ng-class="{'noSkill':kid.skill[2] === 0}"> {{ kid.skill[2] }} </span>
 						<span class="bx-kid-details-cat4" ng-class="{'noSkill':kid.skill[3] === 0}"> {{ kid.skill[3] }} </span>
-					</div>
+					</div> -->
 
 				</md-item>
 			</md-list>

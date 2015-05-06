@@ -129,7 +129,7 @@
             type: 'group'
           });
         },
-        colSpan: [0, 2, 2],
+        colSpan: [0, 2, 0],
         rowSpan: [0, 0, 0]
       }/*, {
         footer: 'Institutionen',
@@ -151,13 +151,13 @@
         tooltip: 'Neue Beobachtung einstellen',
         description: 'Sie können eine neue Beobachtung erstellen, indem sie ein Kind und ein Baustein auswählen und das Niveau des beobachteten Verhalten des Kindes auf einer Skala von 1-3 (eigentlich 0-4) bewerten. Fügen Sie optional noch eigene Beispiele und Ideen hinzu.',
         icon: '/img/ic_assignment_48px.svg',
-        roles: ['admin', 'practitioner'],
+        roles: ['practitioner'],
         onClick: function() {
           return $state.go('bx.capture', {
             type: 'kid'
           });
         },
-        colSpan: [0, 0, 2],
+        colSpan: [0, 2, 0],
         rowSpan: [0, 2, 0]
       }, {
         footer: 'Eingehende Beobachtungen',
@@ -171,17 +171,17 @@
         colSpan: [0, 0, 2],
         rowSpan: [0, 0, 0]
       }, {
-        footer: 'Beobachtungen',
+        footer: 'Eigene Beobachtungen',
         tooltip: 'Resource \"Beobachtungen\" verwalten',
         description: '',
-        icon: '/img/ic_business_48px.svg',
-        roles: ['admin', 'scientist'],
+        icon: '/img/ic_plus_one_48px.svg',
+        roles: ['practitioner'],
         onClick: function() {
           return $state.go('bx.table', {
             type: 'observation'
           });
         },
-        colSpan: [0, 0, 2],
+        colSpan: [0, 0, 0],
         rowSpan: [0, 0, 0]
       }];
 
@@ -196,9 +196,9 @@
             type: 'item'
           });
         },
-        colSpan: [0, 0, 0],
+        colSpan: [0, 0, 2],
         rowSpan: [0, 0, 0]
-      }, {
+      }/*, {
         footer: 'Portfolios',
         tooltip: 'Portfolios ansehen',
         description: '',
@@ -209,20 +209,20 @@
         },
         colSpan: [0, 2, 0],
         rowSpan: [0, 0, 0]
-      }];
+      }*/];
 
-      vm.tiles.d = [{
-        footer: 'Profil',
-        tooltip: 'Persönliches Profil',
-        description: 'Eigene Resourcen und Tasks',
-        icon: '/img/ic_settings_48px.svg',
-        roles: ['admin', 'practitioner', 'scientist'],
-        onClick: function() {
-          return $state.go('bx.profile');
-        },
-        colSpan: [0, 0, 0],
-        rowSpan: [0, 0, 0]
-      }];
+      // vm.tiles.d = [{
+      //   footer: 'Profil',
+      //   tooltip: 'Persönliches Profil',
+      //   description: 'Eigene Resourcen und Tasks',
+      //   icon: '/img/ic_settings_48px.svg',
+      //   roles: ['admin', 'practitioner', 'scientist'],
+      //   onClick: function() {
+      //     return $state.go('bx.profile');
+      //   },
+      //   colSpan: [0, 0, 0],
+      //   rowSpan: [0, 0, 0]
+      // }];
 
 
       /* LOGOUT */

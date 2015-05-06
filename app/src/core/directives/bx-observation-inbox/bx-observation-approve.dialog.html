@@ -39,11 +39,14 @@
 	</md-content>
 	<div class="md-actions" layout="row">
 		<span flex></span>
-		<md-button aria-label="reject-observation" ng-click="vm.reject()" class="md-warn">
+		<md-button aria-label="reject-observation" ng-click="vm.reject()" class="md-warn" ng-if="vm.me.role != 1">
 			Ablehnen
 		</md-button>
-		<md-button aria-label="accept-observation" ng-click="vm.accept()" class="md-primary">
+		<md-button aria-label="accept-observation" ng-click="vm.accept()" class="md-primary" ng-if="vm.me.role != 1">
 			Akzeptieren
+		</md-button>
+		<md-button aria-label="cancel-observation" ng-click="vm.cancel()" class="md-primary" ng-if="vm.me.role == 1">
+			Ok
 		</md-button>
 	</div>
 </md-dialog>

@@ -18,12 +18,14 @@
       }
     };
 
-    function controller(Resources, CRUD, $mdDialog, $scope, $rootScope, $http, STRINGS) {
+    function controller(Resources, CRUD, $mdDialog, $mdToast, $scope, $rootScope, $http, STRINGS) {
       var vm = angular.extend(this, {
         dialog: dialog,
         viewFilter: viewFilter,
         roles: STRINGS.roles,
-        userDialog: userDialog
+        userDialog: userDialog,
+        noteDialog: noteDialog,
+        obsDialog: obsDialog
       });
 
       console.log('ROLES', vm.roles);
@@ -79,7 +81,9 @@
             angular.extend(vm, APP_CONFIG);
 
             vm.me = getUser(data);
-            console.log(vm.me);
+            console.info('me', vm.me);
+
+            debugger
 
             function getUser(resources) {
               return _.filter(resources.users, {
@@ -192,6 +196,110 @@
           });
       }
 
+      function obsDialog(ev, obs) {
+        $mdDialog.show({
+            templateUrl: 'templates/bx-observation-approve.dialog.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              obs: obs,
+            },
+            controller: function($scope, $mdDialog, $mdToast, Resources, obs) {
+              angular.extend(this, {
+                cancel: cancel,
+                accept: accept,
+                reject: reject,
+                obs: obs
+              });
+
+              console.log(obs);
+
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function accept() {
+                $mdDialog.hide(true);
+                obs.approved = true;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung angenommen')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
+              function reject() {
+                $mdDialog.hide(false);
+                obs.approved = false;
+                Resources.update(obs);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Beobachtung abgelehnt')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+            }
+          })
+          .then(function dialogSuccess(accepted) {
+
+            // FIXME TODO remove accepted obs from vm?
+
+            // if (accepted) {
+            //   vm.observations.splice(_.findIndex(vm.observations, {
+            //     id: obs.id
+            //   }), 1);
+            // }
+
+          }, function dialogAbort() {
+            // ...
+          });
+      }
+
+      function noteDialog(note, ev) {
+        $mdDialog.show({
+            templateUrl: 'templates/bx-note.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              note: note
+            },
+            controller: function($scope, $mdDialog, Resources) {
+              angular.extend(this, {
+                cancel: cancel,
+                save: save
+              });
+
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function save(note) {
+                note.type = 'note';
+                $mdDialog.hide(true);
+                Resources.create(note);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Notiz hinzugefügt')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
+            }
+          })
+          .then(function dialogSuccess(accepted) {
+            if (accepted) {
+              // ...
+            }
+          }, function dialogAbort() {
+            // ...
+          });
+      }
 
       function dialogController($mdDialog, parentVm, resource, STRINGS) {
         var vm = angular.extend(this, {

@@ -532,6 +532,10 @@
           });
 
 
+          data.observations = _.filter(data.observations, function(obs) {
+            return obs.author_id === data.me.id;
+          });
+
           debugger
 
           // data.observations = _.flatten(_.chain(data.users)

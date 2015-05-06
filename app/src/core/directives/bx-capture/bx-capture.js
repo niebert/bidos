@@ -179,7 +179,7 @@
       }
 
       function indexChar(index) {
-        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' [index];
+        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' [index]; // what is this? XXX TODO FIXME
       }
 
       function kidFilter(filterObject) {

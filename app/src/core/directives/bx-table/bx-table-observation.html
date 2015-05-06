@@ -5,10 +5,12 @@
 				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
-			<h2 flex>Beobachtungen</h2>
+			<h2 flex ng-if="vm.me.role == 1">Eigene Beobachtungen</h2>
+			<h2 flex ng-if="vm.me.role == 2">Eingehende Beobachtungen</h2>
 
-			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'observation'})">
-				<md-icon md-svg-src="/img/ic_add_48px.svg" class="s48" alt="Neues Kind"></md-icon>
+
+			<md-button aria-label="dialog" ng-click="vm.userDialog($event, vm.me)">
+				{{ vm.me.name }} / {{ vm.me.roleName }}
 			</md-button>
 		</span>
 	</md-toolbar>
@@ -23,31 +25,30 @@
 				<label>Gruppe filtern</label>
 				<input type="text" ng-model="stuff.group">
 			</md-input-container>
-			<md-input-container flex>
+			<!-- 			<md-input-container flex>
 				<label>ID filtern</label>
 				<input type="text" ng-model="stuff.id">
-			</md-input-container>
+			</md-input-container> -->
 		</div>
 
-		<table style="width: 100%;">
-			<thead>
-				<th ng-click="predicate='id'; reverse=!reverse">ID</th>
-				<th ng-click="predicate='name'; reverse=!reverse">Kind</th>
-				<th ng-click="predicate='name'; reverse=!reverse">Niveau</th>
-				<th ng-click="predicate='name'; reverse=!reverse">Bereich</th>
-				<th ng-click="predicate='name'; reverse=!reverse">Praktiker</th>
-				<th ng-click="predicate='created_at'; reverse=!reverse">Erstellt</th>
-			</thead>
-			<tbody>
-				<tr ng-repeat="observation in vm.observations | filter:myFilter | orderBy:predicate:reverse track by $index" ng-click="vm.dialog($event, observation)">
-					<td> {{ observation.id }} </td>
-					<td> {{ observation.kid.name }} </td>
-					<td> {{ observation.niveau }} </td>
-					<td> {{ observation.domain.name }} </td>
-					<td> {{ observation.user.name }} </td>
-					<td> {{ observation.created_at | date }} </td>
-				</tr>
-			</tbody>
-		</table>
+		<md-list>
+			<md-list-item ng-repeat="observation in vm.observations | orderBy:predicate:reverse track by $index" ng-click="vm.obsDialog($event, observation)">
+				<p> {{ observation.kid.name }} </p>
+				<p> Niveau: {{ observation.niveau }} </p>
+				<p> {{ observation.domain.name }} </p>
+				<p> {{ observation.created_at | date }} </p>
+
+			<md-button aria-label="home" ui-sref="bx.home" ng-show="observation.approved">
+				<md-icon md-svg-src="/img/ic_assignment_turned_in_48px.svg" class="s48" alt="Home"></md-icon>
+			</md-button>
+
+			<md-button aria-label="home" ui-sref="bx.home" ng-hide="observation.approved">
+				<md-icon md-svg-src="/img/ic_assignment_late_48px.svg" class="s48" alt="Home"></md-icon>
+			</md-button>
+				<!-- <md-checkbox class="md-secondary" ng-model="observation.approved" onclick="return false" /></md-checkbox> -->
+			</md-list-item>
+		</md-list>
+
 	</md-content>
 </div>
+

@@ -126,6 +126,7 @@
         item_id: o.item.id,
         kid_id: o.kid.id,
         user_id: $rootScope.auth.id,
+        author_id: $rootScope.auth.id,
         niveau: o.behaviour.niveau
       };
 

@@ -34,7 +34,7 @@
 
 		<!-- Search & Filter -->
 
-		<div layout class="search-bar">
+		<section layout class="search-bar">
 			<md-input-container flex ng-if="vm.me.role != 2">
 				<label>Suchen</label>
 				<input type="text" ng-model="stuff.name">
@@ -67,11 +67,11 @@
 				<md-option value="last_observation" ng-repeat="sex in vm.sexes">Zuletzt beobachtet</md-option>
 				<md-option value="last_modification" ng-repeat="sex in vm.sexes">Zuletzt bearbeitet</md-option>
 			</md-select> -->
-		</div>
+		</section>
 
 		<!-- The stuff people care about -->
 
-		<div ng-repeat="institution in vm.institutions" ng-if="vm.me.role !== 1">
+		<section ng-repeat="institution in vm.institutions" ng-if="vm.me.role !== 1">
 			<h2 ng-click="vm.dialog($event, institution)">{{institution.name}}</h2>
 
 			<md-list ng-repeat="group in institution.groups | filter:myFilter">
@@ -88,9 +88,9 @@
 				</md-list-item>
 			</md-list>
 
-		</div>
+		</section>
 
-		<div ng-if="vm.me.role === 1">
+		<section ng-if="vm.me.role === 1">
 			<h2 ng-click="vm.dialog($event, institution)">{{vm.me.institution.name}}</h2>
 
 			<md-list>
@@ -100,14 +100,14 @@
 					<p ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
 					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
 					<p ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
-					<p ng-click="vm.dialog($event, kid)"></p>
+					<!-- <p ui-sref="bx.capture({type: 'kid'})">BEOBACHTEN</p> -->
 					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
-					<md-icon md-svg-src="/img/ic_pageview_48px.svg" class="s48" alt="observe kid"></md-icon>
-					<md-icon md-svg-src="/img/ic_note_add_48px.svg" class="s48" alt="add note"></md-icon>
+					<!-- <md-icon md-svg-src="/img/ic_pageview_48px.svg" class="s48" alt="observe kid"></md-icon> -->
+					<!-- <md-icon md-svg-src="/img/ic_note_add_48px.svg" class="s48" alt="add note"></md-icon> -->
 				</md-list-item>
 			</md-list>
 
-		</div>
+		</section>
 
 	</md-content>
 </div>

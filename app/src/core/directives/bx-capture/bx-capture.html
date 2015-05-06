@@ -1,6 +1,11 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-	<md-toolbar class="md-theme-light">
-		<h1 class="md-toolbar-tools">Neue Beobachtung</h1>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button aria-label="cancel" ui-sref="bx.home" >
+				abbrechen
+			</md-button>
+		<!-- <h1 class="md-toolbar-tools">Neue Beobachtung</h1> -->
+		</span>
 	</md-toolbar>
 
 	<div ng-controller="LeftCtrl" class="md-padding" layout="column" layout-align="start center" style="height: 736px;">

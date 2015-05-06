@@ -2,7 +2,7 @@
 	<md-toolbar>
 		<span class="md-toolbar-tools">
 			<md-button aria-label="home" ui-sref="bx.home">
-				<md-icon md-svg-src="/lib/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
+				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
 			<h2 flex>Auswertung</h2>
@@ -14,12 +14,16 @@
 	</md-toolbar>
 
 	<md-content flex class="bx-content">
-		<md-tabs md-selected="selectedIndex">
-			<md-tab ng-repeat="tab in vm.tabs" ng-disabled="tab.disabled" label="{{tab.title}}">
-				<div class="tab{{$index%4}}" layout="column" layout-fill layout-align="space-around center">
-					{{ vm.tabs | json }}
-				</div>
-			</md-tab>
-		</md-tabs>
+
+		<h2>Ungeprüfte Beobachtungen</h2>
+		<ol>
+			<li ng-repeat="obs in vm.observations" ng-click="vm.obsDialog($event, obs)" class="obs">
+				<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small>
+				<br>
+				<small>{{ obs.item.name }}</small>
+			</li>
+		</ol>
+
 	</md-content>
 </div>
+
