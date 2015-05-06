@@ -168,7 +168,7 @@
         onClick: function() {
           return $state.go('bx.obs');
         },
-        colSpan: [0, 0, 0],
+        colSpan: [0, 0, 2],
         rowSpan: [0, 0, 0]
       }, {
         footer: 'Beobachtungen',
@@ -181,7 +181,7 @@
             type: 'observation'
           });
         },
-        colSpan: [0, 0, 0],
+        colSpan: [0, 0, 2],
         rowSpan: [0, 0, 0]
       }];
 

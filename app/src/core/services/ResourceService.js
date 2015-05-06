@@ -479,7 +479,16 @@
       });
     }
 
+    function getUser(resources) {
+      return _.filter(resources.users, {
+        id: $rootScope.auth.id
+      })[0];
+    }
+
     function makeRoleModifications(data) {
+
+      data.me = getUser(data);
+
       switch ($rootScope.auth.role) {
 
         // ADMIN
@@ -488,7 +497,9 @@
 
           // PRACTITIONER
         case 1:
+
           // put user specific kids and group resources on top scope level
+
           data.kids = _.flatten(_.chain(data.users)
             .filter({
               id: $rootScope.auth.id
@@ -506,6 +517,22 @@
             .first()
             .value()
             .institution.groups);
+
+          // only show the institution the practitioner belongs to
+
+          // TODO allow a practitioner to be part of multiple institutions and
+          // groups
+
+          data.institutions = data.institutions.filter(function(institution) {
+            return institution.id === data.me.institution_id;
+          });
+
+          data.groups = data.groups.filter(function(group) {
+            return group.id === data.me.group_id;
+          });
+
+
+          debugger
 
           // data.observations = _.flatten(_.chain(data.users)
           //   .filter({

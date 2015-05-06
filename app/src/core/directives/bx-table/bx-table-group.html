@@ -5,57 +5,110 @@
 				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
 			</md-button>
 
-			<h2 flex>Kinder</h2>
+			<h2 flex>Kinder und Gruppen verwalten</h2>
 
-			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})" ng-if="vm.me.role == 0">
+			<!-- Admin only -->
+
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'institution'})" ng-if="vm.me.role == 0">
 				NEUE INSTITUTION
 			</md-button>
-			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})">
+
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})" ng-if="vm.me.role == 0">
 				NEUE GRUPPE
 			</md-button>
-			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'group'})">
+
+			<!-- Only practitioner -->
+
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'kid'})">
 				NEUES KIND
 			</md-button>
-			<md-button aria-label="dialog" ng-click="vm.userDialog($event, {})">
+
+			<md-button aria-label="dialog" ng-click="vm.userDialog($event, vm.me)">
 				{{ vm.me.name }} / {{ vm.me.roleName }}
 			</md-button>
+
 		</span>
 	</md-toolbar>
 
 	<md-content flex class="bx-content">
+
+		<!-- Search & Filter -->
+
 		<div layout class="search-bar">
-			<md-input-container flex>
-				<label>Namen filtern</label>
+			<md-input-container flex ng-if="vm.me.role != 2">
+				<label>Suchen</label>
 				<input type="text" ng-model="stuff.name">
 			</md-input-container>
-			<md-input-container flex>
+			<!-- <md-input-container flex>
 				<label>Institution filtern</label>
 				<input type="text" ng-model="stuff.institution">
-			</md-input-container>
-			<md-input-container flex>
+			</md-input-container> -->
+			<md-input-container flex ng-if="vm.me.role != 1">
 				<label>ID filtern</label>
 				<input type="text" ng-model="stuff.id">
 			</md-input-container>
-			<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
+			<md-select placeholder="Gruppe" ng-model="stuff.group_id" ng-if="vm.me.role !== 1">
+				<md-option value="">Alle</md-option>
 				<md-option value="{{ group.id }}" ng-repeat="group in vm.groups">{{ group.name }}</md-option>
 			</md-select>
+			<md-select placeholder="Institution" ng-model="stuff.institution_id" ng-if="vm.me.role !== 1">
+				<md-option value="">Alle</md-option>
+				<md-option value="{{ institution.id }}" ng-repeat="institution in vm.institutions">{{ institution.name }}</md-option>
+			</md-select>
+			<!-- <md-select placeholder="Geschlecht" ng-model="stuff.sex">
+				<md-option value="">Alle</md-option>
+				<md-option value="1">Mädchen</md-option>
+				<md-option value="0">Junge</md-option>
+			</md-select> -->
+			<!-- <md-select placeholder="Sortieren" ng-model="sort">
+				<md-option value="name" ng-repeat="sex in vm.sexes">Name</md-option>
+				<md-option value="observations" ng-repeat="sex in vm.sexes">Beobachtungen</md-option>
+				<md-option value="age" ng-repeat="sex in vm.sexes">Alter</md-option>
+				<md-option value="last_observation" ng-repeat="sex in vm.sexes">Zuletzt beobachtet</md-option>
+				<md-option value="last_modification" ng-repeat="sex in vm.sexes">Zuletzt bearbeitet</md-option>
+			</md-select> -->
 		</div>
 
-		<div ng-repeat="institution in vm.institutions">
+		<!-- The stuff people care about -->
+
+		<div ng-repeat="institution in vm.institutions" ng-if="vm.me.role !== 1">
 			<h2 ng-click="vm.dialog($event, institution)">{{institution.name}}</h2>
 
 			<md-list ng-repeat="group in institution.groups | filter:myFilter">
 				<md-subheader class="md-no-sticky" ng-click="vm.dialog($event, group)">{{group.name}} ({{ group.kids.length }})</md-subheader>
 				<md-list-item ng-repeat="kid in group.kids | filter:myFilter | orderBy:predicate:reverse track by $index">
 					<!-- <md-checkbox ng-model="message.selected"></md-checkbox> -->
-					<p  ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
-					<p  ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
-					<p  ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
+					<p ng-click="vm.dialog($event, kid)"></p>
 					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
+					<md-icon md-svg-src="/img/ic_pageview_48px.svg" class="s48" alt="observe kid"></md-icon>
+					<md-icon md-svg-src="/img/ic_note_add_48px.svg" class="s48" alt="add note"></md-icon>
 				</md-list-item>
 			</md-list>
 
 		</div>
+
+		<div ng-if="vm.me.role === 1">
+			<h2 ng-click="vm.dialog($event, institution)">{{vm.me.institution.name}}</h2>
+
+			<md-list>
+				<md-subheader class="md-no-sticky" ng-click="vm.dialog($event, group)">{{vm.me.group.name}} ({{ vm.me.group.kids.length }})</md-subheader>
+				<md-list-item ng-repeat="kid in vm.me.group.kids | filter:myFilter | orderBy:predicate:reverse track by $index">
+					<!-- <md-checkbox ng-model="message.selected"></md-checkbox> -->
+					<p ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
+					<p ng-click="vm.dialog($event, kid)"></p>
+					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
+					<md-icon md-svg-src="/img/ic_pageview_48px.svg" class="s48" alt="observe kid"></md-icon>
+					<md-icon md-svg-src="/img/ic_note_add_48px.svg" class="s48" alt="add note"></md-icon>
+				</md-list-item>
+			</md-list>
+
+		</div>
+
 	</md-content>
 </div>
 

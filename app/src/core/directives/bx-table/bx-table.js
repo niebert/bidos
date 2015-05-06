@@ -22,7 +22,8 @@
       var vm = angular.extend(this, {
         dialog: dialog,
         viewFilter: viewFilter,
-        roles: STRINGS.roles
+        roles: STRINGS.roles,
+        userDialog: userDialog
       });
 
       console.log('ROLES', vm.roles);
@@ -144,6 +145,53 @@
             console.log('dialog cancelled');
           });
       }
+
+      function userDialog(ev, me) {
+        $mdDialog.show({
+            templateUrl: 'templates/bx-user.dialog.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              me: me,
+            },
+            controller: function($rootScope, $scope, $mdDialog, Resources, me) {
+              angular.extend(this, {
+                cancel: cancel,
+                save: save,
+                me: me
+              });
+
+              console.log(me);
+
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+              function save(user) {
+                $mdDialog.hide(true);
+                Resources.update(user);
+                $mdToast.show(
+                  $mdToast.simple()
+                  .content('Änderungen gespeichert')
+                  .position('bottom right')
+                  .hideDelay(3000)
+                );
+              }
+
+            }
+          })
+          .then(function dialogSuccess(accepted) {
+            if (accepted) {
+              vm.observations.splice(_.findIndex(vm.observations, {
+                id: obs.id
+              }), 1);
+            }
+          }, function dialogAbort() {
+            // ...
+          });
+      }
+
 
       function dialogController($mdDialog, parentVm, resource, STRINGS) {
         var vm = angular.extend(this, {
