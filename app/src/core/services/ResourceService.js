@@ -532,9 +532,9 @@
           });
 
 
-          data.observations = _.filter(data.observations, function(obs) {
-            return obs.author_id === data.me.id;
-          });
+          // data.observations = _.filter(data.observations, function(obs) {
+          //   return obs.author_id === data.me.id;
+          // });
 
           debugger
 
@@ -554,7 +554,6 @@
             k.name = f[0] + f[1] + f[f.length - 1] + k.id; // <3
             // console.log(k[resources].name);
           });
-          // debugger
           break;
       }
     }

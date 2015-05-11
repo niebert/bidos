@@ -60,6 +60,7 @@
             cancel: cancel,
             accept: accept,
             reject: reject,
+            destroy: destroy,
             obs: obs
           });
 
@@ -68,6 +69,18 @@
           function cancel() {
             $mdDialog.cancel();
           }
+
+          function destroy() {
+            $mdDialog.hide(true);
+            Resources.destroy(obs);
+            $mdToast.show(
+              $mdToast.simple()
+              .content('Beobachtung gelöscht')
+              .position('bottom right')
+              .hideDelay(3000)
+            );
+          }
+
 
           function accept() {
             $mdDialog.hide(true);

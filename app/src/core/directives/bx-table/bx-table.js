@@ -25,10 +25,11 @@
         roles: STRINGS.roles,
         userDialog: userDialog,
         noteDialog: noteDialog,
-        obsDialog: obsDialog
+        obsDialog: obsDialog,
+        kidObservationDialog: kidObservationDialog
       });
 
-      console.log('ROLES', vm.roles);
+      //console.log('ROLES', vm.roles);
 
       vm.sortOrder = 'id';
       $scope.stuff = {};
@@ -127,8 +128,11 @@
 
       function dialog(ev, resource) {
         if ($rootScope.auth.role === 2) {
+          console.log('you are a scientist, not showing dialog');
           return;
         }
+
+        console.log('dialog resource', resource);
 
         $mdDialog.show({
             bindToController: false,
@@ -191,6 +195,37 @@
                 id: obs.id
               }), 1);
             }
+          }, function dialogAbort() {
+            // ...
+          });
+      }
+
+      function kidObservationDialog(ev, kid) {
+        $mdDialog.show({
+            templateUrl: 'templates/bx-kid-observation-dialog.html',
+            targetEvent: ev,
+            bindToController: false,
+            controllerAs: 'vm',
+            locals: {
+              kid: kid,
+            },
+            controller: function($scope, $mdDialog, $mdToast, Resources, kid) {
+              angular.extend(this, {
+                cancel: cancel,
+                kid: kid,
+                observations: kid.observations
+              });
+
+              console.log(kid);
+
+              function cancel() {
+                $mdDialog.cancel();
+              }
+
+            }
+          })
+          .then(function dialogSuccess(accepted) {
+            // ...
           }, function dialogAbort() {
             // ...
           });
@@ -343,9 +378,9 @@
 
         // This is neccessary as we don't want to edit the resource directly
         // (JS assigns by reference), but a copy so we can easily cancel the
-        // dialog w/o the need to revert any changes. Note that
-        // enumerable:true must be set when defining the getter, else the
-        // getters won't be cloned here (as flat props, though).
+        // dialog w/o the need to revert any changes. Note that enumerable:true
+        // must be set when defining the getter, else the getters won't be
+        // cloned here (as flat props, though).
 
         vm[resource.type] = _.clone(resource);
 
@@ -422,33 +457,51 @@
 
         function save(formResource) {
 
-          // Certain resource types (e.g. nested ones) need to be handled a
-          // little bit differently.
+          // Certain resource types (e.g. nested ones) need to be handled
+          // a little bit differently.
 
           switch (formResource.type) {
             case 'item':
               let item = formResource;
 
               if (item.hasOwnProperty('id')) {
-                Resources.update(_.pick(item, ['type', 'id', 'subdomain_id', 'name', 'text'])).then(function(response) {
-                  debugger
-                });
+                Resources.update(_.pick(item, [
+                  'type',
+                  'id',
+                  'subdomain_id',
+                  'name',
+                  'text'])).then(function(response) {
+                    debugger
+                  });
 
                 _.each(item.behaviours, function(behaviour, i) {
                   if (behaviour.hasOwnProperty('id')) {
-                    Resources.update(_.pick(behaviour, ['type', 'id', 'item_id', 'name', 'text', 'niveau'])).then(function(response) {
-                      debugger
-                    });
+                    Resources.update(_.pick(behaviour, [
+                      'type',
+                      'id',
+                      'item_id',
+                      'name',
+                      'text',
+                      'niveau'])).then(function(response) {
+                        debugger
+                      });
 
-                    _.each(behaviour.examples, function(example, j) {
-                      if (example.hasOwnProperty('id')) {
-                        Resources.update(_.pick(example, ['type', 'id', 'behaviour_id', 'observation_id', 'name', 'text', 'approved'])).then(function(response) {
+                  _.each(behaviour.examples, function(example, j) {
+                    if (example.hasOwnProperty('id')) {
+                      Resources.update(_.pick(example, [
+                        'type',
+                        'id',
+                        'behaviour_id',
+                        'observation_id',
+                        'name',
+                        'text',
+                        'approved'])).then(function(response) {
                           $mdDialog.hide(response);
                         });
-                      } else {
-                        Resources.create(example);
-                      }
-                    });
+                    } else {
+                      Resources.create(example);
+                    }
+                  });
 
                   } else {
                     Resources.create(behaviour)
@@ -493,7 +546,6 @@
               }
 
               break;
-
 
             default:
 

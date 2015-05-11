@@ -88,8 +88,8 @@
       }
     })
 
-    .state('bx.bx-observation-inbox', {
-      url: '/bx-observation-inbox',
+    .state('bx.observation-inbox', {
+      url: '/observation-inbox',
       views: {
         main: {
           template: '<bx-observation-inbox layout-fill></bx-observation-inbox>'

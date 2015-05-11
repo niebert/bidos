@@ -32,7 +32,7 @@
 		</div>
 
 		<md-list>
-			<md-list-item ng-repeat="observation in vm.observations | orderBy:predicate:reverse track by $index" ng-click="vm.obsDialog($event, observation)">
+			<md-list-item ng-repeat="observation in vm.me.observations | orderBy:predicate:reverse track by $index" ng-click="vm.obsDialog($event, observation)">
 				<p> {{ observation.kid.name }} </p>
 				<p> Niveau: {{ observation.niveau }} </p>
 				<p> {{ observation.domain.name }} </p>

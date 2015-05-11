@@ -166,7 +166,7 @@
         icon: '/img/ic_assignment_returned_48px.svg',
         roles: ['admin', 'scientist'],
         onClick: function() {
-          return $state.go('bx.obs');
+          return $state.go('bx.observation-inbox');
         },
         colSpan: [0, 0, 2],
         rowSpan: [0, 0, 0]

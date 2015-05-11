@@ -1,6 +1,6 @@
 <md-dialog aria-label="Mango (Fruit)">
 	<md-content>
-		<md-subheader class="md-sticky-no-effect"> {{ vm.obs.kid.name }} </md-subheader>
+		<md-subheader class="md-sticky-no-effect">{{ vm.obs.kid.name }}</md-subheader>
 
 		<!-- <pre> {{ vm.obs | json }} </pre> -->
 
@@ -38,6 +38,9 @@
 
 	</md-content>
 	<div class="md-actions" layout="row">
+		<md-button aria-label="destroy-observation" ng-click="vm.destroy()" class="md-warn" ng-if="vm.me.role == 1">
+			Löschen
+		</md-button>
 		<span flex></span>
 		<md-button aria-label="reject-observation" ng-click="vm.reject()" class="md-warn" ng-if="vm.me.role != 1">
 			Ablehnen
@@ -46,7 +49,7 @@
 			Akzeptieren
 		</md-button>
 		<md-button aria-label="cancel-observation" ng-click="vm.cancel()" class="md-primary" ng-if="vm.me.role == 1">
-			Ok
+		Ok {{vm.me.role}}
 		</md-button>
 	</div>
 </md-dialog>
