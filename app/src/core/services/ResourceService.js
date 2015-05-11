@@ -416,6 +416,27 @@
             }, enumerable: false
           });
         }
+
+        if (!kid.hasOwnProperty('sexString')) {
+          Object.defineProperty(kid, 'sexString', {
+            get: function() {
+              switch (kid.sex) {
+                case 1: return 'männlich';
+                case 2: return 'weiblich';
+              }
+            }, enumerable: false
+          });
+        }
+
+        if (!kid.hasOwnProperty('groupedObs')) {
+          Object.defineProperty(kid, 'groupedObs', {
+            get: function() {
+              return _.groupBy(kid.observations, function(obs) {
+                return obs.item.subdomain.domain.id;
+              });
+              }, enumerable: false
+          });
+        }
       });
     }
 
@@ -452,16 +473,15 @@
 
     function addUserHandlers(data) {
       _.each(data.users, function(user) {
-        if (!user.hasOwnProperty('kids')) {
-          Object.defineProperty(user, 'kids', {
-            get: function() {
-              return _.chain(user.groups)
-                .map('kids')
-                .flatten()
-                .value();
-            }, enumerable: false
-          });
-        }
+        // if (!user.hasOwnProperty('kids')) {
+        //   Object.defineProperty(user, 'kids', {
+        //     get: function() {
+        //       return _.chain(user.group)
+        //         .map('kids')
+        //         .flatten();
+        //     }, enumerable: false
+        //   });
+        // }
         if (!user.hasOwnProperty('roleName')) {
           Object.defineProperty(user, 'roleName', {
             get: function() {
@@ -535,8 +555,6 @@
           // data.observations = _.filter(data.observations, function(obs) {
           //   return obs.author_id === data.me.id;
           // });
-
-          debugger
 
           // data.observations = _.flatten(_.chain(data.users)
           //   .filter({

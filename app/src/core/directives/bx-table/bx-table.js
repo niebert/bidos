@@ -18,6 +18,8 @@
       }
     };
 
+    /* main table controller */
+
     function controller(Resources, CRUD, $mdDialog, $mdToast, $scope, $rootScope, $http, STRINGS) {
       var vm = angular.extend(this, {
         dialog: dialog,
@@ -28,8 +30,6 @@
         obsDialog: obsDialog,
         kidObservationDialog: kidObservationDialog
       });
-
-      //console.log('ROLES', vm.roles);
 
       vm.sortOrder = 'id';
       $scope.stuff = {};
