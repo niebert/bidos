@@ -42,7 +42,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="item in vm.items | filter:myFilter | orderBy:vm.sortOrder:reverse track by $index" ng-click="vm.dialog($event, item)">
-					<td> {{ item.id }} </td>
+					<td> {{ item.id - 124 }} </td>
 					<td> {{ item.name }} </td>
 					<td> {{ item.subdomain.name }} </td>
 					<td> {{ item.subdomain.domain.name }} </td>

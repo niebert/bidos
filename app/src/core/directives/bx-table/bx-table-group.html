@@ -79,7 +79,7 @@
 				<md-list-item ng-repeat="kid in group.kids | filter:myFilter | orderBy:predicate:reverse track by $index">
 					<!-- <md-checkbox ng-model="message.selected"></md-checkbox> -->
 					<p ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
-					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex == '1' ? 'männlich' : 'weiblich'}}</p>
 					<p ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
 					<p ng-click="vm.dialog($event, kid)"></p>
 					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
@@ -98,8 +98,8 @@
 				<md-list-item ng-repeat="kid in vm.me.group.kids | filter:myFilter | orderBy:predicate:reverse track by $index">
 					<!-- <md-checkbox ng-model="message.selected"></md-checkbox> -->
 					<p ng-click="vm.dialog($event, kid)">{{kid.name}}</p>
-					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex ? 'männlich' : 'weiblich'}}</p>
-					<p ng-click="vm.dialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
+					<p ng-click="vm.dialog($event, kid)">{{kid.age}} Jahre alt, {{kid.sex == '1' ? 'männlich' : 'weiblich'}}</p>
+					<p ng-click="vm.kidObservationDialog($event, kid)">{{kid.observations.length ? kid.observations.length : 'keine'}} Beobachtungen</p>
 					<!-- <p ui-sref="bx.capture({type: 'kid'})">BEOBACHTEN</p> -->
 					<!-- <p  ng-click="vm.dialog($event, kid)">{{kid.skill}}</p> -->
 					<!-- <md-icon md-svg-src="/img/ic_pageview_48px.svg" class="s48" alt="observe kid"></md-icon> -->
