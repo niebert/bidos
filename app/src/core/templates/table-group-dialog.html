@@ -1,0 +1,56 @@
+<md-dialog aria-label="create-or-edit-group-dialog">
+
+	<md-subheader ng-hide="vm.errorMessage" class="md-sticky-no-effect dialog-header">
+		<span ng-if="!vm.group.id">Neue Gruppe anlegen</span>
+		<span ng-if="vm.group.id">Gruppe bearbeiten</span>
+	</md-subheader>
+	<md-subheader ng-show="vm.errorMessage" class="md-sticky-no-effect dialog-header server-error">Fehler: {{ vm.errorMessage }}</md-subheader>
+
+	<md-content flex layout="column" style="min-height: 567px;">
+
+		<form name="groupForm">
+			<md-content layout="column">
+
+				<md-input-container>
+					<label for="name">Name der Gruppe</label>
+					<input type="name" id="name" name="name" ng-model="vm.group.name" required></input>
+					<div ng-show="groupForm.name.$dirty" ng-messages="groupForm.name.$error">
+						<div class="error-message" ng-message="required">Sie müssen einen Namen angeben</div>
+					</div>
+				</md-input-container>
+
+				<md-input-container>
+					<label for="email">Optionale Beschreibung der Gruppe</label>
+					<textarea type="text" id="name" name="name" ng-model="vm.group.text"></textarea>
+				</md-input-container>
+
+				<md-input-container>
+					<span>Institution</span>
+					<select ng-model="vm.group.institution_id" ng-options="institution.id as institution.name for institution in vm.parent.institutions" required> </select>
+				</md-input-container>
+
+			</md-content>
+		</form>
+	</md-content>
+
+	<div class="md-actions" layout="row">
+
+		<md-button aria-label="destroy"  ng-show="vm.group.id" ng-click="vm.destroy(vm.group)" class="md-raised md-warn">
+			Löschen
+		</md-button>
+
+		<span flex></span>
+
+		<md-button aria-label="cancel"  ng-click="vm.cancel()" class="md-raised">
+			Abbrechen
+		</md-button>
+
+		<md-button aria-label="save"  ng-click="vm.save(vm.group)" class="md-raised md-primary md-button" ng-disabled="!vm.group.name || !vm.group.institution_id">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>
+
+<script type="text/ng-template" id="name-messages">
+</script>

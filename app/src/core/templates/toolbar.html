@@ -1,0 +1,19 @@
+<md-toolbar ng-controller="toolbarController">
+	<span class="md-toolbar-tools">
+
+		<h2 class="bidos-button">
+			<span>BiDoS</span>
+		</h2>
+
+		<span flex>
+			{{vm.me.group.institution.name}}/{{vm.me.group.name}}
+		</span>
+
+		{{ vm.me.name }}
+
+		<md-button aria-label="settings" ng-click="vm.userDialog()">
+		<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="Settings"></md-icon>
+	</md-button>
+
+	</span>
+</md-toolbar>

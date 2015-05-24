@@ -1,18 +1,12 @@
 /* global angular */
+require('./lib/auth-interceptors');
+require('./lib/auth-services');
+require('./lib/auth-controllers');
+require('./lib/auth-routes');
 
-(function() {
-  'use strict';
-
-  require('./lib/bx-auth-interceptors');
-  require('./lib/bx-auth-services');
-  require('./lib/bx-auth-controllers');
-  require('./lib/bx-auth-routes');
-
-  angular.module('auth', [
-    'bx.auth.interceptor',
-    'bx.auth.services',
-    'bx.auth.controller',
-    'bx.auth.router',
-  ]);
-
-}());
+angular.module('auth', [
+  'auth.interceptor',
+  'auth.services',
+  'auth.controller',
+  'auth.router'
+]);

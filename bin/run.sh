@@ -22,22 +22,24 @@ HOST: $HOST
 URL: http://$HOST:$PORT
 EOF
 
+session=${NAME}_${NODE_ENV}
+
 tmux new-session -d -s ${NAME}_${NODE_ENV}
 
-tmux new-window -k -t ${NAME}_${NODE_ENV}:1 -n api
-tmux send-keys -t ${NAME}_${NODE_ENV}:1 "NODE_ENV=$NODE_ENV gulp api" C-m
+tmux new-window -k -t $session:1 -n api-dev
+tmux send-keys -t $session:1 "bin/bidos api dev" C-m
 
-tmux new-window -k -t ${NAME}_${NODE_ENV}:2 -n www
-tmux send-keys -t ${NAME}_${NODE_ENV}:2 "NODE_ENV=$NODE_ENV gulp" C-m
+tmux new-window -k -t $session:2 -n www-dev
+tmux send-keys -t $session:2 "bin bidos www dev" C-m
 
-tmux new-window -k -t ${NAME}_${NODE_ENV}:3 -n applog
-tmux send-keys -t ${NAME}_${NODE_ENV}:3 "tail -F log/${NODE_ENV}.log | ./node_modules/.bin/bunyan -l warn" C-m
+tmux new-window -k -t $session:3 -n applog
+tmux send-keys -t $session:3 "tail -F log/${NODE_ENV}.log | ./node_modules/.bin/bunyan -l warn" C-m
 
-tmux new-window -k -t ${NAME}_${NODE_ENV}:4 -n pglog
-tmux send-keys -t ${NAME}_${NODE_ENV}:4 "tail -f /var/log/postgresql/postgresql-9.4-main.log" C-m
+tmux new-window -k -t $session:4 -n pglog
+tmux send-keys -t $session:4 "tail -f /var/log/postgresql/postgresql-9.4-main.log" C-m
 
-tmux new-window -k -t ${NAME}_${NODE_ENV}:5 -n psql
-tmux send-keys -t ${NAME}_${NODE_ENV}:5 "psql -U ${NAME} ${NAME}_${NODE_ENV}" C-m
+tmux new-window -k -t $session:5 -n psql
+tmux send-keys -t $session:5 "psql -U ${NAME} $session" C-m
 
-tmux attach -t ${NAME}_${NODE_ENV}
+tmux attach -t $session
 

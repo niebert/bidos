@@ -1,0 +1,45 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<span class="md-toolbar-tools">
+			<md-button aria-label="home" ui-sref="bidos.home">
+				<md-icon md-svg-src="/img/ic_arrow_back_48px.svg" class="s48" alt="Home"></md-icon>
+			</md-button>
+
+			<h2 flex>Institutionen</h2>
+
+			<md-button aria-label="dialog" ng-click="vm.dialog($event, {type:'institution'})">
+				Neu
+			</md-button>
+		</span>
+	</md-toolbar>
+
+	<md-content flex class="bx-content">
+		<div layout class="search-bar">
+			<md-input-container flex>
+				<label>Titel filtern</label>
+				<input type="text" ng-model="stuff.name">
+			</md-input-container>
+			<md-input-container flex>
+				<label>ID filtern</label>
+				<input type="text" ng-model="stuff.id">
+			</md-input-container>
+		</div>
+
+		<table style="width: 100%;">
+			<thead>
+				<th ng-click="predicate='id'; reverse=!reverse"> ID </th>
+				<th ng-click="predicate='name'; reverse=!reverse"> Name </th>
+				<th ng-click="predicate='created_at'; reverse=!reverse"> Erstellt am </th>
+				<th ng-click="predicate='group_count'; reverse=!reverse"> Gruppen </th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="institution in vm.institutions | filter:myFilter | orderBy:predicate:reverse track by $index" ng-click="vm.dialog($event, institution)">
+					<td> {{ institution.id }} </td>
+					<td> {{ institution.name }} </td>
+					<td> {{ institution.created_at | date:'dd.MM.yyyy HH:mm' }} </td>
+					<td> {{ institution.groups.length }} </td>
+				</tr>
+			</tbody>
+		</table>
+	</md-content>
+</div>

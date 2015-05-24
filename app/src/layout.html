@@ -1,36 +1,22 @@
-<div flex layout="column">
-	<section flex layout="row">
-		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-xl')">
+<md-toolbar ng-controller="ToolbarController">
+	<span class="md-toolbar-tools">
 
-			<md-toolbar class="md-theme-indigo">
-				<h1 class="md-toolbar-tools">Sidenav Left</h1>
-			</md-toolbar>
+		<h2 class="bidos-button">
+			<span>BiDoS</span>
+		</h2>
 
-			<md-content class="md-padding" ng-controller="LeftCtrl">
-				<md-button aria-label="close-sidenav-left" ng-click="close()" class="md-primary" hide-gt-md>
-					Close Sidenav Left
-				</md-button>
-				<p hide-md show-gt-md>
-					This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
-				</p>
-			</md-content>
-		</md-sidenav>
+		<span flex>
+			{{me.group.institution.name}}/{{me.group.name}}
+		</span>
 
-		<md-content layout flex main ui-view="main">
-			<!-- DO NOT APPLY MD-PADDING HERE FFS -->
-		</md-content>
+		{{me.name}}
 
-		<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-			<md-toolbar class="md-theme-light">
-				<h1 class="md-toolbar-tools">Sidenav Right</h1>
-			</md-toolbar>
-			<md-content ng-controller="RightCtrl" class="md-padding">
-				<md-button aria-label="close-sidenav-right" ng-click="close()" class="md-primary">
-					Close Sidenav Right
-				</md-button>
-			</md-content>
-		</md-sidenav>
+		<md-button aria-label="settings" ng-click="userDialog()">
+			<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="Settings"></md-icon>
+		</md-button>
 
-	</section>
+	</span>
+</md-toolbar>
 
-</div>
+<md-content flex main ui-view="main" ng-controller="ContentController"> <!-- DO NOT APPLY MD-PADDING HERE FFS -->
+</md-content>

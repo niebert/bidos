@@ -1,0 +1,85 @@
+<div layout="column" layout-fill>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button aria-label="home" ui-sref="bidos.home">
+				<md-icon md-svg-src="/img/ic_dashboard_48px.svg" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+			<h2> Eigenes Profil </h2>
+			<span flex></span>
+			<!-- <md-button aria-label="kid-dialog" ng-click="vm.dialog($event, {type:'kid'})">
+				{{ vm.networkStatus }}
+			</md-button> -->
+			<md-button aria-label="settings" ui-sref="bidos.settings">
+				<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="BiDoS"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+
+
+	<md-tabs class="md-accent" md-selected="data.selectedIndex">
+		<md-tab id="tab1" aria-controls="tab1-content">
+			Benutzerdaten
+		</md-tab>
+		<md-tab id="tab2" aria-controls="tab2-content" ng-disabled="data.secondLocked">
+			Beobachtungen
+		</md-tab>
+		<md-tab id="tab3" aria-controls="tab3-content">
+			Notizen
+		</md-tab>
+		<md-tab id="tab4" aria-controls="tab4-content">
+			Sync &amp; Export
+		</md-tab>
+	</md-tabs>
+
+
+	<ng-switch on="data.selectedIndex" class="tabpanel-container">
+
+		<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()">
+			<pre>{{ vm.me | json }}</pre>
+		</div>
+
+		<div role="tabpanel" id="tab2-content" aria-labelledby="tab2" ng-switch-when="1" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2>Ungeprüfte Beobachtungen</h2>
+			<ol>
+				<li ng-repeat="obs in vm.observations" ng-click="vm.obsDialog($event, obs)" class="obs">
+					<strong>{{ obs.kid.name }}</strong> {{ obs.niveau }} <small>(von {{ obs.author.name }} am {{ obs.created_at | date }})</small>
+					<br>
+					<small>{{ obs.item.name }}</small>
+				</li>
+			</ol>
+		</div>
+
+		<div role="tabpanel" id="tab3-content" aria-labelledby="tab3" ng-switch-when="2" md-swipe-left="next()" md-swipe-right="previous()">
+			<h2>Eigene Notizen <small ng-click="vm.addNote()" class="bx-sync">neu</small></h2>
+			<ol>
+				<li ng-repeat="note in vm.resources.notes" ng-click="vm.noteDialog($event, note)">
+					<strong>{{ note.created_at | date }}</strong> {{ note.text }}
+					<br>
+					<span ng-click="vm.deleteNote(note)">löschen</span>
+				</li>
+			</ol>
+		</div>
+
+		<div role="tabpanel" id="tab4-content" aria-labelledby="tab4" ng-switch-when="3" md-swipe-left="next()" md-swipe-right="previous()">
+			<div ng-hide="$root.auth.role==1">
+				<h2>Alle Daten
+					<small ng-click="vm.sync()" class="bx-sync">
+						<a download="bidos-data-all-{{ vm.date }}.json" href="{{ vm.resourceBlob.url }}">exportieren</a>
+					</small>
+				</h2>
+				<pre>{{ vm.resourceBlob.blob | json }}</pre>
+			</div>
+
+			<h2>Ungesendete Daten <small ng-click="vm.sync()" class="bx-sync">synchronisieren</small></h2>
+			<ol>
+				<li ng-repeat="item in vm.outbox">
+					<strong>{{ item.operation }}</strong> <small>{{ item.date | date }}</small>
+					<pre>{{ item.resource | json }}</pre>
+				</li>
+			</ol>
+		</div>
+
+	</ng-switch>
+
+</div>
+

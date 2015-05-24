@@ -1,0 +1,50 @@
+<md-dialog aria-label="user-settings-dialog">
+
+	<md-content flex layout="column">
+		<md-subheader class="md-sticky-no-effect">{{ me.name }}</md-subheader>
+
+		<md-content layout-padding>
+
+			<pre>{{me|json}}</pre>
+
+			<md-input-container>
+				<label>Name</label>
+				<input ng-model="me.name" type="text" disabled>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Benutzername</label>
+				<input ng-model="me.username" type="text" disabled>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Rolle</label>
+				<input ng-model="me.roleName" type="text" disabled>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Gruppe</label>
+				<input ng-model="me.group.name" type="text" disabled>
+			</md-input-container>
+
+			<md-input-container>
+				<label>Institution</label>
+				<input ng-model="me.institution.name" type="text" disabled>
+			</md-input-container>
+
+		</md-content>
+
+	</md-content>
+
+	<div class="md-actions" layout>
+		<span flex></span>
+		<md-button aria-label="cancel" ng-click="vm.cancel()" class="md-primary md-raised md-button md-default-theme">
+			Ok
+		</md-button>
+		<!-- <md-button aria-label="save" ng-click="vm.save(vm.kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!vm.kid.name || !vm.kid.group_id" ng-click="vm.createResource(vm.kid)">
+			Speichern
+		</md-button> -->
+	</div>
+
+</md-dialog>
+

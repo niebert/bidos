@@ -1,24 +1,18 @@
 /* global angular, _ */
-
-(function() {
-  'use strict';
-
   var app = angular.module('bidos');
 
   app.filter('reverse', function() {
     return function(items) {
       if (!items || !items.length) {
-        return;
+        return false;
       }
       return items.slice()
         .reverse();
     };
   });
 
-
   app.filter('queryFilter', function() {
     return function(resources, query) {
-
 
       function ageFilter(age) {
         if (!query || !query.minAge || !query.maxAge) {
@@ -77,12 +71,12 @@
   app.filter('domainTitle', function(Resources) {
     return function(item) {
       if (!item) {
-        return;
+        return false;
       }
 
       if (!item.hasOwnProperty('subdomain_id')) {
         console.warn('item has no subdomain_id', item);
-        return;
+        return false;
       }
 
       var subdomain = _.select(Resources.get()
@@ -91,12 +85,12 @@
         })[0];
 
       if (!subdomain) {
-        return;
+        return false;
       }
 
       if (!subdomain.hasOwnProperty('domain_id')) {
         console.warn('subdomain has no domain_id', subdomain);
-        return;
+        return false;
       }
 
       return _.select(Resources.get()
@@ -112,12 +106,12 @@
   app.filter('subdomainTitle', function(Resources) {
     return function(item) {
       if (!item) {
-        return;
+        return false;
       }
 
       if (!item.hasOwnProperty('subdomain_id')) {
         console.warn('item has no subdomain_id');
-        return;
+        return false;
       }
 
       var subdomain = _.select(Resources.get()
@@ -126,12 +120,12 @@
         })[0];
 
       if (!subdomain) {
-        return;
+        return false;
       }
 
       if (!subdomain.hasOwnProperty('domain_id')) {
         console.warn('subdomain has no domain_id', subdomain);
-        return;
+        return false;
       }
 
       return subdomain.title;
@@ -141,14 +135,14 @@
 
   // item -> subdomainTitle XXX FIXME
   app.filter('subdomainTitleById', function(Resources) {
-    return function(subdomain_id) {
-      if (!subdomain_id) {
-        return;
+    return function(subdomainId) {
+      if (!subdomainId) {
+        return false;
       }
 
       return _.select(Resources.get()
         .subdomains, {
-          id: subdomain_id
+          id: subdomainId
         })[0].title;
 
     };
@@ -165,10 +159,10 @@
 
 
   app.filter('groupNameById', function(Resources) {
-    return function(group_id) {
+    return function(groupId) {
       return _.select(Resources.get()
         .groups, {
-          id: group_id
+          id: groupId
         })[0].name;
     };
   });
@@ -176,22 +170,22 @@
 
 
   app.filter('itemTitle', function(Resources) {
-    return function(item_id) {
+    return function(itemId) {
       return _.select(Resources.get()
         .items, {
-          id: item_id
+          id: itemId
         })[0].name;
     };
   });
 
 
   app.filter('groupName', function(Resources) {
-    return function(group_id) {
-      return Resources.getGroupNameById(group_id);
+    return function(groupId) {
+      return Resources.getGroupNameById(groupId);
       // Resources.get().then(function(data) {
       //   console.log(data);
       //   return _.select(data.groups, {
-      //     id: user.group_id
+      //     id: user.groupId
       //   })[0];
       // });
     };
@@ -199,24 +193,24 @@
 
 
   app.filter('kidName', function(Resources) {
-    return function(kid_id) {
+    return function(kidId) {
       return _.select(Resources.get()
         .kids, {
-          id: kid_id
+          id: kidId
         })[0].name;
     };
   });
 
 
-  // groupId Number -> kidsCount Number
+  // groupId Number -> kidsCount Number FIXME
   app.filter('countKids', function(bxResourceHelper) {
-    return function(groupId) { // FIXME
+    return function(groupId) {
 
       if (!arguments.length || typeof arguments[0] !== 'number') {
-        return;
+        return false;
       }
       return bxResourceHelper.countKids(groupId);
-    }; // FIXME
+    };
   });
 
 
@@ -240,7 +234,7 @@
   app.filter('age', function() {
     return function(date) {
       if (!date) {
-        return;
+        return false;
       }
 
       var ageDifMs = Date.now() - date.getTime();
@@ -349,5 +343,3 @@
       }
     };
   });
-
-}());

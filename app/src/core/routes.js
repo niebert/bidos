@@ -1,103 +1,98 @@
-/* global angular, _ */
+/* global angular */
 
-// everything with bx is "inside" === authed. the rest is not.
+// everything with bidos is "inside" === authed. the rest is not.
 
-(function() {
-  'use strict';
+angular.module('bidos')
+.config(['$stateProvider', function($stateProvider) {
 
-  angular.module('bidos')
+  $stateProvider
 
-  .config(['$stateProvider', function($stateProvider) {
+  // main route for anything authenticated (like an authentication wrapper)
+  .state('bidos', {
+    url: '',
+    templateUrl: 'templates/layout.html'
+  })
 
-    $stateProvider
-
-    // main route for anything bxenticated
-      .state('bx', {
-      url: '',
-      templateUrl: 'templates/layout.html'
-    })
-
-    // kind of a dashboard
-    .state('bx.home', {
-      url: '/home',
-      views: {
-        main: {
-          template: '<bx-dashboard layout flex></bx-dashboard>'
-        }
+  // kind of a dashboard
+  .state('bidos.home', {
+    url: '/home',
+    views: {
+      main: {
+        templateUrl: 'templates/main.html'
       }
-    })
+    }
+  })
 
-    .state('bx.capture', {
-      url: '/capture',
-      views: {
-        main: {
-          template: '<bx-capture layout="row" flex></bx-capture>'
-        }
-      }
-    })
+  // .state('bidos.capture', {
+  //   url: '/capture',
+  //   views: {
+  //     main: {
+  //       template: '<bidos-capture layout="row" flex></bidos-capture>'
+  //     }
+  //   }
+  // })
 
-    .state('bx.capture.go', {
-      url: '/:type',
-      views: {
-        'capture-main': {
-          template: function(stateParams) {
-            if (_.isEmpty(stateParams)) {
-              stateParams.type = 'kid';
-            } // FIXME weird bx.capture.go has bs-capture tag -> nested bx-capture tags! :/ oO
-            return '<bx-capture layout="row" flex type="' + stateParams.type + '"></bx-capture>';
-          }
-        }
-      }
-    })
+  // .state('bidos.capture.go', {
+  //   url: '/:type',
+  //   views: {
+  //     'capture-main': {
+  //       template: function(stateParams) {
+  //         if (_.isEmpty(stateParams)) {
+  //           stateParams.type = 'kid';
+  //         } // FIXME weird bidos.capture.go has bs-capture tag -> nested bidos-capture tags! :/ oO
+  //         return '<bidos-capture layout="row" flex type="' + stateParams.type + '"></bidos-capture>';
+  //       }
+  //     }
+  //   }
+  // })
 
-    .state('bx.table', {
-      url: '/resource/:type',
-      views: {
-        main: {
-          template: function(stateParams) {
-            return '<bx-table layout flex type="' + stateParams.type + '"></bx-table>';
-          }
-        }
-      }
-    })
+  // .state('bidos.table', {
+  //   url: '/resource/:type',
+  //   views: {
+  //     main: {
+  //       template: function(stateParams) {
+  //         return '<bidos-table layout flex type="' + stateParams.type + '"></bidos-table>';
+  //       }
+  //     }
+  //   }
+  // })
 
-    .state('bx.portfolio', {
-      url: '/portfolio',
-      views: {
-        main: {
-          template: '<bx-portfolio flex></bx-portfolio>'
-        }
-      }
-    })
+  // .state('bidos.portfolio', {
+  //   url: '/portfolio',
+  //   views: {
+  //     main: {
+  //       template: '<bidos-portfolio flex></bidos-portfolio>'
+  //     }
+  //   }
+  // })
 
-    .state('bx.profile', {
-      url: '/profile',
-      views: {
-        main: {
-          template: '<bx-profile layout-fill></bx-profile>'
-        }
-      }
-    })
+  // .state('bidos.profile', {
+  //   url: '/profile',
+  //   views: {
+  //     main: {
+  //       template: '<bidos-profile layout-fill></bidos-profile>'
+  //     }
+  //   }
+  // })
 
-    .state('bx.preferences', {
-      url: '/prefs',
-      views: {
-        main: {
-          template: '<bx-preferences layout-fill></bx-preferences>'
-        }
-      }
-    })
+  // .state('bidos.preferences', {
+  //   url: '/prefs',
+  //   views: {
+  //     main: {
+  //       template: '<bidos-preferences layout-fill></bidos-preferences>'
+  //     }
+  //   }
+  // })
 
-    .state('bx.observation-inbox', {
-      url: '/observation-inbox',
-      views: {
-        main: {
-          template: '<bx-observation-inbox layout-fill></bx-observation-inbox>'
-        }
-      }
-    })
+  // .state('bidos.observation-inbox', {
+  //   url: '/observation-inbox',
+  //   views: {
+  //     main: {
+  //       template: '<bidos-observation-inbox layout-fill></bidos-observation-inbox>'
+  //     }
+  //   }
+  // })
 
-    ;
+  ;
 
-  }]);
-}());
+}]);

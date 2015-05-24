@@ -27,8 +27,9 @@
       if (401 === err.status) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
-        this.log.warn('user is not authenticated');
-      } else {
+        console.log.warn('user is not authenticated');
+      }
+      else {
         throw err;
       }
     }
@@ -40,9 +41,10 @@
       yield next;
     } catch (err) {
       if ('ECONNREFUSED' === err.code) {
-        this.log.error('Database offline');
-      } else {
-        this.log.error('Database error');
+        console.log.error('Database offline');
+      }
+      else {
+        console.log.error('Database error');
       }
       this.throw(err);
     }
@@ -59,7 +61,7 @@
   app.use(bodyparser());
 
   if (require.main === module) {
-    app.use(require('./logger')()); // FIXME too many open files and krbwschzfsch
+    // app.use(require('./logger')()); // FIXME crashes, saying too many open files
     app.use(require('koa-logger')()); // use bunyan only
   }
 
@@ -77,15 +79,15 @@
   // mount public routes
   mountRoutes(routes.public, '/');
 
-	// routes below the next middleware call are only accessible to authenticated
-	// clients.  if the authorization succeeds, next is yielded and the following
-	// routes are reached. if it fails, it throws and the previous middleware
-	// will catch that error and send back status 401 and redirect to /login.
-//  app.use(function*(next) {
-//    yield auth.call(this, jwt({
-//      secret: config.secret
-//    }).call(this, next));
-//  });
+  // routes below the next middleware call are only accessible to authenticated
+  // clients.  if the authorization succeeds, next is yielded and the following
+  // routes are reached. if it fails, it throws and the previous middleware
+  // will catch that error and send back status 401 and redirect to /login.
+  app.use(function*(next) {
+    yield auth.call(this, jwt({
+      secret: config.secret
+    }).call(this, next));
+  });
 
   // secured routes
   mountRoutes(routes.private, '/v1/');

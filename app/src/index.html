@@ -24,8 +24,8 @@
 <body ng-controller="AuthController as auth">
 
 	<!-- single entry point to layout.html -->
-	<div id="layout" ui-view layout layout-fill>
-		<md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate">
+	<div ng-controller="AppController as app" ui-view>
+		<md-progress-circular class="md-accent md-hue-4" md-mode="indeterminate">
 		</md-progress-circular>
 	</div>
 

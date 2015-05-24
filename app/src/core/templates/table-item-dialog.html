@@ -1,0 +1,71 @@
+<md-dialog aria-label="create-or-edit-item-dialog">
+
+	<md-subheader ng-hide="vm.errorMessage" class="md-sticky-no-effect dialog-header">
+		<span ng-if="!vm.item.id">Neuen Baustein erstellen</span>
+		<span ng-if="vm.item.id">Baustein bearbeiten</span>
+	</md-subheader>
+	<md-subheader ng-show="vm.errorMessage" class="md-sticky-no-effect dialog-header server-error">Fehler: {{ vm.errorMessage }}</md-subheader>
+
+	<md-content flex layout="column" style="min-height: 567px;">
+
+		<form name="itemForm">
+			<md-content layout="column">
+
+				<!-- <pre>{{ vm.item | json }}</pre> -->
+				<!-- <pre>{{ vm.item.behaviours | json }}</pre> -->
+
+				<md-input-container>
+					<label for="name">Titel des Bausteins</label>
+					<input type="text" id="name" name="name" ng-model="vm.item.name" required></input>
+					<div ng-show="itemForm.name.$dirty" ng-messages="itemForm.name.$error">
+						<div class="error-message" ng-message="required">Sie müssen einen Titel für den Baustein angeben</div>
+					</div>
+				</md-input-container>
+
+				<md-input-container>
+					<span>Bereich: {{ vm.item.subdomain.domain.name }}</span>
+					<select for ng-model="vm.item.subdomain_id" ng-options="subdomain.id as subdomain.name group by subdomain.domain.name for subdomain in vm.parent.subdomains"></select>
+				</md-input-container>
+
+
+				<md-content layout="row" layout-align="space-around start">
+
+					<div flex ng-repeat="behaviour in vm.item.behaviours">
+						<md-input-container flex>
+							<label>Verhalten auf Niveau {{ $index + 1 }}</label>
+							<textarea ng-model="behaviour.text" rows="5"></textarea>
+						</md-input-container>
+						<md-input-container flex>
+							<label>Beispiel für Niveau {{ $index + 1 }}</label>
+							<textarea ng-model="behaviour.examples[0].text" rows="5"></textarea>
+						</md-input-container>
+					</div>
+
+				</md-content>
+			</md-content>
+		</form>
+	</md-content>
+
+
+	<div class="md-actions" layout="row">
+
+		<md-button aria-label="destroy-item" ng-show="vm.item.id" ng-click="vm.destroy(vm.item)" class="md-raised md-warn">
+			Löschen
+		</md-button>
+
+		<span flex></span>
+
+		<md-button aria-label="cancel-dialog" ng-click="vm.cancel()" class="md-raised">
+			Abbrechen
+		</md-button>
+
+		<md-button aria-label="save-item" ng-click="vm.save(vm.item)" class="md-raised md-primary md-button" ng-disabled="!vm.formIsValid(vm.item)">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>
+
+<script type="text/ng-template" id="name-messages">
+</script>
+

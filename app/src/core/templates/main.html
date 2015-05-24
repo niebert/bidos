@@ -1,0 +1,20 @@
+<section layout class="action-bar">
+  <md-button ng-repeat="action in myActionButtons" ng-click="action.onClick($event)" class="md-raised">{{action.text}}</md-button>
+</section>
+
+<section>
+  <md-list>
+    <md-list-item class="md-3-line" ng-repeat="kid in vm.me.group.kids">
+      <!-- <p ng-click="vm.dialog($event, kid)">{{ kid.name }}</p> -->
+      <div class="md-list-item-text">
+        <h3>{{ kid.sexString }}, {{ kid.age }} Jahre alt</h3>
+        <h4>Personal: 4, Sozial: 3, Sprachlich: 6, Mathematisch: 1</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis provident iste nostrum nulla sapiente eveniet velit corporis odit quod maxime, est similique voluptatibus maiores qui distinctio ex, laboriosam suscipit veniam.</p>
+      </div>
+      <!-- <md-button ng-click="action.onClick($event, {action:observe, kid:kid})" class="md-raised">Beobachten</md-button> -->
+      <md-button ng-click="action.onClick($event, {action:charts, kid:kid})" class="md-raised">Auswerten</md-button>
+      </md-icon>
+    </md-list-item>
+  </md-list>
+</section>
+
