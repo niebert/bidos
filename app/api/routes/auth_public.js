@@ -247,7 +247,7 @@
 
 		// log every auth request
 
-		this.log.info({
+		console.info({
 			type: 'auth request',
 			username: this.request.body.username,
 			password: this.request.body.password
@@ -264,7 +264,7 @@
 
     if (!result.rowCount) {
 
-			this.log.warn({
+			console.warn({
 				type: 'username unknown',
 				username: this.request.body.username,
 				password: this.request.body.password
@@ -286,7 +286,7 @@
 
       if (!user.approved) {
 
-				this.log.warn({
+				console.warn({
 					type: 'user not approved',
 					username: this.request.body.username,
 					password: this.request.body.password
@@ -304,7 +304,7 @@
 
       if (user.disabled) {
 
-				this.log.warn({
+				console.warn({
 					type: 'user disabled',
 					username: this.request.body.username,
 					password: this.request.body.password
@@ -321,7 +321,7 @@
 
       if (yield bcrypt.compare(this.request.body.password, user.password_hash)) {
 
-				this.log.info({
+				console.info({
 					type: 'auth success',
 					username: this.request.body.username,
 					password: this.request.body.password
@@ -336,7 +336,7 @@
 
 				// password is not correct
 
-				this.log.warn({
+				console.warn({
 					type: 'password failure',
 					username: this.request.body.username,
 					password: this.request.body.password
