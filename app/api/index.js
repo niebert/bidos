@@ -27,7 +27,7 @@
       if (401 === err.status) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
-        console.log.warn('user is not authenticated');
+        console.warn('user is not authenticated');
       }
       else {
         throw err;
@@ -41,10 +41,10 @@
       yield next;
     } catch (err) {
       if ('ECONNREFUSED' === err.code) {
-        console.log.error('Database offline');
+        console.error('Database offline');
       }
       else {
-        console.log.error('Database error');
+        console.error('Database error');
       }
       this.throw(err);
     }
