@@ -1,0 +1,16 @@
+<md-dialog aria-label="create-kid-dialog">
+
+	<md-content flex layout="column" style="min-height: 368px;">
+		<!-- <md-subheader class="md-sticky-no-effect">{{resource.type}}</md-subheader> -->
+		<pre>{{resource|json}}</pre>
+	</md-content>
+
+	<div class="md-actions" layout>
+		<span flex></span>
+		<md-button aria-label="cancel" ng-click="cancel()" class="md-raised md-button">
+			Schließen
+		</md-button>
+	</div>
+
+</md-dialog>
+
