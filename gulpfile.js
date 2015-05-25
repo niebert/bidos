@@ -106,14 +106,9 @@
     gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
   });
 
-  gulp.task('templates', function() {
-    gulp.src([src + '/layout.html', src + '/*/**/*.html'])
-    .pipe(flatten())
-    .pipe(gulp.dest(dist + '/templates'));
-
-    gulp.src([src + '/index.html'])
-    .pipe(gulp.dest(dist));
-  });
+  gulp.task('templates', shell.task([
+    'bin/templates.sh'
+  ]));
 
   gulp.task('manifest', shell.task([
     'bin/manifest.sh > app/dist/manifest.appcache'
