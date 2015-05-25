@@ -25,9 +25,16 @@ app.config(function($mdIconProvider) {
 
 // angular material themes
 app.config(['$mdThemingProvider', function($mdThemingProvider) {
+  // TODO Change theme depending on role
   $mdThemingProvider.theme('default')
-    .primaryPalette('indigo')
-    .accentPalette('pink');
+    .primaryPalette('blue')
+    .accentPalette('green');
+  $mdThemingProvider.theme('admin')
+    .primaryPalette('red')
+    .accentPalette('blue');
+  $mdThemingProvider.theme('scientist')
+    .primaryPalette('teal')
+    .accentPalette('cyan');
 }]);
 
 // allow downloading json as blob

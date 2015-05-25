@@ -82,6 +82,7 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
   function authSuccess(user) {
     console.log('%cAUTHORIZED', 'color: green; font-size: 1.2em', user);
     $rootScope.auth = user;
+    // $mdThemingProvider.setDefaultTheme('altTheme');
     $state.go(ROUTES.AUTH_SUCCESS);
   }
 
