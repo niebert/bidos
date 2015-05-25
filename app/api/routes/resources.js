@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash');
 var Router = require('koa-router');
 let crypto = require('crypto');
