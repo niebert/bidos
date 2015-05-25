@@ -73,7 +73,7 @@
 
   // connect to database
   app.use(function*(next) {
-    yield db.call(this, pg(config.db).call(this, next));
+    yield db.call(this, pg(config.db).call(this, next)); // <3
   });
 
   // mount public routes
