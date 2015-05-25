@@ -2,13 +2,13 @@
 
 # generate manifest.appcache
 
-DIST_DIR=./app/dist
+DIST_DIR=app/dist
 
 function cached_files() {
   cd $DIST_DIR
   ls -1 **/^manifest.appcache*(.) # dist files
-  grep -Eho 'lib/.[a-zA-Z0-9/\._-]+' index.html # bower components
-  grep -Eho 'http[s]://[a-zA-Z0-9/\.:?_=-]+' index.html # remote imports
+  grep -Eho 'lib/.[a-zA-Z0-9/\._-]+' ../src/index.html # bower components
+  grep -Eho 'http[s]://[a-zA-Z0-9/\.:?_=-]+' ../src/index.html # remote imports
   cd -
 }
 
