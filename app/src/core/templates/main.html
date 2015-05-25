@@ -1,20 +1,12 @@
-<!-- <md-toolbar layout class="action-bar md-hue-1">
-<span class="md-toolbar-tools">
-  <md-button ng-repeat="action in myActionButtons" ng-click="action.onClick($event)" class="action-button">{{action.text}}</md-button>
-</span>
-</md-toolbar>
-
- -->
-
-    <md-tabs md-selected="selectedIndex" md-border-bottom>
-      <md-tab ng-repeat="action in myActionButtons" ng-disabled="tab.disabled" label="{{tab.title}}" ng-click="action.onClick($event)">
-        <div class="demo-tab tab{{$index%4}}">
-          <div ng-bind="action.text"></div>
-          <br/>
-          <md-button class="md-primary md-raised" ng-click="removeTab( tab )" ng-disabled="tabs.length <= 1">Remove Tab</md-button>
-        </div>
-      </md-tab>
-    </md-tabs>
+<md-tabs md-selected="selectedIndex" md-border-bottom ng-controller="ActionController">
+  <md-tab ng-repeat="action in myActions" ng-disabled="tab.disabled" label="{{tab.title}}" ng-click="action.onClick($event)">
+    <div class="demo-tab tab{{$index%4}}">
+      <div ng-bind="action.text"></div>
+      <br/>
+      <md-button class="md-primary md-raised" ng-click="removeTab( tab )" ng-disabled="tabs.length <= 1">Remove Tab</md-button>
+    </div>
+  </md-tab>
+</md-tabs>
 
  <section>
   <md-grid-list
