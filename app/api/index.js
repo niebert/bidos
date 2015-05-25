@@ -84,9 +84,13 @@
   // routes are reached. if it fails, it throws and the previous middleware
   // will catch that error and send back status 401 and redirect to /login.
   app.use(function*(next) {
-    yield auth.call(this, jwt({
-      secret: config.secret
-    }).call(this, next));
+    if (process.env.NOAUTH) {
+      yield next;
+    } else {
+      yield auth.call(this, jwt({
+        secret: config.secret
+      }).call(this, next));
+    }
   });
 
   // secured routes
@@ -94,6 +98,9 @@
 
   // main
   var listen = function(port) {
+    if (process.env.NOAUTH) {
+      console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
+    }
     app.listen(port || config.port);
     console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
   };
