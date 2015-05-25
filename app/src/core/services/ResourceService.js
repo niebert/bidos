@@ -435,7 +435,7 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
               _.filter(kid.observations, function(obs) { return obs.item.subdomain.domain.id === 1; }),
               _.filter(kid.observations, function(obs) { return obs.item.subdomain.domain.id === 2; }),
               _.filter(kid.observations, function(obs) { return obs.item.subdomain.domain.id === 3; }),
-              _.filter(kid.observations, function(obs) { return obs.item.subdomain.domain.id === 4; }),
+              _.filter(kid.observations, function(obs) { return obs.item.subdomain.domain.id === 4; })
             ];
 
             // let groupedObs = [];
