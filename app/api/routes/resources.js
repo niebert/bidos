@@ -106,4 +106,6 @@
     k.color = crypto.createHash('md5').update(k.name).digest('hex').slice(0, 6);
   });
 
-}());
+  // respond with our precious data
+  this.body = JSON.stringify(resources); // TEST ME
+}
