@@ -24,7 +24,7 @@
     try {
       yield next; // -> jwt authorization
     } catch (err) {
-      if (401 === err.status) {
+      if (err.status === 401) {
         this.status = 401; // authentication is possible but has failed
         this.body = 'Error: Protected resource. No Authorization header found.\n';
         console.warn('user is not authenticated');
@@ -40,7 +40,7 @@
     try {
       yield next;
     } catch (err) {
-      if ('ECONNREFUSED' === err.code) {
+      if (err.code === 'ECONNREFUSED') {
         console.error('Database offline');
       }
       else {
