@@ -1,10 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('ContentController', ContentController);
+.controller('ActionbarController', ActionbarController);
 
-var md5 = require('md5');
-
-function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $state, $http, STRINGS, CONFIG) {
+function ActionbarController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $state, $http, STRINGS, CONFIG) {
 
   function updateViewModel() {
     Resources.get()
@@ -25,10 +23,6 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
         })[0];
       }
 
-      $scope.kids = data.kids.filter(function(kid) {
-        return kid.group_id === (data.me.group_id ? data.me.group_id : kid.group_id); // admin sees all kids
-      });
-
     });
   }
 
@@ -40,68 +34,21 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
   $scope.stuff = {};
   $scope.auth = $rootScope.auth;
 
-  $scope.getTileColor = function(string) {
-    return md5(string);
-  };
-
-  $scope.dialog = function (ev, resource) {
+  $scope.settingsDialog = function (ev) {
     if ($rootScope.auth.role === 2) {
       console.log('you are a scientist, not showing dialog');
       return;
     }
 
-    console.log('dialog resource', resource);
-
     $mdDialog.show({
       bindToController: false,
-      controller: 'DialogController',
+      controller: 'SettingsDialogController',
       controllerAs: 'vm',
       locals: {
-        resource: resource,
         STRINGS: STRINGS
       },
       targetEvent: ev,
-      templateUrl: `templates/dialogs/resources/${resource.type}.html`
-    }).then(function(data) {
-      updateViewModel(data);
-      console.log('dialog succeeded');
-    }, function() {
-      console.log('dialog cancelled');
-    });
-  };
-
-  $scope.ActionDialog = function (ev, resource) {
-    console.log('dialog resource', resource);
-
-    $mdDialog.show({
-      bindToController: false,
-      controller: 'ActionDialog',
-      controllerAs: 'vm',
-      locals: {
-        resource: resource
-      },
-      targetEvent: ev,
-      templateUrl: `templates/action-dialog.html`
-    }).then(function(data) {
-      updateViewModel(data);
-      console.log('dialog succeeded');
-    }, function() {
-      console.log('dialog cancelled');
-    });
-  };
-
-  $scope.infoDialog = function (ev, resource) {
-    console.log('dialog resource', resource);
-
-    $mdDialog.show({
-      bindToController: false,
-      controller: 'InfoDialog',
-      controllerAs: 'vm',
-      locals: {
-        resource: resource
-      },
-      targetEvent: ev,
-      templateUrl: `templates/info-dialog.html`
+      templateUrl: 'templates/settings-dialog.html'
     }).then(function(data) {
       updateViewModel(data);
       console.log('dialog succeeded');
@@ -151,16 +98,9 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
   };
 
   $scope.actionButtons = [{
-    text: 'Meine Kinder',
-    tooltip: 'Meine Kinder anzeigen',
-    roles: ['practitioner'],
-    onClick: function() {
-      $state.go('home');
-    }
-  }, {
     text: 'Neues Kind',
     tooltip: 'Ein neues Kind hinzufügen',
-    roles: ['practitioner', 'admin', 'scientist'],
+    roles: ['practitioner'],
     onClick: function($event) {
       return $scope.dialog($event, {type: 'kid'});
     }

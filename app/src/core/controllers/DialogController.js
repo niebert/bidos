@@ -2,36 +2,20 @@
 angular.module('bidos')
   .controller('DialogController', DialogController);
 
-function DialogController(Resources, $mdDialog, parentVm, resource, STRINGS, CONFIG, $http) {
+function DialogController($scope, Resources, $mdDialog, STRINGS, CONFIG, $http) {
   var vm = angular.extend(this, {
     cancel: cancel,
     save: save,
     destroy: destroy,
-    parent: parentVm,
-    STRINGS: STRINGS,
-    approveUser: approveUser,
     toggleEnabled: toggleEnabled,
     formIsValid: formIsValid
   });
 
   console.log(vm.STRINGS);
 
-  function approveUser(user) {
-    var config = CONFIG;
-    var url = [config.url, 'auth/approve'].join('/');
-    $http.post(url, user).success(function (response) {
-      console.log(response);
-      vm[resource.type] = response;
-      resource = response;
-      $mdDialog.hide();
-      // debugger
-      vm.parent.users.splice(_.findIndex(vm.parent.users, {
-        id: response.id
-      }), 1, response);
-    }).error(function (err) {
-      console.error(err);
-    });
-  }
+  $scope.approveUser = require('../../lib/approveUser')($http, $mdDialog, CONFIG);
+
+  debugger
 
   function toggleEnabled(resource) { // TODO
     if (resource.hasOwnProperty('disabled')) {
@@ -152,7 +136,7 @@ function DialogController(Resources, $mdDialog, parentVm, resource, STRINGS, CON
               'text',
               'niveau'
             ])).then(function (response) {
-              debugger
+              // debugger
             });
 
             _.each(behaviour.examples, function (example, j) {
