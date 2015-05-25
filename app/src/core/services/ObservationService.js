@@ -85,7 +85,7 @@ function ObservationService($rootScope, Resources, $q, $state, $mdToast, STRINGS
   function select(resource) {
     var r = resource;
 
-    debugger
+    // debugger
     if (r.type === 'behaviour' && (r.niveau === 0 || r.niveau === null)) {
       o.behaviour = r;
       go('examples');
