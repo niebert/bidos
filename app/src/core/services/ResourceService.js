@@ -451,6 +451,14 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
             }, enumerable: false
         });
       }
+
+      if (!kid.hasOwnProperty('lastObservation')) {
+        Object.defineProperty(kid, 'lastObservation', {
+          get: function() {
+            return kid.observations ? kid.observations[kid.observations.length - 1] : null;
+          }, enumerable: false
+        });
+      }
     });
   }
 
