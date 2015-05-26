@@ -10,30 +10,11 @@
 
   var app = require('koa')();
   var pg = require('koa-pg');
-  var jwt = require('koa-jwt');
   var cors = require('koa-cors');
   var mount = require('koa-mount');
   var compress = require('koa-compress');
   var validate = require('koa-validate');
   var bodyparser = require('koa-bodyparser');
-
-  // catch authorization failure and custom 401 handling to hide koa-jwt
-  // errors from users: instantly moves on to the next middleware and handles
-  // eventually thrown errors.
-  function* auth(next) {
-    try {
-      yield next; // -> jwt authorization
-    } catch (err) {
-      if (err.status === 401) {
-        this.status = 401; // authentication is possible but has failed
-        this.body = 'Error: Protected resource. No Authorization header found.\n';
-        console.warn('user is not authenticated');
-      }
-      else {
-        throw err;
-      }
-    }
-  }
 
   // catches database error
   function* db(next) {
@@ -49,6 +30,7 @@
       this.throw(err);
     }
   }
+  let auth = require('./middleware/auth');
 
   function mountRoutes(_routes, mountPoint) {
     _.each(_routes, function(d, i) {
@@ -84,24 +66,18 @@
   // routes are reached. if it fails, it throws and the previous middleware
   // will catch that error and send back status 401 and redirect to /login.
 
-  app.use(function*(next) {
-    if (process.env.NOAUTH) {
-      yield next;
-    } else {
-      yield auth.call(this, jwt({
-        secret: config.secret
-      }).call(this, next));
-    }
-  });
+  // authenticate
+  if (!process.env.NOAUTH) {
+    app.use(auth);
+  } else {
+    console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
+  }
 
   // secured routes
   mountRoutes(routes.private, '/v1/');
 
   // main
   var listen = function(port) {
-    if (process.env.NOAUTH) {
-      console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
-    }
     app.listen(port || config.port);
     console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
   };
