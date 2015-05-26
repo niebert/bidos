@@ -6,7 +6,7 @@
 		</h2>
 
 		<span flex>
-			{{me.group.institution.name}}/{{me.group.name}}
+			{{$root.me.group.institution.name}}/{{$root.me.group.name}}
 		</span>
 
 		{{me.name}}
@@ -17,6 +17,3 @@
 
 	</span>
 </md-toolbar>
-
-<md-content flex main ui-view="main" ng-controller="ContentController"> <!-- DO NOT APPLY MD-PADDING HERE FFS -->
-</md-content>

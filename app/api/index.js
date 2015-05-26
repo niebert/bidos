@@ -83,6 +83,7 @@
   // clients.  if the authorization succeeds, next is yielded and the following
   // routes are reached. if it fails, it throws and the previous middleware
   // will catch that error and send back status 401 and redirect to /login.
+
   app.use(function*(next) {
     if (process.env.NOAUTH) {
       yield next;

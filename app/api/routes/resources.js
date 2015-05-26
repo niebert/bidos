@@ -98,7 +98,7 @@ function *getVanillaResources() {
     });
   });
 
-  // names are colors
+  // names can be colors
   _.each(resources.kids, function(k) {
     k.color = '#' + crypto.createHash('md5').update(k.name).digest('hex').slice(0, 6);
   });
