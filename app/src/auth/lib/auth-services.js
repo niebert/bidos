@@ -1,6 +1,6 @@
 /* global angular */
 angular.module('auth.services', [
-  'angular-jwt', // json web token
+  'angular-jwt' // json web token
 ])
 
 .factory('UserFactory', function($http, AuthTokenFactory, CONFIG) {
