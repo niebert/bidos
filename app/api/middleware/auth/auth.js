@@ -1,14 +1,11 @@
 'use strict';
-
 let jwt = require('koa-jwt');
-
 const secret = require('../config').secret;
 
 // catch authorization failure and custom 401 handling to hide koa-jwt
 // errors from users: instantly moves on to the next middleware and handles
 // eventually thrown errors.
 function* authHandler(next) {
-  console.log('auth first');
   try {
     yield next; // -> jwt authorization
   } catch (err) {
@@ -24,7 +21,6 @@ function* authHandler(next) {
 }
 
 function* auth(next) {
-  console.log('auth second');
   yield authHandler.call(this, jwt({secret: secret}).call(this, next));
 }
 
