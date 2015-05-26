@@ -218,8 +218,8 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
         // just get the already prepared data model w/o any further actions
       } else {
         console.warn('[resource] preparedData is not ready. please wait ...'); // TODO check this data loading s/t very slow
-        initResources().then(function(preparedData) {
-          resolve(preparedData);
+        initResources().then(function(pData) {
+          resolve(pData);
         }).catch(function(err) {
           reject(err);
         });
@@ -241,17 +241,17 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
       // key is the pluralized type of the resource
       let key = _key; // TODO why is this neccessary?
 
-      _.each(resources, function(resource, resourceIdx, resources) {
+      _.each(resources, function(resource) {
 
         // convert string dates to real dates
-        _.each(resource, function(val, key, resource) {
+        _.each(resource, function(val) {
           if (/_at/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
             resource[key] = new Date(resource[key]);
           }
         });
 
         // convert string dates to real dates
-        _.each(resource, function(val, key, resource) {
+        _.each(resource, function(val) {
           if (/bday/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
             resource[key] = new Date(resource[key]);
           }
@@ -374,22 +374,22 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
           get: function() {
             var skill = [
               _.chain(kid.observations).filter({
-                domain_id: 1
+                'domain_id': 1
               }).map('niveau').reduce(function(sum, n) {
                 return sum + n;
               }, 0).value(),
               _.chain(kid.observations).filter({
-                domain_id: 2
+                'domain_id': 2
               }).map('niveau').reduce(function(sum, n) {
                 return sum + n;
               }, 0).value(),
               _.chain(kid.observations).filter({
-                domain_id: 3
+                'domain_id': 3
               }).map('niveau').reduce(function(sum, n) {
                 return sum + n;
               }, 0).value(),
               _.chain(kid.observations).filter({
-                domain_id: 4
+                'domain_id': 4
               }).map('niveau').reduce(function(sum, n) {
                 return sum + n;
               }, 0).value()
@@ -494,16 +494,18 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
   }
 
   function addUserHandlers(data) {
+
+    // all kids belonging to the same group as the user
     _.each(data.users, function(user) {
-      // if (!user.hasOwnProperty('kids')) {
-      //   Object.defineProperty(user, 'kids', {
-      //     get: function() {
-      //       return _.chain(user.group)
-      //         .map('kids')
-      //         .flatten();
-      //     }, enumerable: false
-      //   });
-      // }
+      if (!user.hasOwnProperty('kids')) {
+        Object.defineProperty(user, 'kids', {
+          get: function() {
+            return user.group.kids;
+          }, enumerable: false
+        });
+      }
+
+      // the role in text TODO implement proper role system
       if (!user.hasOwnProperty('roleName')) {
         Object.defineProperty(user, 'roleName', {
           get: function() {
