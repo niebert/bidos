@@ -100,7 +100,12 @@ function *getVanillaResources() {
 
   // names are colors
   _.each(resources.kids, function(k) {
-    k.color = crypto.createHash('md5').update(k.name).digest('hex').slice(0, 6);
+    k.color = '#' + crypto.createHash('md5').update(k.name).digest('hex').slice(0, 6);
+  });
+
+  // send less user stuff
+  _.each(resources.users, function(u) {
+    delete u.password_hash;
   });
 
   // respond with our precious data
