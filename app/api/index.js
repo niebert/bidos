@@ -1,60 +1,56 @@
-(function() {
-  'use strict';
-  //jshint esnext:true
+'use strict';
 
-  var config = require('./config');
-  var routes = require('./routes');
+var config = require('./config');
+var routes = require('./routes');
 
-  var chalk = require('chalk');
+var chalk = require('chalk');
 
-  var app = require('koa')();
-  var cors = require('koa-cors');
-  var compress = require('koa-compress');
-  var validate = require('koa-validate');
-  var bodyparser = require('koa-bodyparser');
-  var logger = require('koa-logger');
+var app = require('koa')();
+var cors = require('koa-cors');
+var compress = require('koa-compress');
+var validate = require('koa-validate');
+var bodyparser = require('koa-bodyparser');
+var logger = require('koa-logger');
 
-  let db = require('./middleware/db');
-  let auth = require('./middleware/auth');
+let db = require('./middleware/db');
+let auth = require('./middleware/auth');
 
-  let mount = require('./lib/mount');
+let mount = require('./lib/mount');
 
-  app.use(compress());
-  app.use(validate());
-  app.use(bodyparser());
+app.use(compress());
+app.use(validate());
+app.use(bodyparser());
 
-  if (require.main === module) {
-    app.use(logger());
-  }
+if (require.main === module) {
+  app.use(logger());
+}
 
-  // inject cors headers
-  app.use(cors({
-    headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
-  }));
+// inject cors headers
+app.use(cors({
+  headers: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
+}));
 
-  // test databse connection
-  app.use(db());
+// test databse connection
+app.use(db());
 
-  // mount public routes
-  mount(routes.public, '/');
+// mount public routes
+mount(routes.public, '/');
 
-  // authenticate
-  if (!process.env.NOAUTH) {
-    app.use(auth);
-  } else {
-    console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
-  }
+// authenticate
+if (!process.env.NOAUTH) {
+  app.use(auth);
+} else {
+  console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
+}
 
-  // mount protected routes
-  mount(routes.private, '/v1/');
+// mount protected routes
+mount(routes.private, '/v1/');
 
-  // main
-  var listen = function(port) {
-    app.listen(port || config.port);
-    console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
-  };
+// main
+var listen = function(port) {
+  app.listen(port || config.port);
+  console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
+};
 
-  module.parent ? module.exports = exports = listen : listen();
-}());
-
+module.parent ? module.exports = exports = listen : listen();
