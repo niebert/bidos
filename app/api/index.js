@@ -9,27 +9,13 @@
   var _ = require('lodash');
 
   var app = require('koa')();
-  var pg = require('koa-pg');
   var cors = require('koa-cors');
   var mount = require('koa-mount');
   var compress = require('koa-compress');
   var validate = require('koa-validate');
   var bodyparser = require('koa-bodyparser');
 
-  // catches database error
-  function* db(next) {
-    try {
-      yield next;
-    } catch (err) {
-      if (err.code === 'ECONNREFUSED') {
-        console.error('Database offline');
-      }
-      else {
-        console.error('Database error');
-      }
-      this.throw(err);
-    }
-  }
+  let db = require('./middleware/db');
   let auth = require('./middleware/auth');
 
   function mountRoutes(_routes, mountPoint) {
@@ -53,10 +39,8 @@
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
   }));
 
-  // connect to database
-  app.use(function*(next) {
-    yield db.call(this, pg(config.db).call(this, next)); // <3
-  });
+  // test databse connection
+  app.use(db());
 
   // mount public routes
   mountRoutes(routes.public, '/');
