@@ -10,16 +10,17 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
     Resources.get()
     .then(function(data) {
 
-      $scope.resources = data;
-      $scope.me = getUser(data);
+      $rootScope.resources = $scope.resources = data;
+      $rootScope.me = $scope.me = getUser(data);
 
-      // actionButtons are all action buttons, myActionButtons are the one
-      // the user actually should see
-      $scope.myActionButtons = _.filter($scope.actionButtons, function(button) {
+      // actions are all action buttons or tabs, myActions are the one the
+      // user actually should see
+      $scope.myActions = _.filter($scope.actions, function(button) {
         return _.includes(button.roles, $scope.me.roleName);
       });
 
       function getUser(resources) {
+        debugger
         return _.filter(resources.users, {
           id: $rootScope.auth.id
         })[0];
@@ -28,6 +29,8 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
       $scope.kids = data.kids.filter(function(kid) {
         return kid.group_id === (data.me.group_id ? data.me.group_id : kid.group_id); // admin sees all kids
       });
+
+      // $scope.me.group = _.map($rootScope.resources.groups, 'id')
 
     });
   }

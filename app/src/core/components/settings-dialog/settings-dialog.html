@@ -1,0 +1,72 @@
+<md-dialog aria-label="user-settings-dialog" ng-controller="SettingsDialogController">
+
+	<md-content flex layout="column">
+		<md-subheader class="md-sticky-no-effect">{{ me.name }}</md-subheader>
+
+		<md-content layout-padding>
+
+			<pre>{{me|json}}</pre>
+
+			<ul>
+				<li><strong>ID:</strong> {{me.id}}</li>
+				<li><strong>Name:</strong> {{me.name}}</li>
+				<li><strong>Rolle:</strong> {{me.roleName}}</li>
+				<li><strong>E-Mail:</strong> {{me.email}}</li>
+				<li><strong>Benutzername:</strong> {{me.username}}</li>
+				<li><strong>Status:</strong> {{me.approved ? 'zugelassen' : 'nicht zugelassen'}} und {{me.disabled ? 'deaktiviert' : 'aktiviert'}}</li>
+				<li><strong>Gruppe:</strong> {{me.group.name}}</li>
+			</ul>
+
+		<div layout="row">
+
+			<md-input-container flex>
+				<label>ID</label>
+				<input ng-model="me.id" type="text" disabled>
+			</md-input-container>
+
+			<md-input-container flex>
+				<label>Name</label>
+				<input ng-model="me.name" type="text">
+			</md-input-container>
+
+			<md-input-container flex>
+				<label>Benutzername</label>
+				<input ng-model="me.username" type="text">
+			</md-input-container>
+
+			<md-input-container>
+				<label>Rolle</label>
+				<input ng-model="me.roleName" type="text" disabled>
+			</md-input-container>
+
+		</div>
+
+		<div layout="row">
+
+		  <md-select placeholder="me.groups.name" ng-model="dialogGroupVal">
+		    <md-option ng-repeat="group in me.institution.groups" value="{{group.id}}">{{group.name}}</md-option>
+		  </md-select>
+
+		  <md-select placeholder="Institution" ng-model="dialogInstitutionVal">
+		    <md-option ng-repeat="institution in institutions" value="{{institution.id}}">{{group.name}}</md-option>
+		  </md-select>
+
+		</div>
+
+	</md-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="logout()" class="md-warn md-raised md-button md-default-theme">
+			Abmelden
+		</md-button>
+		<span flex></span>
+		<md-button aria-label="cancel" ng-click="cancel()" class="md-primary md-raised md-button md-default-theme">
+			Ok
+		</md-button>
+		<!-- <md-button aria-label="save" ng-click="save(kid)" class="md-raised md-primary md-button md-default-theme" ng-disabled="!kid.name || !kid.group_id" ng-click="createResource(kid)">
+			Speichern
+		</md-button> -->
+	</div>
+
+</md-dialog>
+

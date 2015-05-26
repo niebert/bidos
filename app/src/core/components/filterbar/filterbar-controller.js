@@ -1,15 +1,27 @@
-/* global angular */
+/* global _, angular */
 angular.module('bidos')
-.controller('ActionbarController', ActionbarController);
+  .controller('FilterbarController', FilterbarController);
 
-function ActionbarController($scope, $rootScope, $state) {
+function FilterbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
 
-  $scope.actionButtons = [{
+  $scope.myActions = _.filter($scope.actions, function(button) {
+    return _.includes(button.roles, $scope.me.roleName);
+  });
+
+
+  $scope.actions = [{
     text: 'Meine Kinder',
     tooltip: 'Meine Kinder anzeigen',
     roles: ['practitioner'],
     onClick: function() {
-      $state.go('home');
+      $state.go('myKids');
+    }
+  }, {
+    text: 'Meine Beobachtungen',
+    tooltip: 'Meine Beobachtungen anzeigen',
+    roles: ['practitioner'],
+    onClick: function() {
+      $state.go('myObservations');
     }
   }, {
     text: 'Neues Kind',
