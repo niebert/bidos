@@ -12,6 +12,7 @@
   var compress = require('koa-compress');
   var validate = require('koa-validate');
   var bodyparser = require('koa-bodyparser');
+  var logger = require('koa-logger');
 
   let db = require('./middleware/db');
   let auth = require('./middleware/auth');
@@ -23,8 +24,7 @@
   app.use(bodyparser());
 
   if (require.main === module) {
-    // app.use(require('./logger')()); // FIXME crashes, saying too many open files
-    app.use(require('koa-logger')()); // use bunyan only
+    app.use(logger());
   }
 
   // inject cors headers
