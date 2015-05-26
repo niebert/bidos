@@ -1,19 +1,14 @@
-//jshint esnext:true
+'use strict';
 
-(function() {
-  'use strict';
+var Router = require('koa-router');
+var _ = require('lodash');
 
-  var Router = require('koa-router');
-  var _ = require('lodash');
+module.exports = exports = new Router()
+  .get('/help', help);
 
-  module.exports = exports = new Router()
-    .get('/help', help);
-
-  function* help() {
-    this.status = 201;
-  }
-
-}());
+function* help() {
+  this.status = 201;
+}
 
 
 // var columnify = require('columnify');

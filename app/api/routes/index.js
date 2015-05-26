@@ -1,13 +1,14 @@
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var router = require('./_router');
-var routes = {
+'use strict';
+let _ = require('lodash');
+let fs = require('fs');
+let path = require('path');
+let router = require('./_router');
+let routes = {
   public: {},
   private: {}
 };
 
-var resourceTypes = [
+let resourceTypes = [
   'author',
   'behaviour',
   'domain',

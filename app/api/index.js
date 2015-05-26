@@ -32,7 +32,7 @@ app.use(cors({
 }));
 
 // test databse connection
-app.use(db());
+app.use(db);
 
 // mount public routes
 mount(routes.public, '/');

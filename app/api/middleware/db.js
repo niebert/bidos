@@ -1,11 +1,9 @@
 'use strict';
-
 let pg = require('koa-pg');
-let config = require('../config').db;
+const config = require('../config').db;
 
 // catches database error
 function* dbHandler(next) {
-  console.log('db second');
   try {
     yield next;
   } catch (err) {
@@ -20,7 +18,6 @@ function* dbHandler(next) {
 }
 
 function* db(next) {
-  console.log('db second');
   yield dbHandler.call(this, pg(config).call(this, next)); // <3
 }
 
