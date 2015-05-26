@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS users (
   approved          BOOLEAN DEFAULT FALSE,
   email             TEXT UNIQUE NOT NULL,
   username          TEXT UNIQUE NOT NULL,
-  job               TEXT,
   password_hash     TEXT
 );
 
@@ -47,17 +46,24 @@ ALTER TABLE users ADD COLUMN author_id INT REFERENCES users(id);
 
 CREATE TABLE IF NOT EXISTS kids (
   id                SERIAL PRIMARY KEY,
-  author_id         INT REFERENCES users(id),
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  name              TEXT UNIQUE NOT NULL,
-  text              TEXT,
+
+  -- kids belong to a group
   group_id          INT REFERENCES groups(id),
-  enabled           BOOLEAN DEFAULT TRUE,
+
+  -- kids are created by a user. defaults to admin (bad idea?)
+  author_id         INT REFERENCES users(id) DEFAULT 1,
+
+  -- kids stuff
+  name              TEXT UNIQUE NOT NULL,
   bday              DATE,
   sex               INT,
-  religion          INT,
-  hands             INT
+
+  -- a kid can have a status of 0=normal, 1=disabled, 2=invisible,
+  -- 3=unapproved or anything you'd need. see the not yet existing
+  -- StatusHandler.js
+  status            INT DEFAULT 0
 );
 
 
