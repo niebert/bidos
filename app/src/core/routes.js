@@ -10,18 +10,31 @@ angular.module('bidos')
   // main route for anything authenticated (like an authentication wrapper)
   .state('bidos', {
     url: '',
-    templateUrl: 'templates/layout.html'
+    templateUrl: 'templates/app.html'
   })
 
-  // kind of a dashboard
+  // gridlist for all the users kids
   .state('bidos.home', {
     url: '/home',
     views: {
-      main: {
-        templateUrl: 'templates/main.html'
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      content: {
+        template: '<bidos-content></bidos-content>'
       }
     }
   })
+
+  // // gridlist for all the users observations
+  // .state('bidos.myObservations', {
+  //   url: '/home',
+  //   views: {
+  //     main: {
+  //       templateUrl: 'templates/main.html'
+  //     }
+  //   }
+  // })
 
   // .state('bidos.capture', {
   //   url: '/capture',
