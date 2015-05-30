@@ -3,6 +3,7 @@
 let app = require('koa')();
 let cors = require('koa-cors');
 let logger = require('koa-logger');
+let helmet = require('koa-helmet');
 let compress = require('koa-compress');
 let validate = require('koa-validate');
 let bodyparser = require('koa-bodyparser');
@@ -19,6 +20,7 @@ if (require.main === module) {
   app.use(logger());
 }
 
+app.use(helmet.defaults());
 app.use(compress());
 app.use(validate());
 app.use(bodyparser());
