@@ -36,6 +36,7 @@ LOW
 [api] use redis for caching and sync redis with indexeddb (?) WONTFIX
 [export] raw data as csv (could be easy but time-consuming, serverside?)
 
+[backend/db] think about switching to mongodb + https://github.com/mWater/minimongo on the front end side. would replace all caching stuff (what wasn't so hard, though)
 
 
     // TODO refactor the whole resource model. no key:value stuff
