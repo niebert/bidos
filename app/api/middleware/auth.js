@@ -22,6 +22,7 @@ function* authHandler(next) {
 
 function* auth(next) {
   if (process.env.NOAUTH) {
+    console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
     yield next;
   } else {
     yield authHandler.call(this, jwt({secret: secret}).call(this, next));

@@ -31,26 +31,20 @@ app.use(cors({
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE']
 }));
 
-// test databse connection
+//                    __   ___      ___         __           ___       __  ___
+//       |\/| \ /    |__) |__   /\   |  | |\ | / _`    |__| |__   /\  |__)  |
+//       |  |  |     |__) |___ /~~\  |  | | \| \__>    |  | |___ /~~\ |  \  |
+//
+
 app.use(db);
-
-// mount public routes
-mount(routes.public, '/');
-
-// authenticate
-if (!process.env.NOAUTH) {
-  app.use(auth);
-} else {
-  console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
-}
-
-// mount protected routes
-mount(routes.private, '/v1/');
+mount(routers.public, '/'); // mount public routers
+app.use(auth); // authenticate
+mount(routers.protected, '/v1/'); // mount protected routers
 
 // main
-var listen = function(port) {
+let listen = function(port) {
   app.listen(port || config.port);
   console.log(`[${chalk.green(new Date().toLocaleTimeString())}] API server running on localhost:${chalk.green(port || config.port)} (${process.env.NODE_ENV.toUpperCase()})`);
 };
 
-module.parent ? module.exports = exports = listen : listen();
+module.parent ? module.exports = listen : listen();
