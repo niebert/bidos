@@ -1,9 +1,21 @@
 'use strict';
-const sendgridConfig = require('../../config').sendgrid;
+
+const sendgridConfig = require('../config').sendgrid;
+
 let sendgrid = require('sendgrid')(sendgridConfig.user, sendgridConfig.key);
+
+/*
+  1. change value in database
+  2. send email to user
+*/
+
+
 function* approve() {
-  var result =
-    yield this.pg.db.client.query_('UPDATE users SET approved = true WHERE id = $1 RETURNING *', [this.request.body.id]);
+
+  let query = 'UPDATE users SET approved = true WHERE id = $1 RETURNING *';
+  let params = [this.request.body.id];
+
+  var result = yield this.pg.db.client .query_(query, params);
 
   if (result.rowCount) {
     var user = result.rows[0];

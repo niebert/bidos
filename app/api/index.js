@@ -1,29 +1,27 @@
 'use strict';
 
-var config = require('./config');
-var routes = require('./routes');
+let app = require('koa')();
+let cors = require('koa-cors');
+let logger = require('koa-logger');
+let compress = require('koa-compress');
+let validate = require('koa-validate');
+let bodyparser = require('koa-bodyparser');
 
-var chalk = require('chalk');
+let chalk = require('chalk');
 
-var app = require('koa')();
-var cors = require('koa-cors');
-var compress = require('koa-compress');
-var validate = require('koa-validate');
-var bodyparser = require('koa-bodyparser');
-var logger = require('koa-logger');
-
+let routers = require('./routes');
 let db = require('./middleware/db');
 let auth = require('./middleware/auth');
-
-let mount = require('./lib/mount');
-
-app.use(compress());
-app.use(validate());
-app.use(bodyparser());
+let mount = require('./lib/mount')(app);
+let config = require('./config');
 
 if (require.main === module) {
   app.use(logger());
 }
+
+app.use(compress());
+app.use(validate());
+app.use(bodyparser());
 
 // inject cors headers
 app.use(cors({

@@ -1,28 +1,12 @@
 'use strict';
-let _ = require('lodash');
-let fs = require('fs');
-let path = require('path');
-let router = require('./_router');
-let routes = {
+
+var fs = require('fs');
+var path = require('path');
+
+var routes = {
   public: {},
   private: {}
 };
-
-let resourceTypes = [
-  'author',
-  'behaviour',
-  'domain',
-  'example',
-  'group',
-  'idea',
-  'institution',
-  'item',
-  'kid',
-  'observation',
-  'subdomain',
-  'user',
-  'note'
-];
 
 function routesAreEmpty() {
   return !Object.keys(routes.private).length &&
@@ -34,12 +18,6 @@ if (routesAreEmpty()) {
     .filter(excludeFiles)
     .forEach(populateRoutes);
 }
-
-_.each(resourceTypes, function(resourceType) {
-  routes.private[resourceType] = router(resourceType);
-});
-
-module.exports = exports = routes;
 
 function excludeFiles(file) {
   return (file.indexOf('.') !== 0) &&
@@ -56,3 +34,5 @@ function populateRoutes(file) {
     routes.private[route] = require('./' + file);
   }
 }
+
+module.exports = routes;

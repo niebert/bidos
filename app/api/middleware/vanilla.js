@@ -1,10 +1,6 @@
 'use strict';
-var _ = require('lodash');
-var Router = require('koa-router');
-let crypto = require('crypto');
 
-module.exports = exports = new Router()
-  .get('getVanillaResources', '/vanilla', getVanillaResources);
+let _ = require('lodash');
 
 function *getVanillaResources() {
   var behaviour = yield this.pg.db.client.query_({
@@ -108,5 +104,7 @@ function *getVanillaResources() {
   });
 
   // respond with our precious data
-  this.body = JSON.stringify(resources); // TEST ME
+  this.body = JSON.stringify(resources);
 }
+
+module.exports = getVanillaResources;

@@ -1,10 +1,10 @@
 'use strict';
-var bunyan = require('bunyan');
+let bunyan = require('bunyan');
 
-var main = function() {
-  return function*(next) {
+let logger = function() {
+  return function* (next) {
     this.log = bunyan.createLogger({
-      name: 'bidos',
+      name: 'bidos', // TODO import from somewhere
       streams: [{
         level: 'error',
         path: `log/${process.env.NODE_ENV}.log`
@@ -20,6 +20,7 @@ var main = function() {
       }]
     });
 
+    // TODO
     //this.log.info({
     //  headers: this.headers,
     //  request: {
@@ -33,4 +34,4 @@ var main = function() {
   };
 };
 
-module.parent ? module.exports = exports = main : main();
+module.parent ? module.exports = logger : logger();

@@ -1,5 +1,6 @@
 'use strict';
-function* resetPassword(next) {
+
+function* resetPassword() {
   var result =
     yield this.pg.db.client.query_('SELECT * FROM password_reset WHERE hash = $1', [this.params.hash]);
 

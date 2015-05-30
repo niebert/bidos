@@ -21,7 +21,11 @@ function* authHandler(next) {
 }
 
 function* auth(next) {
-  yield authHandler.call(this, jwt({secret: secret}).call(this, next));
+  if (process.env.NOAUTH) {
+    yield next;
+  } else {
+    yield authHandler.call(this, jwt({secret: secret}).call(this, next));
+  }
 }
 
 module.exports = auth;

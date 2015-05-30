@@ -1,4 +1,5 @@
 'use strict';
+
 function createResource(resourceType) {
   return function*() {
 
