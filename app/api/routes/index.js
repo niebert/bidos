@@ -5,11 +5,11 @@ var path = require('path');
 
 var routes = {
   public: {},
-  private: {}
+  protected: {}
 };
 
 function routesAreEmpty() {
-  return !Object.keys(routes.private).length &&
+  return !Object.keys(routes.protected).length &&
          !Object.keys(routes.public).length;
 }
 
@@ -27,11 +27,11 @@ function excludeFiles(file) {
 
 function populateRoutes(file) {
   var route = path.basename(file, '.js');
-  if (route.match(/_public/)) {
-    route = route.replace(/_public/, '');
+  if (route.match(/\.public/)) {
+    route = route.replace(/\.public/, '');
     routes.public[route] = require('./' + file);
   } else {
-    routes.private[route] = require('./' + file);
+    routes.protected[route] = require('./' + file);
   }
 }
 
