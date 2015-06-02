@@ -14,6 +14,12 @@ function getConfig() {
       secret: 'tea1Ba8ed0tooyiquoWoomeej6eexeeyohmeo5Chie0eesohroo9iyooquuohoso',
       db: 'postgres://bidos:bidos@localhost/bidos_development'
     },
+    localdev: {
+      port: 3010,
+      host: 'localhost',
+      secret: 'tea1Ba8ed0tooyiquoWoomeej6eexeeyohmeo5Chie0eesohroo9iyooquuohoso',
+      db: 'postgres://bidos:bidos@localhost/bidos_development'
+    },
     test: {
       port: 3020,
       host: 'bidos.uni-koblenz.de',
