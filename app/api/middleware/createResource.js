@@ -1,4 +1,7 @@
 'use strict';
+let _ = require('lodash');
+const sendgridConfig = require('../config').sendgrid;
+let sendgrid = require('sendgrid')(sendgridConfig.user, sendgridConfig.key);
 
 function createResource(resourceType) {
   return function*() {

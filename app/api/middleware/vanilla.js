@@ -1,6 +1,7 @@
 'use strict';
 
 let _ = require('lodash');
+let crypto = require('crypto');
 
 function *getVanillaResources() {
   var behaviour = yield this.pg.db.client.query_({

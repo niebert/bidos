@@ -1,6 +1,7 @@
 'use strict';
 let jwt = require('koa-jwt');
 const secret = require('../config').secret;
+let chalk = require('chalk');
 
 // catch authorization failure and custom 401 handling to hide koa-jwt
 // errors from users: instantly moves on to the next middleware and handles

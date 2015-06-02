@@ -24,9 +24,9 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
 
   function getPublicData() {
     var queries = [
-      $http.get(CONFIG.url + '/public/groups'),
-      $http.get(CONFIG.url + '/public/usernames'),
-      $http.get(CONFIG.url + '/public/institutions')
+      $http.get(CONFIG.url + '/resources/groups'),
+      $http.get(CONFIG.url + '/resources/usernames'),
+      $http.get(CONFIG.url + '/resources/institutions')
     ];
 
     $q.all(queries)
