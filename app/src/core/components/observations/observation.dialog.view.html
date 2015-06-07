@@ -1,0 +1,26 @@
+<md-dialog aria-label="ObservationDialogView">
+
+	<md-dialog-content flex layout="column">
+		<md-subheader class="md-sticky-no-effect">Ihre Kontodaten</md-subheader>
+
+		<pre>{{observation|json}}</pre>
+
+		<p>{{observation.kid.name}} {{observation.behaviour.text}}. (Niveau {{observation.niveau}}, {{observation.help ? 'mit' : 'ohne'}} Hilfe)</p>
+
+		<hr>
+
+		<ul>
+			<li><strong>Beobachtet am:</strong> {{observation.created_at | date}}</li>
+			<li><strong>Genehmigt:</strong> {{observation.approved ? 'ja' : 'nein'}}</li>
+		</ul>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<span flex></span>
+		<md-button aria-label="repeat" ng-click="repeat()" class="md-primary md-raised"> Wiederholen </md-button>
+		<md-button aria-label="hide" ng-click="hide()" class="md-primary md-raised"> Ok </md-button>
+	</div>
+
+</md-dialog>
+
