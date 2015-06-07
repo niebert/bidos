@@ -1,0 +1,36 @@
+<md-dialog aria-label="user-settings-dialog" ng-controller="SettingsDialogController">
+
+	<md-content flex layout="column">
+		<md-subheader class="md-sticky-no-effect">{{kid.name}}</md-subheader>
+
+		<md-content layout-padding>
+
+			<ul>
+				<li><strong>ID:</strong> {{kid.id}}</li>
+				<li><strong>Name:</strong> {{kid.name}}</li>
+				<li><strong>Gruppe:</strong> {{kid.group.name || 'keine'}}</li>
+				<li><strong>Kind erstellt:</strong> {{kid.created_at | date}}</li>
+				<li><strong>Kind zuletzt bearbeitet:</strong> {{kid.modified_at | date}}</li>
+				<li><strong>Beobachtungen:</strong> {{kid.observations.length || 0}}</li>
+			</ul>
+
+		</md-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="destroy" ng-click="destroy(kid)" class="md-warn md-raised md-button md-default-theme">
+			Löschen
+		</md-button>
+		<span flex></span>
+		<md-button aria-label="edit" ng-click="edit($event, kid)" class="md-primary md-raised md-button md-default-theme">
+			Bearbeiten
+		</md-button>
+		<md-button aria-label="observe" ng-click="observe(kid)" class="md-primary md-raised md-button md-default-theme">
+			Beobachten
+		</md-button>
+		<md-button aria-label="cancel" ng-click="cancel()" class="md-primary md-raised md-button md-default-theme">
+			Ok
+		</md-button>
+	</div>
+
+</md-dialog>
+

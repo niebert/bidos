@@ -1,0 +1,13 @@
+ <section>
+  <md-list>
+    <md-list-item ng-repeat="observation in observations" class="card-title md-whiteframe-z1 md-hue-2 domain-{{observation.item.subdomain.domain.id}}">
+    <p><strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}</p>
+    <p>{{observation.niveau}} {{observation.help ? 'H' : ''}}</p>
+    <p>{{observation.item.name}}</p>
+    <p>{{observation.item.subdomain.name}}</p>
+		<p>{{observation.item.subdomain.domain.name.split(' ')[0]}}</p>
+		<p>{{observation.created_at | date}}</p>
+    </md-list-item>
+  </md-list>
+</section>
+
