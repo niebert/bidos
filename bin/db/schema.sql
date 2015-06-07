@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS examples (
 CREATE TABLE IF NOT EXISTS ideas (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
-  behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
+  behaviour_id      INT REFERENCES behaviours(id),
   text              TEXT,
   approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
