@@ -19,7 +19,7 @@ function* authenticate(next) {
   }
 
   // log every auth request
-  // log('info', 'auth request').bind(this);
+  console.info('auth request');
 
   // try to find the specified user in the database
   var result =
@@ -29,7 +29,7 @@ function* authenticate(next) {
 
   // rowcount will be zero if no matching user was found
   if (!result.rowCount) {
-    // log('warn', 'username unknown');
+    console.warn('username unknown');
     reply(401, {error: 'Unbekannter Benutzername'});
   } else {
 
@@ -38,23 +38,23 @@ function* authenticate(next) {
 
     // if the user has not been approved, yet
     if (!this.user.approved) {
-      // log('warn', 'user not approved');
+      console.warn('user not approved');
       reply(401, {error: 'Der Benutzer ist nicht freigeschaltet'});
     }
 
     // user is disabled
     if (this.user.disabled) {
-      // log('warn', 'user disabled');
+      console.warn('user disabled');
       reply(401, { error: 'Der Benutzer ist deaktiviert'});
     }
 
     // compare passwords
     if (yield bcrypt.compare(this.request.body.password, this.user.password_hash)) {
-      // log('info', 'auth success');
+      console.info('auth success');
       yield next;
     } else {
       // user has given the wrong password
-      // log('info', 'password failure');
+      console.info('password failure');
       reply(401, { error: 'Falsches Passwort'});
     }
   }
