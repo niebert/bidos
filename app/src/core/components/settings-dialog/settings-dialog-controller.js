@@ -10,11 +10,11 @@ function SettingsDialogController($scope, $rootScope, $mdDialog, $mdToast, $stat
 
   $scope.logout = function() {
     console.log('[auth] logout attempt');
-
     UserFactory.logout();
     $state.go('public');
     $rootScope.auth = null;
     toast('Sie sind jetzt abgemeldet');
+    $mdDialog.cancel();
   };
 
   function toast(message) {
@@ -23,6 +23,4 @@ function SettingsDialogController($scope, $rootScope, $mdDialog, $mdToast, $stat
       .position('bottom right')
       .hideDelay(3000));
   }
-
-  debugger;
 }

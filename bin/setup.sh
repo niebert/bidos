@@ -29,14 +29,21 @@ EOF
 
 echo "press enter to continue"; read
 
-sudo -u postgres dropdb ${NAME}_${NODE_ENV}
-sudo -u postgres dropuser $NAME
+dropdb ${NAME}_${NODE_ENV}
+dropuser $NAME
 
-sudo -u postgres createuser $NAME
-sudo -u postgres psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
-sudo -u postgres createdb -O $NAME ${NAME}_${NODE_ENV}
+createuser $NAME
+psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
+createdb -O $NAME ${NAME}_${NODE_ENV}
 
-cd ~/$NAME/bin/db
+# sudo -u postgres dropdb ${NAME}_${NODE_ENV}
+# sudo -u postgres dropuser $NAME
+
+# sudo -u postgres createuser $NAME
+# sudo -u postgres psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
+# sudo -u postgres createdb -O $NAME ${NAME}_${NODE_ENV}
+
+cd bin/db
 
 psql -U $NAME -e -f schema.sql ${NAME}_${NODE_ENV}
 curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@$NAME", "password": "123", "username": "admin", "approved": true }' $URL/auth/signup

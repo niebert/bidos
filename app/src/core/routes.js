@@ -20,11 +20,100 @@ angular.module('bidos')
       toolbar: {
         template: '<bidos-toolbar></bidos-toolbar>'
       },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
       content: {
         template: '<bidos-content></bidos-content>'
       }
     }
   })
+
+  // all my kids
+  .state('bidos.kids', {
+    url: '/kids',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-kids></bidos-kids>'
+      }
+    }
+  })
+
+  // all my observations
+  .state('bidos.observations', {
+    url: '/observations',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-observations></bidos-observations>'
+      }
+    }
+  })
+
+  // all my observations
+  .state('bidos.capture', {
+    url: '/capture',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-capture></bidos-capture>'
+      }
+    }
+  })
+
+  // .state('bidos.capture.go', {
+  //   url: '/:type',
+  //   views: {
+  //     'capture-main': {
+  //       template: function(stateParams) {
+  //         if (_.isEmpty(stateParams)) {
+  //           stateParams.type = 'kid';
+  //         } // FIXME weird bidos.capture.go has bs-capture tag -> nested bidos-capture tags! :/ oO
+  //         return '<bidos-capture layout="row" flex type="' + stateParams.type + '"></bidos-capture>';
+  //       }
+  //     }
+  //   }
+  // })
+
+  // .state('bidos.myKids', {
+  //   url: '/mykids',
+  //   views: {
+  //     toolbar: {
+  //       template: '<bidos-toolbar role="{{$rootScope.me.roleName}}"></bidos-toolbar>'
+  //     },
+  //     content: {
+  //       templateUrl: 'templates/my-kids.html'
+  //     }
+  //   }
+  // })
 
   // // gridlist for all the users observations
   // .state('bidos.myObservations', {

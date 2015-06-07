@@ -4,31 +4,27 @@ angular.module('bidos')
 
 function TabbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
 
-  $scope.myActions = _.filter($scope.actions, function(button) {
-    return _.includes(button.roles, $scope.me.roleName);
-  });
-
-
   $scope.actions = [{
+    text: 'Home',
+    tooltip: 'Übersicht',
+    roles: ['practitioner', 'admin', 'scientist'],
+    onClick: function() {
+      console.log('-> home');
+      $state.go('bidos.home');
+    }
+  }, {
     text: 'Meine Kinder',
     tooltip: 'Meine Kinder anzeigen',
     roles: ['practitioner'],
     onClick: function() {
-      $state.go('myKids');
+      $state.go('bidos.kids');
     }
   }, {
     text: 'Meine Beobachtungen',
     tooltip: 'Meine Beobachtungen anzeigen',
     roles: ['practitioner'],
     onClick: function() {
-      $state.go('myObservations');
-    }
-  }, {
-    text: 'Neues Kind',
-    tooltip: 'Ein neues Kind hinzufügen',
-    roles: ['practitioner', 'admin', 'scientist'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
+      $state.go('bidos.observations');
     }
   }, {
     text: 'Neue Gruppe',
@@ -45,15 +41,15 @@ function TabbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
       return $scope.dialog($event, {type: 'institution'});
     }
   }, {
-    text: 'Gruppe auswerten',
-    tooltip: 'Gesamte Gruppe auswerten',
+    text: 'Neue Beobachtung',
+    tooltip: 'Neue Beobachtung',
     roles: ['practitioner'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
+    onClick: function() {
+      $state.go('bidos.capture');
     }
   }, {
-    text: 'Eigene Beobachtungen',
-    tooltip: 'Eigene Beobachtungen, Notizen und Beispiele anzeigen',
+    text: 'Gruppe auswerten',
+    tooltip: 'Gesamte Gruppe auswerten',
     roles: ['practitioner'],
     onClick: function($event) {
       return $scope.dialog($event, {type: 'kid'});
@@ -81,4 +77,8 @@ function TabbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
     }
   }];
 
+  $scope.me = $rootScope.me;
+  $scope.myActions = _.filter($scope.actions, function(button) {
+    return _.includes(button.roles, $scope.me.roleName);
+  });
 }

@@ -100,10 +100,10 @@
   });
 
   gulp.task('watch', function() {
-    gulp.watch(src + '/**/*.js', ['js']);
+    gulp.watch(src + '/**/*.js', ['js', 'index']);
     gulp.watch(src + '/**/*.scss', ['css']);
     gulp.watch(src + '/**/*.html', ['templates']);
-    gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
+    // gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
   });
 
   gulp.task('templates', shell.task([
@@ -118,7 +118,11 @@
     'bin/copy_icons.sh'
   ]));
 
+  gulp.task('index', shell.task([
+    'bin/update-index.sh'
+  ]));
+
   // --
-  gulp.task('default', ['templates', 'icons', 'css', 'js', 'watch', 'www']);
+  gulp.task('default', ['templates', 'icons', 'css', 'js', 'watch', 'www', 'index']);
 
 }());

@@ -5,13 +5,16 @@
 			<span>BiDoS</span>
 		</h2>
 
-		<span flex>
+		<span flex ng-if="$root.me.role !== 0">
 			{{$root.me.group.institution.name}}/{{$root.me.group.name}}
+		</span>
+
+		<span flex ng-if="$root.me.role == 0">
 		</span>
 
 		{{me.name}}
 
-		<md-button aria-label="settings" ng-click="settingsDialog()">
+		<md-button aria-label="settings" ng-click="SettingsDialog($event)">
 			<md-icon md-svg-src="/img/ic_settings_48px.svg" class="s48" alt="Settings"></md-icon>
 		</md-button>
 

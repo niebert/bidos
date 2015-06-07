@@ -120,7 +120,6 @@ CREATE TABLE IF NOT EXISTS examples (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
   behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
-  observation_id    INT REFERENCES behaviours(id),
   text              TEXT,
   approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -132,7 +131,6 @@ CREATE TABLE IF NOT EXISTS ideas (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
   behaviour_id      INT REFERENCES behaviours(id) NOT NULL,
-  observation_id    INT REFERENCES behaviours(id),
   text              TEXT,
   approved          BOOLEAN DEFAULT FALSE,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -143,7 +141,6 @@ CREATE TABLE IF NOT EXISTS ideas (
 CREATE TABLE IF NOT EXISTS observations (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
-  user_id           INT REFERENCES users(id),
   item_id           INT REFERENCES items(id),
   kid_id            INT REFERENCES kids(id),
   niveau            INT,
@@ -152,7 +149,6 @@ CREATE TABLE IF NOT EXISTS observations (
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE IF NOT EXISTS notes (
   id                SERIAL PRIMARY KEY,
@@ -163,6 +159,9 @@ CREATE TABLE IF NOT EXISTS notes (
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE examples ADD COLUMN observation_id INT REFERENCES observations(id);
+ALTER TABLE ideas ADD COLUMN observation_id INT REFERENCES observations(id);
+ALTER TABLE notes ADD COLUMN observation_id INT REFERENCES observations(id);
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 

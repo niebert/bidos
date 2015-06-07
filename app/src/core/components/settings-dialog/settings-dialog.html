@@ -1,11 +1,13 @@
 <md-dialog aria-label="user-settings-dialog" ng-controller="SettingsDialogController">
 
 	<md-content flex layout="column">
-		<md-subheader class="md-sticky-no-effect">{{ me.name }}</md-subheader>
+		<md-subheader class="md-sticky-no-effect">Ihre Kontodaten</md-subheader>
 
 		<md-content layout-padding>
 
-			<pre>{{me|json}}</pre>
+			<!-- <h2>Ihre Benutzerdaten</h2> -->
+
+			<!-- <pre>{{me|json}}</pre> -->
 
 			<ul>
 				<li><strong>ID:</strong> {{me.id}}</li>
@@ -14,10 +16,21 @@
 				<li><strong>E-Mail:</strong> {{me.email}}</li>
 				<li><strong>Benutzername:</strong> {{me.username}}</li>
 				<li><strong>Status:</strong> {{me.approved ? 'zugelassen' : 'nicht zugelassen'}} und {{me.disabled ? 'deaktiviert' : 'aktiviert'}}</li>
-				<li><strong>Gruppe:</strong> {{me.group.name}}</li>
+				<li><strong>Gruppe:</strong> {{me.group.name || 'keine'}}</li>
+				<li><strong>Konto erstellt:</strong> {{me.created_at | date}}</li>
+				<li><strong>Konto zuletzt bearbeitet:</strong> {{me.modified_at | date}}</li>
+
+				<li><strong>Kinder in dieser Gruppe:</strong> {{me.kids.length}}</li>
+
+				<li><strong>Beobachtungen in dieser Gruppe:</strong> {{me.groupObservations.length}}</li>
+				<li><strong>Beobachtungen (alle Gruppen):</strong> {{me.observations.length}}</li>
+
+				<li><strong>Beobachtete Kinder in dieser Gruppe:</strong> {{me.observedGroupKids.length}}</li>
+				<li><strong>Beobachtete Kinder (alle Gruppen):</strong> {{me.observedKids.length}}</li>
+
 			</ul>
 
-		<div layout="row">
+<!-- 		<div layout="row">
 
 			<md-input-container flex>
 				<label>ID</label>
@@ -39,9 +52,9 @@
 				<input ng-model="me.roleName" type="text" disabled>
 			</md-input-container>
 
-		</div>
+		</div> -->
 
-		<div layout="row">
+<!-- 		<div layout="row">
 
 		  <md-select placeholder="me.groups.name" ng-model="dialogGroupVal">
 		    <md-option ng-repeat="group in me.institution.groups" value="{{group.id}}">{{group.name}}</md-option>
@@ -51,7 +64,7 @@
 		    <md-option ng-repeat="institution in institutions" value="{{institution.id}}">{{group.name}}</md-option>
 		  </md-select>
 
-		</div>
+		</div> -->
 
 	</md-content>
 

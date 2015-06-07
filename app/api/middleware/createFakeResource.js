@@ -33,7 +33,7 @@ function* createFakeResource() {
       this.body = {
         type: resource,
         name: [faker.company.bsAdjective().capitalizeFirstvarter(), faker.company.bsNoun().capitalizeFirstvarter()].join(' '),
-        institutionId: _.sample(institutionIds)
+        institution_id: _.sample(institutionIds)
       };
 
       break;
@@ -49,9 +49,7 @@ function* createFakeResource() {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         bday: faker.date.between(maxAge, minAge),
         sex: _.random(1, 3),
-        hands: _.random(1, 3),
-        religion: _.random(0, 9),
-        groupId: _.sample(groupIds)
+        group_id: _.sample(groupIds)
       };
 
       break;
@@ -67,12 +65,20 @@ function* createFakeResource() {
 
       var kidIds = _.map(kidResults.rows, 'id');
 
+      var niveau = _.random(0, 4);
+      var help;
+      if (niveau > 0 && niveau < 4) {
+        help = _.random(0, 1);
+      } else {
+        help = 0;
+      }
+
       this.body = {
         type: resource,
-        itemId: _.sample(itemIds),
-        kidId: _.sample(kidIds),
-        niveau: _.random(0, 4),
-        help: _.random(0, 1)
+        item_id: _.sample(itemIds),
+        kid_id: _.sample(kidIds),
+        niveau: niveau,
+        help: help
       };
 
       break;
@@ -85,7 +91,7 @@ function* createFakeResource() {
 
       this.body = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-        groupId: _.sample(_groupIds),
+        group_id: _.sample(_groupIds),
         role: _.random(1, 3),
         email: `rene.wilhelm+${faker.lorem.words()[0]}@gmail.com`, // faker.internet.email().toLowerCase(),
         job: faker.lorem.words().join(' '),
@@ -143,25 +149,29 @@ function* createFakeResource() {
       this.body = {
         type: resource,
         name: [faker.company.bsAdjective().capitalizeFirstvarter(), faker.company.bsNoun().capitalizeFirstvarter()].join(' '),
-        institutionId: _.sample(institutionIds)
+        institution_id: _.sample(institutionIds)
       };
 
       break;
     case 'kid':
 
+      var authorResults =
+        yield this.pg.db.client.query_(`SELECT id FROM authors WHERE role = 1`);
+
+      var authorIds = _.map(authorResults.rows, 'id');
+
       var groupResults =
-        yield this.pg.db.client.query_(`SELECT id FROM institutions`);
+        yield this.pg.db.client.query_(`SELECT id FROM groups`);
 
       var groupIds = _.map(groupResults.rows, 'id');
 
       this.body = {
         type: resource,
+        author_id: _.sample(authorIds),
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
         bday: faker.date.between(maxAge, minAge),
-        sex: _.random(1, 3),
-        hands: _.random(1, 3),
-        religion: _.random(0, 9),
-        groupId: _.sample(groupIds)
+        sex: _.random(1, 2),
+        group_id: _.sample(groupIds)
       };
 
       break;
@@ -170,6 +180,9 @@ function* createFakeResource() {
       var itemResults =
         yield this.pg.db.client.query_(`SELECT id FROM items`);
 
+      var authorResults =
+        yield this.pg.db.client.query_(`SELECT id FROM authors WHERE role = 1`);
+
       var itemIds = _.map(itemResults.rows, 'id');
 
       var kidResults =
@@ -177,12 +190,15 @@ function* createFakeResource() {
 
       var kidIds = _.map(kidResults.rows, 'id');
 
+      var authorIds = _.map(authorResults.rows, 'id');
+
       this.body = {
         type: resource,
-        itemId: _.sample(itemIds),
-        kidId: _.sample(kidIds),
+        item_id: _.sample(itemIds),
+        kid_id: _.sample(kidIds),
         niveau: _.random(0, 4),
-        help: _.random(0, 1)
+        help: _.random(0, 1),
+        author_id: _.sample(authorIds)
       };
 
       break;
@@ -195,7 +211,7 @@ function* createFakeResource() {
 
       this.body = {
         name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-        groupId: _.sample(_groupIds),
+        group_id: _.sample(_groupIds),
         role: _.random(1, 3),
         email: `rene.wilhelm+${faker.lorem.words()[0]}@gmail.com`, // faker.internet.email().toLowerCase(),
         job: faker.lorem.words().join(' '),

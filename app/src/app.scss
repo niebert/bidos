@@ -1,3 +1,54 @@
+.spacebelow {
+  padding-bottom: 24px;
+}
+#auth > md-tabs > md-tabs-wrapper > md-tabs-canvas {
+  background-color: white;
+}
+#auth {
+  width: 50%;
+  margin: 25vh auto;
+  padding: 24px;
+}
+.debug {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+.capture {
+  width: 50%;
+  margin: auto;
+  padding: 24px;
+}
+
+md-list > md-list-item > p {
+  padding: 4px 8px;
+}
+
+.special-card {
+  text-align: center;
+  background-color: #EA316A;
+}
+
+.domain1 {
+  background-color: #CEA7FF;
+  // text-align: center;
+}
+
+.domain2 {
+  background-color: #97B6FF;
+  // text-align: center;
+}
+
+.domain3 {
+  background-color: #89FFB8;
+  // text-align: center;
+}
+
+.domain4 {
+  background-color: #FEC777;
+  // text-align: center;
+}
+
 md-progress-circular {
 	margin: 50% auto;
 }

@@ -16,7 +16,7 @@ function getConfig() {
     },
     localdev: {
       port: 3010,
-      host: 'localhost',
+      host: '192.168.43.91',
       secret: 'tea1Ba8ed0tooyiquoWoomeej6eexeeyohmeo5Chie0eesohroo9iyooquuohoso',
       db: 'postgres://bidos:bidos@localhost/bidos_development'
     },
@@ -33,6 +33,7 @@ function getConfig() {
   config.name = 'bidos';
   config.url = 'http://' + config.host + ':' + config.port;
   config.api = config.url + '/v1';
+  config.crud = config.url + '/v1/crud';
   config.resources = config.api + '/resources/vanilla';
   config.token_key = 'auth_token';
   config.sendgrid = {

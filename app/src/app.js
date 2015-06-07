@@ -17,11 +17,11 @@ app.constant('STRINGS', require('./strings'));
 //   $httpProvider.defaults.withCredentials = true;
 // }]);
 
-app.config(function($mdIconProvider) {
-  $mdIconProvider
-    .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
-    .defaultIconSet('img/icons/sets/core-icons.svg', 24);
-});
+// app.config(function($mdIconProvider) {
+//   $mdIconProvider
+//     .iconSet('social', 'img/icons/sets/social-icons.svg', 24)
+//     .defaultIconSet('img/icons/sets/core-icons.svg', 24);
+// });
 
 // angular material themes
 app.config(['$mdThemingProvider', function($mdThemingProvider) {
@@ -29,12 +29,12 @@ app.config(['$mdThemingProvider', function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
     .accentPalette('green');
-  $mdThemingProvider.theme('admin')
-    .primaryPalette('red')
-    .accentPalette('blue');
-  $mdThemingProvider.theme('scientist')
-    .primaryPalette('teal')
-    .accentPalette('cyan');
+  // $mdThemingProvider.theme('admin')
+  //   .primaryPalette('red')
+  //   .accentPalette('blue');
+  // $mdThemingProvider.theme('scientist')
+  //   .primaryPalette('teal')
+  //   .accentPalette('cyan');
 }]);
 
 // allow downloading json as blob
@@ -46,47 +46,47 @@ app.config(['$compileProvider', function($compileProvider) {
 // $rootScope.online Boolean
 // $rootScope.offline Boolean
 // $rootScope.network String
-app.run(function($rootScope) {
+// app.run(function($rootScope) {
 
-  if (navigator.onLine) {
-    console.log('%cONLINE', 'color: green; font-size: 1.2em');
-  } else {
-    console.log('%cOFFLINE', 'color: red; font-size: 1.2em');
-  }
+//   if (navigator.onLine) {
+//     console.log('%cONLINE', 'color: green; font-size: 1.2em');
+//   } else {
+//     console.log('%cOFFLINE', 'color: red; font-size: 1.2em');
+//   }
 
-  $rootScope.network = navigator.onLine ? 'online' : 'offline';
-  $rootScope.$apply();
+//   $rootScope.network = navigator.onLine ? 'online' : 'offline';
+//   $rootScope.$apply();
 
-  if (window.addEventListener) {
+//   if (window.addEventListener) {
 
-    window.addEventListener('online', function() {
-      $rootScope.online = true;
-      $rootScope.offline = false;
-      $rootScope.$apply();
-    }, true);
+//     window.addEventListener('online', function() {
+//       $rootScope.online = true;
+//       $rootScope.offline = false;
+//       $rootScope.$apply();
+//     }, true);
 
-    window.addEventListener('offline', function() {
-      $rootScope.online = false;
-      $rootScope.offline = true;
-      $rootScope.$apply();
-    }, true);
+//     window.addEventListener('offline', function() {
+//       $rootScope.online = false;
+//       $rootScope.offline = true;
+//       $rootScope.$apply();
+//     }, true);
 
-  } else {
+//   } else {
 
-    document.body.ononline = function() {
-      $rootScope.online = true;
-      $rootScope.offline = false;
-      $rootScope.$apply();
-    };
+//     document.body.ononline = function() {
+//       $rootScope.online = true;
+//       $rootScope.offline = false;
+//       $rootScope.$apply();
+//     };
 
-    document.body.onoffline = function() {
-      $rootScope.online = false;
-      $rootScope.offline = true;
-      $rootScope.$apply();
-    };
+//     document.body.onoffline = function() {
+//       $rootScope.online = false;
+//       $rootScope.offline = true;
+//       $rootScope.$apply();
+//     };
 
-  }
-});
+//   }
+// });
 
 // disable angular's debugging stuff for perfomance improvement
 app.config(function($logProvider) {
@@ -94,20 +94,20 @@ app.config(function($logProvider) {
 });
 
 // broadcast on $http operations to be able to show loading indicators TODO
-app.config(function($httpProvider) {
-  $httpProvider.interceptors.push(function($q, $rootScope) {
-    return {
-      'request': function(config) {
-        $rootScope.$broadcast('loading-started');
-        return config || $q.when(config);
-      },
-      'response': function(response) {
-        $rootScope.$broadcast('loading-complete');
-        return response || $q.when(response);
-      }
-    };
-  });
-});
+// app.config(function($httpProvider) {
+//   $httpProvider.interceptors.push(function($q, $rootScope) {
+//     return {
+//       'request': function(config) {
+//         $rootScope.$broadcast('loading-started');
+//         return config || $q.when(config);
+//       },
+//       'response': function(response) {
+//         $rootScope.$broadcast('loading-complete');
+//         return response || $q.when(response);
+//       }
+//     };
+//   });
+// });
 
 // broken TODO
 // app.directive('loadingIndicator', function() {

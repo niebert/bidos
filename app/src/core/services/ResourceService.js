@@ -2,67 +2,67 @@
 angular.module('bidos')
   .service('Resources', ResourceService);
 
-function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
+function ResourceService($rootScope, $q, CRUD) {
 
   var preparedData = preparedData || null;
 
   return {
-    sync: syncResources,
+    // sync: syncResources,
     get: getAllResources,
     create: createResource,
     update: updateResource,
     destroy: destroyResource
   };
 
-  function syncOutbox() {
-    return $q(function(resolve) {
-      Outbox.get().then(function(outbox) {
+  // function syncOutbox() {
+  //   return $q(function(resolve) {
+  //     Outbox.get().then(function(outbox) {
 
-        var promises = [];
+  //       var promises = [];
 
-        _.each(outbox, function(outboxItem) {
+  //       _.each(outbox, function(outboxItem) {
 
-          CRUD[outboxItem.operation](outboxItem.resource).then(function(response) {
-            console.log('successfully pushed resource to server', response);
-            Outbox.remove(outboxItem.id);
-          }).catch(function(err) {
-            console.warn('pushing resource to server was not successful', outboxItem, err[0].content.detail);
-          });
+  //         CRUD[outboxItem.operation](outboxItem.resource).then(function(response) {
+  //           console.log('successfully pushed resource to server', response);
+  //           Outbox.remove(outboxItem.id);
+  //         }).catch(function(err) {
+  //           console.warn('pushing resource to server was not successful', outboxItem, err[0].content.detail);
+  //         });
 
-        });
+  //       });
 
-        $q.all(promises).then(function() {
+  //       $q.all(promises).then(function() {
 
-          Outbox.get().then(function(outboxItems) {
-            resolve(outboxItems);
-          });
-        });
+  //         Outbox.get().then(function(outboxItems) {
+  //           resolve(outboxItems);
+  //         });
+  //       });
 
-      });
-    });
-  }
+  //     });
+  //   });
+  // }
 
-  function syncResources() {
-    return $q(function(resolve, reject) {
-      syncOutbox().finally(function() {
-        CRUD.get()
-          .then(function(data) {
-            Cache.init(data);
-            preparedData = prepare(data);
-            resolve();
-            console.log('[resources] got resources from crud');
-          }).catch(function() {
-            reject();
-            console.warn('[resources] could not get resources from crud');
-          });
-      });
-    });
-  }
+  // function syncResources() {
+  //   return $q(function(resolve, reject) {
+  //     syncOutbox().finally(function() {
+  //       CRUD.get()
+  //         .then(function(data) {
+  //           Cache.init(data);
+  //           preparedData = prepare(data);
+  //           resolve();
+  //           console.log('[resources] got resources from crud');
+  //         }).catch(function() {
+  //           reject();
+  //           console.warn('[resources] could not get resources from crud');
+  //         });
+  //     });
+  //   });
+  // }
 
   function initResources() {
     return $q(function(resolve, reject) {
 
-      if ($rootScope.network === 'online') {
+      // if ($rootScope.network === 'online') {
         console.time('[resources] online, got resources from crud');
         // if online, get all data from api and (a) store it to cache and
         // (b) prepare it and make it available as preparedData
@@ -71,7 +71,7 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
           .then(function(data) {
             console.timeEnd('[resources] online, got resources from crud', data);
 
-            Cache.init(data); // this will delete existing indexeddbs and create them anew
+            // Cache.init(data); // this will delete existing indexeddbs and create them anew
             preparedData = prepare(data);
             resolve(preparedData);
 
@@ -82,27 +82,27 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
             reject();
 
           });
-      } else {
-        console.time('[resources] offline, got resources from cache');
-        // if offline, get all data from cache and make it available as
-        // preparedData. same thing as being online, but w/o storing
-        // anything to the cache (TODO refactor).
+      // } else {
+      //   console.time('[resources] offline, got resources from cache');
+      //   // if offline, get all data from cache and make it available as
+      //   // preparedData. same thing as being online, but w/o storing
+      //   // anything to the cache (TODO refactor).
 
-        Cache.get()
-          .then(function(data) {
-            console.timeEnd('[resources] offline, got resources from cache');
+      //   Cache.get()
+      //     .then(function(data) {
+      //       console.timeEnd('[resources] offline, got resources from cache');
 
-            preparedData = prepare(data);
-            resolve(preparedData);
+      //       preparedData = prepare(data);
+      //       resolve(preparedData);
 
-          }).catch(function() {
+      //     }).catch(function() {
 
-            reject();
+      //       reject();
 
-            console.warn('[resources] could not get resources from cache');
-          });
+      //       console.warn('[resources] could not get resources from cache');
+      //     });
 
-      }
+      // }
 
     });
   }
@@ -111,36 +111,38 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
   // the outbox and clear that outbox everytime, or just do the outbox thing
   // when we're offline, else just regularily go w/ the crud service
 
+  // FIXME all these crud-proxy-proxy-methods(?) return crap.
+
   function createResource(resource) {
     return $q(function(resolve, reject) {
-      if ($rootScope.network === 'online') {
+      // if ($rootScope.network === 'online') {
 
         CRUD.create(resource)
           .then(function(resources) {
             console.log('[resources] successfully created resource', resources);
             return resources;
           })
-          .then(function(resources) {
-            Cache.add(resources)
-              .then(function(data) {
-                preparedData = prepare(data);
-                resolve(resources);// TODO why not resolve(preparedData); ???
-              }).catch(function(err) {
-                reject(err);
-              });
-          })
+          // .then(function(resources) {
+          //   Cache.add(resources)
+          //     .then(function(data) {
+          //       preparedData = prepare(data);
+          //       resolve(resources);// TODO why not resolve(preparedData); ???
+          //     }).catch(function(err) {
+          //       reject(err);
+          //     });
+          // })
           .catch(function(err) {
             reject(err);
             console.warn('[resources] failed creating resource', err);
           });
 
-      } else {
-        Outbox.add('create', resource);
-        Cache.add([resource]).then(function(data) { // mind the array!
-          preparedData = prepare(data);
-          resolve(preparedData);
-        });
-      }
+      // } else {
+        // Outbox.add('create', resource);
+        // Cache.add([resource]).then(function(data) { // mind the array!
+        //   preparedData = prepare(data);
+        //   resolve(preparedData);
+        // });
+      // }
     });
   }
 
@@ -153,26 +155,26 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
             console.log('[resources] successfully updated resource', resources);
             return resources;
           })
-          .then(function(resources) {
-            Cache.update(resources)
-              .then(function(data) {
-                preparedData = prepare(data);
-                resolve(preparedData);
-              }).catch(function(err) {
-                reject(err);
-              });
-          })
+          // .then(function(resources) {
+          //   Cache.update(resources)
+          //     .then(function(data) {
+          //       preparedData = prepare(data);
+          //       resolve(preparedData);
+          //     }).catch(function(err) {
+          //       reject(err);
+          //     });
+          // })
           .catch(function(err) {
             reject(err);
             console.warn('[resources] failed updating resource', err);
           });
 
-      } else {
-        Outbox.add('update', resource);
-        Cache.update([resource]).then(function(data) { // mind the array!
-          preparedData = prepare(data);
-          resolve(preparedData);
-        });
+      // } else {
+        // Outbox.add('update', resource);
+        // Cache.update([resource]).then(function(data) { // mind the array!
+        //   preparedData = prepare(data);
+        //   resolve(preparedData);
+        // });
       }
     });
   }
@@ -186,26 +188,26 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
             console.log('[resources] successfully destroyed resource', response);
             return response;
           })
-          .then(function(response) {
-            Cache.destroy(response)
-              .then(function(data) {
-                preparedData = prepare(data);
-                resolve(preparedData);
-              }).catch(function(err) {
-                reject(err);
-              });
-          })
+      //     .then(function(response) {
+      //       Cache.destroy(response)
+      //         .then(function(data) {
+      //           preparedData = prepare(data);
+      //           resolve(preparedData);
+      //         }).catch(function(err) {
+      //           reject(err);
+      //         });
+      //     })
           .catch(function(err) {
             reject(err);
             console.warn('[resources] failed destroying resource', err);
           });
 
-      } else {
-        Outbox.add('destroy', resource); // TODO add op 'DELETE'
-        Cache.destroy([resource]).then(function(data) { // mind the array!
-          preparedData = prepare(data);
-          resolve(preparedData);
-        });
+      // } else {
+      //   Outbox.add('destroy', resource); // TODO add op 'DELETE'
+      //   Cache.destroy([resource]).then(function(data) { // mind the array!
+      //     preparedData = prepare(data);
+      //     resolve(preparedData);
+      //   });
       }
     });
   }
@@ -213,8 +215,8 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
   function getAllResources() {
     return $q(function(resolve, reject) {
       if (preparedData) {
-        resolve(preparedData);
         console.log('[resources] preparedData available and ready');
+        resolve(preparedData);
         // just get the already prepared data model w/o any further actions
       } else {
         console.warn('[resource] preparedData is not ready. please wait ...'); // TODO check this data loading s/t very slow
@@ -231,7 +233,7 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
 
   // link to ref and back
   function prepare(data) {
-    console.time('[resource] prepare data');
+    console.time('[resources] prepare data');
 
     // key is plural / resources are selected by key
     // type is singular / a resource has a type
@@ -318,7 +320,7 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
     addUserHandlers(data);
     makeRoleModifications(data);
 
-    console.timeEnd('[resource] prepare data');
+    console.timeEnd('[resources] prepare data');
     return data;
   }
 
@@ -494,13 +496,55 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
   }
 
   function addUserHandlers(data) {
-
-    // all kids belonging to the same group as the user
     _.each(data.users, function(user) {
+
+      // all kids belonging to the same group as the user
       if (!user.hasOwnProperty('kids')) {
         Object.defineProperty(user, 'kids', {
           get: function() {
             return user.group.kids;
+          }, enumerable: false
+        });
+      }
+
+     // all the users observations
+      if (!user.hasOwnProperty('observations')) {
+        Object.defineProperty(user, 'observations', {
+          get: function() {
+            return _.filter(data.observations, {
+              author_id: $rootScope.me.id
+            });
+          }, enumerable: false
+        });
+      }
+
+     // all the users observations (in his/her/silly current group)
+      if (!user.hasOwnProperty('observedKids')) {
+        Object.defineProperty(user, 'observedKids', {
+          get: function() {
+            return _.chain($rootScope.me.observations).pluck('kid').uniq().value();
+          }, enumerable: false
+        });
+      }
+
+     // all the users observations (in his/her/silly current group)
+      if (!user.hasOwnProperty('observedGroupKids')) {
+        Object.defineProperty(user, 'observedGroupKids', {
+          get: function() {
+            return _.chain($rootScope.me.observations).pluck('kid').uniq().filter({group_id: $rootScope.me.group_id}).value();
+          }, enumerable: false
+        });
+      }
+
+     // all the users observations
+      if (!user.hasOwnProperty('groupObservations')) {
+        Object.defineProperty(user, 'groupObservations', {
+          get: function() {
+            return data.observations.filter(function(obs) {
+              let myObs = obs.author_id === $rootScope.me.id;
+              let myGroup = obs.kid.group_id === $rootScope.me.group_id;
+              return _.all([myObs, myGroup]);
+            });
           }, enumerable: false
         });
       }
@@ -520,6 +564,7 @@ function ResourceService($rootScope, $q, CRUD, Cache, Outbox) {
           }, enumerable: false
         });
       }
+
     });
   }
 
