@@ -5,9 +5,8 @@ angular.module('bidos')
 function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory, STRINGS, Resources, CRUD, resource) {
 
   $scope.kid = resource;
-
-  $scope.sexes = STRINGS.sexes;
   $scope.me = $rootScope.me;
+  $scope.sexes = STRINGS.sexes;
 
   $scope.cancel = function() {
     $mdDialog.cancel();
@@ -15,15 +14,13 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
 
   $scope.destroy = function(kid) {
     kid.type = 'kid';
+
     if (!confirm('Sind sie sicher?')) return;
-    CRUD.destroy(kid).then(function(response) {
+
+    Resources.destroy(kid).then(function() {
       toast('Kind gelöscht');
-      $mdDialog.hide({
-        resource: response,
-        action: 'destroy'
-      });
-    }, function(err) {
-      console.error(err);
+      debugger
+      $mdDialog.hide();
     });
   };
 
@@ -32,13 +29,9 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
     kid.author_id = $rootScope.me.id;
     kid.group_id = $rootScope.me.group_id;
 
-    CRUD.create(kid).then(function(response) {
+    Resources.create(kid).then(function() {
       toast('Kind erstellt');
-      console.log(response);
-      $mdDialog.hide({
-        resource: response,
-        action: 'save'
-      });
+      $mdDialog.hide();
     });
   };
 
