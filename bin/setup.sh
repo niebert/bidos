@@ -1,8 +1,11 @@
 #!/usr/local/bin/zsh
 #Thu Mar 19 04:04:48 CET 2015
+set -e
 
 NAME=bidos
-HOST=$(hostname -f)
+# HOST=$(hostname -f)
+
+if [[ -z !$HOST ]]; then return; fi
 
 case $NODE_ENV in
 	"production")   PORT=3000  ;;
@@ -30,10 +33,10 @@ EOF
 echo "press enter to continue"; read
 
 dropdb ${NAME}_${NODE_ENV}
-dropuser $NAME
+# dropuser $NAME
 
-createuser $NAME
-psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
+# createuser $NAME
+# psql -c "ALTER USER bidos WITH PASSWORD 'bidos'"
 createdb -O $NAME ${NAME}_${NODE_ENV}
 
 # sudo -u postgres dropdb ${NAME}_${NODE_ENV}
@@ -44,11 +47,13 @@ createdb -O $NAME ${NAME}_${NODE_ENV}
 # sudo -u postgres createdb -O $NAME ${NAME}_${NODE_ENV}
 
 cd bin/db
-
-psql -U $NAME -e -f schema.sql ${NAME}_${NODE_ENV}
-curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@$NAME", "password": "123", "username": "admin", "approved": true }' $URL/auth/signup
-
-iojs seeds.js seeds.json
+psql -U $NAME -f schema.sql ${NAME}_${NODE_ENV} 1>/dev/null
+echo -e "\e[0;35mdatabase set up\e[0m"
+url=$URL/auth/signup
+curl -s -XPOST -H "Content-Type: application/json" -d '{ "role": 0, "name": "Admin", "email": "admin@$NAME", "password": "123", "username": "admin", "approved": true, "type": "user"}' $url 1>/dev/null
+echo -e "\e[0;33madmin user created\e[0m"
+# NODE_ENV=localdev iojs seeds.js
+# iojs seeds.js seeds.json
 
 function fake() {
 	if [[ $1 == "user" ]]; then
@@ -61,15 +66,7 @@ function fake() {
 }
 
 if [[ $NODE_ENV == "production" ]]; then
-	echo -e "\e[0;35m$NODE_ENV no fake data"
+	echo -e "\e[0;35m$NODE_ENV no fake data\e[0m"
 	exit 0
 fi
-
-repeat  2    fake institution
-repeat  4    fake group
-repeat  64   fake kid
-repeat  128  fake observation
-repeat  4    fake user
-
-echo -e " \e[0;32m$NODE_ENV setup done"
 
