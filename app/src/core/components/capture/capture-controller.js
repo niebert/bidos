@@ -68,25 +68,18 @@ function CaptureController($scope, $rootScope, Resources, CRUD, $q, $mdDialog) {
   };
 
   $scope.review = function(ev, newObs) {
-
-    newObs.kid_id = parseInt(newObs.kid_id);
-    newObs.item_id = parseInt(newObs.item_id);
-    newObs.niveau = parseInt(newObs.niveau);
-
     $mdDialog.show({
       targetEvent: ev,
       locals: {
-        newObs: newObs,
-        kid: _.filter($rootScope.data.kids, {id: newObs.kid_id})[0],
-        item: _.filter($rootScope.data.items, {id: newObs.item_id})[0],
-        behaviour: _.filter($scope.item.behaviours, {niveau: newObs.niveau})[0]
+        observation: newObs,
+        kid: _.filter($rootScope.data.kids, {id: +newObs.kid_id})[0],
+        item: _.filter($rootScope.data.items, {id: +newObs.item_id})[0],
+        behaviour: _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0]
       },
       controller: 'CaptureReviewController',
       templateUrl: `templates/capture-review.dialog.html`
-    }).then(function(data) {
-      console.log('dialog succeeded', data);
-    }, function() {
-      console.log('dialog cancelled');
+    }).then(function() {
+      $scope.reset();
     });
   };
 
