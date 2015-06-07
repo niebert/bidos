@@ -5,11 +5,8 @@
 			<span>BiDoS</span>
 		</h2>
 
-		<span flex ng-if="$root.me.role !== 0">
-			{{$root.me.group.institution.name}}/{{$root.me.group.name}}
-		</span>
-
-		<span flex ng-if="$root.me.role == 0">
+		<span flex ng-if="me.roleName !== 'admin'">
+			{{me.group.institution.name}}/{{me.group.name}}
 		</span>
 
 		{{me.name}}

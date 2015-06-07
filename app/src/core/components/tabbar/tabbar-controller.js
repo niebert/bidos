@@ -2,14 +2,13 @@
 angular.module('bidos')
   .controller('TabbarController', TabbarController);
 
-function TabbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
+function TabbarController($scope, $rootScope, $state) {
 
   $scope.actions = [{
     text: 'Home',
     tooltip: 'Übersicht',
     roles: ['practitioner', 'admin', 'scientist'],
     onClick: function() {
-      console.log('-> home');
       $state.go('bidos.home');
     }
   }, {
@@ -77,8 +76,7 @@ function TabbarController($scope, $rootScope, $mdDialog, $mdToast, $state) {
     }
   }];
 
-  $scope.me = $rootScope.me;
   $scope.myActions = _.filter($scope.actions, function(button) {
-    return _.includes(button.roles, $scope.me.roleName);
+    return _.includes(button.roles, $rootScope.me.roleName);
   });
 }

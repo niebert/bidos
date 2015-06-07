@@ -1,10 +1,1 @@
-<!-- <md-tabs md-selected="selectedIndex" md-border-bottom>
-  <md-tab ng-repeat="action in myActions" ng-disabled="action.disabled" label="{{action.text}}" ng-click="action.onClick($event)">
-	{{action.onClick}}
-    <div class="demo-tab tab{{$index%4}}">
-      <div ng-bind="action.text"></div>
-    </div>
-  </md-tab>
-</md-tabs>
- -->
 <md-button ng-repeat="action in myActions" ng-click="action.onClick($event)">{{action.text}}</md-button>
