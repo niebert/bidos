@@ -22,7 +22,6 @@ function createResource(resourceType) {
 
           if (!this.request.body.hasOwnProperty('username')) {
             this.request.body.username = this.request.body.name.split(' ').map(function(d) { return d[0]}).join('').toLowerCase();
-            console.log('_________ GENERATED USERNAME', this.request.body.username);
           }
 
         }
@@ -32,7 +31,6 @@ function createResource(resourceType) {
 
       if (this.request.body.hasOwnProperty('password')) {
         delete this.request.body.password;
-        console.log('_________ DELETED PASSWORD');
       }
 
       var keys = _.keys(this.request.body);
@@ -43,8 +41,6 @@ function createResource(resourceType) {
         }); // <3
 
       var query = 'INSERT INTO ' + resourceType + 's (' + keys + ') VALUES (' + indices + ') RETURNING *'; // pluralize
-
-      console.log(query, values, indices);
 
       try {
         var result =

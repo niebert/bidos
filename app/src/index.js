@@ -12,6 +12,7 @@ require('./core/components/info-dialog/info-dialog-controller');
 require('./core/components/kid-dialog/kid-dialog-controller');
 require('./core/components/kids/kids-controller');
 require('./core/components/kids/kids-directive');
+require('./core/components/observations/observation.dialog.controller');
 require('./core/components/observations/observations-controller');
 require('./core/components/observations/observations-directive');
 require('./core/components/resource-dialog/resource-dialog-controller');
