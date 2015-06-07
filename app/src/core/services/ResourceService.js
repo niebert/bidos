@@ -7,225 +7,78 @@ function ResourceService($rootScope, $q, CRUD) {
   var preparedData = preparedData || null;
 
   return {
-    // sync: syncResources,
-    get: getAllResources,
-    create: createResource,
-    update: updateResource,
-    destroy: destroyResource
+    get: get,
+    init: init,
+    create: create,
+    update: update,
+    destroy: destroy
   };
 
-  // function syncOutbox() {
-  //   return $q(function(resolve) {
-  //     Outbox.get().then(function(outbox) {
-
-  //       var promises = [];
-
-  //       _.each(outbox, function(outboxItem) {
-
-  //         CRUD[outboxItem.operation](outboxItem.resource).then(function(response) {
-  //           console.log('successfully pushed resource to server', response);
-  //           Outbox.remove(outboxItem.id);
-  //         }).catch(function(err) {
-  //           console.warn('pushing resource to server was not successful', outboxItem, err[0].content.detail);
-  //         });
-
-  //       });
-
-  //       $q.all(promises).then(function() {
-
-  //         Outbox.get().then(function(outboxItems) {
-  //           resolve(outboxItems);
-  //         });
-  //       });
-
-  //     });
-  //   });
-  // }
-
-  // function syncResources() {
-  //   return $q(function(resolve, reject) {
-  //     syncOutbox().finally(function() {
-  //       CRUD.get()
-  //         .then(function(data) {
-  //           Cache.init(data);
-  //           preparedData = prepare(data);
-  //           resolve();
-  //           console.log('[resources] got resources from crud');
-  //         }).catch(function() {
-  //           reject();
-  //           console.warn('[resources] could not get resources from crud');
-  //         });
-  //     });
-  //   });
-  // }
-
-  function initResources() {
-    return $q(function(resolve, reject) {
-
-      // if ($rootScope.network === 'online') {
-        console.time('[resources] online, got resources from crud');
-        // if online, get all data from api and (a) store it to cache and
-        // (b) prepare it and make it available as preparedData
-
-        CRUD.get()
-          .then(function(data) {
-            console.timeEnd('[resources] online, got resources from crud', data);
-
-            // Cache.init(data); // this will delete existing indexeddbs and create them anew
-            preparedData = prepare(data);
-            resolve(preparedData);
-
-            console.log('[resources] resolving prepared data');
-          }).catch(function() {
-            console.warn('[resources] could not get resources from crud');
-
-            reject();
-
-          });
-      // } else {
-      //   console.time('[resources] offline, got resources from cache');
-      //   // if offline, get all data from cache and make it available as
-      //   // preparedData. same thing as being online, but w/o storing
-      //   // anything to the cache (TODO refactor).
-
-      //   Cache.get()
-      //     .then(function(data) {
-      //       console.timeEnd('[resources] offline, got resources from cache');
-
-      //       preparedData = prepare(data);
-      //       resolve(preparedData);
-
-      //     }).catch(function() {
-
-      //       reject();
-
-      //       console.warn('[resources] could not get resources from cache');
-      //     });
-
-      // }
-
+  function init() {
+    CRUD.get()
+    .then(function(data) {
+      $rootScope.data = preparedData = prepare(data);
+    }).catch(function(err) {
+      console.warn('failed initializing data', err);
     });
   }
 
-  // TODO there are two ways to push data to the back end, either put it in
-  // the outbox and clear that outbox everytime, or just do the outbox thing
-  // when we're offline, else just regularily go w/ the crud service
-
-  // FIXME all these crud-proxy-proxy-methods(?) return crap.
-
-  function createResource(resource) {
-    return $q(function(resolve, reject) {
-      // if ($rootScope.network === 'online') {
-
-        CRUD.create(resource)
-          .then(function(resources) {
-            console.log('[resources] successfully created resource', resources);
-            return resources;
-          })
-          // .then(function(resources) {
-          //   Cache.add(resources)
-          //     .then(function(data) {
-          //       preparedData = prepare(data);
-          //       resolve(resources);// TODO why not resolve(preparedData); ???
-          //     }).catch(function(err) {
-          //       reject(err);
-          //     });
-          // })
-          .catch(function(err) {
-            reject(err);
-            console.warn('[resources] failed creating resource', err);
-          });
-
-      // } else {
-        // Outbox.add('create', resource);
-        // Cache.add([resource]).then(function(data) { // mind the array!
-        //   preparedData = prepare(data);
-        //   resolve(preparedData);
-        // });
-      // }
-    });
-  }
-
-  function updateResource(resource) {
-    return $q(function(resolve, reject) {
-      if ($rootScope.network === 'online') {
-
-        CRUD.update(resource)
-          .then(function(resources) {
-            console.log('[resources] successfully updated resource', resources);
-            return resources;
-          })
-          // .then(function(resources) {
-          //   Cache.update(resources)
-          //     .then(function(data) {
-          //       preparedData = prepare(data);
-          //       resolve(preparedData);
-          //     }).catch(function(err) {
-          //       reject(err);
-          //     });
-          // })
-          .catch(function(err) {
-            reject(err);
-            console.warn('[resources] failed updating resource', err);
-          });
-
-      // } else {
-        // Outbox.add('update', resource);
-        // Cache.update([resource]).then(function(data) { // mind the array!
-        //   preparedData = prepare(data);
-        //   resolve(preparedData);
-        // });
-      }
-    });
-  }
-
-  function destroyResource(resource) {
-    return $q(function(resolve, reject) {
-      if ($rootScope.network === 'online') {
-
-        CRUD.destroy(resource)
-          .then(function(response) { // NOTE response is not a full resource, just type and id
-            console.log('[resources] successfully destroyed resource', response);
-            return response;
-          })
-      //     .then(function(response) {
-      //       Cache.destroy(response)
-      //         .then(function(data) {
-      //           preparedData = prepare(data);
-      //           resolve(preparedData);
-      //         }).catch(function(err) {
-      //           reject(err);
-      //         });
-      //     })
-          .catch(function(err) {
-            reject(err);
-            console.warn('[resources] failed destroying resource', err);
-          });
-
-      // } else {
-      //   Outbox.add('destroy', resource); // TODO add op 'DELETE'
-      //   Cache.destroy([resource]).then(function(data) { // mind the array!
-      //     preparedData = prepare(data);
-      //     resolve(preparedData);
-      //   });
-      }
-    });
-  }
-
-  function getAllResources() {
+  function get() {
     return $q(function(resolve, reject) {
       if (preparedData) {
-        console.log('[resources] preparedData available and ready');
         resolve(preparedData);
-        // just get the already prepared data model w/o any further actions
       } else {
-        console.warn('[resource] preparedData is not ready. please wait ...'); // TODO check this data loading s/t very slow
-        initResources().then(function(pData) {
-          resolve(pData);
+        CRUD.get()
+        .then(function(data) {
+          preparedData = prepare(data);
+          resolve(preparedData);
         }).catch(function(err) {
           reject(err);
         });
       }
+    });
+  }
+
+  function create(resource) {
+    return $q(function(resolve, reject) {
+      CRUD.create(resource)
+      .then(function(response) {
+        var r = response[0];
+        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        bucket.push(r);
+        $rootScope.data = prepare($rootScope.data);
+        resolve(r);
+      }).catch(function(err) {
+        reject(err);
+      });
+    });
+  }
+
+  function update(resource) {
+    return $q(function(resolve, reject) {
+      CRUD.update(resource)
+      .then(function(response) {
+        var r = response[0];
+        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
+        resolve(r);
+      }).catch(function(err) {
+        reject(err);
+      });
+    });
+  }
+
+  function destroy(resource) {
+    return $q(function(resolve, reject) {
+      CRUD.destroy(resource)
+      .then(function(response) { // NOTE response is not a full resource, just type and id
+        var r = response[0];
+        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
+        resolve(r);
+      }).catch(function(err) {
+        reject(err);
+      });
     });
   }
 
@@ -277,16 +130,11 @@ function ResourceService($rootScope, $q, CRUD) {
             if (!ref) { return; } // TODO check this
 
             // link to ref <3 √
-            if (!resource.hasOwnProperty(resource.type)) {
+            if (!resource.hasOwnProperty(ref.type)) {
               Object.defineProperty(resource, ref.type, {
                 get: function() {
                   return ref;
-
-                  // Angular will JSON.parse() this at one point ant throw
-                  // circular reference error. So don't do this here (and we
-                  // don't need it at all, I guess).
-                }, enumerable: false
-              });
+                }});
             }
 
             // NOTE there are two things plural around here: the keys in the
@@ -576,9 +424,13 @@ function ResourceService($rootScope, $q, CRUD) {
 
   function makeRoleModifications(data) {
 
-    data.me = getUser(data);
+    $rootScope.me = getUser(data);
+    // $scope.kids = data.kids.filter(function(kid) {
+    //   if (!kid) return false;
+    //   return kid.group_id === ($rootScope.me.group_id ? $rootScope.me.group_id : kid.group_id); // admin sees all kids
+    // });
 
-    switch ($rootScope.auth.role) {
+    switch ($rootScope.me.role) {
 
       // ADMIN
       case 0:
@@ -589,36 +441,36 @@ function ResourceService($rootScope, $q, CRUD) {
 
         // put user specific kids and group resources on top scope level
 
-        data.kids = _.flatten(_.chain(data.users)
-          .filter({
-            id: $rootScope.auth.id
-          })
-          .first()
-          .value()
-          .institution.groups.map(function(d) {
-            return d.kids;
-          }));
+        // data.kids = _.flatten(_.chain(data.users)
+        //   .filter({
+        //     id: $rootScope.auth.id
+        //   })
+        //   .first()
+        //   .value()
+        //   .institution.groups.map(function(d) {
+        //     return d.kids;
+        //   }));
 
-        data.groups = _.flatten(_.chain(data.users)
-          .filter({
-            id: $rootScope.auth.id
-          })
-          .first()
-          .value()
-          .institution.groups);
+        // data.groups = _.flatten(_.chain(data.users)
+        //   .filter({
+        //     id: $rootScope.auth.id
+        //   })
+        //   .first()
+        //   .value()
+        //   .institution.groups);
 
         // only show the institution the practitioner belongs to
 
         // TODO allow a practitioner to be part of multiple institutions and
         // groups
 
-        data.institutions = data.institutions.filter(function(institution) {
-          return institution.id === data.me.institution_id;
-        });
+        // data.institutions = data.institutions.filter(function(institution) {
+        //   return institution.id === data.me.institution_id;
+        // });
 
-        data.groups = data.groups.filter(function(group) {
-          return group.id === data.me.group_id;
-        });
+        // data.groups = data.groups.filter(function(group) {
+        //   return group.id === data.me.group_id;
+        // });
 
 
         // data.observations = _.filter(data.observations, function(obs) {

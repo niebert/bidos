@@ -1,12 +1,10 @@
-/* global angular */
 'use strict';
+/* global angular */
 
 angular.module('bidos')
-  .service('CRUD', CRUDService);
+.service('CRUD', CRUDService);
 
 function CRUDService($http, $q, Help, CONFIG) {
-
-  /* Basic CRUD operations doing HTTP calls to the back end. */
 
   return {
     get: getResources,
@@ -16,19 +14,15 @@ function CRUDService($http, $q, Help, CONFIG) {
   };
 
   function getResources() {
-    console.time('[crud] getting resources from api');
     var url = [CONFIG.resources].join('/');
     return $q(function(resolve, reject) {
       $http.get(url)
-        .success(function(data) {
-          resolve(data);
-          console.info('FRESH RESOURCES!', data);
-          console.timeEnd('[crud] getting resources from api', data);
-        })
-        .error(function(err) {
-          reject(err);
-          console.warn('[crud] getting resources from api', err);
-        });
+      .success(function(data) {
+        resolve(data);
+      })
+      .error(function(err) {
+        reject(err);
+      });
     });
   }
 
@@ -43,9 +37,10 @@ function CRUDService($http, $q, Help, CONFIG) {
     }
 
     var url = [CONFIG.crud, resource.type].join('/');
-    if (resource.type === 'user') {
-      resource.username = resource.email.split('@')[0];
-    }
+
+    // if (resource.type === 'user') {
+    //   resource.username = resource.email.split('@')[0];
+    // }
 
     return $q(function(resolve, reject) {
       $http.post(url, resource)
