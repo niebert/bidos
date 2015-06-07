@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS groups (
 
 CREATE TABLE IF NOT EXISTS users (
   id                SERIAL PRIMARY KEY,
-  institution_id    INT REFERENCES institutions(id),
   group_id          INT REFERENCES groups(id),
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
