@@ -1,0 +1,24 @@
+<md-dialog class="review">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Überprüfen Sie Ihre Beobachtung</md-subheader>
+		<p><em>{{item.subdomain.domain.name}}, {{item.subdomain.name}}, {{item.name}}</em></p>
+		<hr>
+		<p>{{kid.name}} {{behaviour.text}}. Niveau {{newObs.niveau}}. {{newObs.help ? "Mit Hilfe." : "Ohne Hilfe."}}</p>
+		<hr>
+		<p ng-if="example">Eigenes Beispiel zu diesem Verhalten: {{example}}</p>
+		<p ng-if="idea">Eigene Idee zu dieser Beobachtung: {{idea}}</p>
+		<p ng-if="note">Eigene Notiz zu dieser Beobachtung: {{note}}</p>
+	<md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="destroy" ng-click="destroy(kid)" class="md-warn md-raised md-button md-default-theme">
+			Verwerfen
+		</md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save($event)" class="md-primary md-raised md-button md-default-theme">
+			Speichern
+		</md-button>
+	</div>
+
+</md-dialog>

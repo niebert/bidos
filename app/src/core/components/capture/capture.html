@@ -1,12 +1,5 @@
 <md-content layout="column" class="capture">
 
-	<!-- <div flex="100" layout class="capture-domains">
-		<md-button flex aria-label="domain1" ng-click="selectDomain(1)" class="md-raised domain1"> Personal </md-button>
-		<md-button flex aria-label="domain2" ng-click="selectDomain(2)" class="md-raised domain2"> Schrift &amp; Sprache </md-button>
-		<md-button flex aria-label="domain3" ng-click="selectDomain(3)" class="md-raised domain3"> Sozial </md-button>
-		<md-button flex aria-label="domain4" ng-click="selectDomain(4)" class="md-raised domain4"> Mathe </md-button>
-	</div> -->
-
 	<md-select placeholder="Kind auswählen" ng-model="newObs.kid_id">
 		<md-option value="{{ kid.id }}" ng-repeat="kid in kids">{{ kid.name }}</md-option>
 	</md-select>
@@ -21,15 +14,10 @@
 		</md-optgroup>
 	</md-select>
 
-  <!-- <md-select placeholder="Verhalten auswählen" ng-model="kid_id" ng-change="selectKid()" ng-if="item">
-		<md-option value="{{ behaviour.niveau }}" ng-repeat="behaviour in item.behaviours">{{ behaviour.text }}</md-option>
-	</md-select> -->
-
 	<md-radio-group ng-model="newObs.niveau" ng-if="newObs.item_id && newObs.kid_id">
-		<md-radio-button ng-value="1"><strong>Niveau 1:</strong> {{ kidName() }} {{ behaviour(1).text }}. (Zum Beispiel: {{showExample(1).text}}.)</md-radio-button>
-		<md-radio-button ng-value="2"><strong>Niveau 2:</strong> {{ kidName() }} {{ behaviour(2).text }}. (Zum Beispiel: {{showExample(2).text}}.)</md-radio-button>
-		<md-radio-button ng-value="3"><strong>Niveau 3:</strong> {{ kidName() }} {{ behaviour(3).text }}. (Zum Beispiel: {{showExample(3).text}}.)</md-radio-button>
-		<!-- <md-radio-button ng-value="{{ behaviour.niveau }}" ng-repeat="behaviour in item.behaviours | orderBy:behaviour.niveau">{{ behaviour.text }} ({{ behaviour.niveau }})</md-radio-button> -->
+		<md-radio-button ng-value="1"><strong>Niveau 1:</strong> {{ kidName() }} {{ behaviour(1).text }}. (Zum Beispiel: {{showExample(1)}}.)</md-radio-button>
+		<md-radio-button ng-value="2"><strong>Niveau 2:</strong> {{ kidName() }} {{ behaviour(2).text }}. (Zum Beispiel: {{showExample(2)}}.)</md-radio-button>
+		<md-radio-button ng-value="3"><strong>Niveau 3:</strong> {{ kidName() }} {{ behaviour(3).text }}. (Zum Beispiel: {{showExample(3)}}.)</md-radio-button>
 	</md-radio-group>
 
 	<md-radio-group ng-model="newObs.niveau" ng-if="newObs.item_id && newObs.kid_id" ng-change="deleteHelp()">
@@ -39,14 +27,8 @@
 
 	<md-select placeholder="Hat {{ kidName() }} Hilfe benötigt?" ng-model="newObs.help" ng-if="newObs.niveau > 0 && newObs.niveau < 4">
 		<md-option ng-value="false">{{ kidName() }} hat das angegebene Verhalten <strong>ohne</strong> Hilfestellung gezeigt.</md-option>
-		<md-option ng-value="true">{{ kidName() }} hat das angegebene Verhalten mit Hilfestellung gezeigt.</md-option>
+		<md-option ng-value="true">{{ kidName() }} hat das angegebene Verhalten <strong>mit</strong> Hilfestellung gezeigt.</md-option>
 	</md-select>
-
-<!-- 	<md-radio-group ng-model="newObs.help" ng-if="newObs.niveau > 0 && newObs.niveau < 4">
-		<md-radio-button ng-value="false">ohne Hilfe</md-radio-button>
-		<md-radio-button ng-value="true">mit Hilfe</md-radio-button>
-	</md-radio-group>
- -->
 
 	<md-input-container flex ng-if="newObs.niveau > 0 && newObs.niveau < 4">
 		<label>Eigene Beispiel hinzufügen</label>
@@ -68,7 +50,7 @@
 		<md-button aria-label="reset" ng-click="reset(newObs)" class="md-warn">
 			Reset
 		</md-button>
-		<md-button aria-label="save" ng-click="save(newObs)" class="md-primary md-raised" ng-disabled="!obsComplete(newObs)">
+		<md-button aria-label="save" ng-click="review($event, newObs)" class="md-primary md-raised" ng-disabled="!obsComplete(newObs)">
 			Speichern
 		</md-button>
 	</div>
