@@ -19,7 +19,6 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
 
     Resources.destroy(kid).then(function() {
       toast('Kind gelöscht');
-      debugger
       $mdDialog.hide();
     });
   };
