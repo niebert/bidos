@@ -3,6 +3,7 @@ require('./auth');
 require('./core/components/app/app-controller');
 require('./core/components/capture/capture-controller');
 require('./core/components/capture/capture-directive');
+require('./core/components/capture-review/capture-review.controller');
 require('./core/components/content/content-controller');
 require('./core/components/content/content-directive');
 require('./core/components/filterbar/filterbar-controller');
