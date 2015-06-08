@@ -40,7 +40,7 @@ function UsersController(Resources, $mdDialog, $scope) {
     }).then(function(response) {
       if (!response) return;
       updateUsers();
-      $scope.approveUser(null, response.user);
+      $scope.showUser(null, response.user);
     });
   };
 

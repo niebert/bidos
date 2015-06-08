@@ -3,7 +3,7 @@
 	<div ng-if="unapprovedUsers()">
 		<h2>Ungeprüfte Benutzer</h2>
 		<md-list>
-			<md-list-item ng-repeat="user in users | filter:{approved:false}" ng-click="approveUser($event, user)">
+			<md-list-item ng-repeat="user in users | filter:{approved:false}" ng-click="showUser($event, user)">
 			<p>{{user.name}}</p>
 			<p>{{user.roleName}}</p>
 			<p>{{user.group.institution.name}}/{{user.group.name}}</p>
@@ -15,7 +15,7 @@
 
 	<h2>Geprüfte Benutzer</h2>
 	<md-list>
-		<md-list-item ng-repeat="user in users | filter:{approved:true}" ng-click="approveUser($event, user)">
+		<md-list-item ng-repeat="user in users | filter:{approved:true}" ng-click="showUser($event, user)">
 		<p>{{user.name}}</p>
 		<p>{{user.roleName}}</p>
 		<p>{{user.group.institution.name}}/{{user.group.name}}</p>
