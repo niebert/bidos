@@ -349,6 +349,9 @@ function ResourceService($rootScope, $q, CRUD) {
   function addUserHandlers(data) {
     _.each(data.users, function(user) {
 
+       // admins do not have kids as they have no groups
+      // if (user.role === 0) return;
+
       // all kids belonging to the same group as the user
       if (!user.hasOwnProperty('kids')) {
         Object.defineProperty(user, 'kids', {
