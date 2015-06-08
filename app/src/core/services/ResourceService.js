@@ -406,11 +406,11 @@ function ResourceService($rootScope, $q, CRUD) {
           get: function() {
             switch (this.role) {
               case 0:
-                return 'admin';
+                return 'Administrator';
               case 1:
-                return 'practitioner';
+                return 'Praktiker';
               case 2:
-                return 'scientist';
+                return 'Wissenschaftler';
             }
           }, enumerable: false
         });
