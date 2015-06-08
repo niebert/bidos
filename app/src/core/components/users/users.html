@@ -1,0 +1,27 @@
+
+<md-content>
+	<div ng-if="unapprovedUsers()">
+		<h2>Ungeprüfte Benutzer</h2>
+		<md-list>
+			<md-list-item ng-repeat="user in users | filter:{approved:false}" ng-click="approveUser($event, user)">
+			<p>{{user.name}}</p>
+			<p>{{user.roleName}}</p>
+			<p>{{user.group.institution.name}}/{{user.group.name}}</p>
+			<p>{{user.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+			</md-list-item>
+		</md-list>
+		<hr>
+	</div>
+
+	<h2>Geprüfte Benutzer</h2>
+	<md-list>
+		<md-list-item ng-repeat="user in users | filter:{approved:true}" ng-click="approveUser($event, user)">
+		<p>{{user.name}}</p>
+		<p>{{user.roleName}}</p>
+		<p>{{user.group.institution.name}}/{{user.group.name}}</p>
+		<p ng-class="{disabledStatus:user.disabled,enabledStatus:!user.disabled}">{{user.disabled ? 'Deaktiviert' : 'Aktiviert'}}</p>
+		<p>{{user.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+		</md-list-item>
+	</md-list>
+
+</md-content>
