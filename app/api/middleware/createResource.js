@@ -1,7 +1,7 @@
 'use strict';
 const sendgridConfig = require('../config').sendgrid;
 let sendgrid = require('sendgrid')(sendgridConfig.user, sendgridConfig.key);
-let generateUsername = require('./generateUsername');
+// let generateUsername = require('./generateUsername');
 let _ = require('lodash');
 function createResource(resourceType) {
   return function*() {
@@ -21,7 +21,11 @@ function createResource(resourceType) {
           delete this.request.body.password;
 
           if (!this.request.body.hasOwnProperty('username')) {
-            this.request.body.username = this.request.body.name.split(' ').map(function(d) { return d[0]}).join('').toLowerCase();
+            this.request.body.username = this.request.body.name
+            .split(' ')
+            .map(function(d) { return d[0] + d[d.length - 1]; })
+            .join('')
+            .toLowerCase();
           }
 
         }
