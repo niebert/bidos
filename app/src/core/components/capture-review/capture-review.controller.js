@@ -6,7 +6,7 @@ function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $m
 
   $scope.kid = locals.kid;
   $scope.item = locals.item;
-  $scope.observation = locals.observation;
+  $scope.newObs = locals.observation;
   $scope.behaviour = locals.behaviour;
 
   if (locals.observation.hasOwnProperty('example')) {
