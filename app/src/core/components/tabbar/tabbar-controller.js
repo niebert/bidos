@@ -6,61 +6,67 @@ function TabbarController($scope, $rootScope, $state) {
 
   $scope.actions = [{
     text: 'Home',
-    roles: ['practitioner', 'admin', 'scientist'],
+    roles: ['Praktiker', 'Administrator', 'Wissenschaftler'],
     onClick: function() {
       $state.go('bidos.home');
     }
   }, {
     text: 'Meine Kinder',
-    roles: ['practitioner'],
+    roles: ['Praktiker'],
     onClick: function() {
       $state.go('bidos.kids');
     }
   }, {
     text: 'Meine Beobachtungen',
-    roles: ['practitioner'],
+    roles: ['Praktiker'],
     onClick: function() {
       $state.go('bidos.observations');
     }
   }, {
-    text: 'Neue Gruppe',
-    roles: ['admin'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'group'});
-    }
-  }, {
-    text: 'Neue Institution',
-    roles: ['admin'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'institution'});
-    }
-  }, {
     text: 'Neue Beobachtung',
-    roles: ['practitioner'],
+    roles: ['Praktiker'],
     onClick: function() {
       $state.go('bidos.capture');
     }
   }, {
+    text: 'Gruppen',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.groups');
+    }
+  }, {
+    text: 'Benutzer',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.users');
+    }
+  }, {
+    text: 'Institutionen',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.institutions');
+    }
+  }, {
     text: 'Gruppe auswerten',
-    roles: ['practitioner'],
+    roles: ['Praktiker'],
     onClick: function($event) {
       return $scope.dialog($event, {type: 'kid'});
+    }
+  }, {
+    text: 'Beobachtungen',
+    roles: ['Wissenschaftler'],
+    onClick: function() {
+      $state.go('bidos.observations');
+    }
+  }, {
+    text: 'Items',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.items');
     }
   }, {
     text: 'Export',
-    roles: ['admin', 'scientist'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
-    }
-  }, {
-    text: 'Eingehende Beobachtungen',
-    roles: ['admin', 'scientist'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
-    }
-  }, {
-    text: 'Items bearbeiten',
-    roles: ['admin'],
+    roles: ['Administrator', 'Wissenschaftler'],
     onClick: function($event) {
       return $scope.dialog($event, {type: 'kid'});
     }
