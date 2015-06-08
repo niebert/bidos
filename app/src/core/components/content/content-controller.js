@@ -2,8 +2,6 @@
 angular.module('bidos')
 .controller('ContentController', ContentController);
 
-var md5 = require('md5');
-
 function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $state, $http, STRINGS, CONFIG) {
 
   $scope.config = CONFIG;
@@ -11,10 +9,6 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
   $scope.sortOrder = 'id';
   $scope.stuff = {};
   $scope.auth = $rootScope.auth;
-
-  $scope.getTileColor = function(string) {
-    return md5(string);
-  };
 
   $scope.ActionDialog = function (ev, resource) {
     $mdDialog.show({
