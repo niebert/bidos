@@ -1,2 +1,10 @@
-<md-content flex main ui-view="content" ng-controller="ContentController"> <!-- DO NOT APPLY MD-PADDING HERE FFS -->
+<md-content>
+
+		<md-list>
+			<md-list-item ui-sref="bidos.home">
+				<p>Neue Benutzer</p>
+				<p>{{unapprovedUsers.length}}</p>
+			</md-list-item>
+		</md-list>
+
 </md-content>

@@ -4,36 +4,14 @@ angular.module('bidos')
 
 function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $state, $http, STRINGS, CONFIG) {
 
-  $scope.config = CONFIG;
-  $scope.strings = STRINGS;
-  $scope.sortOrder = 'id';
-  $scope.stuff = {};
-  $scope.auth = $rootScope.auth;
-
-  $scope.ActionDialog = function (ev, resource) {
-    $mdDialog.show({
-      bindToController: false,
-      controller: 'ActionDialog',
-      controllerAs: 'vm',
-      locals: {
-        resource: resource
-      },
-      targetEvent: ev,
-      templateUrl: `templates/action-dialog.html`
+  Resources.get().then(function(data) {
+    $scope.unapprovedUsers = _.filter(data.users, function(d) {
+      return (d.id !== 1) && (d.approved === false);
     });
-  };
+  });
 
-  $scope.infoDialog = function (ev, resource) {
-    $mdDialog.show({
-      bindToController: false,
-      controller: 'InfoDialog',
-      controllerAs: 'vm',
-      locals: {
-        resource: resource
-      },
-      targetEvent: ev,
-      templateUrl: `templates/info-dialog.html`
-    });
+  $scope.unapprovedUsers = function() {
+    return !_.chain($scope.users).pluck('approved').all().value();
   };
 
   $scope.resourceFilter = function() {
