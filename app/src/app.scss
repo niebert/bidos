@@ -53,3 +53,25 @@ ul {
   padding-left: 0;
   list-style-type: none;
 }
+
+#auth > md-tabs {
+  padding-bottom: 12px;
+}
+
+.loading {
+  width: 50%;
+  margin: 33% auto;
+  text-align: center;
+  color: #EA316A;
+  size: 2em;
+}
+
+.disabledStatus {
+  color: #EA316A;
+  font-weight: bold;
+}
+
+.enabledStatus {
+  color: #2BEC61;
+  font-weight: bold;
+}
