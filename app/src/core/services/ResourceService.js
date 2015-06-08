@@ -422,6 +422,7 @@ function ResourceService($rootScope, $q, CRUD) {
   }
 
   function getUser(resources) {
+    if (!$rootScope.hasOwnProperty('auth')) return {};
     return _.filter(resources.users, {
       id: $rootScope.auth.id
     })[0];
