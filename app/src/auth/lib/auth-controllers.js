@@ -113,13 +113,14 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
 
   function loginFailure(response) {
     console.warn('[auth] login failure', response);
+    debugger
     toast(response.data.error);
   }
+
 
   /* LOGOUT */
   function logout() {
     console.log('[auth] logout attempt');
-
     UserFactory.logout()
       .then(logoutSuccess, logoutFailure);
   }
@@ -151,7 +152,7 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
     console.info('[auth] signup success', response);
     $state.go(ROUTES.SIGNUP_SUCCESS);
     vm.auth = response.data[0];
-    // previous(); // go to login tab
+    previous(); // go to login tab
     toast('Registrierung abgesendet. Überprüfen Sie Ihre E-Mails.');
     console.log('vm.auth', vm.auth);
   }
@@ -226,7 +227,7 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
   function toast(message) {
     $mdToast.show($mdToast.simple()
       .content(message)
-      .position('bottom right')
+      .position('top right')
       .hideDelay(3000));
   }
 
