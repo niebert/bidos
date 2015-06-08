@@ -46,7 +46,6 @@ function ResourceService($rootScope, $q, CRUD) {
         var r = response[0];
         var bucket = $rootScope.data[r.type + 's']; // pluralize
         bucket.push(r);
-        $rootScope.data = prepare($rootScope.data);
         preparedData = prepare(preparedData);
         resolve(r);
       }).catch(function(err) {
