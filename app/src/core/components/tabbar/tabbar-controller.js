@@ -29,16 +29,16 @@ function TabbarController($scope, $rootScope, $state) {
       $state.go('bidos.capture');
     }
   }, {
-    text: 'Gruppen',
-    roles: ['Administrator'],
-    onClick: function() {
-      $state.go('bidos.groups');
-    }
-  }, {
     text: 'Benutzer',
     roles: ['Administrator'],
     onClick: function() {
       $state.go('bidos.users');
+    }
+  }, {
+    text: 'Gruppen',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.groups');
     }
   }, {
     text: 'Institutionen',
