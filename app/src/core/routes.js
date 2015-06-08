@@ -89,6 +89,63 @@ angular.module('bidos')
     }
   })
 
+  // all my observations
+  .state('bidos.groups', {
+    url: '/groups',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-groups></bidos-groups>'
+      }
+    }
+  })
+
+  // all my observations
+  .state('bidos.users', {
+    url: '/users',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-users></bidos-users>'
+      }
+    }
+  })
+
+  // all my observations
+  .state('bidos.institutions', {
+    url: '/institutions',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-institutions></bidos-institutions>'
+      }
+    }
+  })
+
   // .state('bidos.capture.go', {
   //   url: '/:type',
   //   views: {
