@@ -9,6 +9,9 @@
 			{{me.group.institution.name}}/{{me.group.name}}
 		</span>
 
+		<span flex ng-if="me.roleName === 'Administrator'">
+		</span>
+
 		{{me.name}}
 
 		<md-button aria-label="settings" ng-click="SettingsDialog($event)">
