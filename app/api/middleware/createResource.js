@@ -11,6 +11,7 @@ function createResource(resourceType) {
       this.status = 500;
     } else {
 
+
       if (this.request.body.hasOwnProperty('type')) {
         if (this.request.body.type === 'user') {
           var bcrypt = require('co-bcrypt');
