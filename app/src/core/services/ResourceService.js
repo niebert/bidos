@@ -47,6 +47,7 @@ function ResourceService($rootScope, $q, CRUD) {
         var bucket = $rootScope.data[r.type + 's']; // pluralize
         bucket.push(r);
         $rootScope.data = prepare($rootScope.data);
+        preparedData = prepare(preparedData);
         resolve(r);
       }).catch(function(err) {
         reject(err);
@@ -61,6 +62,7 @@ function ResourceService($rootScope, $q, CRUD) {
         var r = response[0];
         var bucket = $rootScope.data[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
+        preparedData = prepare(preparedData);
         resolve(r);
       }).catch(function(err) {
         reject(err);
@@ -75,6 +77,7 @@ function ResourceService($rootScope, $q, CRUD) {
         var r = response[0];
         var bucket = $rootScope.data[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
+        preparedData = prepare(preparedData);
         resolve(r);
       }).catch(function(err) {
         reject(err);
