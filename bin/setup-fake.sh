@@ -28,9 +28,9 @@ function fake() {
 	curl -qs $SERVER/v1/fake/$1 | curl -s -XPOST -H "Content-Type: application/json" -d @- $url
 }
 
-repeat  4    fake user
 repeat  2    fake institution
 repeat  4    fake group
+repeat  4    fake user
 repeat  64   fake kid
 repeat  128  fake observation
 echo -e "\n\e[1;37mfake resources:\e[0;32m √\e[0m"

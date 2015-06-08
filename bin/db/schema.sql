@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS users (
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name              TEXT UNIQUE NOT NULL,
   role              INT NOT NULL,
-  text              TEXT,
   disabled          BOOLEAN DEFAULT FALSE,
   approved          BOOLEAN DEFAULT FALSE,
   email             TEXT UNIQUE NOT NULL,
@@ -39,9 +38,9 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash     TEXT
 );
 
-ALTER TABLE groups ADD COLUMN author_id INT REFERENCES users(id);
+ALTER TABLE groups       ADD COLUMN author_id INT REFERENCES users(id);
 ALTER TABLE institutions ADD COLUMN author_id INT REFERENCES users(id);
-ALTER TABLE users ADD COLUMN author_id INT REFERENCES users(id);
+ALTER TABLE users        ADD COLUMN author_id INT REFERENCES users(id);
 
 CREATE TABLE IF NOT EXISTS kids (
   id                SERIAL PRIMARY KEY,
@@ -114,7 +113,6 @@ CREATE TABLE IF NOT EXISTS behaviours (
 );
 
 
-
 CREATE TABLE IF NOT EXISTS examples (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
@@ -149,6 +147,7 @@ CREATE TABLE IF NOT EXISTS observations (
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 CREATE TABLE IF NOT EXISTS notes (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
@@ -158,9 +157,10 @@ CREATE TABLE IF NOT EXISTS notes (
   modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
 ALTER TABLE examples ADD COLUMN observation_id INT REFERENCES observations(id);
-ALTER TABLE ideas ADD COLUMN observation_id INT REFERENCES observations(id);
-ALTER TABLE notes ADD COLUMN observation_id INT REFERENCES observations(id);
+ALTER TABLE ideas    ADD COLUMN observation_id INT REFERENCES observations(id);
+ALTER TABLE notes    ADD COLUMN observation_id INT REFERENCES observations(id);
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
