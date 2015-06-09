@@ -18,12 +18,12 @@ function ObservationsController(Resources, $scope, $rootScope, $mdDialog) {
     });
   };
   $scope.stuff = {};
-  $scope.me = $rootScope.me;
   Resources.get().then(function(data) {
 
     $scope.kids = data.kids;
     $scope.groups = data.groups;
     $scope.domains = data.domains;
+    $scope.me = data.me;
 
     $scope.observations = data.observations;
 
