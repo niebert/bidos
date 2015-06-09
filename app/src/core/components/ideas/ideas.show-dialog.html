@@ -1,0 +1,24 @@
+<md-dialog aria-label="ShowIdea">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Idee überprüfen</md-subheader>
+
+		<p><strong>Benutzer:</strong> {{idea.author.name}}</p>
+		<p><strong>Verhalten:</strong> {{idea.behaviour.text}}</p>
+		<p><strong>Baustein:</strong> {{idea.behaviour.item.name}}</p>
+
+    <md-input-container flex>
+      <label>Idee</label>
+      <textarea ng-model="idea.text" columns="1"></textarea>
+    </md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="destroy" ng-click="destroy(idea)" class="md-warn"> Löschen </md-button>
+		<span flex></span>
+		<md-button aria-label="cancel" ng-click="cancel(idea)" class=""> Abbrechen </md-button>
+		<md-button aria-label="accept" ng-click="accept(idea)" class="md-primary md-raised"> Akzeptieren </md-button>
+	</div>
+
+</md-dialog>

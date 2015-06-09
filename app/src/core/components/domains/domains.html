@@ -1,0 +1,17 @@
+<md-content class="md-padding">
+
+	<md-button class="md-hue-1 md-raised" ng-click="addDomain($event)">Bereich hinzufügen</md-button>
+
+	<md-card class="md-padding" ng-repeat="domain in domains | orderBy:-domain.id">
+	<md-list>
+
+		<h2 ng-click="editDomain($event, domain)">{{domain.name}}</h2>
+		<md-button class="md-hue-1 md-raised" ng-click="addSubdomain($event, domain)">Teilbereich hinzufügen</md-button>
+
+		<md-list-item ng-repeat="subdomain in domain.subdomains" ng-click="editSubdomain($event, subdomain)">
+			<p>{{subdomain.name}}</p>
+		</md-list-item>
+	</md-list>
+	</md-card>
+
+</md-content>

@@ -15,7 +15,7 @@
 			<li><strong>Konto zuletzt bearbeitet:</strong> {{me.modified_at | date}}</li>
 		</ul>
 
-		<ul ng-if="me.roleName !== 'Administrator'">
+		<ul ng-if="me.roleName === 'Praktiker'">
 			<li><strong>Kinder in dieser Gruppe:</strong> {{me.kids.length}}</li>
 			<li><strong>Beobachtungen in dieser Gruppe:</strong> {{me.groupObservations.length}}</li>
 			<li><strong>Beobachtungen (alle Gruppen):</strong> {{me.observations.length}}</li>

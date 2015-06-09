@@ -65,7 +65,7 @@ angular.module('bidos')
         template: '<bidos-actionbar></bidos-actionbar>'
       },
       content: {
-        template: '<bidos-observations></bidos-observations>'
+        template: '<bidos-observations><div class="loading">Daten werden geladen ...</div></bidos-observations>'
       }
     }
   })
@@ -142,6 +142,78 @@ angular.module('bidos')
       },
       content: {
         template: '<bidos-institutions></bidos-institutions>'
+      }
+    }
+  })
+
+  .state('bidos.items', {
+    url: '/items',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-items></bidos-items>'
+      }
+    }
+  })
+
+  .state('bidos.export', {
+    url: '/export',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-export></bidos-export>'
+      }
+    }
+  })
+
+  .state('bidos.ideas', {
+    url: '/ideas',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-ideas></bidos-ideas>'
+      }
+    }
+  })
+
+  .state('bidos.domains', {
+    url: '/domains',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-domains></bidos-domains>'
       }
     }
   })

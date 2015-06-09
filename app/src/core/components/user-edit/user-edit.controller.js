@@ -2,9 +2,10 @@
 angular.module('bidos')
 .controller('UserDialogEdit', UserDialogEdit);
 
-function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals) {
+function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
 
   $scope.user = _.clone(locals.user);
+  $scope.roles = STRINGS.roles;
 
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;

@@ -495,8 +495,10 @@ function ResourceService($rootScope, $q, CRUD) {
 
       case 2:
         _.each(data.kids, function(k) {
+          if (k.anonymized) return;
           var f = k.name.split(' ')[0]; // first name
           k.name = f[0] + f[1] + f[f.length - 1] + k.id; // <3
+          k.anonymized = true;
           // console.log(k[resources].name);
         });
         break;

@@ -1,0 +1,23 @@
+<md-dialog aria-label="ItemDialogEdit">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Teilbereich bearbeiten</md-subheader>
+
+		<md-input-container>
+			<label> Name des Teilbereichs </label>
+			<input name="name" ng-model="subdomain.name" required>
+			<div ng-messages="registrationForm.itemname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für diesen Teilbereich ein </div>
+			</div>
+		</md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel(subdomain)" class=""> Abbrechen </md-button>
+		<md-button aria-label="destroy" ng-click="destroy(subdomain)" class="md-warn"> Löschen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(subdomain)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>

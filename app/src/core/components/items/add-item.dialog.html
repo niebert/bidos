@@ -1,0 +1,52 @@
+<md-dialog aria-label="AddItemDialog">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Baustein hinzufügen</md-subheader>
+
+		<md-input-container>
+			<label> Name des Bausteins </label>
+			<input name="name" ng-model="newStuff.item" required>
+			<div ng-messages="registrationForm.itemname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für diesen Baustein ein </div>
+			</div>
+		</md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 1</label>
+      <textarea required ng-model="newStuff.behaviour1" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 1</label>
+      <textarea required ng-model="newStuff.example1" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 2</label>
+      <textarea required ng-model="newStuff.behaviour2" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 2</label>
+      <textarea required ng-model="newStuff.example2" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 3</label>
+      <textarea required ng-model="newStuff.behaviour3" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 3</label>
+      <textarea required ng-model="newStuff.example3" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel()" class=""> Abbrechen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(newStuff)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>

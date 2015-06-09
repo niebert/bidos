@@ -1,0 +1,22 @@
+<md-dialog aria-label="AddDomainDialog">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Bereich hinzufügen</md-subheader>
+
+		<md-input-container>
+			<label> Name des Bereichs </label>
+			<input name="name" ng-model="domain.name" required>
+			<div ng-messages="registrationForm.itemname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für diesen Bereich ein </div>
+			</div>
+		</md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel(domain)" class=""> Abbrechen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(domain)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>

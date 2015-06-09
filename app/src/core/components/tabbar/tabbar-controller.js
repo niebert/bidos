@@ -29,22 +29,28 @@ function TabbarController($scope, $rootScope, $state) {
       $state.go('bidos.capture');
     }
   }, {
-    text: 'Gruppen',
-    roles: ['Administrator'],
-    onClick: function() {
-      $state.go('bidos.groups');
-    }
-  }, {
     text: 'Benutzer',
     roles: ['Administrator'],
     onClick: function() {
       $state.go('bidos.users');
     }
   }, {
+    text: 'Gruppen',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.groups');
+    }
+  }, {
     text: 'Institutionen',
     roles: ['Administrator'],
     onClick: function() {
       $state.go('bidos.institutions');
+    }
+  }, {
+    text: 'Bereiche',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.domains');
     }
   }, {
     text: 'Gruppe auswerten',
@@ -67,8 +73,14 @@ function TabbarController($scope, $rootScope, $state) {
   }, {
     text: 'Export',
     roles: ['Administrator', 'Wissenschaftler'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
+    onClick: function() {
+      $state.go('bidos.export');
+    }
+  }, {
+    text: 'Ideen',
+    roles: ['Praktiker', 'Wissenschaftler'],
+    onClick: function() {
+      $state.go('bidos.ideas');
     }
   }];
 
