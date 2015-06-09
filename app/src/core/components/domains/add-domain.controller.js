@@ -6,7 +6,6 @@ function AddDomainDialog(Resources, $scope, $mdDialog, $mdToast) {
 
   $scope.save = function (domain) {
     domain.type = 'domain';
-    debugger
     Resources.create(domain).then(function(response) {
       console.log(response);
       $mdDialog.hide();
