@@ -47,6 +47,12 @@ function TabbarController($scope, $rootScope, $state) {
       $state.go('bidos.institutions');
     }
   }, {
+    text: 'Bereiche',
+    roles: ['Administrator'],
+    onClick: function() {
+      $state.go('bidos.domains');
+    }
+  }, {
     text: 'Gruppe auswerten',
     roles: ['Praktiker'],
     onClick: function($event) {

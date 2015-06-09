@@ -200,6 +200,24 @@ angular.module('bidos')
     }
   })
 
+  .state('bidos.domains', {
+    url: '/domains',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-domains></bidos-domains>'
+      }
+    }
+  })
+
   // .state('bidos.capture.go', {
   //   url: '/:type',
   //   views: {
