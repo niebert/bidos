@@ -1,0 +1,22 @@
+<md-dialog aria-label="ItemDialogEdit">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Gruppe bearbeiten</md-subheader>
+
+		<md-input-container>
+			<label> Name der Gruppe </label>
+			<input name="name" ng-model="item.name" required>
+			<div ng-messages="registrationForm.itemname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für die Gruppe ein </div>
+			</div>
+		</md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel(item)" class=""> Abbrechen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(item)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>

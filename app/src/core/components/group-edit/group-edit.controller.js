@@ -9,7 +9,6 @@ function GroupDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals,
 
   Resources.get().then(function(data) {
     $scope.groups = data.groups;
-    $scope.groups = data.groups;
   });
 
   $scope.save = function (group) {

@@ -67,8 +67,14 @@ function TabbarController($scope, $rootScope, $state) {
   }, {
     text: 'Export',
     roles: ['Administrator', 'Wissenschaftler'],
-    onClick: function($event) {
-      return $scope.dialog($event, {type: 'kid'});
+    onClick: function() {
+      $state.go('bidos.export');
+    }
+  }, {
+    text: 'Ideen',
+    roles: ['Praktiker', 'Wissenschaftler'],
+    onClick: function() {
+      $state.go('bidos.ideas');
     }
   }];
 

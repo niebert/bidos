@@ -1,1 +1,5 @@
-<md-button ng-repeat="action in myActions" ng-click="action.onClick($event)">{{action.text}}</md-button>
+<md-toolbar class="md-hue-2">
+	<span class="md-toolbar-tools">
+		<md-button ng-repeat="action in myActions" ng-click="action.onClick($event)">{{action.text}}</md-button>
+	</span>
+</md-toolbar>

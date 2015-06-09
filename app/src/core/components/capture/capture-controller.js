@@ -2,12 +2,15 @@
 angular.module('bidos')
   .controller('CaptureController', CaptureController);
 
-function CaptureController($scope, $rootScope, Resources, CRUD, $q, $mdDialog) {
+function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
 
-  $scope.kids = $rootScope.me.kids;
-  $scope.items = $rootScope.data.items;
-  $scope.domains = $rootScope.data.domains;
-  $scope.behaviours = $rootScope.data.behaviours;
+  Resources.get().then(function(data) {
+    $scope.data = data;
+    $scope.kids = data.me.kids;
+    $scope.items = data.data.items;
+    $scope.domains = data.data.domains;
+    $scope.behaviours = data.data.behaviours;
+  });
 
   ($scope.reset = function() {
     delete $scope.domain;
@@ -15,7 +18,7 @@ function CaptureController($scope, $rootScope, Resources, CRUD, $q, $mdDialog) {
     delete $scope.newObs;
     $scope.newObs = {};
     $scope.newObs.type = 'observation';
-    $scope.newObs.author_id = $rootScope.me.id;
+    $scope.newObs.author_id = $scope.data.me.id;
   })();
 
   $scope.selectDomain = function() {
@@ -72,8 +75,8 @@ function CaptureController($scope, $rootScope, Resources, CRUD, $q, $mdDialog) {
       targetEvent: ev,
       locals: {
         observation: newObs,
-        kid: _.filter($rootScope.data.kids, {id: +newObs.kid_id})[0],
-        item: _.filter($rootScope.data.items, {id: +newObs.item_id})[0],
+        kid: _.filter($scope.data.kids, {id: +newObs.kid_id})[0],
+        item: _.filter($scope.data.items, {id: +newObs.item_id})[0],
         behaviour: _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0]
       },
       controller: 'CaptureReviewController',
