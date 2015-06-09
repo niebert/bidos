@@ -3,7 +3,7 @@
 angular.module('auth.controller', [])
   .controller('AuthController', AuthController);
 
-function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q, CONFIG, STRINGS) {
+function AuthController(Resources, $rootScope, $state, $mdToast, $mdDialog, $stateParams, $location, UserFactory, $http, $q, CONFIG, STRINGS) {
 
   // make the current state available to everywhere
   $rootScope.$on('$stateChangeSuccess', function(event, toState) {
@@ -107,13 +107,15 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
   function loginSuccess(response) {
     console.info('[auth] login success', response);
     $rootScope.auth = response.data;
+    Resources.init().then(function(data) {
+      console.log('resources initialized in auth-controller', data);
+    });
     $state.go(ROUTES.LOGIN_SUCCESS);
     toast('Sie sind jetzt angemeldet');
   }
 
   function loginFailure(response) {
     console.warn('[auth] login failure', response);
-    debugger
     toast(response.data.error);
   }
 
@@ -227,7 +229,7 @@ function AuthController($rootScope, $state, $mdToast, $mdDialog, $stateParams, $
   function toast(message) {
     $mdToast.show($mdToast.simple()
       .content(message)
-      .position('top right')
+      .position('top left')
       .hideDelay(3000));
   }
 

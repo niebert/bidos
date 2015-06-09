@@ -4,7 +4,7 @@ angular.module('bidos')
 
 function ResourceService($rootScope, $q, CRUD) {
 
-  var preparedData = preparedData || null;
+  var preparedData = preparedData || {};
 
   return {
     get: get,
@@ -15,11 +15,25 @@ function ResourceService($rootScope, $q, CRUD) {
   };
 
   function init() {
-    CRUD.get()
-    .then(function(data) {
-      $rootScope.data = preparedData = prepare(data);
-    }).catch(function(err) {
-      console.warn('failed initializing data', err);
+    return $q(function(resolve, reject) {
+      CRUD.get()
+      .then(function(data) {
+        data.me = getUser(data);
+        prepare(data).then(function(response) {
+          preparedData = response;
+          addItemHandlers(preparedData);
+          addObservationHandlers(preparedData);
+          addKidHandlers(preparedData);
+          addGroupHandlers(preparedData);
+          addInstitutionHandlers(preparedData);
+          addUserHandlers(preparedData);
+          makeRoleModifications(preparedData);
+          resolve(preparedData);
+        });
+      }).catch(function(err) {
+        console.warn('failed initializing data', err);
+        reject(err);
+      });
     });
   }
 
@@ -44,7 +58,7 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.create(resource)
       .then(function(response) {
         var r = response[0];
-        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        var bucket = preparedData[r.type + 's']; // pluralize
         bucket.push(r);
         preparedData = prepare(preparedData);
         resolve(r);
@@ -59,7 +73,7 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.update(resource)
       .then(function(response) {
         var r = response[0];
-        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        var bucket = preparedData[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
         preparedData = prepare(preparedData);
         resolve(r);
@@ -74,7 +88,7 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.destroy(resource)
       .then(function(response) { // NOTE response is not a full resource, just type and id
         var r = response[0];
-        var bucket = $rootScope.data[r.type + 's']; // pluralize
+        var bucket = preparedData[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
         preparedData = prepare(preparedData);
         resolve(r);
@@ -88,90 +102,84 @@ function ResourceService($rootScope, $q, CRUD) {
 
   // link to ref and back
   function prepare(data) {
-    console.time('[resources] prepare data');
+    return $q(function(resolve, reject) {
+      console.time('[resources] prepare data');
 
-    // key is plural / resources are selected by key
-    // type is singular / a resource has a type
+      // key is plural / resources are selected by key
+      // type is singular / a resource has a type
 
-    _.each(data, function(resources, _key) { // type is PLURAL
+      _.each(data, function(resources, _key) { // type is PLURAL
 
-      // key is the pluralized type of the resource
-      let key = _key; // TODO why is this neccessary?
+        // key is the pluralized type of the resource
+        let key = _key; // TODO why is this neccessary?
 
-      _.each(resources, function(resource) {
+        _.each(resources, function(resource) {
 
-        // convert string dates to real dates
-        _.each(resource, function(val) {
-          if (/_at/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
-            resource[key] = new Date(resource[key]);
-          }
-        });
-
-        // convert string dates to real dates
-        _.each(resource, function(val) {
-          if (/bday/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
-            resource[key] = new Date(resource[key]);
-          }
-        });
-
-        // pick k/v-pairs that reference another resource (n.b. test is
-        // faster than match -- http://stackoverflow.com/q/10940137/220472)
-        var refs = _.pick(resource, function(refId, refKey) {
-          return /_id/.test(refKey) && refId; // no null
-        });
-
-        if (/*true*/ _.size(refs)) {
-          _.each(refs, function(refId, _refKey) {
-
-            // TODO compare to refKey.split('_')[0]
-            let refKey = pluralize(_refKey.slice(0, -3));
-            let ref = _.filter(data[refKey], {
-              id: refId
-            })[0];
-
-            if (!ref) { return; } // TODO check this
-
-            // link to ref <3 √
-            if (!resource.hasOwnProperty(ref.type)) {
-              Object.defineProperty(resource, ref.type, {
-                get: function() {
-                  return ref;
-                }});
+          // convert string dates to real dates
+          _.each(resource, function(val) {
+            if (/_at/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
+              resource[key] = new Date(resource[key]);
             }
-
-            // NOTE there are two things plural around here: the keys in the
-            // data object and each getter to the children of a resource.
-            // both are somehow similar i guess.
-
-            // link to children √ we create a prop on the referenced
-            // resource and link back here (reverse ref)
-            if (!ref.hasOwnProperty(key)) {
-              Object.defineProperty(ref, key, { // key is PLURAL: children
-                get: function() {
-                  let children = _.filter(resources, {
-                    [ref.type + '_id']: ref.id
-                  });
-                  return children;
-                }, enumerable: false
-              });
-            }
-
           });
-        }
 
+          // convert string dates to real dates
+          _.each(resource, function(val) {
+            if (/bday/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
+              resource[key] = new Date(resource[key]);
+            }
+          });
+
+          // pick k/v-pairs that reference another resource (n.b. test is
+          // faster than match -- http://stackoverflow.com/q/10940137/220472)
+          var refs = _.pick(resource, function(refId, refKey) {
+            return /_id/.test(refKey) && refId; // no null
+          });
+
+          if (/*true*/ _.size(refs)) {
+            _.each(refs, function(refId, _refKey) {
+
+              // TODO compare to refKey.split('_')[0]
+              let refKey = pluralize(_refKey.slice(0, -3));
+              let ref = _.filter(data[refKey], {
+                id: refId
+              })[0];
+
+              if (!ref) { return; } // TODO check this
+
+              // link to ref <3 √
+              if (!resource.hasOwnProperty(ref.type)) {
+                Object.defineProperty(resource, ref.type, {
+                  get: function() {
+                    return ref;
+                  }});
+              }
+
+              // NOTE there are two things plural around here: the keys in the
+              // data object and each getter to the children of a resource.
+              // both are somehow similar i guess.
+
+              // link to children √ we create a prop on the referenced
+              // resource and link back here (reverse ref)
+              if (!ref.hasOwnProperty(key)) {
+                Object.defineProperty(ref, key, { // key is PLURAL: children
+                  get: function() {
+                    let children = _.filter(resources, {
+                      [ref.type + '_id']: ref.id
+                    });
+                    return children;
+                  }, enumerable: false
+                });
+              }
+
+            });
+          }
+
+        });
       });
+
+      console.timeEnd('[resources] prepare data');
+      resolve(data);
     });
-
-    addItemHandlers(data);
-    addObservationHandlers(data);
-    addKidHandlers(data);
-    addGroupHandlers(data);
-    addInstitutionHandlers(data);
-    addUserHandlers(data);
-    makeRoleModifications(data);
-
-    console.timeEnd('[resources] prepare data');
-    return data;
   }
 
   function addItemHandlers(data) {
@@ -422,7 +430,10 @@ function ResourceService($rootScope, $q, CRUD) {
   }
 
   function getUser(resources) {
-    if (!$rootScope.hasOwnProperty('auth')) return {};
+    if (!$rootScope.hasOwnProperty('auth')) {
+      console.warn('$rootScope has no property auth!');
+      return {};
+    }
     return _.filter(resources.users, {
       id: $rootScope.auth.id
     })[0];
@@ -430,13 +441,13 @@ function ResourceService($rootScope, $q, CRUD) {
 
   function makeRoleModifications(data) {
 
-    $rootScope.me = getUser(data);
+    preparedData.me = getUser(data);
     // $scope.kids = data.kids.filter(function(kid) {
     //   if (!kid) return false;
     //   return kid.group_id === ($rootScope.me.group_id ? $rootScope.me.group_id : kid.group_id); // admin sees all kids
     // });
 
-    switch ($rootScope.me.role) {
+    switch (preparedData.me.role) {
 
       // ADMIN
       case 0:

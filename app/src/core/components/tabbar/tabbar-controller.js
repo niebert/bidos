@@ -2,7 +2,7 @@
 angular.module('bidos')
   .controller('TabbarController', TabbarController);
 
-function TabbarController($scope, $rootScope, $state) {
+function TabbarController($scope, $rootScope, $state, Resources) {
 
   $scope.actions = [{
     text: 'Home',
@@ -84,7 +84,9 @@ function TabbarController($scope, $rootScope, $state) {
     }
   }];
 
-  $scope.myActions = _.filter($scope.actions, function(button) {
-    return _.includes(button.roles, $rootScope.me.roleName);
+  Resources.get().then(function(data) {
+    $scope.myActions = _.filter($scope.actions, function(button) {
+      return _.includes(button.roles, data.me.roleName);
+    });
   });
 }
