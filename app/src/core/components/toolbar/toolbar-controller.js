@@ -1,9 +1,23 @@
-/* global angular */
+/* global _, angular */
 angular.module('bidos')
   .controller('ToolbarController', ToolbarController);
 
-  function ToolbarController($scope, $rootScope, $mdDialog) {
-    $scope.me = $rootScope.me;
+  function ToolbarController(Resources, $scope, $rootScope, $mdDialog) {
+
+    function getUser(resources) {
+      if (!$rootScope.hasOwnProperty('auth')) {
+        console.warn('$rootScope has no property auth!');
+        return {};
+      }
+      return _.filter(resources.users, {
+        id: $rootScope.auth.id
+      })[0];
+    }
+
+    Resources.get().then(function(data) {
+      $scope.me = getUser(data);
+    });
+
     $scope.SettingsDialog = function (ev, resource) {
       $mdDialog.show({
         bindToController: false,

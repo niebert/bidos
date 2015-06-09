@@ -1,9 +1,23 @@
-/* global angular */
+/* global _, angular */
 angular.module('bidos')
   .controller('SettingsDialogController', SettingsDialogController);
 
-function SettingsDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory) {
-  $scope.me = $rootScope.me;
+function SettingsDialogController(Resources, $scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory) {
+
+  function getUser(resources) {
+    if (!$rootScope.hasOwnProperty('auth')) {
+      console.warn('$rootScope has no property auth!');
+      return {};
+    }
+    return _.filter(resources.users, {
+      id: $rootScope.auth.id
+    })[0];
+  }
+
+  Resources.get().then(function(data) {
+    $scope.me = getUser(data);
+  });
+
   $scope.cancel = function() {
     $mdDialog.cancel();
   };
