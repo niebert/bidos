@@ -1,11 +1,44 @@
  <section>
-  <md-list>
-    <md-list-item ng-repeat="observation in observations | orderBy:'-created_at'"
-      class="card-title md-whiteframe-z1 md-hue-2 domain-{{observation.item.subdomain.domain.id}}"
-      ng-click="viewObservation($event, observation)">
-      <p><strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}. (Niveau {{observation.niveau}} {{observation.help ? 'mit Hilfe' : ''}})</p>
-  		<p>{{observation.item.subdomain.domain.name}}, {{observation.item.subdomain.name}}, {{observation.item.name}}</p>
-  		<p>{{observation.created_at | date}}</p>
-    </md-list-item>
-  </md-list>
+
+	<md-toolbar class="md-hue-3">
+		<span class="md-toolbar-tools">
+			<md-select placeholder="Kind auswählen" ng-model="stuff.kid_id">
+				<md-option ng-repeat="kid in kids | filter:{group_id:stuff.group_id}" value="{{kid.id}}">{{kid.name}}</md-option>
+			</md-select>
+			<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
+				<md-option ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</md-option>
+			</md-select>
+			<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
+				<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
+			</md-select>
+			<md-checkbox placeholder="Bereich auswählen" ng-model="stuff.unapproved">
+				Nur ungeprüfte
+			</md-checkbox>
+			<span flex></span>
+			<md-button ng-click="resetFilters()"> Filter zurücksetzen </md-button>
+		</span>
+	</md-toolbar>
+
+	<md-list>
+		<md-list-item ng-repeat="observation in observations | filter:myFilter | orderBy:'-created_at'"
+			class="card-title md-whiteframe-z1 md-hue-2 domain-{{observation.item.subdomain.domain.id}}"
+			ng-click="viewObservation($event, observation)">
+
+			<p class="md-padding" ng-if="observation.niveau > 0 && observation.niveau < 4">
+				<strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}. (Niveau {{observation.niveau}}{{observation.help ? ' mit Hilfe' : ''}})
+			</p>
+
+			<p class="md-padding" ng-if="observation.niveau == 0">
+				<strong>{{observation.kid.name}}</strong> hat das Verhalten noch nicht gezeigt.
+			</p>
+
+			<p class="md-padding" ng-if="observation.niveau == 4">
+				<strong>{{observation.kid.name}}</strong> hat fortgeschritteneres Verhalten gezeigt.
+			</p>
+
+			<p class="md-padding">{{observation.item.subdomain.domain.name}}, {{observation.item.subdomain.name}}, {{observation.item.name}}</p>
+			<p class="md-padding" ng-class="{disabledStatus:!observation.approved, enabledStatus:observation.approved}">{{observation.approved ? 'geprüft' : 'ungeprüft'}}</p>
+			<p class="md-padding list-date">{{observation.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+		</md-list-item>
+	</md-list>
 </section>
