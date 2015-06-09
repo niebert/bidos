@@ -11,7 +11,7 @@
 			<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
 				<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
 			</md-select>
-			<md-checkbox placeholder="Bereich auswählen" ng-model="stuff.unapproved">
+			<md-checkbox ng-model="stuff.unapproved">
 				Nur ungeprüfte
 			</md-checkbox>
 			<span flex></span>
