@@ -35,6 +35,7 @@ function getConfig() {
   config.api = config.url + '/v1';
   config.crud = config.url + '/v1/crud';
   config.resources = config.api + '/resources/vanilla';
+  config.anonResources = config.api + '/resources/anon';
   config.token_key = 'auth_token';
   config.sendgrid = {
     user: config.name,
