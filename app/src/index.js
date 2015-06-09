@@ -1,7 +1,5 @@
 require('./app');
 require('./auth');
-require('./core/components/_trash/info-dialog-controller');
-require('./core/components/_trash/resource-dialog-controller');
 require('./core/components/app/app-controller');
 require('./core/components/capture/capture-controller');
 require('./core/components/capture/capture-directive');
