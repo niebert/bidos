@@ -22,7 +22,7 @@ function ItemsController(Resources, $mdDialog, $scope) {
           $scope.items.splice(_.findIndex($scope.items, {id: response.id}), 1);
           break;
         case 'edit':
-          $scope.editItem(response.event, response.item);
+          // $scope.editItem(response.event, response.item);
           break;
       }
     });
@@ -40,15 +40,61 @@ function ItemsController(Resources, $mdDialog, $scope) {
     }).then(function(response) {
       if (!response) return;
       updateItems();
-      $scope.showItem(null, response.item);
+      // $scope.showItem(null, response.item);
     });
   };
 
   function updateItems () {
     Resources.get().then(function(data) {
       $scope.items = data.items;
-      debugger
+      $scope.domains = data.domains;
     });
   }
+
+  $scope.stuff = {};
+
+  $scope.resetFilters = function() {
+    $scope.stuff = {};
+  };
+
+  $scope.myFilter = function(item) {
+    let q = [];
+
+    if ($scope.stuff.domain_id) {
+      q.push(compareNum($scope.stuff.domain_id, item.subdomain.domain.id));
+    }
+
+    return _.all(q);
+
+    function compareNum(a, b) {
+      if (a && b) {
+        return parseInt(a) === parseInt(b);
+      }
+      return true;
+    }
+
+    function compareString(a, b) {
+      if (a && b) {
+        return b.match(new RegExp(a, 'gi'));
+      }
+      return true;
+    }
+  };
+
+  $scope.addItem = function (ev, subdomain) {
+    $mdDialog.show({
+      bindToController: false,
+      controller: 'AddItemDialog',
+      locals: {
+        subdomain: subdomain
+      },
+      targetEvent: ev,
+      templateUrl: `templates/add-item.dialog.html`
+    }).then(function(response) {
+      if (!response) return;
+      updateItems();
+      // $scope.showItem(null, response.item);
+    });
+  };
 
 }

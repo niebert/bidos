@@ -1,10 +1,27 @@
-<h2>Bausteine</h2>
-<md-content>
-	<md-list>
-		<md-list-item ng-repeat="item in items" ng-click="showItem($event, item)">
-		<p>{{item.name}}</p>
-		<p>{{item.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-		</md-list-item>
-	</md-list>
+<!-- <md-toolbar class="md-hue-3">
+	<span class="md-toolbar-tools">
+		<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
+			<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
+		</md-select>
+		<span flex></span>
+		<md-button ng-click="resetFilters()"> Filter zurücksetzen </md-button>
+	</span>
+</md-toolbar> -->
+
+<md-content class="md-padding">
+	<div ng-repeat="domain in domains">
+		<h2 ng-click="editDomain($event, domain)">{{domain.name}}</h2>
+		<md-card class="md-padding" ng-repeat="subdomain in domain.subdomains | orderBy:-subdomain.id">
+			<md-list>
+
+				<h3 ng-click="editDomain($event, domain)">{{subdomain.name}}</h3>
+				<md-button class="md-hue-1 md-raised" ng-click="addItem($event, subdomain)">Baustein hinzufügen</md-button>
+
+				<md-list-item ng-repeat="item in subdomain.items" ng-click="editItem($event, item)">
+					<p>{{item.name}}</p>
+				</md-list-item>
+			</md-list>
+		</md-card>
+	</div>
 
 </md-content>

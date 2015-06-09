@@ -1,0 +1,53 @@
+<md-dialog aria-label="ItemDialogEdit">
+
+	<md-dialog-content>
+		<md-subheader class="md-sticky-no-effect">Baustein bearbeiten</md-subheader>
+
+		<md-input-container>
+			<label> Name des Bausteins </label>
+			<input name="name" ng-model="item.name" required>
+			<div ng-messages="registrationForm.itemname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für diesen Baustein ein </div>
+			</div>
+		</md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 1</label>
+      <textarea required ng-model="behaviours[0].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 1</label>
+      <textarea required ng-model="behaviours[0].examples[0].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 2</label>
+      <textarea required ng-model="behaviours[1].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 2</label>
+      <textarea required ng-model="behaviours[1].examples[0].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Verhalten auf Niveau 3</label>
+      <textarea required ng-model="behaviours[2].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+    <md-input-container flex>
+      <label>Beispiel für Verhalten auf Niveau 3</label>
+      <textarea required ng-model="behaviours[2].examples[0].text" columns="3" md-maxlength="150"></textarea>
+    </md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel(item)" class=""> Abbrechen </md-button>
+		<md-button aria-label="destroy" ng-click="destroy(item)" class="md-warn"> Löschen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(item)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>
