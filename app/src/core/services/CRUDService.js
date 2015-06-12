@@ -16,8 +16,10 @@ function CRUDService($http, $q, Help, CONFIG) {
   function getResources() {
     var url = [CONFIG.resources].join('/');
     return $q(function(resolve, reject) {
+      console.time('[crud] get resources');
       $http.get(url)
       .success(function(data) {
+        console.timeEnd('[crud] get resources');
         resolve(data);
       })
       .error(function(err) {
