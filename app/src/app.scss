@@ -1,7 +1,32 @@
-// md-list-item {
-//   padding: 8px;
-//   margin: 8px;
-// }
+md-content {
+  padding: 8px;
+}
+
+section {
+  margin: 16px;
+  border-radius: 4px;
+}
+
+md-list {
+  padding: 16px;
+}
+
+.toolbar-inner-right {
+  padding-right: 16px;
+}
+
+
+/* ----------------------------------------- */
+
+
+
+
+
+.section-container {
+  margin-bottom: 16px;
+  position: relative;
+  padding-bottom: 0;
+}
 
 .list-date {
   text-align: right;

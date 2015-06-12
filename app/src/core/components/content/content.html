@@ -1,10 +1,20 @@
 <md-content>
+	<section class="md-whiteframe-z1">
+		<md-toolbar class="md-hue-3">
+			<div class="md-toolbar-tools">
+				<h3>Nicht aktivierte Benutzer</h3>
+				<span flex></span>
+				<span class="toolbar-inner-right">{{unapprovedUsers.length}}</span>
+			</div>
+		</md-toolbar>
+
+    <!-- <md-subheader class="md-primary">Nicht aktiviert</md-subheader> -->
 
 		<md-list>
-			<md-list-item ui-sref="bidos.home">
-				<p>Neue Benutzer</p>
-				<p>{{unapprovedUsers.length}}</p>
+			<md-list-item ng-repeat="user in unapprovedUsers">
+				<p>{{user.name}}</p>
+				<md-button class="md-raised">Aktivieren</md-button>
 			</md-list-item>
 		</md-list>
-
+	</section>
 </md-content>
