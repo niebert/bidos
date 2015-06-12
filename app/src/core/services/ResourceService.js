@@ -4,7 +4,7 @@ angular.module('bidos')
 
 function ResourceService($rootScope, $q, CRUD) {
 
-  var preparedData = preparedData || {};
+  var resources = resources || null; // not {}!
 
   return {
     get: get,
@@ -15,12 +15,10 @@ function ResourceService($rootScope, $q, CRUD) {
   };
 
   function init() {
-    return $q(function(resolve, reject) {
+    return $q(function (resolve, reject) {
       CRUD.get()
-      .then(function(data) {
-        data.me = getUser(data);
-        prepare(data).then(function(response) {
-          preparedData = response;
+      .then(function (data) {
+        prepare(data).then(function (preparedData) {
           addItemHandlers(preparedData);
           addObservationHandlers(preparedData);
           addKidHandlers(preparedData);
@@ -28,9 +26,10 @@ function ResourceService($rootScope, $q, CRUD) {
           addInstitutionHandlers(preparedData);
           addUserHandlers(preparedData);
           makeRoleModifications(preparedData);
-          resolve(preparedData);
+          resources = preparedData;
+          resolve(resources);
         });
-      }).catch(function(err) {
+      }).catch(function (err) {
         console.warn('failed initializing data', err);
         reject(err);
       });
@@ -38,46 +37,42 @@ function ResourceService($rootScope, $q, CRUD) {
   }
 
   function get() {
-    return $q(function(resolve, reject) {
-      if (preparedData) {
-        resolve(preparedData);
+    return $q(function (resolve) {
+      if (resources) {
+        resolve(resources);
       } else {
-        CRUD.get()
-        .then(function(data) {
-          preparedData = prepare(data);
-          resolve(preparedData);
-        }).catch(function(err) {
-          reject(err);
+        init().then(function (response) {
+          resolve(response);
         });
       }
     });
   }
 
   function create(resource) {
-    return $q(function(resolve, reject) {
+    return $q(function (resolve, reject) {
       CRUD.create(resource)
-      .then(function(response) {
+      .then(function (response) {
         var r = response[0];
-        var bucket = preparedData[r.type + 's']; // pluralize
+        var bucket = resources[r.type + 's']; // pluralize
         bucket.push(r);
-        preparedData = prepare(preparedData);
+        resources = prepare(resources);
         resolve(r);
-      }).catch(function(err) {
+      }).catch(function (err) {
         reject(err);
       });
     });
   }
 
   function update(resource) {
-    return $q(function(resolve, reject) {
+    return $q(function (resolve, reject) {
       CRUD.update(resource)
-      .then(function(response) {
+      .then(function (response) {
         var r = response[0];
-        var bucket = preparedData[r.type + 's']; // pluralize
+        var bucket = resources[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
-        preparedData = prepare(preparedData);
+        resources = prepare(resources);
         resolve(r);
-      }).catch(function(err) {
+      }).catch(function (err) {
         reject(err);
       });
     });
@@ -88,9 +83,9 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.destroy(resource)
       .then(function(response) { // NOTE response is not a full resource, just type and id
         var r = response[0];
-        var bucket = preparedData[r.type + 's']; // pluralize
+        var bucket = resources[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
-        preparedData = prepare(preparedData);
+        resources = prepare(resources);
         resolve(r);
       }).catch(function(err) {
         reject(err);
@@ -441,13 +436,13 @@ function ResourceService($rootScope, $q, CRUD) {
 
   function makeRoleModifications(data) {
 
-    preparedData.me = getUser(data);
+    data.me = getUser(data);
     // $scope.kids = data.kids.filter(function(kid) {
     //   if (!kid) return false;
     //   return kid.group_id === ($rootScope.me.group_id ? $rootScope.me.group_id : kid.group_id); // admin sees all kids
     // });
 
-    switch (preparedData.me.role) {
+    switch (data.me.role) {
 
       // ADMIN
       case 0:
