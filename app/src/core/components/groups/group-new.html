@@ -1,0 +1,26 @@
+<md-dialog aria-label="GroupDialoNew">
+
+	<md-dialog-content>
+		<md-subheader>Fügen Sie eine neue Institution hinzu</md-subheader>
+
+		<md-select placeholder="Wählen Sie eine Kindertagesstätte" ng-model="group.institution_id">
+			<md-option ng-repeat="institution in institutions" value="{{institution.id}}">{{institution.name}}</md-option>
+		</md-select>
+
+		<md-input-container>
+			<label> Name der Gruppe </label>
+			<input name="name" ng-model="group.name" required>
+			<div ng-messages="registrationForm.groupname.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
+				<div ng-message="required"> Bitte geben Sie einen Namen für die Gruppe ein </div>
+			</div>
+		</md-input-container>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button aria-label="cancel" ng-click="cancel(group)" class=""> Abbrechen </md-button>
+		<span flex></span>
+		<md-button aria-label="save" ng-click="save(group)" class="md-primary md-raised"> Speichern </md-button>
+	</div>
+
+</md-dialog>
