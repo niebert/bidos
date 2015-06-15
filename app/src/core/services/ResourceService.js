@@ -68,6 +68,17 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.update(resource)
       .then(function (response) {
         var r = response[0];
+
+        // FIXME! Sometimes `resources` is still a promise! At this point it
+        // should be already resolved and if not, we shouldn't be here.
+
+        // if (resources.hasOwnProperty('$$state')) {
+        //   resources.then(function(resp) {
+        //     resources = resp;
+        //   });
+        //   debugger;
+        // }
+
         var bucket = resources[r.type + 's']; // pluralize
         bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
         resources = prepare(resources);

@@ -1,5 +1,15 @@
+<!--
+<md-tabs>
+	<md-tab ng-repeat="action in myActions">
+	  <md-tab-label ui-sref"action.sref">
+	    <span>{{action.text}}</span>
+	  </md-tab-label>
+	</md-tab>
+</md-tabs>
+-->
+
 <md-toolbar class="md-hue-2">
-	<span class="md-toolbar-tools">
-		<md-button ng-repeat="action in myActions" ng-click="action.onClick($event)">{{action.text}}</md-button>
-	</span>
+	<div class="md-toolbar-tools">
+		<md-button ng-repeat="action in myActions" ng-click="action.onClick()">{{action.text}}</md-button>
+	</div>
 </md-toolbar>

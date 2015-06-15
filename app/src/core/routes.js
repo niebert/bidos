@@ -218,6 +218,24 @@ angular.module('bidos')
     }
   })
 
+  .state('bidos.charts', {
+    url: '/charts',
+    views: {
+      toolbar: {
+        template: '<bidos-toolbar></bidos-toolbar>'
+      },
+      tabbar: {
+        template: '<bidos-tabbar></bidos-tabbar>'
+      },
+      actionbar: {
+        template: '<bidos-actionbar></bidos-actionbar>'
+      },
+      content: {
+        template: '<bidos-charts></bidos-charts>'
+      }
+    }
+  })
+
   // .state('bidos.capture.go', {
   //   url: '/:type',
   //   views: {
