@@ -1,11 +1,8 @@
-/* global _, angular */
+/* global angular */
 angular.module('bidos')
-.controller('AddNewInstitutionDialogController', AddNewInstitutionDialogController);
+.controller('NewInstitution', NewInstitution);
 
-function AddNewInstitutionDialogController(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
-
-  $scope.institution = _.clone(locals.institution);
-  $scope.roles = STRINGS.roles;
+function NewInstitution(Resources, $scope, $mdDialog, $mdToast) {
 
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
@@ -17,15 +14,19 @@ function AddNewInstitutionDialogController(Resources, $scope, $mdDialog, $mdToas
     institution.type = 'institution';
     institution.author_id = $scope.me.id;
 
-    Resources.create(institution).then(function(response) {
-      console.log(response);
-      $mdDialog.hide({action: 'update', institution: response});
-      toast('Institution erstellt');
+    Resources.create(institution)
+    .then(function (newInstitution) {
+      $mdDialog.hide(newInstitution);
+      toast('Einrichtung erstellt');
+    }, function(err) {
+      if (err[0].hasOwnProperty('content') && err[0].content.detail.match(institution.name) && err[0].content.detail.match('already exists')) {
+        toast('Eine Einrichtung mit diesem Namen existiert bereits');
+      }
     });
   };
 
-  $scope.cancel = function (institution) {
-    $mdDialog.hide({action: 'view', institution: institution});
+  $scope.cancel = function () {
+    $mdDialog.hide();
   };
 
   function toast(message) {

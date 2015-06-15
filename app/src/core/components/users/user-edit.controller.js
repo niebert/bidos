@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('UserDialogEdit', UserDialogEdit);
+.controller('EditUser', EditUser);
 
-function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
+function EditUser(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
 
   $scope.user = _.clone(locals.user);
   $scope.roles = STRINGS.roles;
@@ -15,7 +15,6 @@ function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, 
   });
 
   $scope.save = function (user) {
-
     if (parseInt(user.role) !== 1 && user.hasOwnProperty('group_id')) {
       user.group_id = null;
     }
@@ -27,8 +26,19 @@ function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, 
     });
   };
 
-  $scope.cancel = function (user) {
-    $mdDialog.hide({action: 'view', user: user});
+  $scope.destroy = function (user) {
+    Resources.destroy(user).then(function(response) {
+      $mdDialog.hide({action: 'destroy', user: response});
+      toast('Benutzer gelöscht');
+    }, function(err) {
+      if (err.detail.match('still referenced')) {
+        toast('Der Benutzer kann nicht gelöscht werden');
+      }
+    });
+  };
+
+  $scope.cancel = function () {
+    $mdDialog.cancel();
   };
 
   function toast(message) {

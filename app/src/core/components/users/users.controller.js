@@ -10,126 +10,103 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   updateScope();
 
-  $scope.showUser = function (ev, user) {
-    $mdDialog.show({
-      bindToController: true,
-      controller: 'UserDialogShow',
-      locals: {
-        user: user
-      },
-      targetEvent: ev,
-      templateUrl: `templates/user-show.html`
-    }).then(function(response) {
-      if (!response) return;
-      switch (response.action) {
-        case 'delete':
-          $scope.users.splice(_.findIndex($scope.users, {id: response.id}), 1);
-          break;
-        case 'edit':
-          $scope.editUser(response.event, response.user);
-          break;
-      }
-    });
+  $scope.unapprovedUsers = function () {
+    return !_.chain($scope.users).pluck('approved').all().value();
   };
 
   $scope.editUser = function (ev, user) {
     $mdDialog.show({
       bindToController: true,
-      controller: 'UserDialogEdit',
-      locals: {
-        user: user
-      },
+      controller: 'EditUser',
+      locals: {user: user},
       targetEvent: ev,
       templateUrl: `templates/user-edit.html`
     }).then(function(response) {
-      if (!response) return;
-      updateScope();
-      $scope.showUser(null, response.user);
+      switch (response.action) {
+        case 'update':
+          $scope.users.splice(_.findIndex($scope.users, {id: response.user.id}), 1, response.user);
+          break;
+        case 'destroy':
+          $scope.users.splice(_.findIndex($scope.users, {id: response.user.id}), 1);
+          break;
+      }
     });
   };
 
-  $scope.unapprovedUsers = function () {
-    return !_.chain($scope.users).pluck('approved').all().value();
-  };
-
-  $scope.editInstitutionDialog = function (ev, institution) {
+  $scope.editGroup = function (ev, group) {
     $mdDialog.show({
       bindToController: true,
-      controller: 'InstitutionDialogEdit',
-      locals: {
-        institution: institution
-      },
-      targetEvent: ev,
-      templateUrl: `templates/institution-edit.html`
-    }).then(function(response) {
-      if (!response) return;
-      updateScope();
-    });
-  };
-
-  $scope.editGroupDialog = function (ev, group) {
-    $mdDialog.show({
-      bindToController: true,
-      controller: 'GroupDialogEdit',
-      locals: {
-        group: group
-      },
+      controller: 'EditGroup',
+      locals: {group: group},
       targetEvent: ev,
       templateUrl: `templates/group-edit.html`
     }).then(function(response) {
-      if (!response) return;
-      updateScope();
+      switch (response.action) {
+        case 'update':
+          $scope.groups.splice(_.findIndex($scope.groups, {id: response.group.id}), 1, response.group);
+          break;
+        case 'destroy':
+          $scope.groups.splice(_.findIndex($scope.groups, {id: response.group.id}), 1);
+          break;
+      }
     });
   };
 
-  $scope.editUserDialog = function (ev, user) {
+  $scope.editInstitution = function (ev, institution) {
     $mdDialog.show({
       bindToController: true,
-      controller: 'UserDialogEdit',
-      locals: {
-        user: user
-      },
+      controller: 'EditInstitution',
+      locals: {institution: institution},
       targetEvent: ev,
-      templateUrl: `templates/user-edit.html`
-    }).then(function(response) {
-      if (!response) return;
-      updateScope();
+      templateUrl: `templates/institution-edit.html`
+    }).then(function (response) {
+      switch (response.action) {
+        case 'update':
+          $scope.institutions.splice(_.findIndex($scope.institutions, {id: response.institution.id}), 1, response.institution);
+          break;
+        case 'destroy':
+          $scope.institutions.splice(_.findIndex($scope.institutions, {id: response.institution.id}), 1);
+          break;
+      }
     });
   };
 
-  $scope.addNewInstitutionDialog = function (ev, institution) {
+  $scope.newUser = function (ev) {
     $mdDialog.show({
       bindToController: true,
-      controller: 'AddNewInstitutionDialogController',
-      locals: {
-        institution: institution
-      },
+      controller: 'NewUser',
       targetEvent: ev,
-      templateUrl: `templates/institution-new.html`
-    }).then(function(response) {
-      if (!response) return;
-      updateScope();
+      templateUrl: `templates/user-new.html`
+    }).then(function(newUser) {
+      debugger
+      $scope.users.push(newUser);
     });
   };
 
-  $scope.addNewGroupDialog = function (ev, group) {
+  $scope.newGroup = function (ev) {
     $mdDialog.show({
       bindToController: true,
-      controller: 'GroupDialogNew',
-      locals: {
-        group: group
-      },
+      controller: 'NewGroup',
       targetEvent: ev,
       templateUrl: `templates/group-new.html`
-    }).then(function(response) {
-      if (!response) return;
-      updateScope();
+    }).then(function(newGroup) {
+      $scope.groups.push(newGroup);
+    });
+  };
+
+  $scope.newInstitution = function (ev) {
+    $mdDialog.show({
+      bindToController: true,
+      controller: 'NewInstitution',
+      targetEvent: ev,
+      templateUrl: `templates/institution-new.html`
+    }).then(function(newInstitution) {
+      $scope.institutions.push(newInstitution);
     });
   };
 
   function updateScope () {
     Resources.get().then(function(data) {
-      console.log(data);
       $scope.users = _.filter(data.users, function(d) { return d.id !== 1; });
       $scope.groups = data.groups;
       $scope.institutions = data.institutions;

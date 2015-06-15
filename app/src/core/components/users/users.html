@@ -1,53 +1,27 @@
 <md-content>
 
 	<div layout="{{smallDisplay ? 'column' : 'row'}}">
-		<!-- <md-button class="md-raised" flex ng-click="addNewUserDialog($event)">Neuen Benutzer hinzufügen</md-button> -->
-		<md-button class="md-raised" flex ng-click="addNewGroupDialog($event)">Neue Gruppe hinzufügen</md-button>
-		<md-button class="md-raised" flex ng-click="addNewInstitutionDialog($event)">Neue Institution hinzufügen</md-button>
+		<md-button class="md-raised" flex ng-click="newUser($event)">Neuer Benutzer</md-button>
+		<md-button class="md-raised" flex ng-click="newGroup($event)">Neue Gruppe</md-button>
+		<md-button class="md-raised" flex ng-click="newInstitution($event)">Neue Einrichtung</md-button>
 	</div>
 
-	<md-divider></md-divider>
-<!--
-	<div layout="column" ng-repeat="institution in institutions" class="md-whiteframe-z1 cardbox">
-		<h2 ng-click="editInstitutionDialog($event, institution)" class="cardbox-title">{{institution.name}}</h2>
-
-		<section class="md-whiteframe-z1" flex ng-repeat="group in institution.groups">
-			<md-toolbar class="md-hue-3" ng-click="editGroupDialog($event, group)">
-				<div class="md-toolbar-tools">
-					<h3>{{group.name}}</h3>
-				</div>
-			</md-toolbar>
-			<md-list ng-if="group.users.length">
-				<md-list-item ng-repeat="user in group.users" ng-click="editUserDialog($event, user)">
-					<p>{{user.name}}</p>
+	<div layout>
+		<div flex ng-repeat="group in groups | orderBy:group.name" class="md-whiteframe-z1 cardbox" ng-if="group.users.length">
+			<md-subheader>{{group.name}}</md-subheader>
+			<md-list>
+				<md-list-item ng-repeat="practitioner in group.users | filter:{role:1} | orderBy:practitioner.name" ng-click="editUser($event, practitioner)">
+					<p>{{practitioner.name}}</p>
 				</md-list-item>
 			</md-list>
-			<md-list ng-if="!group.users.length">
-				<md-list-item>
-					<p><i>keine Praktiker in dieser Gruppe</i></p>
-				</md-list-item>
-			</md-list>
-		</section>
-
-		<md-divider ng-if="!$last"></md-divider>
-	</div>
--->
-	<div class="md-whiteframe-z1 cardbox">
-		<md-subheader>Praktiker</md-subheader>
-		<md-list>
-			<md-list-item ng-repeat="practitioner in users | filter:{role:1}" ng-click="editUserDialog($event, practitioner)">
-				<p>{{practitioner.name}}</p>
-				<p>{{practitioner.group.name}}</p>
-				<p>{{practitioner.group.institution.name}}</p>
-			</md-list-item>
-		</md-list>
+		</div>
 	</div>
 
 	<div layout>
 		<div flex class="md-whiteframe-z1 cardbox">
 			<md-subheader class="md-accent">Wissenschaftler</md-subheader>
 			<md-list>
-				<md-list-item ng-repeat="scientist in users | filter:{role:2}" ng-click="editUserDialog($event, scientist)">
+				<md-list-item ng-repeat="scientist in users | filter:{role:2} | orderBy:scientist.name" ng-click="editUser($event, scientist)">
 					<p>{{scientist.name}}</p>
 				</md-list-item>
 			</md-list>
@@ -56,7 +30,7 @@
 		<div flex class="md-whiteframe-z1 cardbox">
 			<md-subheader class="md-warn">Administratoren</md-subheader>
 			<md-list>
-				<md-list-item ng-repeat="admin in users | filter:{role:0}" ng-click="editUserDialog($event, admin)">
+				<md-list-item ng-repeat="admin in users | filter:{role:0} | orderBy:admin.name" ng-click="editUser($event, admin)">
 					<p>{{admin.name}}</p>
 				</md-list-item>
 			</md-list>
@@ -66,7 +40,7 @@
 	<div class="md-whiteframe-z1 cardbox">
 		<md-subheader>Gruppen</md-subheader>
 		<md-list>
-			<md-list-item ng-repeat="group in groups" ng-click="editGroupDialog($event, group)">
+			<md-list-item ng-repeat="group in groups | orderBy:group.name" ng-click="editGroup($event, group)">
 				<p>{{group.name}}</p>
 				<p>Praktiker: {{group.users.length ? group.users.length : '0'}}</p>
 				<p>Kinder: {{group.kids.length ? group.kids.length : '0'}}</p>
@@ -77,7 +51,7 @@
 	<div class="md-whiteframe-z1 cardbox">
 		<md-subheader>Einrichtungen</md-subheader>
 		<md-list>
-			<md-list-item ng-repeat="institution in institutions" ng-click="editInstitutionDialog($event, institution)">
+			<md-list-item ng-repeat="institution in institutions" ng-click="editInstitution($event, institution)">
 				<p>{{institution.name}}</p>
 				<p>Gruppen: {{institution.groups.length ? institution.groups.length : '0'}}</p>
 				<p>Praktiker: {{institution.users.length ? institution.users.length : '0'}}</p>

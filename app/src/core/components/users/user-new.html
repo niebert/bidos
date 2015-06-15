@@ -1,4 +1,4 @@
-<md-dialog aria-label="UserDialogEdit">
+<md-dialog flex="50" aria-label="UserDialogEdit">
 
 	<md-dialog-content>
 	  <form name="userForm">
@@ -28,7 +28,15 @@
 				</div>
 			</md-input-container>
 
-			<md-select flex placeholder="Rolle" ng-model="user.role" ng-if="user.id !== 1">
+			<md-input-container>
+				<label>Passwort</label>
+				<input type="password" name="password" ng-model="user.password" required></input>
+				<div ng-messages="userForm.password.$error">
+					<div ng-message="required">Bitte geben Sie ein Passwort an</div>
+				</div>
+			</md-input-container>
+
+			<md-select flex placeholder="Rolle" ng-model="user.role">
 				<md-option value="{{ role.value }}" ng-repeat="role in roles">{{role.text}}</md-option>
 			</md-select>
 
