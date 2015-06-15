@@ -1,42 +1,45 @@
-<md-dialog aria-label="UserDialogEdit">
+<md-dialog flex="33" aria-label="UserDialogEdit">
 
 	<md-dialog-content>
-		<md-subheader class="md-sticky-no-effect">Benutzer bearbeiten</md-subheader>
+	  <form name="userForm" layout="column">
 
-		<md-input-container>
-			<label> Vor- und Nachname </label>
-			<input name="name" ng-model="user.name" required>
-			<div ng-messages="registrationForm.username.$error" ng-show="registrationForm.name.$dirty && registrationForm.name.$error">
-				<div ng-message="required"> Bitte geben Sie einen Vor- und Nachnamen an </div>
-			</div>
-		</md-input-container>
+			<md-input-container flex>
+				<label>Name</label>
+				<input name="name" ng-model="user.name" required>
+				<div ng-messages="userForm.name.$error">
+					<div ng-message="required">Bitte geben Sie einen Vor- und Nachnamen an</div>
+				</div>
+			</md-input-container>
 
-		<md-input-container>
-			<label for="email"> E-Mail-Adresse </label>
-			<input type="email" id="email" name="email" ng-model="user.email" required></input>
-			<div ng-show="userForm.email.$dirty" ng-messages="userForm.email.$error">
-				<div class="error-message" ng-message="required"> Sie müssen eine E-Mail-Adresse angeben </div>
-				<div class="error-message" ng-message="email"> Ungültige E-Mail-Adresse </div>
-			</div>
-		</md-input-container>
+			<md-input-container flex>
+				<label>E-Mail</label>
+				<input type="email" ng-model="user.email" required></input>
+				<div ng-messages="userForm.email.$error">
+					<div ng-message="required">Bitte geben Sie eine E-Mail-Adresse an</div>
+					<div ng-message="email">Ungültige E-Mail-Adresse</div>
+				</div>
+			</md-input-container>
 
-		<md-input-container ng-show="user.id!==1">
-			<span> Rolle </span>
-			<select ng-model="user.role" ng-options="role.value as role.text for role in roles"> </select>
-		</md-input-container>
+			<md-select flex placeholder="Rolle" ng-model="user.role" ng-if="user.id !== 1">
+				<md-option value="{{ role.value }}" ng-repeat="role in roles">{{ role.text }}</md-option>
+			</md-select>
 
-		<md-select placeholder="Gruppe" ng-model="user.group_id" ng-if="user.role == 1">
-		  <md-optgroup ng-repeat="institution in institutions" label="{{ institution.name }}">
-				<md-option value="{{ group.id }}" ng-repeat="group in institution.groups">{{ group.name }}</md-option>
-			</md-optgroup>
-		</md-select>
+			<md-select flex placeholder="Gruppe" ng-model="user.group_id" ng-if="user.role == 1">
+			  <md-optgroup ng-repeat="institution in institutions" label="{{ institution.name }}">
+					<md-option value="{{ group.id }}" ng-repeat="group in institution.groups">{{ group.name }}</md-option>
+				</md-optgroup>
+			</md-select>
 
+			<md-switch flex ng-model="user.approved">{{user.approved ? 'Genehmigt' : 'Nicht genehmigt'}}</md-switch>
+
+		</form>
 	</md-dialog-content>
 
 	<div class="md-actions" layout>
-		<md-button aria-label="cancel" ng-click="cancel(user)" class=""> Abbrechen </md-button>
+		<md-button aria-label="destroy" ng-click="destroy(user)" class="md-warn">Löschen</md-button>
+		<md-button aria-label="cancel" ng-click="cancel(user)">Abbrechen</md-button>
 		<span flex></span>
-		<md-button aria-label="save" ng-click="save(user)" class="md-primary md-raised"> Speichern </md-button>
+		<md-button aria-label="save" ng-click="save(user)" class="md-primary md-raised">Speichern</md-button>
 	</div>
 
 </md-dialog>

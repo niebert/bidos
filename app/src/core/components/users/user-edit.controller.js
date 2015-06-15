@@ -7,12 +7,19 @@ function UserDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, 
   $scope.user = _.clone(locals.user);
   $scope.roles = STRINGS.roles;
 
+  console.log($scope.user);
+
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
     $scope.groups = data.groups;
   });
 
   $scope.save = function (user) {
+
+    if (parseInt(user.role) !== 1 && user.hasOwnProperty('group_id')) {
+      user.group_id = null;
+    }
+
     Resources.update(user).then(function(response) {
       console.log(response);
       $mdDialog.hide({action: 'update', user: response});

@@ -12,7 +12,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.showUser = function (ev, user) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'UserDialogShow',
       locals: {
         user: user
@@ -34,7 +34,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.editUser = function (ev, user) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'UserDialogEdit',
       locals: {
         user: user
@@ -54,7 +54,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.editInstitutionDialog = function (ev, institution) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'InstitutionDialogEdit',
       locals: {
         institution: institution
@@ -69,7 +69,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.editGroupDialog = function (ev, group) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'GroupDialogEdit',
       locals: {
         group: group
@@ -84,7 +84,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.editUserDialog = function (ev, user) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'UserDialogEdit',
       locals: {
         user: user
@@ -99,7 +99,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.addNewInstitutionDialog = function (ev, institution) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'AddNewInstitutionDialogController',
       locals: {
         institution: institution
@@ -114,7 +114,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   $scope.addNewGroupDialog = function (ev, group) {
     $mdDialog.show({
-      bindToController: false,
+      bindToController: true,
       controller: 'GroupDialogNew',
       locals: {
         group: group
@@ -129,6 +129,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $scope) {
 
   function updateScope () {
     Resources.get().then(function(data) {
+      console.log(data);
       $scope.users = _.filter(data.users, function(d) { return d.id !== 1; });
       $scope.groups = data.groups;
       $scope.institutions = data.institutions;
