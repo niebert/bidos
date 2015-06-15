@@ -1,9 +1,9 @@
-<md-dialog flex="33" aria-label="UserDialogEdit">
+<md-dialog aria-label="UserDialogEdit">
 
 	<md-dialog-content>
-	  <form name="userForm" layout="column">
+	  <form name="userForm">
 
-			<md-input-container flex>
+			<md-input-container>
 				<label>Name</label>
 				<input name="name" ng-model="user.name" required>
 				<div ng-messages="userForm.name.$error">
@@ -11,22 +11,30 @@
 				</div>
 			</md-input-container>
 
-			<md-input-container flex>
+			<md-input-container>
 				<label>E-Mail</label>
-				<input type="email" ng-model="user.email" required></input>
+				<input type="email" name="email" ng-model="user.email" required></input>
 				<div ng-messages="userForm.email.$error">
 					<div ng-message="required">Bitte geben Sie eine E-Mail-Adresse an</div>
 					<div ng-message="email">Ungültige E-Mail-Adresse</div>
 				</div>
 			</md-input-container>
 
+			<md-input-container>
+				<label>Benutzername</label>
+				<input name="username" ng-model="user.username" required></input>
+				<div ng-messages="userForm.username.$error">
+					<div ng-message="required">Bitte geben Sie einen Benutzernamen an</div>
+				</div>
+			</md-input-container>
+
 			<md-select flex placeholder="Rolle" ng-model="user.role" ng-if="user.id !== 1">
-				<md-option value="{{ role.value }}" ng-repeat="role in roles">{{ role.text }}</md-option>
+				<md-option value="{{ role.value }}" ng-repeat="role in roles">{{role.text}}</md-option>
 			</md-select>
 
 			<md-select flex placeholder="Gruppe" ng-model="user.group_id" ng-if="user.role == 1">
 			  <md-optgroup ng-repeat="institution in institutions" label="{{ institution.name }}">
-					<md-option value="{{ group.id }}" ng-repeat="group in institution.groups">{{ group.name }}</md-option>
+					<md-option value="{{ group.id }}" ng-repeat="group in institution.groups">{{group.name}}</md-option>
 				</md-optgroup>
 			</md-select>
 

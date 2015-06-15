@@ -47,6 +47,7 @@ require('./core/components/toolbar/settings-dialog-controller');
 require('./core/components/toolbar/toolbar-controller');
 require('./core/components/toolbar/toolbar-directive');
 require('./core/components/users/user-edit.controller');
+require('./core/components/users/user-new.controller');
 require('./core/components/users/user-show.controller');
 require('./core/components/users/users.controller');
 require('./core/components/users/users.directive');

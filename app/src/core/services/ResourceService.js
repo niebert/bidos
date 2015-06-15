@@ -4,7 +4,15 @@ angular.module('bidos')
 
 function ResourceService($rootScope, $q, CRUD) {
 
-  var resources = resources || null; // not {}!
+  // var resources = resources || null; // not {}!
+
+  let resources;
+  if (!resources) {
+    resources = null;
+    console.log('resources has been set to null');
+  } else {
+    console.log('resources has not been set to null');
+  }
 
   return {
     get: get,
@@ -53,10 +61,15 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.create(resource)
       .then(function (response) {
         var r = response[0];
-        var bucket = resources[r.type + 's']; // pluralize
-        bucket.push(r);
         resources = prepare(resources);
         resolve(r);
+        // var bucket = resources[r.type + 's']; // pluralize
+        // bucket.push(r);
+        // resources = prepare(resources).then(function(preparedResources) {
+        //   debugger
+        //   let newResource = _.filter(preparedResources[r.type + 's'], {id: r.id})[0];
+        //   resolve(newResource);
+        // });
       }).catch(function (err) {
         reject(err);
       });
@@ -79,8 +92,8 @@ function ResourceService($rootScope, $q, CRUD) {
         //   debugger;
         // }
 
-        var bucket = resources[r.type + 's']; // pluralize
-        bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
+        // var bucket = resources[r.type + 's']; // pluralize
+        // bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
         resources = prepare(resources);
         resolve(r);
       }).catch(function (err) {
@@ -94,8 +107,8 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.destroy(resource)
       .then(function(response) { // NOTE response is not a full resource, just type and id
         var r = response[0];
-        var bucket = resources[r.type + 's']; // pluralize
-        bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
+        // var bucket = resources[r.type + 's']; // pluralize
+        // bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
         resources = prepare(resources);
         resolve(r);
       }).catch(function(err) {

@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('InstitutionDialogEdit', InstitutionDialogEdit);
+.controller('EditInstitution', EditInstitution);
 
-function InstitutionDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
+function EditInstitution(Resources, $scope, $mdDialog, $mdToast, $state, locals, STRINGS) {
 
   $scope.institution = _.clone(locals.institution);
   $scope.roles = STRINGS.roles;
@@ -21,21 +21,19 @@ function InstitutionDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, l
   };
 
   $scope.destroy = function (institution) {
-    Resources.destroy(institution).then(function(response) {
-      console.log(response);
-      $mdDialog.hide();
+    Resources.destroy(institution).then(function (destroyedInstitution) {
+      console.log(destroyedInstitution);
+      $mdDialog.hide({action: 'destroy', institution: destroyedInstitution});
       toast('Einrichtung gelöscht');
-    }, function(err) {
-      if (err[0].hasOwnProperty('content') && err[0].content.detail.match(institution.name) && err[0].content.detail.match('already exists')) {
-        toast('Eine Einrichtung mit diesem Namen existiert bereits');
-      } else {
-        toast('Die Einrichtung konnte nicht gelöscht werden');
+    }, function (err) {
+      if (err.detail.match('still referenced')) {
+        toast('Die Einrichtung kann nicht gelöscht werden');
       }
     });
   };
 
   $scope.cancel = function (institution) {
-    $mdDialog.hide({action: 'view', institution: institution});
+    $mdDialog.cancel();
   };
 
   function toast(message) {
