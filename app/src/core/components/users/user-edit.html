@@ -25,7 +25,7 @@
 			<select ng-model="user.role" ng-options="role.value as role.text for role in roles"> </select>
 		</md-input-container>
 
-		<md-select placeholder="Gruppe" ng-model="user.group" ng-if="user.role == 1">
+		<md-select placeholder="Gruppe" ng-model="user.group_id" ng-if="user.role == 1">
 		  <md-optgroup ng-repeat="institution in institutions" label="{{ institution.name }}">
 				<md-option value="{{ group.id }}" ng-repeat="group in institution.groups">{{ group.name }}</md-option>
 			</md-optgroup>

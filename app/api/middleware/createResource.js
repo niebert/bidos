@@ -14,6 +14,9 @@ function createResource(resourceType) {
 
       if (this.request.body.hasOwnProperty('type')) {
         if (this.request.body.type === 'user') {
+
+          // replace password with password hash
+
           var bcrypt = require('co-bcrypt');
           this.request.body.password_hash =
             yield bcrypt.hash(this.request.body.password,
