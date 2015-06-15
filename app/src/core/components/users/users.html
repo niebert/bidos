@@ -1,27 +1,33 @@
-
 <md-content>
-	<div ng-if="unapprovedUsers()">
-		<h2>Ungeprüfte Benutzer</h2>
-		<md-list>
-			<md-list-item ng-repeat="user in users | filter:{approved:false}" ng-click="showUser($event, user)">
-			<p>{{user.name}}</p>
-			<p>{{user.roleName}}</p>
-			<p>{{user.group.institution.name}}/{{user.group.name}}</p>
-			<p>{{user.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-			</md-list-item>
-		</md-list>
-		<hr>
+
+	<div layout="{{smallDisplay ? 'column' : 'row'}}">
+		<md-button class="md-raised" flex ng-click="addNewUserDialog($event)">Neuen Benutzer hinzufügen</md-button>
+		<md-button class="md-raised" flex ng-click="addNewGroupDialog($event)">Neue Gruppe hinzufügen</md-button>
+		<md-button class="md-raised" flex ng-click="addNewInstitutionDialog($event)">Neue Institution hinzufügen</md-button>
 	</div>
 
-	<h2>Geprüfte Benutzer</h2>
-	<md-list>
-		<md-list-item ng-repeat="user in users | filter:{approved:true}" ng-click="showUser($event, user)">
-		<p>{{user.name}}</p>
-		<p>{{user.roleName}}</p>
-		<p>{{user.group.institution.name}}/{{user.group.name}}</p>
-		<p ng-class="{disabledStatus:user.disabled,enabledStatus:!user.disabled}">{{user.disabled ? 'Deaktiviert' : 'Aktiviert'}}</p>
-		<p>{{user.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-		</md-list-item>
-	</md-list>
+	<md-divider></md-divider>
 
+	<div layout="column" ng-repeat="institution in institutions" class="md-whiteframe-z1 cardbox">
+		<h2 ng-click="editInstitutionDialog($event, institution)" class="cardbox-title">{{institution.name}}</h2>
+
+		<section class="md-whiteframe-z1" flex ng-repeat="group in institution.groups">
+			<md-toolbar class="md-hue-3" ng-click="editGroupDialog($event, group)">
+				<div class="md-toolbar-tools">
+					<h3>{{group.name}}</h3>
+				</div>
+			</md-toolbar>
+			<md-list ng-if="group.users.length">
+				<md-list-item ng-repeat="user in group.users" ng-click="editUserDialog($event, user)">
+					<p>{{user.name}}</p>
+				</md-list-item>
+			</md-list>
+			<md-list ng-if="!group.users.length">
+				<p><i>keine Benutzer in dieser Gruppe</i></p>
+			</md-list>
+		</section>
+
+		<md-divider ng-if="!$last"></md-divider>
+	</div>
 </md-content>
+

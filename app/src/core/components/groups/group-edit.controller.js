@@ -16,6 +16,10 @@ function GroupDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals,
       console.log(response);
       $mdDialog.hide({action: 'update', group: response});
       toast('Änderungen gespeichert');
+    }, function(err) {
+      if (err[0].hasOwnProperty('content') && err[0].content.detail.match(group.name) && err[0].content.detail.match('already exists')) {
+        toast('Eine Gruppe mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen.');
+      }
     });
   };
 
