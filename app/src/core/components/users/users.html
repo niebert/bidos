@@ -7,7 +7,7 @@
 	</div>
 
 	<md-divider></md-divider>
-
+<!--
 	<div layout="column" ng-repeat="institution in institutions" class="md-whiteframe-z1 cardbox">
 		<h2 ng-click="editInstitutionDialog($event, institution)" class="cardbox-title">{{institution.name}}</h2>
 
@@ -23,11 +23,68 @@
 				</md-list-item>
 			</md-list>
 			<md-list ng-if="!group.users.length">
-				<p><i>keine Benutzer in dieser Gruppe</i></p>
+				<md-list-item>
+					<p><i>keine Praktiker in dieser Gruppe</i></p>
+				</md-list-item>
 			</md-list>
 		</section>
 
 		<md-divider ng-if="!$last"></md-divider>
 	</div>
+-->
+	<div class="md-whiteframe-z1 cardbox">
+		<md-subheader>Praktiker</md-subheader>
+		<md-list>
+			<md-list-item ng-repeat="practitioner in users | filter:{role:1}" ng-click="editUserDialog($event, practitioner)">
+				<p>{{practitioner.name}}</p>
+				<p>{{practitioner.group.name}}</p>
+				<p>{{practitioner.group.institution.name}}</p>
+			</md-list-item>
+		</md-list>
+	</div>
+
+	<div layout>
+		<div flex class="md-whiteframe-z1 cardbox">
+			<md-subheader class="md-accent">Wissenschaftler</md-subheader>
+			<md-list>
+				<md-list-item ng-repeat="scientist in users | filter:{role:2}" ng-click="editUserDialog($event, scientist)">
+					<p>{{scientist.name}}</p>
+				</md-list-item>
+			</md-list>
+		</div>
+
+		<div flex class="md-whiteframe-z1 cardbox">
+			<md-subheader class="md-warn">Administratoren</md-subheader>
+			<md-list>
+				<md-list-item ng-repeat="admin in users | filter:{role:0}" ng-click="editUserDialog($event, admin)">
+					<p>{{admin.name}}</p>
+				</md-list-item>
+			</md-list>
+		</div>
+	</div>
+
+	<div class="md-whiteframe-z1 cardbox">
+		<md-subheader>Gruppen</md-subheader>
+		<md-list>
+			<md-list-item ng-repeat="group in groups" ng-click="editGroupDialog($event, group)">
+				<p>{{group.name}}</p>
+				<p>Praktiker: {{group.users.length ? group.users.length : '0'}}</p>
+				<p>Kinder: {{group.kids.length ? group.kids.length : '0'}}</p>
+			</md-list-item>
+		</md-list>
+	</div>
+
+	<div class="md-whiteframe-z1 cardbox">
+		<md-subheader>Einrichtungen</md-subheader>
+		<md-list>
+			<md-list-item ng-repeat="institution in institutions" ng-click="editInstitutionDialog($event, institution)">
+				<p>{{institution.name}}</p>
+				<p>Gruppen: {{institution.groups.length ? institution.groups.length : '0'}}</p>
+				<p>Praktiker: {{institution.users.length ? institution.users.length : '0'}}</p>
+				<p>Kinder: {{institution.kids.length ? institution.kids.length : '0'}}</p>
+			</md-list-item>
+		</md-list>
+	</div>
+
 </md-content>
 

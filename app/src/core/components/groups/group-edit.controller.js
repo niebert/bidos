@@ -23,6 +23,18 @@ function GroupDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, locals,
     });
   };
 
+  $scope.destroy = function (group) {
+    Resources.destroy(group).then(function(response) {
+      console.log(response);
+      $mdDialog.hide();
+      toast('Gruppe gelöscht');
+    }, function(err) {
+      if (err[0].hasOwnProperty('content') && err[0].content.detail.match(group.name) && err[0].content.detail.match('already exists')) {
+        toast('Eine Gruppe mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen.');
+      }
+    });
+  };
+
   $scope.cancel = function (group) {
     $mdDialog.hide({action: 'view', group: group});
   };

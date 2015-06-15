@@ -20,6 +20,20 @@ function InstitutionDialogEdit(Resources, $scope, $mdDialog, $mdToast, $state, l
     });
   };
 
+  $scope.destroy = function (institution) {
+    Resources.destroy(institution).then(function(response) {
+      console.log(response);
+      $mdDialog.hide();
+      toast('Einrichtung gelöscht');
+    }, function(err) {
+      if (err[0].hasOwnProperty('content') && err[0].content.detail.match(institution.name) && err[0].content.detail.match('already exists')) {
+        toast('Eine Einrichtung mit diesem Namen existiert bereits');
+      } else {
+        toast('Die Einrichtung konnte nicht gelöscht werden');
+      }
+    });
+  };
+
   $scope.cancel = function (institution) {
     $mdDialog.hide({action: 'view', institution: institution});
   };
