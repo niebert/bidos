@@ -9,10 +9,13 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
     $scope.groups = data.groups;
     $scope.me = data.me;
     $scope.roles = STRINGS.roles;
+    $scope.sexes = STRINGS.sexes;
   });
 
   $scope.kid = resource;
   $scope.sexes = STRINGS.sexes;
+
+  $scope.kid.bday = new Date($scope.kid.bday);
 
   $scope.cancel = function() {
     $mdDialog.cancel();
@@ -30,6 +33,13 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
       if (err.detail.match('still referenced')) {
         toast('Das Kind kann nicht gelöscht werden');
       }
+    });
+  };
+
+  $scope.update = function(kid) {
+    if (kid.hasOwnProperty('color')) delete kid.color;
+    Resources.update(kid).then(function(updatedKid) {
+      $mdDialog.hide(updatedKid);
     });
   };
 

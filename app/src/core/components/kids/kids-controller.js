@@ -2,7 +2,7 @@
 angular.module('bidos')
   .controller('KidsController', KidsController);
 
-function KidsController(Resources, $mdDialog, $scope, $rootScope) {
+function KidsController(Resources, $mdDialog, $scope) {
 
   updateScope();
 
