@@ -50,6 +50,7 @@ function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
   };
 
   $scope.obsComplete = function(newObs) {
+    if (!newObs) return;
     var hasHelp = function() {
       if (newObs.niveau > 0 && newObs.niveau < 4) {
         if (newObs.hasOwnProperty('help')) {
