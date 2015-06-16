@@ -19,6 +19,7 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope) {
     Resources.update(user).then(function(updatedUser) {
       console.log('approved user', updatedUser);
       toast('Der Benutzer wurde freigeschaltet');
+      $scope.unapprovedUsers.splice(_.findIndex($scope.unapprovedUsers, {id: updatedUser.id}), 1);
     }, function (err) {
       console.warn(err);
       toast('Der Benutzer konnte nicht freigeschaltet werden');
