@@ -1,3 +1,20 @@
+.obs-tile {
+  padding: 1em;
+  color: white;
+  text-align: center;
+}
+
+.obs-grid-row {
+  margin: 8px 0;
+}
+
+@viewport {
+    width: 980px;
+    min-zoom: 0.25;
+    max-zoom: 5;
+    orientation: landscape;
+}
+
 md-content {
   padding: 8px;
 }
@@ -80,19 +97,19 @@ h2 {
 }
 
 .domain1 {
-  background-color: #CEA7FF;
+  background-color: #FC4807;
 }
 
 .domain2 {
-  background-color: #97B6FF;
+  background-color: #F96F0C;
 }
 
 .domain3 {
-  background-color: #89FFB8;
+  background-color: #9100FB;
 }
 
 .domain4 {
-  background-color: #FEC777;
+  background-color: #0E5FFB;
 }
 
 .debug {

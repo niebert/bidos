@@ -6,7 +6,6 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope) {
 
   Resources.get().then(function(data) {
     $scope.me = data.me;
-    debugger
     $scope.unapprovedUsers = _.filter(data.users, function(d) {
       return (d.id !== 1) && (d.approved === false);
     });
