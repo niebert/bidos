@@ -1,9 +1,6 @@
 <md-dialog aria-label="ObservationDialogView">
 
 	<md-dialog-content flex layout="column">
-		<md-subheader class="md-sticky-no-effect">Ihre Kontodaten</md-subheader>
-
-		<!-- <pre>{{observation|json}}</pre> -->
 
 		<p ng-if="observation.niveau > 0 && observation.niveau < 4">
     	<strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}. (Niveau {{observation.niveau}} {{observation.help ? 'mit Hilfe' : ''}})
