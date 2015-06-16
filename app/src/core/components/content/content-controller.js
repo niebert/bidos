@@ -2,7 +2,7 @@
 angular.module('bidos')
 .controller('ContentController', ContentController);
 
-function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $state, $http, STRINGS, CONFIG) {
+function ContentController(Resources, $mdDialog, $mdToast, $scope) {
 
   Resources.get().then(function(data) {
     $scope.unapprovedUsers = _.filter(data.users, function(d) {
@@ -14,5 +14,22 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope, $rootScope, $
     return !_.chain($scope.users).pluck('approved').all().value();
   };
 
+  $scope.approveUser = function (user) {
+    user.approved = true;
+    Resources.update(user).then(function(updatedUser) {
+      console.log('approved user', updatedUser);
+      toast('Der Benutzer wurde freigeschaltet');
+    }, function (err) {
+      console.warn(err);
+      toast('Der Benutzer konnte nicht freigeschaltet werden');
+    });
+  };
+
+  function toast(message) {
+    $mdToast.show($mdToast.simple()
+      .content(message)
+      .position('bottom right')
+      .hideDelay(3000));
+  }
 
 }
