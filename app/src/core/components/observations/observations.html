@@ -1,25 +1,36 @@
  <section>
 
-	<md-toolbar class="md-hue-3">
-		<span class="md-toolbar-tools">
-			<md-select placeholder="Kind auswählen" ng-model="stuff.kid_id">
-				<md-option ng-repeat="kid in kids | filter:{group_id:stuff.group_id}" value="{{kid.id}}">{{kid.name}}</md-option>
-			</md-select>
-			<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id">
-				<md-option ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</md-option>
-			</md-select>
-			<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
-				<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
-			</md-select>
-			<md-checkbox ng-model="stuff.unapproved">
-				Nur ungeprüfte
-			</md-checkbox>
-			<span flex></span>
-			<md-button ng-click="resetFilters()"> Filter zurücksetzen </md-button>
-		</span>
-	</md-toolbar>
+	<span class="md-toolbar-tools" layout>
+		<md-select placeholder="Kind auswählen" ng-model="stuff.kid_id">
+			<md-option ng-repeat="kid in kids" value="{{kid.id}}">{{kid.name}}</md-option>
+		</md-select>
+		<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id" ng-if="me.role.id===2">
+			<md-option ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</md-option>
+		</md-select>
+		<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
+			<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
+		</md-select>
+		<span flex></span>
+		<md-icon md-svg-src="/img/ic_clear_24px.svg" class="s24" alt="Filter Zurücksetzen" ng-click="resetFilters()"></md-icon>
+	</span>
 
-	<md-list>
+	<div>
+		<md-grid-list md-cols="4" md-gutter="8px" md-row-height="1:1" ng-repeat="domain in obsDomains" class="obs-grid-row">
+			<md-grid-tile ng-repeat="observation in domain | filter:myFilter" class="domain{{$index+1}}">
+			  <md-grid-tile-header layout>
+			  	<h3>{{observation.kid.name}}</h3>
+				</md-grid-tile-header>
+
+				<div class="obs-tile">{{observation.behaviour.text}}</div>
+
+			  <md-grid-tile-footer>
+			  	<h3>Niveau {{observation.niveau}}{{observation.help ? ' mit Hilfe' : ''}}</h3>
+				</md-grid-tile-footer>
+			</md-grid-tile>
+		</md-grid-list>
+	</div>
+
+<!-- 	<md-list>
 		<md-list-item ng-repeat="observation in observations | filter:myFilter | orderBy:'-created_at'"
 			class="card-title md-whiteframe-z1 md-hue-2 domain-{{observation.item.subdomain.domain.id}}"
 			ng-click="viewObservation($event, observation)">
@@ -40,5 +51,5 @@
 			<p class="md-padding" ng-class="{disabledStatus:!observation.approved, enabledStatus:observation.approved}">{{observation.approved ? 'geprüft' : 'ungeprüft'}}</p>
 			<p class="md-padding list-date">{{observation.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
 		</md-list-item>
-	</md-list>
+	</md-list> -->
 </section>
