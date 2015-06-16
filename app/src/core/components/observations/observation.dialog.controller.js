@@ -15,8 +15,8 @@ function ObservationDialogController(Resources, $scope, $rootScope, $mdDialog, $
     $state.go('bidos.capture');
   };
 
-  $scope.hide = function () {
-    $mdDialog.hide();
+  $scope.cancel = function () {
+    $mdDialog.cancel();
   };
 
   $scope.accept = function (observation) {
