@@ -4,6 +4,7 @@ angular.module('bidos')
 
 function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $mdDialog, locals) {
 
+  $scope.me = locals.me;
   $scope.kid = locals.kid;
   $scope.item = locals.item;
   $scope.newObs = locals.observation;
@@ -25,30 +26,35 @@ function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $m
     var annotations = getAnnotations(newObs);
     var annotationPromises = [];
     var obs = _.omit(newObs, ['example', 'idea', 'note']);
-
     Resources.create(obs)
     .then(function(response) {
 
-      annotations = annotations.map(function(d) {
-        if (!d) return undefined;
-        d.observation_id = response.id;
+      Resources.get().then(function(data) {
+        let behaviour_id = _.filter(data.behaviours, {item_id: response.item_id, niveau: response.niveau})[0].id;
+        console.log('behaviour_id', behaviour_id);
 
-        if (response.niveau > 0 && response.niveau < 4) {
-          d.behaviour_id = response.behaviour.id;
-        }
+        annotations = annotations.map(function(d) {
+          if (!d) return undefined;
+          d.observation_id = response.id;
 
-        return d;
-      }).filter(function(d) { return d; });
+          if (response.niveau > 0 && response.niveau < 4) {
+            d.behaviour_id = behaviour_id;
+          }
 
-      annotationPromises = _.map(annotations, function(annotation) {
-        if (!annotation) return null;
-        return Resources.create(annotation);
+          return d;
+        }).filter(function(d) { return d; });
+
+        annotationPromises = _.map(annotations, function(annotation) {
+          if (!annotation) return null;
+          return Resources.create(annotation);
+        });
+
+        $q.all(annotationPromises).then(function(annotationResponses) {
+          toast('Beobachtung gespeichert', annotationResponses);
+          $mdDialog.hide();
+        });
       });
 
-      $q.all(annotationPromises).then(function(annotationResponses) {
-        toast('Beobachtung gespeichert', annotationResponses);
-        $mdDialog.hide();
-      });
     });
   };
 
@@ -61,7 +67,7 @@ function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $m
       if (newObs.hasOwnProperty(annotationType)) {
         return {
           type: annotationType,
-          author_id: $rootScope.me.id,
+          author_id: $scope.me.id,
           text: newObs[annotationType]
         };
       }

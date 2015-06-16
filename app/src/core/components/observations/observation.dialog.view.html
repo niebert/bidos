@@ -30,6 +30,7 @@
 	</md-dialog-content>
 
 	<div class="md-actions" layout>
+		<md-button aria-label="destroy" ng-click="destroy(observation)" class="md-warn" ng-if="me.role!==0"> Löschen </md-button>
 		<span flex></span>
 		<!-- <md-button aria-label="repeat" ng-click="repeat(observation)" class="md-primary md-raised" ng-if="me.role==1"> Wiederholen </md-button> -->
 		<md-button aria-label="hide" ng-click="hide()" class=""> Abbrechen </md-button>

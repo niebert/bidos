@@ -4,33 +4,43 @@ angular.module('bidos')
 
 function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory, STRINGS, Resources, CRUD, resource) {
 
+  Resources.get().then(function(data) {
+    $scope.institutions = data.institutions;
+    $scope.groups = data.groups;
+    $scope.me = data.me;
+    $scope.roles = STRINGS.roles;
+  });
+
   $scope.kid = resource;
-  $scope.me = $rootScope.me;
   $scope.sexes = STRINGS.sexes;
 
   $scope.cancel = function() {
     $mdDialog.cancel();
   };
 
-  $scope.destroy = function(kid) {
-    kid.type = 'kid';
 
+  $scope.destroy = function (kid) {
+    // kid.type = 'kid';
     if (!confirm('Sind sie sicher?')) return;
-
-    Resources.destroy(kid).then(function() {
+    Resources.destroy(kid).then(function (destroyedKid) {
+      console.log(destroyedKid);
+      $mdDialog.hide({action: 'destroy', kid: destroyedKid});
       toast('Kind gelöscht');
-      $mdDialog.hide();
+    }, function (err) {
+      if (err.detail.match('still referenced')) {
+        toast('Das Kind kann nicht gelöscht werden');
+      }
     });
   };
 
   $scope.save = function(kid) {
     kid.type = 'kid';
-    kid.author_id = $rootScope.me.id;
-    kid.group_id = $rootScope.me.group_id;
+    kid.author_id = $scope.me.id;
+    kid.group_id = $scope.me.group_id;
 
-    Resources.create(kid).then(function() {
+    Resources.create(kid).then(function(newKid) {
       toast('Kind erstellt');
-      $mdDialog.hide();
+      $mdDialog.hide(newKid);
     });
   };
 

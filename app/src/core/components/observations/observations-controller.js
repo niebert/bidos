@@ -12,26 +12,30 @@ function ObservationsController(Resources, $scope, $rootScope, $mdDialog) {
       },
       controller: 'ObservationDialogController',
       templateUrl: `templates/observation.dialog.view.html`
-    }).then(function() {
-      // $scope.reset();
-    }, function() {
+    }).then(function(response) {
+      switch (response.action) {
+        case 'update':
+          $scope.observations.splice(_.findIndex($scope.observations, {id: response.observation.id}), 1, response.observation);
+          break;
+        case 'destroy':
+          $scope.observations.splice(_.findIndex($scope.observations, {id: response.observation.id}), 1);
+          break;
+      }
     });
   };
+
   $scope.stuff = {};
   Resources.get().then(function(data) {
-
     $scope.kids = data.kids;
     $scope.groups = data.groups;
     $scope.domains = data.domains;
     $scope.me = data.me;
 
-    $scope.observations = data.observations;
-
     if ($scope.me.role === 2) {
       $scope.observations = _.filter(data.observations);
       // $scope.observations = _.filter(data.observations, {approved: false});
     } else {
-      $scope.observations = _.filter(data.observations, {author_id: $rootScope.me.id});
+      $scope.observations = _.filter(data.observations, {author_id: $scope.me.id});
     }
 
   });

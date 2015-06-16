@@ -7,19 +7,20 @@ function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
   Resources.get().then(function(data) {
     $scope.data = data;
     $scope.kids = data.me.kids;
-    $scope.items = data.data.items;
-    $scope.domains = data.data.domains;
-    $scope.behaviours = data.data.behaviours;
-  });
+    $scope.items = data.items;
+    $scope.domains = data.domains;
+    $scope.behaviours = data.behaviours;
+    $scope.me = data.me;
 
-  ($scope.reset = function() {
-    delete $scope.domain;
-    delete $scope.domain_id;
-    delete $scope.newObs;
-    $scope.newObs = {};
-    $scope.newObs.type = 'observation';
-    $scope.newObs.author_id = $scope.data.me.id;
-  })();
+    ($scope.reset = function() {
+      delete $scope.domain;
+      delete $scope.domain_id;
+      delete $scope.newObs;
+      $scope.newObs = {};
+      $scope.newObs.type = 'observation';
+      $scope.newObs.author_id = $scope.me.id;
+    })();
+  });
 
   $scope.selectDomain = function() {
     delete $scope.newObs.niveau;
@@ -74,6 +75,7 @@ function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
     $mdDialog.show({
       targetEvent: ev,
       locals: {
+        me: $scope.me,
         observation: newObs,
         kid: _.filter($scope.data.kids, {id: +newObs.kid_id})[0],
         item: _.filter($scope.data.items, {id: +newObs.item_id})[0],
