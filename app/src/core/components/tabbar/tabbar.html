@@ -1,9 +1,7 @@
 <!--
 <md-tabs>
-	<md-tab ng-repeat="action in myActions">
-	  <md-tab-label ui-sref"action.sref">
-	    <span>{{action.text}}</span>
-	  </md-tab-label>
+	<md-tab ng-repeat="action in myActions" ng-click="action.onClick()">
+	  <md-tab-label>{{action.text}}</md-tab-label>
 	</md-tab>
 </md-tabs>
 -->
