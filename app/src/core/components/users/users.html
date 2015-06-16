@@ -6,7 +6,7 @@
 		<md-button class="md-raised" flex ng-click="newInstitution($event)">Neue Einrichtung</md-button>
 	</div>
 
-	<div layout>
+	<div layout layout-wrap>
 		<div flex ng-repeat="group in groups | orderBy:group.name" class="md-whiteframe-z1 cardbox" ng-if="group.users.length">
 			<md-subheader>{{group.name}}</md-subheader>
 			<md-list>
