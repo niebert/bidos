@@ -13,7 +13,7 @@
 		<md-list>
 			<md-list-item ng-repeat="user in unapprovedUsers">
 				<p>{{user.name}}</p>
-				<md-button class="md-raised">Aktivieren</md-button>
+				<md-switch flex ng-model="user.approved">{{user.approved ? 'Genehmigt' : 'Nicht genehmigt'}}</md-switch>
 			</md-list-item>
 		</md-list>
 	</section>
