@@ -2,7 +2,34 @@
 angular.module('bidos')
 .controller('ObservationsController', ObservationsController);
 
-function ObservationsController(Resources, $scope, $rootScope, $mdDialog) {
+function ObservationsController($scope, $mdDialog, Resources) {
+
+  Resources.get()
+  .then(function(data) {
+    $scope.me = data.me;
+    $scope.domains = data.domains;
+
+    switch (data.me.role) {
+      case 1:
+        $scope.kids = _.filter(data.kids, {group_id: data.me.group_id});
+        $scope.obsDomains = _.map(data.domains, function(domain) {
+          return _.chain(data.observations)
+          .filter(function(obs) {
+            return obs.item.subdomain.domain.id === domain.id;
+          })
+          .filter({author_id: data.me.id})
+          .value();
+        });
+        debugger;
+      break;
+      case 2:
+        $scope.groups = data.groups;
+        $scope.observations = _.filter(data.observations);
+      break;
+    }
+  });
+
+  $scope.stuff = {};
 
   $scope.viewObservation = function(ev, observation) {
     $mdDialog.show({
@@ -23,22 +50,6 @@ function ObservationsController(Resources, $scope, $rootScope, $mdDialog) {
       }
     });
   };
-
-  $scope.stuff = {};
-  Resources.get().then(function(data) {
-    $scope.kids = data.kids;
-    $scope.groups = data.groups;
-    $scope.domains = data.domains;
-    $scope.me = data.me;
-
-    if ($scope.me.role === 2) {
-      $scope.observations = _.filter(data.observations);
-      // $scope.observations = _.filter(data.observations, {approved: false});
-    } else {
-      $scope.observations = _.filter(data.observations, {author_id: $scope.me.id});
-    }
-
-  });
 
   $scope.resetFilters = function() {
     $scope.stuff = {};
