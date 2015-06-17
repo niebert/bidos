@@ -25,31 +25,12 @@ function TabbarController($scope, $state, Resources) {
       $state.go('bidos.observations');
     }
   }, {
-    text: 'Neue Beobachtung',
-    roles: ['Praktiker'],
-    onClick: function () {
-      console.log('bidos.capture');
-      $state.go('bidos.capture');
-    }
-  }, {
     text: 'Benutzer',
     roles: ['Administrator'],
     onClick: function () {
       console.log('bidos.users');
       $state.go('bidos.users');
     }
-  // }, {
-  //   text: 'Gruppen',
-  //   roles: ['Administrator'],
-  //   onClick: function () {
-  //     $state.go('bidos.groups');
-  //   }
-  // }, {
-  //   text: 'Institutionen',
-  //   roles: ['Administrator'],
-  //   onClick: function () {
-  //     $state.go('bidos.institutions');
-  //   }
   }, {
     text: 'Bereiche',
     roles: ['Administrator'],
