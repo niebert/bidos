@@ -1,0 +1,109 @@
+<md-dialog flex="100" aria-label="Capture Dialog">
+
+	<md-toolbar class="domain{{domain_id}}">
+		<div class="md-toolbar-tools">
+			<h3>Neue Beobachtung</h3>
+
+			<span flex></span>
+
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content class="capture-dialog">
+
+		<md-select flex="100" placeholder="Kind auswählen" ng-model="newObs.kid_id">
+			<md-option value="{{ kid.id }}" ng-repeat="kid in kids">{{ kid.name }}</md-option>
+		</md-select>
+
+		<md-select flex="100" placeholder="Bereich auswählen" ng-model="domain_id" ng-change="selectDomain()">
+			<md-option value="{{ domain.id }}" ng-repeat="domain in domains | orderBy:'id'">{{ domain.name }}</md-option>
+		</md-select>
+
+		<md-select flex="100" placeholder="Baustein auswählen" ng-model="newObs.item_id" ng-change="selectItem()" ng-if="domain">
+		  <md-optgroup ng-repeat="subdomain in domain.subdomains" label="{{subdomain.name}}">
+				<md-option value="{{ item.id }}" ng-repeat="item in subdomain.items">{{ item.name }}</md-option>
+			</md-optgroup>
+		</md-select>
+
+		<md-list ng-if="newObs.item_id && newObs.kid_id">
+
+			<md-list-item class="md-2-line">
+				<md-icon md-svg-icon="/img/ic_looks_one_48px.svg" ng-class="{selected:newObs.niveau===1}"></md-icon>
+        <div class="md-list-item-text behaviour-text-container">
+          <h3 class="behaviour-text">{{kidName()}} <strong>{{behaviour(1).text}}</strong>.</h3>
+          <p>{{showExample(1)}}</p>
+        </div>
+				<md-switch class="md-secondary" ng-model="newObs.niveau" ng-true-value="1"></md-switch>
+			</md-list-item>
+
+			<md-list-item class="md-2-line">
+				<md-icon md-svg-icon="/img/ic_looks_two_48px.svg" ng-class="{selected:newObs.niveau===2}"></md-icon>
+        <div class="md-list-item-text behaviour-text-container">
+          <h3 class="behaviour-text">{{kidName()}} <strong>{{behaviour(2).text}}</strong>.</h3>
+          <p>{{showExample(2)}}</p>
+        </div>
+				<md-switch class="md-secondary" ng-model="newObs.niveau" ng-true-value="2"></md-switch>
+			</md-list-item>
+
+			<md-list-item class="md-2-line">
+				<md-icon md-svg-icon="/img/ic_looks_3_48px.svg" ng-class="{selected:newObs.niveau===3}"></md-icon>
+        <div class="md-list-item-text behaviour-text-container">
+          <h3 class="behaviour-text">{{kidName()}} <strong>{{behaviour(3).text}}</strong>.</h3>
+          <p>{{showExample(3)}}</p>
+        </div>
+				<md-switch class="md-secondary" ng-model="newObs.niveau" ng-true-value="3"></md-switch>
+			</md-list-item>
+
+			<md-list-item class="md-2-line">
+				<md-icon md-svg-icon="/img/ic_check_box_outline_blank_48px.svg" ng-class="{selected:newObs.niveau===4}"></md-icon>
+        <div class="md-list-item-text behaviour-text-container">
+          <h3 class="behaviour-text">{{kidName()}} zeigt ein <strong>fortgeschritteneres Verhalten</strong> als das auf Niveau 3 angegebene.</h3>
+        </div>
+				<md-switch aria-label="Niveau 4" class="md-secondary" ng-model="newObs.niveau" ng-true-value="4"></md-switch>
+			</md-list-item>
+
+			<md-list-item class="md-2-line">
+				<md-icon md-svg-icon="/img/ic_check_box_outline_blank_48px.svg" ng-class="{selected:newObs.niveau===0}"></md-icon>
+        <div class="md-list-item-text behaviour-text-container">
+          <h3 class="behaviour-text">{{kidName()}} zeigt das auf Niveau 1 angegebene Verhalten <strong>noch nicht</strong>.</h3>
+        </div>
+				<md-switch aria-label="Niveau 0" class="md-secondary" ng-model="newObs.niveau" ng-true-value="0"></md-switch>
+			</md-list-item>
+
+			<md-list-item>
+				<md-icon md-svg-icon="/img/ic_supervisor_account_48px.svg" ng-class="{selected:newObs.help}"></md-icon>
+				<p>{{kidName()}} hat <strong>{{newObs.help ? '' : 'keine '}}Hilfe</strong> benötigt.</p>
+				<md-switch class="md-secondary md-primary md-hue-1" ng-model="newObs.help"></md-switch>
+			</md-list-item>
+
+		</md-list>
+
+		<md-input-container flex ng-if="newObs.niveau > 0 && newObs.niveau < 4">
+			<label>Eigene Beispiel hinzufügen</label>
+			<textarea ng-model="newObs.example"></textarea>
+		</md-input-container>
+
+		<md-input-container flex ng-if="newObs.niveau !== undefined">
+			<label>Eigene Idee hinzufügen</label>
+			<textarea ng-model="newObs.idea"></textarea>
+		</md-input-container>
+
+		<md-input-container flex ng-if="newObs.niveau !== undefined">
+			<label>Eigene Notiz hinzufügen</label>
+			<textarea ng-model="newObs.note"></textarea>
+		</md-input-container>
+
+		<div class="md-actions" layout>
+			<span flex></span>
+			<md-button aria-label="save" ng-click="review(newObs)" class="md-primary md-raised" ng-disabled="!obsComplete(newObs)">
+				Speichern
+			</md-button>
+		</div>
+
+	</md-dialog-content>
+
+</md-dialog>

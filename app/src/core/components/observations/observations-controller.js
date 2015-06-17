@@ -12,15 +12,7 @@ function ObservationsController($scope, $mdDialog, Resources) {
     switch (data.me.role) {
       case 1:
         $scope.kids = _.filter(data.kids, {group_id: data.me.group_id});
-        $scope.obsDomains = _.map(data.domains, function(domain) {
-          return _.chain(data.observations)
-          .filter(function(obs) {
-            return obs.item.subdomain.domain.id === domain.id;
-          })
-          .filter({author_id: data.me.id})
-          .value();
-        });
-        debugger;
+        refreshObservations();
       break;
       case 2:
         $scope.groups = data.groups;
@@ -29,27 +21,58 @@ function ObservationsController($scope, $mdDialog, Resources) {
     }
   });
 
-  $scope.stuff = {};
+  $scope.capture = function() {
+    $mdDialog.show({
+      controller: 'Capture',
+      templateUrl: 'templates/capture.dialog.html'
+    }).then(function(response) {
+      debugger;
+    });
+  };
 
   $scope.viewObservation = function(ev, observation) {
     $mdDialog.show({
       targetEvent: ev,
-      locals: {
-        observation: observation
-      },
+      locals: {observation: observation},
       controller: 'ObservationDialogController',
       templateUrl: `templates/observation.dialog.view.html`
     }).then(function(response) {
       switch (response.action) {
         case 'update':
-          $scope.observations.splice(_.findIndex($scope.observations, {id: response.observation.id}), 1, response.observation);
-          break;
+          updateObservation(response.observation);
+        break;
         case 'destroy':
-          $scope.observations.splice(_.findIndex($scope.observations, {id: response.observation.id}), 1);
-          break;
+          // deleteObservation(response.observation);
+          refreshObservations();
+        break;
       }
     });
   };
+
+  function refreshObservations() {
+    Resources.get().then(function(data) {
+      $scope.obsDomains = _.chain(data.domains).sortBy('id').map(function(domain) {
+        return _.chain(data.observations)
+        .filter(function(obs) {
+          return obs.item.subdomain.domain.id === domain.id;
+        })
+        .filter({author_id: data.me.id})
+        .value();
+      }).value();
+    });
+  }
+
+  $scope.refreshObservations = refreshObservations();
+
+  function deleteObservation(observation) {
+    $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1);
+  }
+
+  function updateObservation(observation) {
+    $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1, observation);
+  }
+
+  $scope.stuff = {};
 
   $scope.resetFilters = function() {
     $scope.stuff = {};
@@ -110,6 +133,5 @@ function ObservationsController($scope, $mdDialog, Resources) {
       return true;
     }
   };
-
 
 }

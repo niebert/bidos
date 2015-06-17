@@ -1,31 +1,44 @@
 /* global _, angular */
 angular.module('bidos')
-  .controller('CaptureReviewController', CaptureReviewController);
+  .controller('CaptureReview', CaptureReview);
 
-function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $mdDialog, locals) {
+function CaptureReview(Resources, $scope, $rootScope, $q, $mdToast, $mdDialog, locals) {
 
-  $scope.me = locals.me;
-  $scope.kid = locals.kid;
-  $scope.item = locals.item;
-  $scope.newObs = locals.observation;
-  $scope.behaviour = locals.behaviour;
+  // $scope.me = locals.me;
+  // $scope.kid = locals.kid;
+  // $scope.item = locals.item;
+  // $scope.newObs = locals.observation;
+  // $scope.behaviour = locals.behaviour;
 
-  if (locals.observation.hasOwnProperty('example')) {
-    $scope.example = locals.observation.example;
-  }
+  // me: $scope.me,
+  // observation: newObs,
+  // kid: _.filter($scope.data.kids, {id: +newObs.kid_id})[0],
+  // item: _.filter($scope.data.items, {id: +newObs.item_id})[0],
+  // behaviour: _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0]
 
-  if (locals.observation.hasOwnProperty('idea')) {
-    $scope.idea = locals.observation.idea;
-  }
 
-  if (locals.observation.hasOwnProperty('note')) {
-    $scope.note = locals.observation.note;
-  }
+  // if (locals.observation.hasOwnProperty('example')) {
+  //   $scope.example = locals.observation.example;
+  // }
+
+  // if (locals.observation.hasOwnProperty('idea')) {
+  //   $scope.idea = locals.observation.idea;
+  // }
+
+  // if (locals.observation.hasOwnProperty('note')) {
+  //   $scope.note = locals.observation.note;
+  // }
+
+
+  $scope.observation = locals.observation;
 
   $scope.save = function(newObs) {
     var annotations = getAnnotations(newObs);
     var annotationPromises = [];
-    var obs = _.omit(newObs, ['example', 'idea', 'note']);
+    var obs = _.omit(newObs, ['example', 'idea', 'note', 'behaviour', 'item', 'kid']);
+
+    debugger;
+
     Resources.create(obs)
     .then(function(response) {
 
@@ -46,6 +59,11 @@ function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $m
 
         annotationPromises = _.map(annotations, function(annotation) {
           if (!annotation) return null;
+
+          if (annotation.type !== 'example') {
+            annotation = _.omit(annotation, ['behaviour_id']);
+          }
+
           return Resources.create(annotation);
         });
 
@@ -67,7 +85,7 @@ function CaptureReviewController(Resources, $scope, $rootScope, $q, $mdToast, $m
       if (newObs.hasOwnProperty(annotationType)) {
         return {
           type: annotationType,
-          author_id: $scope.me.id,
+          author_id: newObs.author_id,
           text: newObs[annotationType]
         };
       }

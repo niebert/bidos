@@ -6,13 +6,7 @@ function ResourceService($rootScope, $q, CRUD) {
 
   // var resources = resources || null; // not {}!
 
-  let resources;
-  if (!resources) {
-    resources = null;
-    console.log('resources has been set to null');
-  } else {
-    console.log('resources has not been set to null');
-  }
+  let resources = resources || null;
 
   return {
     get: get,
@@ -137,12 +131,9 @@ function ResourceService($rootScope, $q, CRUD) {
           // convert string dates to real dates
           _.each(resource, function(val) {
             if (/_at/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
+              debugger
               resource[key] = new Date(resource[key]);
             }
-          });
-
-          // convert string dates to real dates
-          _.each(resource, function(val) {
             if (/bday/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
               resource[key] = new Date(resource[key]);
             }

@@ -1,22 +1,54 @@
  <section>
 
 	<span class="md-toolbar-tools" layout>
+
 		<md-select placeholder="Kind auswählen" ng-model="stuff.kid_id">
 			<md-option ng-repeat="kid in kids" value="{{kid.id}}">{{kid.name}}</md-option>
 		</md-select>
+
 		<md-select placeholder="Gruppe auswählen" ng-model="stuff.group_id" ng-if="me.role.id===2">
 			<md-option ng-repeat="group in groups" value="{{group.id}}">{{group.name}}</md-option>
 		</md-select>
+
 		<md-select placeholder="Bereich auswählen" ng-model="stuff.domain_id">
-			<md-option ng-repeat="domain in domains" value="{{domain.id}}">{{domain.name}}</md-option>
+			<md-option ng-repeat="domain in domains | orderBy:'id'" value="{{domain.id}}">{{domain.name}}</md-option>
 		</md-select>
+
 		<span flex></span>
-		<md-icon md-svg-src="/img/ic_clear_24px.svg" class="s24" alt="Filter Zurücksetzen" ng-click="resetFilters()"></md-icon>
+
+		<md-button class="md-icon-button" aria-label="Clear" ng-click="resetFilters()">
+			<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+		</md-button>
+
+		<md-button class="md-icon-button" aria-label="Refresh" ng-click="refreshObservations()">
+			<md-icon md-svg-icon="/img/ic_refresh_24px.svg"></md-icon>
+		</md-button>
+
+		<md-button class="md-icon-button" aria-label="Add" ng-click="capture()">
+			<md-icon md-svg-icon="/img/ic_add_24px.svg"></md-icon>
+		</md-button>
+
 	</span>
 
-	<div>
-		<md-grid-list md-cols="4" md-gutter="8px" md-row-height="1:1" ng-repeat="domain in obsDomains" class="obs-grid-row">
-			<md-grid-tile ng-repeat="observation in domain | filter:myFilter" class="domain{{$index+1}}">
+	<div layout class="bucket-header">
+		<span flex>
+			<h3>Personal</h3>
+		</span>
+		<span flex>
+			<h3>Sprache &amp; Schrift</h3>
+		</span>
+		<span flex>
+			<h3>Sozial</h3>
+		</span>
+		<span flex>
+			<h3>Mathe</h3>
+		</span>
+	</div>
+
+	<div layout>
+		<md-grid-list flex md-cols="1" md-gutter="8px" md-row-height="1:1" ng-repeat="domain in obsDomains" class="obs-grid-row domain{{$index+1}}-bucket">
+
+			<md-grid-tile ng-repeat="observation in domain | filter:myFilter | orderBy:'-created_at'" ng-click="viewObservation($event, observation)">
 			  <md-grid-tile-header layout>
 			  	<h3>{{observation.kid.name}}</h3>
 				</md-grid-tile-header>
@@ -27,6 +59,7 @@
 			  	<h3>Niveau {{observation.niveau}}{{observation.help ? ' mit Hilfe' : ''}}</h3>
 				</md-grid-tile-footer>
 			</md-grid-tile>
+
 		</md-grid-list>
 	</div>
 

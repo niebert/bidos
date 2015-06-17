@@ -1,22 +1,83 @@
-<md-dialog class="review">
+<md-dialog aria-label="ObservationReview">
+
+	<md-toolbar class="domain{{observation.item.subdomain.domain.id}}">
+		<div class="md-toolbar-tools">
+			<h3>Beobachtung überprüfen</h3>
+
+			<span flex></span>
+
+			<md-button class="md-icon-button" aria-label="Delete" ng-click="destroy()">
+				<md-icon md-svg-icon="/img/ic_delete_24px.svg"></md-icon>
+			</md-button>
+
+			<md-button class="md-icon-button" aria-label="Repeat" ng-click="repeat()">
+				<md-icon md-svg-icon="/img/ic_repeat_24px.svg"></md-icon>
+			</md-button>
+
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_close_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
 
 	<md-dialog-content>
-		<md-subheader class="md-sticky-no-effect">Überprüfen Sie Ihre Beobachtung</md-subheader>
-		<p><em>{{item.subdomain.domain.name}}, {{item.subdomain.name}}, {{item.name}}</em></p>
-		<hr>
-		<p>{{kid.name}} {{behaviour.text}}. Niveau {{newObs.niveau}}. {{newObs.help ? "Mit Hilfe." : "Ohne Hilfe."}}</p>
-		<hr>
-		<p ng-if="example">Eigenes Beispiel zu diesem Verhalten: {{example}}</p>
-		<p ng-if="idea">Eigene Idee zu dieser Beobachtung: {{idea}}</p>
-		<p ng-if="note">Eigene Notiz zu dieser Beobachtung: {{note}}</p>
-	<md-dialog-content>
+		<md-list>
+
+			<md-list-item>
+				<p>Kind</p>
+				<p>{{observation.kid.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Bereich</p>
+				<p>{{observation.item.subdomain.domain.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Teilbereich</p>
+				<p>{{observation.item.subdomain.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Baustein</p>
+				<p>{{observation.item.name}}</p>
+			</md-list-item>
+
+			<md-list-item ng-if="observation.niveau > 0 || observation.niveau < 4">
+				<p>Verhalten</p>
+				<p>{{observation.behaviour.text}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Niveau</p>
+				<p>{{observation.niveau}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Hilfe</p>
+				<p>{{observation.help ? 'Ja' : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Eigenes Beispiel</p>
+				<p>{{observation.example ? observation.example : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Eigene Idee</p>
+				<p>{{observation.idea ? observation.idea : 'Nein'}}</p>
+			</md-list-item>
+
+		</md-list>
+	</md-dialog-content>
 
 	<div class="md-actions" layout>
-		<md-button aria-label="cancel" ng-click="cancel()" class="md-warn">
-			Abbrechen
-		</md-button>
 		<span flex></span>
-		<md-button aria-label="save" ng-click="save(newObs)" class="md-primary md-raised">
+		<md-button aria-label="cancel" ng-click="cancel()">
+			Verwerfen
+		</md-button>
+		<md-button aria-label="save" ng-click="save(observation)" class="md-primary md-raised">
 			Speichern
 		</md-button>
 	</div>

@@ -1,3 +1,20 @@
+.behaviour-text-container {
+  margin-right: 48px;
+}
+
+md-icon.selected {
+  color: red;
+}
+
+.behaviour-text {
+  line-height: 1.2em !important;
+}
+
+.capture-dialog > md-select {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
 .obs-tile {
   padding: 1em;
   color: white;
@@ -5,7 +22,27 @@
 }
 
 .obs-grid-row {
-  margin: 8px 0;
+  margin: 0 4px;
+}
+
+.bucket-header > span {
+  padding: 8px;
+}
+
+.domain1-bucket > md-grid-tile {
+  background-color: #FC4807;
+}
+
+.domain2-bucket > md-grid-tile {
+  background-color: #F96F0C;
+}
+
+.domain3-bucket > md-grid-tile {
+  background-color: #9100FB;
+}
+
+.domain4-bucket > md-grid-tile {
+  background-color: #0E5FFB;
 }
 
 @viewport {

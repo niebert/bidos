@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-  .controller('CaptureController', CaptureController);
+  .controller('Capture', Capture);
 
-function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
+function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
 
   Resources.get().then(function(data) {
     $scope.data = data;
@@ -51,42 +51,34 @@ function CaptureController($scope, Resources, CRUD, $q, $mdDialog) {
 
   $scope.obsComplete = function(newObs) {
     if (!newObs) return false;
-    var hasHelp = function() {
-      if (newObs.niveau > 0 && newObs.niveau < 4) {
-        if (newObs.hasOwnProperty('help')) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return true;
-      }
-    };
 
     var a = [
       newObs.hasOwnProperty('kid_id'),
       newObs.hasOwnProperty('item_id'),
-      newObs.hasOwnProperty('niveau') && hasHelp()
+      newObs.hasOwnProperty('niveau')
     ];
 
     return _.all(a);
   };
 
-  $scope.review = function(ev, newObs) {
+  $scope.review = function (newObs) {
     $mdDialog.show({
-      targetEvent: ev,
-      locals: {
-        me: $scope.me,
-        observation: newObs,
-        kid: _.filter($scope.data.kids, {id: +newObs.kid_id})[0],
-        item: _.filter($scope.data.items, {id: +newObs.item_id})[0],
-        behaviour: _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0]
-      },
-      controller: 'CaptureReviewController',
+      locals: {observation: prepareObservation(newObs)},
+      controller: 'CaptureReview',
       templateUrl: `templates/capture-review.dialog.html`
     }).then(function() {
       $scope.reset();
+      $state.go('bidos.observations');
     });
   };
+
+  function prepareObservation (newObs) {
+    newObs.kid_id = parseInt(newObs.kid_id);
+    newObs.item_id = parseInt(newObs.item_id);
+    newObs.kid = _.filter($scope.data.kids, {id: +newObs.kid_id})[0];
+    newObs.item = _.filter($scope.data.items, {id: +newObs.item_id})[0];
+    newObs.behaviour = _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0];
+    return newObs;
+  }
 
 }

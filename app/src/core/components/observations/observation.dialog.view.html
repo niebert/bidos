@@ -1,38 +1,85 @@
-<md-dialog aria-label="ObservationDialogView">
+<md-dialog aria-label="ObservationDialog">
 
-	<md-dialog-content flex layout="column">
+	<md-toolbar class="domain{{observation.item.subdomain.domain.id}}">
+		<div class="md-toolbar-tools">
+			<h3>{{observation.kid.name}}</h3>
 
-		<p ng-if="observation.niveau > 0 && observation.niveau < 4">
-    	<strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}. (Niveau {{observation.niveau}} {{observation.help ? 'mit Hilfe' : ''}})
-		</p>
+			<span flex></span>
 
-		<p ng-if="observation.niveau == 0">
-      <strong>{{observation.kid.name}}</strong> hat das Verhalten noch nicht gezeigt.
-    </p>
+			<md-button class="md-icon-button" aria-label="Delete" ng-click="destroy()">
+				<md-icon md-svg-icon="/img/ic_delete_24px.svg"></md-icon>
+			</md-button>
 
-		<p ng-if="observation.niveau == 4">
-      <strong>{{observation.kid.name}}</strong> hat fortgeschritteneres Verhalten gezeigt.
-    </p>
+			<md-button class="md-icon-button" aria-label="Repeat" ng-click="repeat()">
+				<md-icon md-svg-icon="/img/ic_repeat_24px.svg"></md-icon>
+			</md-button>
 
- 		<p>{{observation.item.subdomain.domain.name}}, {{observation.item.subdomain.name}}, {{observation.item.name}}</p>
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_close_24px.svg"></md-icon>
+			</md-button>
 
-		<hr>
+		</div>
+	</md-toolbar>
 
-		<ul>
-			<li ng-if="me.roleName=='Praktiker'"><strong>Beobachtet von:</strong> {{observation.author.name}}</li>
-			<li><strong>Beobachtet am:</strong> {{observation.created_at | date}}</li>
-			<li><strong>Genehmigt:</strong> {{observation.approved ? 'ja' : 'nein'}}</li>
-		</ul>
+	<md-dialog-content>
+		<md-list>
 
+			<md-list-item>
+				<p>Bereich</p>
+				<p>{{observation.item.subdomain.domain.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Teilbereich</p>
+				<p>{{observation.item.subdomain.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Baustein</p>
+				<p>{{observation.item.name}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Verhalten</p>
+				<p>{{behaviour.text}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Niveau</p>
+				<p>{{observation.niveau}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Hilfe</p>
+				<p>{{observation.help ? 'Ja' : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Genehmigt</p>
+				<p>{{observation.approved ? 'Ja' : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Datum</p>
+				<p>{{observation.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Eigenes Beispiel</p>
+				<p>{{observation.example ? observation.example : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Eigene Idee</p>
+				<p>{{observation.idea ? observation.idea : 'Nein'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Praktiker</p>
+				<p>{{observation.author.name}}</p>
+			</md-list-item>
+
+		</md-list>
 	</md-dialog-content>
 
-	<div class="md-actions" layout>
-		<md-button aria-label="destroy" ng-click="destroy(observation)" class="md-warn" ng-if="me.role!==0"> Löschen </md-button>
-		<span flex></span>
-		<!-- <md-button aria-label="repeat" ng-click="repeat(observation)" class="md-primary md-raised" ng-if="me.role==1"> Wiederholen </md-button> -->
-		<md-button aria-label="cancel" ng-click="cancel()" class=""> Abbrechen </md-button>
-		<md-button aria-label="accept" ng-click="accept(observation)" class="md-primary md-raised" ng-if="me.role==2"> Akzeptieren </md-button>
-	</div>
-
 </md-dialog>
-
