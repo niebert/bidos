@@ -1,8 +1,6 @@
 require('./app');
 require('./auth');
 require('./core/components/app/app-controller');
-require('./core/components/capture/capture-controller');
-require('./core/components/capture/capture-directive');
 require('./core/components/capture/capture-review.controller');
 require('./core/components/capture/capture.dialog.controller');
 require('./core/components/content/content-controller');

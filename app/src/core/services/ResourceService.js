@@ -21,13 +21,6 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.get()
       .then(function (data) {
         prepare(data).then(function (preparedData) {
-          addItemHandlers(preparedData);
-          addObservationHandlers(preparedData);
-          addKidHandlers(preparedData);
-          addGroupHandlers(preparedData);
-          addInstitutionHandlers(preparedData);
-          addUserHandlers(preparedData);
-          makeRoleModifications(preparedData);
           resources = preparedData;
           resolve(resources);
         });
@@ -40,30 +33,20 @@ function ResourceService($rootScope, $q, CRUD) {
 
   function get() {
     return $q(function (resolve) {
-      if (resources) {
-        resolve(resources);
-      } else {
-        init().then(function (response) {
-          resolve(response);
-        });
-      }
+      resolve(resources);
     });
   }
 
   function create(resource) {
     return $q(function (resolve, reject) {
-      CRUD.create(resource)
-      .then(function (response) {
+      CRUD.create(resource).then(function (response) {
         var r = response[0];
-        resources = prepare(resources);
-        resolve(r);
-        // var bucket = resources[r.type + 's']; // pluralize
-        // bucket.push(r);
-        // resources = prepare(resources).then(function(preparedResources) {
-        //   debugger
-        //   let newResource = _.filter(preparedResources[r.type + 's'], {id: r.id})[0];
-        //   resolve(newResource);
-        // });
+        resources[r.type + 's'].push(r);
+        prepare(resources).then(function (preparedResources) {
+          resources = preparedResources;
+          r = _.filter(preparedResources[r.type + 's'], {id: r.id})[0];
+          resolve(r);
+        });
       }).catch(function (err) {
         reject(err);
       });
@@ -75,21 +58,12 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.update(resource)
       .then(function (response) {
         var r = response[0];
-
-        // FIXME! Sometimes `resources` is still a promise! At this point it
-        // should be already resolved and if not, we shouldn't be here.
-
-        // if (resources.hasOwnProperty('$$state')) {
-        //   resources.then(function(resp) {
-        //     resources = resp;
-        //   });
-        //   debugger;
-        // }
-
-        // var bucket = resources[r.type + 's']; // pluralize
-        // bucket.splice(_.findIndex(bucket, {id: r.id}), 1, r);
-        resources = prepare(resources);
-        resolve(r);
+        resources[r.type + 's'].splice(_.findIndex(resources[r.type + 's'], {id: r.id}), 1, r);
+        prepare(resources).then(function(preparedResources) {
+          resources = preparedResources;
+          r = _.filter(preparedResources[r.type + 's'], {id: r.id})[0];
+          resolve(r);
+        });
       }).catch(function (err) {
         reject(err);
       });
@@ -101,10 +75,12 @@ function ResourceService($rootScope, $q, CRUD) {
       CRUD.destroy(resource)
       .then(function(response) { // NOTE response is not a full resource, just type and id
         var r = response[0];
-        // var bucket = resources[r.type + 's']; // pluralize
-        // bucket.splice(_.findIndex(bucket, {id: r.id}), 1);
-        resources = prepare(resources);
-        resolve(r);
+        resources[r.type + 's'].splice(_.findIndex(resources[r.type + 's'], {id: r.id}), 1);
+        prepare(resources).then(function(preparedResources) {
+          resources = preparedResources;
+          r = _.filter(preparedResources[r.type + 's'], {id: r.id})[0]; // NOTE r should be undefined a.k.a not there anymore
+          resolve(r);
+        });
       }).catch(function(err) {
         reject(err);
       });
@@ -121,6 +97,7 @@ function ResourceService($rootScope, $q, CRUD) {
       // key is plural / resources are selected by key
       // type is singular / a resource has a type
 
+      // FIXME eslint error
       _.each(data, function(resources, _key) { // type is PLURAL
 
         // key is the pluralized type of the resource
@@ -129,9 +106,9 @@ function ResourceService($rootScope, $q, CRUD) {
         _.each(resources, function(resource) {
 
           // convert string dates to real dates
+          // FIXME dates are still strings
           _.each(resource, function(val) {
             if (/_at/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
-              debugger
               resource[key] = new Date(resource[key]);
             }
             if (/bday/.test(key) && (Object.prototype.toString.call(val) !== '[object Date]')) {
@@ -187,6 +164,13 @@ function ResourceService($rootScope, $q, CRUD) {
         });
       });
 
+      addItemHandlers(data);
+      addKidHandlers(data);
+      addGroupHandlers(data);
+      addInstitutionHandlers(data);
+      addUserHandlers(data);
+      addObservationHandlers(data);
+      makeRoleModifications(data);
       console.timeEnd('[resources] prepare data');
       resolve(data);
     });

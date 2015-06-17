@@ -62,23 +62,8 @@ function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
   };
 
   $scope.review = function (newObs) {
-    $mdDialog.show({
-      locals: {observation: prepareObservation(newObs)},
-      controller: 'CaptureReview',
-      templateUrl: `templates/capture-review.dialog.html`
-    }).then(function() {
-      $scope.reset();
-      $state.go('bidos.observations');
-    });
+    $scope.reset;
+    $mdDialog.hide({action: 'review', observation: newObs});
   };
-
-  function prepareObservation (newObs) {
-    newObs.kid_id = parseInt(newObs.kid_id);
-    newObs.item_id = parseInt(newObs.item_id);
-    newObs.kid = _.filter($scope.data.kids, {id: +newObs.kid_id})[0];
-    newObs.item = _.filter($scope.data.items, {id: +newObs.item_id})[0];
-    newObs.behaviour = _.filter($scope.item.behaviours, {niveau: +newObs.niveau})[0];
-    return newObs;
-  }
 
 }

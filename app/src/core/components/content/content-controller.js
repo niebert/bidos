@@ -9,7 +9,13 @@ function ContentController(Resources, $mdDialog, $mdToast, $scope) {
     $scope.unapprovedUsers = _.filter(data.users, function(d) {
       return (d.id !== 1) && (d.approved === false);
     });
+    $scope.behaviours = data.behaviours;
+    $scope.kids = _.filter(data.kids, {group_id: data.me.group_id});
+    $scope.observations = _.filter(data.observations, {author_id: data.me.id});
   });
+
+  $scope.observedBehaviour = function (behaviour, kid) {
+  };
 
   $scope.unapprovedUsers = function() {
     return !_.chain($scope.users).pluck('approved').all().value();

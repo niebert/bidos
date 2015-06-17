@@ -8,7 +8,7 @@
 			</div>
 		</md-toolbar>
 
-    <md-subheader class="md-primary">Nicht aktiviert</md-subheader>
+		<md-subheader class="md-primary">Nicht aktiviert</md-subheader>
 
 		<md-list>
 			<md-list-item ng-repeat="user in unapprovedUsers">
@@ -19,3 +19,19 @@
 	</section>
 </md-content>
  -->
+
+<md-content>
+	<md-grid-list md-cols-gt-lg="6" md-cols-lg="5" md-cols-gt-md="4" md-cols-md="3" md-cols-gt-sm="2" md-cols-sm="1" md-cols="5" md-gutter="8px" md-row-height="1:1">
+		<md-grid-tile ng-repeat="behaviour in behaviours | orderBy:'id'" class="domain{{behaviour.item.subdomain.domain.id}}">
+			<md-grid-tile-header layout>
+				<h3>{{behaviour.item.name}} ({{behaviour.niveau}})</h3>
+			</md-grid-tile-header>
+
+			<div class="obs-tile">{{behaviour.text}}</div>
+
+			<md-grid-tile-footer>
+				<h3>{{behaviour.item.subdomain.domain.name}}</h3>
+			</md-grid-tile-footer>
+		</md-grid-tile>
+	</md-grid-list>
+</md-content>

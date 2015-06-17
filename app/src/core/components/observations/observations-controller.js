@@ -26,7 +26,7 @@ function ObservationsController($scope, $mdDialog, Resources) {
       controller: 'Capture',
       templateUrl: 'templates/capture.dialog.html'
     }).then(function(response) {
-      debugger;
+      review(response.observation);
     });
   };
 
@@ -39,10 +39,9 @@ function ObservationsController($scope, $mdDialog, Resources) {
     }).then(function(response) {
       switch (response.action) {
         case 'update':
-          updateObservation(response.observation);
+          refreshObservations();
         break;
         case 'destroy':
-          // deleteObservation(response.observation);
           refreshObservations();
         break;
       }
@@ -62,15 +61,36 @@ function ObservationsController($scope, $mdDialog, Resources) {
     });
   }
 
-  $scope.refreshObservations = refreshObservations();
+  $scope.refreshObservations = refreshObservations;
 
-  function deleteObservation(observation) {
-    $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1);
+  function review(newObs) {
+    $mdDialog.show({
+      locals: {observation: prepareObservation(newObs)},
+      controller: 'CaptureReview',
+      templateUrl: `templates/capture-review.dialog.html`
+    }).then(function() {
+      refreshObservations();
+    });
   }
 
-  function updateObservation(observation) {
-    $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1, observation);
+  function prepareObservation (newObs) {
+    Resources.get().then(function(data) {
+      newObs.kid_id = parseInt(newObs.kid_id);
+      newObs.item_id = parseInt(newObs.item_id);
+      newObs.kid = _.filter(data.kids, {id: +newObs.kid_id})[0];
+      newObs.item = _.filter(data.items, {id: +newObs.item_id})[0];
+      newObs.behaviour = _.filter(newObs.item.behaviours, {niveau: +newObs.niveau})[0];
+    });
+    return newObs;
   }
+
+  // function deleteObservation(observation) {
+  //   $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1);
+  // }
+
+  // function updateObservation(observation) {
+  //   $scope.observations.splice(_.findIndex($scope.observations, {id: observation.id}), 1, observation);
+  // }
 
   $scope.stuff = {};
 

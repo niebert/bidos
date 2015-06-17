@@ -9,6 +9,7 @@ function ObservationDialogController($scope, $q, $state, $mdDialog, $mdToast, lo
     $scope.me = data.me;
     $scope.ideas = _.filter(data.ideas, {observation_id: $scope.observation.id});
     $scope.examples = _.filter(data.examples, {observation_id: $scope.observation.id});
+    $scope.notes = _.filter(data.notes, {observation_id: $scope.observation.id});
     $scope.behaviour = _.filter($scope.observation.item.behaviours, {niveau: $scope.observation.niveau})[0];
   });
 
@@ -61,6 +62,10 @@ function ObservationDialogController($scope, $q, $state, $mdDialog, $mdToast, lo
 
     _.each($scope.ideas, function(idea) {
       stuffToDelete.push(Resources.destroy(idea));
+    });
+
+    _.each($scope.notes, function(note) {
+      stuffToDelete.push(Resources.destroy(note));
     });
 
     $q.all(stuffToDelete).then(function() {

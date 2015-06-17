@@ -63,26 +63,4 @@
 		</md-grid-list>
 	</div>
 
-<!-- 	<md-list>
-		<md-list-item ng-repeat="observation in observations | filter:myFilter | orderBy:'-created_at'"
-			class="card-title md-whiteframe-z1 md-hue-2 domain-{{observation.item.subdomain.domain.id}}"
-			ng-click="viewObservation($event, observation)">
-
-			<p class="md-padding" ng-if="observation.niveau > 0 && observation.niveau < 4">
-				<strong>{{observation.kid.name}}</strong> {{observation.behaviour.text}}. (Niveau {{observation.niveau}}{{observation.help ? ' mit Hilfe' : ''}})
-			</p>
-
-			<p class="md-padding" ng-if="observation.niveau == 0">
-				<strong>{{observation.kid.name}}</strong> hat das Verhalten noch nicht gezeigt.
-			</p>
-
-			<p class="md-padding" ng-if="observation.niveau == 4">
-				<strong>{{observation.kid.name}}</strong> hat fortgeschritteneres Verhalten gezeigt.
-			</p>
-
-			<p class="md-padding">{{observation.item.subdomain.domain.name}}, {{observation.item.subdomain.name}}, {{observation.item.name}}</p>
-			<p class="md-padding" ng-class="{disabledStatus:!observation.approved, enabledStatus:observation.approved}">{{observation.approved ? 'geprüft' : 'ungeprüft'}}</p>
-			<p class="md-padding list-date">{{observation.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-		</md-list-item>
-	</md-list> -->
 </section>
