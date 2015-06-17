@@ -32,10 +32,25 @@ function ResourceService($rootScope, $q, CRUD) {
   }
 
   function get() {
-    return $q(function (resolve) {
-      resolve(resources);
+    return $q(function (resolve, reject) {
+      CRUD.get()
+      .then(function (data) {
+        prepare(data).then(function (preparedData) {
+          resources = preparedData;
+          resolve(resources);
+        });
+      }).catch(function (err) {
+        console.warn('failed initializing data', err);
+        reject(err);
+      });
     });
   }
+
+  // function get() {
+  //   return $q(function (resolve) {
+  //     resolve(resources);
+  //   });
+  // }
 
   function create(resource) {
     return $q(function (resolve, reject) {
