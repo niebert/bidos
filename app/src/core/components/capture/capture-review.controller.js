@@ -43,7 +43,16 @@ function CaptureReview(Resources, $scope, $rootScope, $q, $mdToast, $mdDialog, l
     .then(function(response) {
 
       Resources.get().then(function(data) {
-        let behaviour_id = _.filter(data.behaviours, {item_id: response.item_id, niveau: response.niveau})[0].id;
+
+        let behaviour_id;
+
+        if (obs.niveau > 0 && obs.niveau < 4) {
+          behaviour_id = _.filter(data.behaviours, {
+            item_id: response.item_id,
+            niveau: response.niveau
+          })[0].id;
+        }
+
         console.log('behaviour_id', behaviour_id);
 
         annotations = annotations.map(function(d) {
