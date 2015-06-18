@@ -7,6 +7,7 @@ function ObservationsController($scope, $mdDialog, Resources) {
   Resources.get()
   .then(function(data) {
     $scope.me = data.me;
+    console.warn(data.me);
     $scope.domains = data.domains;
 
     switch (data.me.role) {
