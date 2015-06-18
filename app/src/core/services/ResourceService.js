@@ -93,7 +93,6 @@ function ResourceService($rootScope, $q, CRUD) {
         resources[r.type + 's'].splice(_.findIndex(resources[r.type + 's'], {id: r.id}), 1);
         prepare(resources).then(function(preparedResources) {
           resources = preparedResources;
-          r = _.filter(preparedResources[r.type + 's'], {id: r.id})[0]; // NOTE r should be undefined a.k.a not there anymore
           resolve(r);
         });
       }).catch(function(err) {
