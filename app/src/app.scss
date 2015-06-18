@@ -1,3 +1,23 @@
+.girl {
+  background-color: #FF8CE0;
+  color: #333;
+}
+
+.boy {
+  background-color: #8CBEFF;
+  color: #333;
+}
+
+.girl:not([disabled]):hover {
+  color: #FF8CE0;
+  background: transparent;
+}
+
+.boy:not([disabled]):hover {
+  color: #8CBEFF;
+  background: transparent;
+}
+
 .fade.ng-leave {
   transition:0.5s linear all;
   opacity:1;
