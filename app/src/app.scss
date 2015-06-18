@@ -1,3 +1,14 @@
+/* Status Colors
+   ----------------------------------------------------------------- */
+
+.isActive {
+  color: red;
+}
+
+.approved {
+  color: green;
+}
+
 /* Boys and Girls
    ----------------------------------------------------------------- */
 
@@ -150,10 +161,6 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
   padding-right: 16px;
 }
 
-.isActive {
-  color: red;
-}
-
 .cardbox {
   margin: 24px 8px;
 }
@@ -234,4 +241,8 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
 .enabledStatus {
   color: #2BEC61;
   font-weight: bold;
+}
+
+.thing-list {
+  margin: 0 !important;
 }
