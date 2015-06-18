@@ -48,7 +48,7 @@
 	<div layout>
 		<md-grid-list flex md-cols="1" md-gutter="8px" md-row-height="1:1" ng-repeat="domain in obsDomains" class="obs-grid-row domain{{$index+1}}-bucket">
 
-			<md-grid-tile ng-repeat="observation in domain | filter:myFilter | orderBy:'-created_at'" ng-click="viewObservation($event, observation)">
+			<md-grid-tile ng-repeat="observation in domain | filter:myFilter | orderBy:'-created_at'" ng-click="viewObservation($event, observation)" class="fade">
 			  <md-grid-tile-header layout>
 			  	<h3>{{observation.kid.name}}</h3>
 				</md-grid-tile-header>
