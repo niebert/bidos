@@ -34,7 +34,7 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
   $scope.update = function(kid) {
     if (kid.hasOwnProperty('color')) delete kid.color;
     Resources.update(kid).then(function(updatedKid) {
-      $mdDialog.hide(updatedKid);
+      $mdDialog.hide({action: 'update', kid: updatedKid});
     });
   };
 
