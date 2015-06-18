@@ -272,7 +272,7 @@ function ResourceService($rootScope, $q, CRUD) {
         Object.defineProperty(kid, 'age', {
           get: function() {
             var today = new Date();
-            var birthDate = this.bday;
+            var birthDate = new Date(this.bday);
             var age = today.getFullYear() - birthDate.getFullYear();
             var m = today.getMonth() - birthDate.getMonth();
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
