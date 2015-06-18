@@ -23,6 +23,10 @@ function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
   });
 
   $scope.selectDomain = function() {
+  $scope.close = function () {
+    $mdDialog.cancel();
+  };
+
     delete $scope.newObs.niveau;
     delete $scope.newObs.item_id;
     $scope.domain = _.filter($scope.domains, {id: +$scope.domain_id})[0];
