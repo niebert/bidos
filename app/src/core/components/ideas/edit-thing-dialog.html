@@ -1,0 +1,36 @@
+<md-dialog aria-label="Edit Thing">
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+
+			<h3>{{thing.type === 'idea' ? 'Idee' : 'Beispiel'}} bearbeiten</h3>
+
+			<span flex></span>
+
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content flex layout="column">
+		<form name="f">
+			<div layout="column">
+
+				<md-input-container flex layout-padding layout-margin>
+					<label>{{thing.type === 'idea' ? 'Idee' : 'Beispiel'}}</label>
+					<textarea ng-model="thing.text" columns="1" md-maxlength="150" required></textarea>
+				</md-input-container>
+
+			</div>
+		</form>
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<md-button flex aria-label="Delete Thing" class="md-warn" ng-click="destroy(thing)">Löschen</md-button>
+		<md-button flex aria-label="Update Thing" class="md-raised md-primary" ng-click="update(thing)" ng-disabled="!thing.text.length">Speichern</md-button>
+	</div>
+
+</md-dialog>
+

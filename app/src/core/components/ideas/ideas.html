@@ -1,21 +1,51 @@
-<md-content>
-<h2>Ungeprüfte Ideen</h2>
-	<md-list>
-		<md-list-item ng-repeat="idea in ideas | filter:{approved:false}" ng-click="showIdea($event, idea)">
-		<p>{{idea.text}}</p>
-		<p>{{idea.user.name}}</p>
-		<p>{{idea.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-		</md-list-item>
+<md-content layout>
 
-<h2>Geprüfte Ideen</h2>
-	<md-list>
-		<md-list-item ng-repeat="idea in ideas | filter:{approved:true}" ng-click="showIdea($event, idea)">
-		<p class="md-padding">{{idea.author.name}}</p>
-		<p class="md-padding">{{idea.text}}</p>
-		<p class="md-padding">{{idea.behaviour.text}}</p>
-		<p class="md-padding" ng-class="{disabledStatus:!idea.approved, enabledStatus:idea.approved}">{{idea.approved ? 'geprüft' : 'ungeprüft'}}</p>
-		<p class="md-padding">{{idea.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
-		</md-list-item>
-	</md-list>
+	<div flex class="md-margin">
+		<md-toolbar>
+			<span class="md-toolbar-tools">
+				<h3>Meine Ideen</h3>
+				<span flex></span>
+				<h3>{{ideas.length}}</h3>
+			</span>
+		</md-toolbar>
+		<div class="md-whiteframe-z1 md-padding thing-list">
+			<md-list>
+				<md-list-item class="md-2-line" ng-repeat="idea in ideas | orderBy:'-created_at'">
+					<md-icon md-svg-icon="/img/ic_check_24px.svg" ng-class="{approved:idea.approved}" ng-show="idea.approved"></md-icon>
+			    <div class="md-list-item-text behaviour-text-container" ng-class="{'md-offset':!idea.approved}" ng-click="viewObservation(idea.observation)">
+			      <h3 class="behaviour-text">{{idea.text}}</h3>
+			      <p>{{idea.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+			    </div>
+					<md-button class="md-icon-button" aria-label="Edit Idea" ng-click="edit(idea)" ng-show="!idea.approved">
+						<md-icon md-svg-icon="/img/ic_edit_24px.svg" class="md-secondary"></md-icon>
+					</md-button>
+				</md-list-item>
+			</md-list>
+		</div>
+	</div>
+
+	<div flex class="md-margin">
+		<md-toolbar>
+			<span class="md-toolbar-tools">
+				<h3>Meine Beispiele</h3>
+				<span flex></span>
+				<h3>{{examples.length}}</h3>
+			</span>
+		</md-toolbar>
+		<div class="md-whiteframe-z1 md-padding thing-list">
+			<md-list>
+				<md-list-item class="md-2-line" ng-repeat="example in examples | orderBy:'-created_at'">
+					<md-icon md-svg-icon="/img/ic_check_24px.svg" ng-class="{approved:example.approved}" ng-show="example.approved"></md-icon>
+			    <div class="md-list-item-text behaviour-text-container" ng-class="{'md-offset':!example.approved}"  ng-click="viewObservation(example.observation)">
+			      <h3 class="behaviour-text">{{example.text}}</h3>
+			      <p>{{example.created_at | date:'dd.MM.yyyy HH:mm'}}</p>
+			    </div>
+					<md-button class="md-icon-button" aria-label="Edit Example" ng-click="edit(example)" ng-show="!example.approved">
+						<md-icon md-svg-icon="/img/ic_edit_24px.svg" class="md-secondary"></md-icon>
+					</md-button>
+				</md-list-item>
+			</md-list>
+		</div>
+	</div>
 
 </md-content>

@@ -4,49 +4,42 @@ angular.module('bidos')
 
 function IdeasController(Resources, $mdDialog, $scope) {
 
-  updateGroups();
+  updateScope();
 
-  $scope.showIdea = function (ev, idea) {
+  $scope.viewObservation = function(observation) {
     $mdDialog.show({
-      bindToController: false,
-      controller: 'IdeaDialogShow',
-      locals: {
-        idea: idea
-      },
-      targetEvent: ev,
-      templateUrl: `templates/ideas.show-dialog.html`
+      locals: {observation: observation},
+      controller: 'ObservationDialogController',
+      templateUrl: `templates/observation.dialog.view.html`
+    });
+  };
+
+  $scope.edit = function (thing) {
+    $mdDialog.show({
+      locals: {thing: thing},
+      controller: 'EditThing',
+      templateUrl: 'templates/edit-thing-dialog.html'
     }).then(function(response) {
-      if (!response) return;
       switch (response.action) {
-        case 'delete':
-          $scope.ideas.splice(_.findIndex($scope.ideas, {id: response.id}), 1);
+        case 'update':
+          $scope[thing.type + 's'].splice(_.findIndex($scope[thing.type + 's'], {id: response.thing.id}), 1, response.thing);
           break;
-        case 'edit':
-          $scope.editIdea(response.event, response.idea);
+        case 'destroy':
+          $scope[thing.type + 's'].splice(_.findIndex($scope[thing.type + 's'], {id: response.thing.id}), 1);
           break;
       }
     });
   };
 
-  $scope.editIdea = function (ev, idea) {
-    $mdDialog.show({
-      bindToController: false,
-      controller: 'IdeaDialogEdit',
-      locals: {
-        idea: idea
-      },
-      targetEvent: ev,
-      templateUrl: `templates/ideas.edit-dialog.html`
-    }).then(function(response) {
-      if (!response) return;
-      updateGroups();
-      $scope.showIdea(null, response.idea);
-    });
-  };
-
-  function updateGroups () {
+  function updateScope () {
     Resources.get().then(function(data) {
-      $scope.ideas = data.ideas;
+      $scope.ideas = _.filter(data.ideas, {
+        author_id: data.me.id
+      });
+
+      $scope.examples = _.filter(data.examples, {
+        author_id: data.me.id
+      });
     });
   }
 
