@@ -1,35 +1,67 @@
-<md-dialog aria-label="user-settings-dialog" ng-controller="SettingsDialogController">
+<md-dialog aria-label="User Profile">
 
-	<md-dialog-content flex layout="column">
-		<md-subheader class="md-sticky-no-effect">Ihre Kontodaten</md-subheader>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
 
-		<ul>
-			<li><strong>ID:</strong> {{me.id}}</li>
-			<li><strong>Name:</strong> {{me.name}}</li>
-			<li><strong>Rolle:</strong> {{me.roleName}}</li>
-			<li><strong>E-Mail:</strong> {{me.email}}</li>
-			<li><strong>Benutzername:</strong> {{me.username}}</li>
-			<li><strong>Status:</strong> {{me.approved ? 'zugelassen' : 'nicht zugelassen'}} und {{me.disabled ? 'deaktiviert' : 'aktiviert'}}</li>
-			<li><strong>Gruppe:</strong> {{me.group.name || 'keine'}}</li>
-			<li><strong>Konto erstellt:</strong> {{me.created_at | date}}</li>
-			<li><strong>Konto zuletzt bearbeitet:</strong> {{me.modified_at | date}}</li>
-		</ul>
+			<h3>Benutzerprofil</h3>
 
-<!-- 		<ul ng-if="me.roleName === 'Praktiker'">
-			<li><strong>Kinder in dieser Gruppe:</strong> {{me.kids.length}}</li>
-			<li><strong>Beobachtungen in dieser Gruppe:</strong> {{me.groupObservations.length}}</li>
-			<li><strong>Beobachtungen (alle Gruppen):</strong> {{me.observations.length}}</li>
-			<li><strong>Beobachtete Kinder in dieser Gruppe:</strong> {{me.observedGroupKids.length}}</li>
-			<li><strong>Beobachtete Kinder (alle Gruppen):</strong> {{me.observedKids.length}}</li>
-		</ul> -->
+			<span flex></span>
 
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content>
+		<md-list>
+			<md-list-item>
+				<p>ID</p>
+				<p>{{me.id}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Name</p>
+				<p>{{me.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Benutzername</p>
+				<p>{{me.username}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>E-Mail</p>
+				<p>{{me.email}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Rolle</p>
+				<p>{{me.roleName}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Gruppe</p>
+				<p>{{me.group.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Einrichtung</p>
+				<p>{{me.group.institution.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Konto erstellt am</p>
+				<p>{{me.created_at}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Konto zuletzt bearbeitet am</p>
+				<p>{{me.modified_at}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Gemachte Beobachtungen</p>
+				<p>{{me.observations.length}}</p>
+			</md-list-item>
+		</md-list>
 	</md-dialog-content>
 
 	<div class="md-actions" layout>
-		<md-button aria-label="cancel" ng-click="logout()" class="md-warn md-raised"> Abmelden </md-button>
-		<span flex></span>
-		<md-button aria-label="cancel" ng-click="cancel()" class="md-primary md-raised"> Ok </md-button>
+		<md-button aria-label="Logout" ng-click="logout()" class="md-warn md-raised">
+			Abmelden
+		</md-button>
 	</div>
-
 </md-dialog>
-
