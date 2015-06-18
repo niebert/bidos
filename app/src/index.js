@@ -21,6 +21,7 @@ require('./core/components/groups/group-new.controller');
 require('./core/components/groups/group-show.controller');
 require('./core/components/groups/groups.controller');
 require('./core/components/groups/groups.directive');
+require('./core/components/ideas/edit-thing-controller');
 require('./core/components/ideas/ideas.controller');
 require('./core/components/ideas/ideas.directive');
 require('./core/components/ideas/ideas.show-dialog.controller');
