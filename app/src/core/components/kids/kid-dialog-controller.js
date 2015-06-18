@@ -1,32 +1,27 @@
-/* global angular */
+/* global _, angular */
 angular.module('bidos')
   .controller('KidDialogController', KidDialogController);
 
-function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory, STRINGS, Resources, CRUD, resource) {
+function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, UserFactory, STRINGS, Resources, CRUD, locals) {
 
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
     $scope.groups = data.groups;
     $scope.me = data.me;
-    $scope.roles = STRINGS.roles;
-    $scope.sexes = STRINGS.sexes;
   });
 
-  $scope.kid = resource;
-  $scope.sexes = STRINGS.sexes;
+  $scope.kid = _.clone(locals.kid);
+  $scope.kid.bday = $scope.kid.bday ? new Date($scope.kid.bday) : null;
 
-  $scope.kid.bday = new Date($scope.kid.bday);
+  $scope.localKid = locals.kid;
 
-  $scope.cancel = function() {
+  $scope.close = function() {
     $mdDialog.cancel();
   };
 
-
   $scope.destroy = function (kid) {
-    // kid.type = 'kid';
     if (!confirm('Sind sie sicher?')) return;
     Resources.destroy(kid).then(function (destroyedKid) {
-      console.log(destroyedKid);
       $mdDialog.hide({action: 'destroy', kid: destroyedKid});
       toast('Kind gelöscht');
     }, function (err) {

@@ -6,13 +6,13 @@ function KidsController(Resources, $mdDialog, $scope) {
 
   updateScope();
 
-  $scope.KidDialog = function (ev, resource) {
+  $scope.KidDialog = function (ev, kid) {
     $mdDialog.show({
       bindToController: false,
       controller: 'KidDialogController',
       controllerAs: 'vm',
       locals: {
-        resource: resource
+        kid: kid
       },
       targetEvent: ev,
       templateUrl: `templates/kid-dialog.html`
@@ -34,7 +34,7 @@ function KidsController(Resources, $mdDialog, $scope) {
       controller: 'KidDialogController',
       controllerAs: 'vm',
       locals: {
-        resource: {
+        kid: {
           type: 'kid',
           author_id: $scope.me.id,
           group_id: $scope.me.group_id
