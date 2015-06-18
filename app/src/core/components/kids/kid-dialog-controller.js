@@ -66,6 +66,18 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
     });
   };
 
+  $scope.kidIsValid = function (kid) {
+    let bdayValid =
+      (Object.prototype.toString.call(kid.bday) === '[object Date]')
+        && (!isNaN(kid.bday.getTime()));
+
+    return _.all([
+      kid.hasOwnProperty('name'),
+      kid.hasOwnProperty('sex'),
+      bdayValid
+    ]);
+  };
+
   function toast(message) {
     $mdToast.show($mdToast.simple()
       .content(message)
