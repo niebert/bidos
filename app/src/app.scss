@@ -1,3 +1,6 @@
+/* Boys and Girls
+   ----------------------------------------------------------------- */
+
 .girl {
   background-color: #FF8CE0;
   color: #333;
@@ -18,6 +21,9 @@
   background: transparent;
 }
 
+/* Animations
+   ----------------------------------------------------------------- */
+
 .fade.ng-leave {
   transition:0.5s linear all;
   opacity:1;
@@ -27,15 +33,93 @@
   opacity:0;
 }
 
-// --------------------------------------------------------------------------------------------------------------
-
-
-.behaviour-text-container {
-  margin-right: 48px;
-}
+/* Angular Material
+   ----------------------------------------------------------------- */
 
 md-icon.selected {
   color: red;
+}
+
+md-content {
+  padding: 8px;
+}
+
+md-dialog.review {
+  width: 50%;
+  margin: auto;
+  md-dialog-content {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+/* Native HTML Elements
+   ----------------------------------------------------------------- */
+
+section {
+  margin: 16px;
+  border-radius: 4px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 3.2rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 0 16px;
+}
+
+ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+/* BiDoS Colors
+   ----------------------------------------------------------------- */
+
+$domain1: #ff3e70; // rot -- Personale Kompetenzen
+$domain2: #69cd1c; // orange -- Schriftliche und sprachliche Kompetenzen
+$domain3: #e9a81f; // violett -- Soziale Kompetenzen
+$domain4: #3a5aec; // blau -- Mathematische Kompetenzen
+
+.domain1-bucket > md-grid-tile {
+  background-color: $domain1;
+}
+
+.domain2-bucket > md-grid-tile {
+  background-color: $domain2;
+}
+
+.domain3-bucket > md-grid-tile {
+  background-color: $domain3;
+}
+
+.domain4-bucket > md-grid-tile {
+  background-color: $domain4;
+}
+
+.domain1 {
+  background-color: $domain1;
+}
+
+.domain2 {
+  background-color: $domain2;
+}
+
+.domain3 {
+  background-color: $domain3;
+}
+
+.domain4 {
+  background-color: $domain4;
+}
+
+/* Stuff
+   ----------------------------------------------------------------- */
+
+.behaviour-text-container {
+  margin-right: 48px;
 }
 
 .behaviour-text {
@@ -61,64 +145,9 @@ md-icon.selected {
   padding: 8px;
 }
 
-.domain1-bucket > md-grid-tile {
-  background-color: #FC4807;
-}
-
-.domain2-bucket > md-grid-tile {
-  background-color: #F96F0C;
-}
-
-.domain3-bucket > md-grid-tile {
-  background-color: #9100FB;
-}
-
-.domain4-bucket > md-grid-tile {
-  background-color: #0E5FFB;
-}
-
-.domain1 {
-  background-color: #FC4807;
-}
-
-.domain2 {
-  background-color: #F96F0C;
-}
-
-.domain3 {
-  background-color: #9100FB;
-}
-
-.domain4 {
-  background-color: #0E5FFB;
-}
-
-@viewport {
-    width: 980px;
-    min-zoom: 0.25;
-    max-zoom: 5;
-    orientation: landscape;
-}
-
-md-content {
-  padding: 8px;
-}
-
-section {
-  margin: 16px;
-  border-radius: 4px;
-}
-
-// md-list {
-  // padding: 16px;
-// }
-
 .toolbar-inner-right {
   padding-right: 16px;
 }
-
-
-/* ----------------------------------------- */
 
 .isActive {
   color: red;
@@ -129,23 +158,10 @@ section {
 }
 
 .cardbox-title {
-  // background-color: #444;
-  // color: white;
   font-weight: 200;
   font-size: 1.4rem;
   margin-top: 0;
 }
-
-h2 {
-  font-size: 1.8rem;
-  font-weight: 400;
-  line-height: 3.2rem;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    padding: 0 16px;
-    }
-
-
 
 .section-container {
   margin-bottom: 16px;
@@ -181,35 +197,10 @@ h2 {
   padding: 24px;
 }
 
-// .domain1 {
-//   background-color: #FC4807;
-// }
-
-// .domain2 {
-//   background-color: #F96F0C;
-// }
-
-// .domain3 {
-//   background-color: #9100FB;
-// }
-
-// .domain4 {
-//   background-color: #0E5FFB;
-// }
-
 .debug {
   position: absolute;
   bottom: 16px;
   right: 16px;
-}
-
-md-dialog.review {
-  width: 50%;
-  margin: auto;
-  md-dialog-content {
-    width: 80%;
-    margin: auto;
-  }
 }
 
 #auth > md-tabs > md-tabs-wrapper > md-tabs-canvas {
@@ -220,11 +211,6 @@ md-dialog.review {
   width: 50%;
   margin: 25vh auto;
   padding: 24px;
-}
-
-ul {
-  padding-left: 0;
-  list-style-type: none;
 }
 
 #auth > md-tabs {
