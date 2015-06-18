@@ -4,7 +4,7 @@ angular.module('bidos')
 
 function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
 
-  Resources.get().then(function(data) {
+  Resources.get().then(function (data) {
     $scope.data = data;
     $scope.kids = data.me.kids;
     $scope.items = data.items;
@@ -12,7 +12,7 @@ function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
     $scope.behaviours = data.behaviours;
     $scope.me = data.me;
 
-    ($scope.reset = function() {
+    ($scope.reset = function () {
       delete $scope.domain;
       delete $scope.domain_id;
       delete $scope.newObs;
@@ -22,38 +22,38 @@ function Capture($scope, Resources, CRUD, $q, $state, $mdDialog) {
     })();
   });
 
-  $scope.selectDomain = function() {
   $scope.close = function () {
     $mdDialog.cancel();
   };
 
+  $scope.selectDomain = function () {
     delete $scope.newObs.niveau;
     delete $scope.newObs.item_id;
     $scope.domain = _.filter($scope.domains, {id: +$scope.domain_id})[0];
   };
 
-  $scope.selectItem = function() {
+  $scope.selectItem = function () {
     delete $scope.newObs.niveau;
     $scope.item = _.filter($scope.items, {id: +$scope.newObs.item_id})[0];
   };
 
-  $scope.kidName = function() {
+  $scope.kidName = function () {
     return _.filter($scope.kids, {id: +$scope.newObs.kid_id})[0].name.split(' ')[0];
   };
 
-  $scope.deleteHelp = function() {
+  $scope.deleteHelp = function () {
     delete $scope.newObs.help;
   };
 
-  $scope.behaviour = function(niveau) {
+  $scope.behaviour = function (niveau) {
     return _.filter($scope.item.behaviours, {niveau: niveau})[0];
   };
 
-  $scope.showExample = function(niveau) {
+  $scope.showExample = function (niveau) {
     return _.sample($scope.behaviour(niveau).examples).text;
   };
 
-  $scope.obsComplete = function(newObs) {
+  $scope.obsComplete = function (newObs) {
     if (!newObs) return false;
 
     var a = [
