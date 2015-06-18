@@ -62,7 +62,7 @@ function TabbarController($scope, $state, Resources) {
       $state.go('bidos.export');
     }
   }, {
-    text: 'Ideen',
+    text: 'Ideen & Beispiele',
     roles: ['Praktiker', 'Wissenschaftler'],
     onClick: function () {
       $state.go('bidos.ideas');
