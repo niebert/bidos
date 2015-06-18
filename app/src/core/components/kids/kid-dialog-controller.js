@@ -66,6 +66,10 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
     });
   };
 
+  $scope.sex = function(sex) {
+    $scope.kid.sex = sex;
+  };
+
   $scope.kidIsValid = function (kid) {
     let bdayValid =
       (Object.prototype.toString.call(kid.bday) === '[object Date]')
