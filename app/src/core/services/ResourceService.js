@@ -381,7 +381,7 @@ function ResourceService($rootScope, $q, CRUD) {
         Object.defineProperty(user, 'observations', {
           get: function() {
             return _.filter(data.observations, {
-              author_id: $rootScope.me.id
+              author_id: user.id
             });
           }, enumerable: false
         });
