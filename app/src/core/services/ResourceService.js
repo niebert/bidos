@@ -388,35 +388,35 @@ function ResourceService($rootScope, $q, CRUD) {
       }
 
      // all the users observations (in his/her/silly current group)
-      if (!user.hasOwnProperty('observedKids')) {
-        Object.defineProperty(user, 'observedKids', {
-          get: function() {
-            return _.chain($rootScope.me.observations).pluck('kid').uniq().value();
-          }, enumerable: false
-        });
-      }
+      // if (!user.hasOwnProperty('observedKids')) {
+      //   Object.defineProperty(user, 'observedKids', {
+      //     get: function() {
+      //       return _.chain($rootScope.me.observations).pluck('kid').uniq().value();
+      //     }, enumerable: false
+      //   });
+      // }
 
      // all the users observations (in his/her/silly current group)
-      if (!user.hasOwnProperty('observedGroupKids')) {
-        Object.defineProperty(user, 'observedGroupKids', {
-          get: function() {
-            return _.chain($rootScope.me.observations).pluck('kid').uniq().filter({group_id: $rootScope.me.group_id}).value();
-          }, enumerable: false
-        });
-      }
+      // if (!user.hasOwnProperty('observedGroupKids')) {
+      //   Object.defineProperty(user, 'observedGroupKids', {
+      //     get: function() {
+      //       return _.chain($rootScope.me.observations).pluck('kid').uniq().filter({group_id: $rootScope.me.group_id}).value();
+      //     }, enumerable: false
+      //   });
+      // }
 
      // all the users observations
-      if (!user.hasOwnProperty('groupObservations')) {
-        Object.defineProperty(user, 'groupObservations', {
-          get: function() {
-            return data.observations.filter(function(obs) {
-              let myObs = obs.author_id === $rootScope.me.id;
-              let myGroup = obs.kid.group_id === $rootScope.me.group_id;
-              return _.all([myObs, myGroup]);
-            });
-          }, enumerable: false
-        });
-      }
+      // if (!user.hasOwnProperty('groupObservations')) {
+      //   Object.defineProperty(user, 'groupObservations', {
+      //     get: function() {
+      //       return data.observations.filter(function(obs) {
+      //         let myObs = obs.author_id === $rootScope.me.id;
+      //         let myGroup = obs.kid.group_id === $rootScope.me.group_id;
+      //         return _.all([myObs, myGroup]);
+      //       });
+      //     }, enumerable: false
+      //   });
+      // }
 
       // the role in text TODO implement proper role system
       if (!user.hasOwnProperty('roleName')) {
