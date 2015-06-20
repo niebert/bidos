@@ -158,6 +158,15 @@ CREATE TABLE IF NOT EXISTS notes (
 );
 
 
+CREATE TABLE IF NOT EXISTS feedback (
+  id                SERIAL PRIMARY KEY,
+  author_id         INT REFERENCES users(id),
+  message           TEXT NOT NULL,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
 ALTER TABLE examples ADD COLUMN observation_id INT REFERENCES observations(id);
 ALTER TABLE ideas    ADD COLUMN observation_id INT REFERENCES observations(id);
 ALTER TABLE notes    ADD COLUMN observation_id INT REFERENCES observations(id);
