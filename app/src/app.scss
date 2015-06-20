@@ -131,6 +131,59 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
   background-color: $domain4;
 }
 
+.domain1grey {
+  background-color: lighten($domain1, 20);
+}
+
+.domain2grey {
+  background-color: lighten($domain2, 20);
+}
+
+.domain3grey {
+  background-color: lighten($domain3, 20);
+}
+
+.domain4grey {
+  background-color: lighten($domain4, 20);
+}
+
+// .domain1grey {
+//   border: 10px inset $domain1;
+//   background-color: #ABABAB;
+// }
+
+// .domain2grey {
+//   border: 10px inset $domain2;
+//   background-color: #ABABAB;
+// }
+
+// .domain3grey {
+//   border: 10px inset $domain3;
+//   background-color: #ABABAB;
+// }
+
+// .domain4grey {
+//   border: 10px inset $domain4;
+//   background-color: #ABABAB;
+// }
+
+.not-observed {
+}
+
+/* Observation Tiles
+   ----------------------------------------------------------------- */
+
+.obs-tile {
+  padding: 1em;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+.obs-grid-row {
+  margin: 0 4px;
+}
+
 /* Stuff
    ----------------------------------------------------------------- */
 
@@ -145,17 +198,6 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
 .capture-dialog > md-select {
   padding-top: 12px;
   padding-bottom: 12px;
-}
-
-.obs-tile {
-  padding: 1em;
-  color: white;
-  text-align: center;
-  font-weight: 500;
-}
-
-.obs-grid-row {
-  margin: 0 4px;
 }
 
 .bucket-header > span {
