@@ -1,0 +1,37 @@
+<md-dialog aria-label="Feedback Dialog" flex="50">
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+
+			<h3>Feedback senden</h3>
+
+			<span flex></span>
+
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content>
+
+		<form name="f">
+
+			<md-input-container flex>
+				<label>Ihre Nachricht</label>
+				<textarea ng-model="feedback.message" columns="1" rows="5" md-maxlength="500" required></textarea>
+			</md-input-container>
+
+		</form>
+
+	</md-dialog-content>
+
+	<div class="md-actions" layout>
+		<span flex></span>
+		<md-button aria-label="Send Feedback" ng-click="send(feedback)" class="md-primary md-raised" ng-disabled="!feedback.message">
+			Senden
+		</md-button>
+	</div>
+
+</md-dialog>
