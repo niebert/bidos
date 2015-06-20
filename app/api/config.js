@@ -16,7 +16,7 @@ function getConfig() {
     },
     localdev: {
       port: 3010,
-      host: '192.168.43.91',
+      host: '192.168.43.91', // 192.168.43.91 172.20.10.2
       secret: 'tea1Ba8ed0tooyiquoWoomeej6eexeeyohmeo5Chie0eesohroo9iyooquuohoso',
       db: 'postgres://bidos:bidos@localhost/bidos_development'
     },
