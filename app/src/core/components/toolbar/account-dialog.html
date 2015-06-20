@@ -1,0 +1,61 @@
+<md-dialog aria-label="Account Dialog">
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+
+			<h3>Benutzerprofil</h3>
+
+			<span flex></span>
+
+			<md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+				<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+			</md-button>
+
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content>
+		<md-list>
+			<md-list-item>
+				<p>ID</p>
+				<p>{{me.id}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Name</p>
+				<p>{{me.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Benutzername</p>
+				<p>{{me.username}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>E-Mail</p>
+				<p>{{me.email}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Rolle</p>
+				<p>{{me.roleName}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Gruppe</p>
+				<p>{{me.group.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Einrichtung</p>
+				<p>{{me.group.institution.name}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Konto erstellt am</p>
+				<p>{{me.created_at}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Konto zuletzt bearbeitet am</p>
+				<p>{{me.modified_at}}</p>
+			</md-list-item>
+			<md-list-item>
+				<p>Gemachte Beobachtungen</p>
+				<p>{{me.observations.length}}</p>
+			</md-list-item>
+		</md-list>
+	</md-dialog-content>
+</md-dialog>
