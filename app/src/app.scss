@@ -64,6 +64,11 @@ md-dialog.review {
   }
 }
 
+md-backdrop.md-opaque.md-default-theme {
+    background-color: rgba(0,0,0,.6);
+    position:fixed;
+}
+
 /* Native HTML Elements
    ----------------------------------------------------------------- */
 
