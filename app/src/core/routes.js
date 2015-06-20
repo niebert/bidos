@@ -27,7 +27,7 @@ angular.module('bidos')
         template: '<bidos-actionbar></bidos-actionbar>'
       },
       content: {
-        template: '<bidos-content></bidos-content>'
+        template: '<bidos-home></bidos-home>'
       }
     }
   })
