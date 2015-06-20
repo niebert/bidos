@@ -1,4 +1,4 @@
-<md-toolbar ng-controller="ToolbarController">
+<md-toolbar ng-controller="Toolbar">
 	<span class="md-toolbar-tools">
 
 		<h2>
@@ -14,13 +14,39 @@
 
 		{{me.name}}
 
-		<md-button class="md-icon-button" aria-label="Settings" ng-click="SettingsDialog()">
-			<md-icon md-svg-icon="/img/ic_settings_24px.svg"></md-icon>
-		</md-button>
+    <md-menu md-position-mode="target-right target">
 
-		<md-button class="md-icon-button" aria-label="Refresh" ng-click="refresh()">
-			<md-icon md-svg-icon="/img/ic_refresh_24px.svg"></md-icon>
-		</md-button>
+      <md-button aria-label="Open BiDoS Menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+        <md-icon md-menu-origin md-svg-icon="/img/ic_menu_24px.svg"></md-icon>
+      </md-button>
+
+      <md-menu-content width="3">
+
+        <md-menu-item>
+          <md-button ng-click="account($event)">
+            <md-icon md-svg-icon="/img/ic_account_circle_24px.svg" md-menu-align-target></md-icon>
+            Benutzerprofil
+          </md-button>
+        </md-menu-item>
+
+        <md-menu-item>
+          <md-button ng-click="settings($event)">
+            <md-icon md-svg-icon="/img/ic_settings_24px.svg" md-menu-align-target></md-icon>
+            Einstellungen
+          </md-button>
+        </md-menu-item>
+
+        <md-menu-divider></md-menu-divider>
+
+        <md-menu-item>
+          <md-button ng-click="sync()">
+            <md-icon md-svg-icon="/img/ic_sync_24px.svg" md-menu-align-target></md-icon>
+            Synchronisieren
+          </md-button>
+        </md-menu-item>
+
+        <md-menu-divider></md-menu-divider>
+
         <md-menu-item>
           <md-button ng-click="feedback($event)">
             <md-icon md-svg-icon="/img/ic_feedback_24px.svg" md-menu-align-target></md-icon>
@@ -28,6 +54,31 @@
           </md-button>
         </md-menu-item>
 
+        <md-menu-item>
+          <md-button ng-click="about()">
+            <md-icon md-svg-icon="/img/ic_info_24px.svg" md-menu-align-target></md-icon>
+						Über BiDoS
+          </md-button>
+        </md-menu-item>
+
+        <md-menu-item>
+          <md-button ng-click="docs($event)">
+            <md-icon md-svg-icon="/img/ic_help_24px.svg" md-menu-align-target></md-icon>
+            Dokumentation
+          </md-button>
+        </md-menu-item>
+
+        <md-menu-divider></md-menu-divider>
+
+        <md-menu-item>
+          <md-button ng-click="logout()" class="md-warn">
+            <md-icon md-svg-icon="/img/ic_eject_24px.svg" md-menu-align-target></md-icon>
+            Abmelden
+          </md-button>
+        </md-menu-item>
+
+      </md-menu-content>
+    </md-menu>
 
 	</span>
 </md-toolbar>
