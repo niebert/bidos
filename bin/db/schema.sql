@@ -162,8 +162,19 @@ CREATE TABLE IF NOT EXISTS feedback (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
   message           TEXT NOT NULL,
-  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  modified_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS auth_requests (
+  id                SERIAL PRIMARY KEY,
+  user_id           INT REFERENCES users(id),
+  status            INT NOT NULL,
+  host              TEXT NOT NULL,
+  origin            TEXT NOT NULL,
+  user_agent        TEXT NOT NULL,
+  accept_language   TEXT NOT NULL,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
