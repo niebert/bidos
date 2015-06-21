@@ -177,6 +177,16 @@ CREATE TABLE IF NOT EXISTS auth_requests (
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS activity (
+  id                SERIAL PRIMARY KEY,
+  user_id           INT REFERENCES users(id),
+  url               TEXT NOT NULL,
+  status_code       INT NOT NULL,
+  origin            TEXT NOT NULL,
+  user_agent        TEXT NOT NULL,
+  created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 ALTER TABLE examples ADD COLUMN observation_id INT REFERENCES observations(id);
 ALTER TABLE ideas    ADD COLUMN observation_id INT REFERENCES observations(id);

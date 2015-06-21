@@ -26,7 +26,14 @@ function* auth(next) {
     console.warn(chalk.bgRed.bold.white(' DISABLED AUTHENTICATION '));
     yield next;
   } else {
+
     yield authHandler.call(this, jwt({secret: secret}).call(this, next));
+
+    yield this.pg.db.client.query_(
+      'INSERT INTO activity (user_id, url, status_code, origin, user_agent) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [this.state.user.id, this.request.url, this.res.statusCode, this.request.headers.origin, this.request.headers['user-agent']]);
+
+    yield next;
   }
 }
 
