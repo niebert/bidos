@@ -7,6 +7,8 @@ function* authenticate(next) {
   // log every auth request
   console.info('auth request', this.request.body);
 
+  var ip = this.req.headers['x-forwarded-for'] || this.req.connection.remoteAddress || this.req.socket.remoteAddress || this.req.connection.socket.remoteAddress;
+
   // try to find the specified user in the database
   var result =
     yield this.pg.db.client.query_(
@@ -30,8 +32,8 @@ function* authenticate(next) {
       this.body = { error: 'Der Benutzer ist nicht freigeschaltet'};
 
       yield this.pg.db.client.query_(
-        'INSERT INTO auth_requests (user_id, status, host, origin, user_agent, accept_language) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [this.user.id, 3, this.request.headers.host, this.request.headers.origin, this.request.headers['user-agent'], this.request.headers['accept-language']]);
+        'INSERT INTO auth_requests (user_id, status, ip) VALUES ($1, $2, $3) RETURNING *',
+        [this.user.id, 3, ip]);
 
     } else if (this.user.disabled) {
       console.warn('user disabled');
@@ -39,15 +41,15 @@ function* authenticate(next) {
       this.body = { error: 'Der Benutzer ist deaktiviert'};
 
       yield this.pg.db.client.query_(
-        'INSERT INTO auth_requests (user_id, status, host, origin, user_agent, accept_language) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [this.user.id, 2, this.request.headers.host, this.request.headers.origin, this.request.headers['user-agent'], this.request.headers['accept-language']]);
+        'INSERT INTO auth_requests (user_id, status, ip) VALUES ($1, $2, $3) RETURNING *',
+        [this.user.id, 2, ip]);
 
     } else if (yield bcrypt.compare(this.request.body.password, this.user.password_hash)) {
       console.info('auth success');
 
       yield this.pg.db.client.query_(
-        'INSERT INTO auth_requests (user_id, status, host, origin, user_agent, accept_language) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [this.user.id, 0, this.request.headers.host, this.request.headers.origin, this.request.headers['user-agent'], this.request.headers['accept-language']]);
+        'INSERT INTO auth_requests (user_id, status, ip) VALUES ($1, $2, $3) RETURNING *',
+        [this.user.id, 0, ip]);
 
       yield next;
 
@@ -55,8 +57,8 @@ function* authenticate(next) {
       // user has given the wrong password
 
       yield this.pg.db.client.query_(
-        'INSERT INTO auth_requests (user_id, status, host, origin, user_agent, accept_language) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-        [this.user.id, 1, this.request.headers.host, this.request.headers.origin, this.request.headers['user-agent'], this.request.headers['accept-language']]);
+        'INSERT INTO auth_requests (user_id, status, ip) VALUES ($1, $2, $3) RETURNING *',
+        [this.user.id, 1, ip]);
 
       console.info('password failure');
       this.status = 401;

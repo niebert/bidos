@@ -29,9 +29,11 @@ function* auth(next) {
 
     yield authHandler.call(this, jwt({secret: secret}).call(this, next));
 
+    var ip = this.req.headers['x-forwarded-for'] || this.req.connection.remoteAddress || this.req.socket.remoteAddress || this.req.connection.socket.remoteAddress;
+
     yield this.pg.db.client.query_(
-      'INSERT INTO activity (user_id, url, status_code, origin, user_agent) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [this.state.user.id, this.request.url, this.res.statusCode, this.request.headers.origin, this.request.headers['user-agent']]);
+      'INSERT INTO activity (user_id, url, method, status_code, ip, user_agent) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [this.state.user.id, this.request.url, this.request.method, this.res.statusCode, ip, this.request.headers['user-agent']]);
 
     yield next;
   }

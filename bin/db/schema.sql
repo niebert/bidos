@@ -170,10 +170,7 @@ CREATE TABLE IF NOT EXISTS auth_requests (
   id                SERIAL PRIMARY KEY,
   user_id           INT REFERENCES users(id),
   status            INT NOT NULL,
-  host              TEXT NOT NULL,
-  origin            TEXT NOT NULL,
-  user_agent        TEXT NOT NULL,
-  accept_language   TEXT NOT NULL,
+  ip                TEXT NOT NULL,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -181,8 +178,9 @@ CREATE TABLE IF NOT EXISTS activity (
   id                SERIAL PRIMARY KEY,
   user_id           INT REFERENCES users(id),
   url               TEXT NOT NULL,
+  method            TEXT NOT NULL,
   status_code       INT NOT NULL,
-  origin            TEXT NOT NULL,
+  ip                TEXT NOT NULL,
   user_agent        TEXT NOT NULL,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
