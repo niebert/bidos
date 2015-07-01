@@ -65,5 +65,5 @@
     "url": "git://github.com/rwilhelm/bidos.git"
   },
   "author": "René Wilhelm <rene.wilhelm@gmail.com>",
-  "license": "ISC"
+  "license": "MIT"
 }
