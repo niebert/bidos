@@ -12,19 +12,11 @@ function cached_files() {
   cd -
 }
 
-function build_number() {
-  # get and increment build number <3
-  build=$(awk '{print $NF+1}' .build)
-  echo $build > .build
-  echo $build
-}
-
 cat << EOF
 CACHE MANIFEST
-# version: $(gulp version 2>&1 >/dev/null)
+# version: $(cat package.json | jq -r '.version')
 # date: $(date +%x\ %X)
 # id: $(date +%s | md5sum | cut -d" " -f1)
-# build $(build_number)
 
 CACHE:
 $(cached_files)

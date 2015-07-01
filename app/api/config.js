@@ -30,6 +30,7 @@ function getConfig() {
 
   let config = env[process.env.NODE_ENV];
 
+  config.version = function () { return require('../../package.json').version; };
   config.name = 'bidos';
   config.url = 'http://' + config.host + ':' + config.port;
   config.api = config.url + '/v1';

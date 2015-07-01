@@ -15,6 +15,7 @@
   var sass = require('gulp-ruby-sass');
   var uglify = require('gulp-uglify');
   var shell = require('gulp-shell');
+  var bump = require('gulp-bump');
 
   var brfs = require('brfs');
   var envify = require('envify');
@@ -122,7 +123,13 @@
     'bin/update-index.sh'
   ]));
 
+  gulp.task('bump', function(){
+    gulp.src('./package.json')
+    .pipe(bump({key: 'version'}))
+    .pipe(gulp.dest('./'));
+  });
+
   // --
-  gulp.task('default', ['templates', 'icons', 'css', 'js', 'watch', 'www', 'index', 'manifest']);
+  gulp.task('default', ['templates', 'icons', 'css', 'js', 'watch', 'www', 'index', 'manifest', 'bump']);
 
 }());
