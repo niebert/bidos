@@ -59,7 +59,10 @@
     "vinyl-transform": "^1.0.0",
     "watchify": "^3.2.1"
   },
-  "scripts": {},
+  "scripts": {
+    "api": "iojs app/api",
+    "www": "gulp"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/rwilhelm/bidos.git"
