@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-  .controller('TabbarController', TabbarController);
+  .controller('Tabbar', Tabbar);
 
-function TabbarController($scope, $state, Resources) {
+function Tabbar($scope, $state) {
 
   $scope.actions = [{
     text: 'Übersicht',
@@ -14,21 +14,18 @@ function TabbarController($scope, $state, Resources) {
     text: 'Kinder',
     roles: ['Praktiker'],
     onClick: function () {
-      console.log('bidos.kids');
       $state.go('bidos.kids');
     }
   }, {
     text: 'Beobachtungen',
     roles: ['Praktiker'],
     onClick: function () {
-      console.log('bidos.observations');
       $state.go('bidos.observations');
     }
   }, {
     text: 'Benutzer',
     roles: ['Administrator'],
     onClick: function () {
-      console.log('bidos.users');
       $state.go('bidos.users');
     }
   }, {

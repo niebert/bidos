@@ -1,8 +1,8 @@
 /* global angular */
 angular.module('bidos')
-.controller('ExportController', ExportController);
+.controller('Export', Export);
 
-function ExportController(Resources, $scope, CONFIG) {
+function Export(Resources, $scope, CONFIG) {
 
   $scope.resources = CONFIG.resources;
   $scope.anonResources = CONFIG.resources;

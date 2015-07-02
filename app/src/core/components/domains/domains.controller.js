@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('DomainsController', DomainsController);
+.controller('Domains', Domains);
 
-function DomainsController(Resources, $mdDialog, $scope) {
+function Domains(Resources, $mdDialog, $scope) {
 
   updateDomains();
 

@@ -1,6 +1,6 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('UsersController', UsersController);
+.controller('Users', Users);
 
 function Users(Resources, $mdDialog, $mdMedia, $state, $scope, $rootScope) {
 

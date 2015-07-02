@@ -1,6 +1,6 @@
 /* global _, angular */
 angular.module('bidos')
-  .controller('KidsController', KidsController);
+  .controller('Kids', Kids);
 
 function Kids(Resources, $mdDialog, $scope, $rootScope) {
 

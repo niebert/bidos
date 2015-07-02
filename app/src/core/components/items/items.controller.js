@@ -1,8 +1,8 @@
 /* global _, angular */
 angular.module('bidos')
-.controller('ItemsController', ItemsController);
+.controller('Items', Items);
 
-function ItemsController(Resources, $mdDialog, $scope) {
+function Items(Resources, $mdDialog, $scope) {
 
   updateItems();
 
