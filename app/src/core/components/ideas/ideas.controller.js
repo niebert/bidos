@@ -36,7 +36,7 @@ function IdeasController(Resources, $mdDialog, $scope) {
       $scope.ideas = _.filter(data.ideas, {
         author_id: data.me.id
       });
-
+      debugger
       $scope.examples = _.filter(data.examples, {
         author_id: data.me.id
       });

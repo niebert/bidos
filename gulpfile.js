@@ -104,7 +104,6 @@
     gulp.watch(src + '/**/*.js', ['js', 'index']);
     gulp.watch(src + '/**/*.scss', ['css']);
     gulp.watch(src + '/**/*.html', ['templates']);
-    gulp.watch(dist + '/**/*.{js,css,html}', ['manifest']);
   });
 
   gulp.task('templates', shell.task([

@@ -69,6 +69,14 @@ md-backdrop.md-opaque.md-default-theme {
     position:fixed;
 }
 
+md-grid-list {
+  height: 100%;
+}
+
+.no-top-border {
+  border-top-width: 0px !important;
+}
+
 /* Native HTML Elements
    ----------------------------------------------------------------- */
 
@@ -89,6 +97,10 @@ h2 {
 ul {
   padding-left: 0;
   list-style-type: none;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* BiDoS Colors
@@ -115,35 +127,35 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
   background-color: $domain4;
 }
 
-.domain1 {
+.domain1done {
   background-color: $domain1;
 }
 
-.domain2 {
+.domain2done {
   background-color: $domain2;
 }
 
-.domain3 {
+.domain3done {
   background-color: $domain3;
 }
 
-.domain4 {
+.domain4done {
   background-color: $domain4;
 }
 
-.domain1grey {
+.domain1 {
   background-color: lighten($domain1, 20);
 }
 
-.domain2grey {
+.domain2 {
   background-color: lighten($domain2, 20);
 }
 
-.domain3grey {
+.domain3 {
   background-color: lighten($domain3, 20);
 }
 
-.domain4grey {
+.domain4 {
   background-color: lighten($domain4, 20);
 }
 
@@ -173,9 +185,8 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
 /* Observation Tiles
    ----------------------------------------------------------------- */
 
-.obs-tile {
+.tile {
   padding: 1em;
-  color: white;
   text-align: center;
   font-weight: 600;
 }
@@ -309,3 +320,10 @@ $domain4: #3a5aec; // blau -- Mathematische Kompetenzen
   color: rgba(255, 0, 115, 0.18);
 }
 
+.example:focus {
+  outline:none;
+}
+
+.done {
+  background-color: red;
+}
