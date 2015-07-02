@@ -162,6 +162,10 @@ CREATE TABLE IF NOT EXISTS feedback (
   id                SERIAL PRIMARY KEY,
   author_id         INT REFERENCES users(id),
   message           TEXT NOT NULL,
+  x_resolution      INT,
+  y_resolution      INT,
+  ip                TEXT NOT NULL,
+  user_agent        TEXT NOT NULL,
   created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
