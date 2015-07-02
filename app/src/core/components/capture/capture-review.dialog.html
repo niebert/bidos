@@ -46,12 +46,17 @@
 
 			<md-list-item>
 				<p>Eigenes Beispiel</p>
-				<p>{{observation.example ? observation.example : 'Nein'}}</p>
+				<p>{{observation.example ? observation.example : 'keines'}}</p>
 			</md-list-item>
 
 			<md-list-item>
 				<p>Eigene Idee</p>
-				<p>{{observation.idea ? observation.idea : 'Nein'}}</p>
+				<p>{{observation.idea ? observation.idea : 'keine'}}</p>
+			</md-list-item>
+
+			<md-list-item>
+				<p>Eigene Notiz</p>
+				<p>{{observation.note ? observation.note : 'keine'}}</p>
 			</md-list-item>
 
 		</md-list>

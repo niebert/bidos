@@ -9,7 +9,15 @@ function CaptureReview(Resources, $scope, $q, $mdToast, $mdDialog, locals) {
   $scope.save = function(newObs) {
     var annotations = getAnnotations(newObs);
     var annotationPromises = [];
-    var obs = _.omit(newObs, ['example', 'idea', 'note', 'behaviour', 'item', 'kid']);
+
+    var obs = {
+      type: 'observation',
+      author_id: newObs.author_id,
+      kid_id: newObs.kid.id,
+      item_id: newObs.item.id,
+      niveau: newObs.niveau,
+      help: newObs.help || false
+    };
 
     Resources.create(obs)
     .then(function(response) {
@@ -47,7 +55,7 @@ function CaptureReview(Resources, $scope, $q, $mdToast, $mdDialog, locals) {
 
   function getAnnotations(newObs) {
     return _.map(['example', 'idea', 'note'], function(annotationType) {
-      if (newObs.hasOwnProperty(annotationType)) {
+      if (newObs.hasOwnProperty(annotationType) && newObs[annotationType]) {
         return {
           type: annotationType,
           author_id: newObs.author_id,
