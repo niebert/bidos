@@ -4,7 +4,9 @@
 angular.module('bidos')
 .service('CRUD', CRUDService);
 
-function CRUDService($http, $q, Help, CONFIG) {
+function CRUDService($http, $q, Help, CONFIG, $rootScope) {
+
+  let resourcePromise = null;
 
   return {
     get: getResources,
@@ -14,17 +16,23 @@ function CRUDService($http, $q, Help, CONFIG) {
   };
 
   function getResources() {
+    if (!resourcePromise) {
+      resourcePromise = $q(getVanillaResources);
+    }
+    return resourcePromise;
+  }
+
+  function getVanillaResources(resolve, reject) {
+    console.time('get resources');
     var url = [CONFIG.resources].join('/');
-    return $q(function(resolve, reject) {
-      console.time('[crud] get resources');
-      $http.get(url)
-      .success(function(data) {
-        console.timeEnd('[crud] get resources');
-        resolve(data);
-      })
-      .error(function(err) {
-        reject(err);
-      });
+    $http.get(url).success(function(data) {
+      console.timeEnd('get resources');
+      resourcePromise = null;
+      resolve(data);
+    }).error(function(err) {
+      console.warn('you should log out an log in again');
+      resourcePromise = null;
+      reject(err);
     });
   }
 
