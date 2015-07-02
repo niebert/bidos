@@ -5,7 +5,7 @@ var app = angular.module('bidos', [
   'ngMaterial', /* material design */
   'ngMessages', /* form error messages */
   'ui.router',
-  // 'chart.js'
+  'chart.js'
 ]);
 
 // get config
