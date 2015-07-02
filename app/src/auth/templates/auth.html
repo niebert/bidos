@@ -1,4 +1,4 @@
-<div ng-controller="AuthController" id="auth" class="md-whiteframe-z2" layout-fill>
+<div ng-controller="AuthController" id="auth" class="md-whiteframe-z2" layout-fill ng-if="!$root.auth">
 
 	<md-tabs class="md-accent spacebelow" md-selected="vm.selectedIndex">
 		<md-tab id="tab1" aria-controls="tab1-content"> Anmelden </md-tab>
