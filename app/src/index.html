@@ -24,9 +24,13 @@
 
 <body ng-controller="AuthController as auth">
 
-	<!-- single entry point to layout.html -->
-	<div ng-controller="AppController as app" ui-view>
-		<div class="loading">Einen Moment bitte ...</div>
+	<div ui-view>
+		<div ui-view="toolbar"></div>
+		<div ui-view="tabbar"></div>
+		<div ui-view="actionbar"></div>
+		<div ui-view="content">
+			<div class="loading">Einen Moment bitte ...</div>
+		</div>
 	</div>
 
 	<!-- Tools -->
