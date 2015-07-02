@@ -1,0 +1,51 @@
+<md-content>
+
+	<span class="md-toolbar-tools" layout>
+
+		<md-select placeholder="Kind auswählen" ng-model="kid" ng-if="me.role!==0">
+ 			<md-option ng-repeat="kid in kids" value="{{kid}}">{{kid.name}}</md-option>
+		</md-select>
+
+ 		<md-button class="md-icon-button" aria-label="Clear" ng-click="resetFilters()" ng-if="me.role!==0">
+			<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
+		</md-button>
+		<span flex></span>
+
+		<md-button class="" aria-label="Select a kid" ng-click="gotoKids()">
+			<md-icon md-svg-icon="/img/ic_face_24px.svg" ng-class="{selected:kid}"></md-icon> {{kid.name}}
+		</md-button>
+		<!--
+		<md-button class="md-icon-button" aria-label="Show Domains" ng-click="showDomains()">
+			<md-icon md-svg-icon="/img/ic_view_stream_24px.svg"></md-icon>
+		</md-button>
+
+		<md-button class="md-icon-button" aria-label="Show Subdomains" ng-click="showSubdomains()">
+			<md-icon md-svg-icon="/img/ic_view_quilt_24px.svg"></md-icon>
+		</md-button>
+
+		<md-button class="md-icon-button" aria-label="Show Items" ng-click="showItems()">
+			<md-icon md-svg-icon="/img/ic_view_module_24px.svg"></md-icon>
+		</md-button>
+
+		<md-button class="md-icon-button" aria-label="Show Observations" ng-click="showObservations()">
+			<md-icon md-svg-icon="/img/ic_view_list_24px.svg"></md-icon>
+		</md-button>
+		-->
+	</span>
+
+	<md-grid-list md-cols="6" md-cols-gt-lg="6" md-cols-lg="4" md-cols-md="3" md-cols-sm="2"md-gutter="8px" md-row-height="1:1">
+		<md-grid-tile ng-repeat="tile in tiles | orderBy:'id'" ng-click="tile.action()" class="{{tile.class}}{{tile.observations.length ? 'done' : ''}}">
+
+			<md-grid-tile-header>
+				<h3>{{tile.text}}</h3>
+			</md-grid-tile-header>
+
+			<canvas id="pie" class="chart chart-pie" data="tile.chart.data" labels="tile.chart.labels"></canvas>
+
+			<md-grid-tile-footer>
+				<h3>{{tile.observations.length ? tile.observations.length : ''}}</h3>
+			</md-grid-tile-footer>
+
+		</md-grid-tile>
+	</md-grid-list>
+</md-content>
