@@ -3,31 +3,31 @@
 // everything with bidos is "inside" === authed. the rest is not.
 
 angular.module('bidos')
-.config(['$stateProvider', function($stateProvider) {
+.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
+  $urlRouterProvider.otherwise('/home');
 
   $stateProvider
 
   // main route for anything authenticated (like an authentication wrapper)
   .state('bidos', {
-    url: '',
-    templateUrl: 'templates/app.html'
+    views: {
+      'toolbar': {
+        controller: 'Toolbar',
+        templateUrl: '/templates/toolbar.html'
+      },
+      'content': {
+        template: '<div ui-view="content"></div>'
+      }
+    }
   })
 
-  // gridlist for all the users kids
   .state('bidos.home', {
     url: '/home',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
-      content: {
-        template: '<bidos-home></bidos-home>'
+      'content': {
+        controller: 'Home',
+        templateUrl: '/templates/home.html'
       }
     }
   })
@@ -36,112 +36,70 @@ angular.module('bidos')
   .state('bidos.kids', {
     url: '/kids',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-kids></bidos-kids>'
+        controller: 'Kids',
+        templateUrl: '/templates/kids.html'
       }
     }
   })
 
-  // all my observations
+  // all my kids
+  .state('kids', {
+    url: '/kids',
+    views: {
+      content: {
+        controller: 'Kids',
+        templateUrl: '/templates/kids.html'
+      }
+    }
+  })
+
   .state('bidos.observations', {
     url: '/observations',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-observations><div class="loading">Daten werden geladen ...</div></bidos-observations>'
+        controller: 'Observations',
+        templateUrl: '/templates/observations.html'
       }
     }
   })
 
-  // all my observations
   .state('bidos.capture', {
     url: '/capture',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-capture></bidos-capture>'
+        controller: 'Capture',
+        templateUrl: '/templates/capture.html'
       }
     }
   })
 
-  // all my observations
   .state('bidos.groups', {
     url: '/groups',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-groups></bidos-groups>'
+        controller: 'Groups',
+        templateUrl: '/templates/groups.html'
       }
     }
   })
 
-  // all my observations
   .state('bidos.users', {
     url: '/users',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-users></bidos-users>'
+        controller: 'Users',
+        templateUrl: '/templates/users.html'
       }
     }
   })
 
-  // all my observations
   .state('bidos.institutions', {
     url: '/institutions',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-institutions></bidos-institutions>'
+        controller: 'Institutions',
+        templateUrl: '/templates/institutions.html'
       }
     }
   })
@@ -149,17 +107,9 @@ angular.module('bidos')
   .state('bidos.items', {
     url: '/items',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-items></bidos-items>'
+        controller: 'Items',
+        templateUrl: '/templates/items.html'
       }
     }
   })
@@ -167,17 +117,9 @@ angular.module('bidos')
   .state('bidos.export', {
     url: '/export',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-export></bidos-export>'
+        controller: 'Export',
+        templateUrl: '/templates/export.html'
       }
     }
   })
@@ -185,17 +127,9 @@ angular.module('bidos')
   .state('bidos.ideas', {
     url: '/ideas',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-ideas></bidos-ideas>'
+        controller: 'Ideas',
+        templateUrl: '/templates/ideas.html'
       }
     }
   })
@@ -203,17 +137,29 @@ angular.module('bidos')
   .state('bidos.domains', {
     url: '/domains',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-domains></bidos-domains>'
+        controller: 'Domains',
+        templateUrl: '/templates/domains.html'
+      }
+    }
+  })
+
+  .state('bidos.domains.subdomains', {
+    url: '/:domainId/subdomains',
+    views: {
+      content: {
+        controller: 'Subdomains',
+        templateUrl: '/templates/subdomains.html'
+      }
+    }
+  })
+
+  .state('bidos.domains.subdomains.items', {
+    url: '/:subdomainId/items',
+    views: {
+      content: {
+        controller: 'Items',
+        templateUrl: '/templates/items.html'
       }
     }
   })
@@ -221,17 +167,9 @@ angular.module('bidos')
   .state('bidos.charts', {
     url: '/charts',
     views: {
-      toolbar: {
-        template: '<bidos-toolbar></bidos-toolbar>'
-      },
-      tabbar: {
-        template: '<bidos-tabbar></bidos-tabbar>'
-      },
-      actionbar: {
-        template: '<bidos-actionbar></bidos-actionbar>'
-      },
       content: {
-        template: '<bidos-charts></bidos-charts>'
+        controller: 'Charts',
+        templateUrl: '/templates/charts.html'
       }
     }
   })
