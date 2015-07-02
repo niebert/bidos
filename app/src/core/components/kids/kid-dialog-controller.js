@@ -7,7 +7,6 @@ function KidDialogController($scope, $rootScope, $mdDialog, $mdToast, $state, Us
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
     $scope.groups = data.groups;
-    $scope.me = data.me;
   });
 
   $scope.kid = _.clone(locals.kid);

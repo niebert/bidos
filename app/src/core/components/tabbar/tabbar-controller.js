@@ -69,9 +69,7 @@ function TabbarController($scope, $state, Resources) {
     }
   }];
 
-  Resources.get().then(function(data) {
-    $scope.myActions = _.filter($scope.actions, function(button) {
-      return _.includes(button.roles, data.me.roleName);
-    });
+  $scope.myActions = _.filter($scope.actions, function(button) {
+    return _.includes(button.roles, $rootScope.me.roleName);
   });
 }

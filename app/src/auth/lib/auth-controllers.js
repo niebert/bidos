@@ -107,7 +107,7 @@ function AuthController(Resources, $rootScope, $state, $mdToast, $mdDialog, $sta
   function loginSuccess(response) {
     console.info('[auth] login success', response);
     $rootScope.auth = response.data;
-    Resources.init().then(function(data) {
+    Resources.get().then(function(data) {
       console.log('resources initialized in auth-controller', data);
     });
     $state.go(ROUTES.LOGIN_SUCCESS);

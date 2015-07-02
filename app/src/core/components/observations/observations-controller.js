@@ -2,11 +2,11 @@
 angular.module('bidos')
 .controller('ObservationsController', ObservationsController);
 
-function ObservationsController($scope, $mdDialog, Resources) {
+function ObservationsController($scope, $rootScope, $mdDialog, Resources) {
 
   Resources.get()
   .then(function(data) {
-    $scope.me = data.me;
+    $scope.me = $rootScope.me;
     console.warn(data.me);
     $scope.domains = data.domains;
 
@@ -56,7 +56,7 @@ function ObservationsController($scope, $mdDialog, Resources) {
         .filter(function(obs) {
           return obs.item.subdomain.domain.id === domain.id;
         })
-        .filter({author_id: data.me.id})
+        .filter({author_id: $rootScope.me.id})
         .value();
       }).value();
     });

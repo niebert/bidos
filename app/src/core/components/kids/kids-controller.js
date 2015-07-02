@@ -2,7 +2,7 @@
 angular.module('bidos')
   .controller('KidsController', KidsController);
 
-function KidsController(Resources, $mdDialog, $scope) {
+function Kids(Resources, $mdDialog, $scope, $rootScope) {
 
   updateScope();
 
@@ -36,8 +36,8 @@ function KidsController(Resources, $mdDialog, $scope) {
       locals: {
         kid: {
           type: 'kid',
-          author_id: $scope.me.id,
-          group_id: $scope.me.group_id
+          author_id: $rootScope.me.id,
+          group_id: $rootScope.me.group_id
         }
       },
       targetEvent: ev,
@@ -52,8 +52,7 @@ function KidsController(Resources, $mdDialog, $scope) {
       $scope.users = _.filter(data.users, function(d) { return d.id !== 1; });
       $scope.groups = data.groups;
       $scope.institutions = data.institutions;
-      $scope.me = data.me;
-      $scope.kids = _.filter(data.kids, {group_id: $scope.me.group_id});
+      $scope.kids = $rootScope.me.kids;
     });
   }
 

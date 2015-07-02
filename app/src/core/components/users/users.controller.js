@@ -2,7 +2,7 @@
 angular.module('bidos')
 .controller('UsersController', UsersController);
 
-function UsersController(Resources, $mdDialog, $mdMedia, $state, $scope) {
+function Users(Resources, $mdDialog, $mdMedia, $state, $scope, $rootScope) {
 
   $scope.$watch(function() { return $mdMedia('sm'); }, function(small) {
     $scope.smallDisplay = small;
@@ -107,7 +107,7 @@ function UsersController(Resources, $mdDialog, $mdMedia, $state, $scope) {
 
   function updateScope () {
     Resources.get().then(function(data) {
-      if (data.me.role !== 0) {
+      if ($rootScope.role !== 0) {
         $state.go('bidos.home');
       }
       $scope.users = _.filter(data.users, function(d) { return d.id !== 1; });

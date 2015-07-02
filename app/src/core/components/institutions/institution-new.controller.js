@@ -7,7 +7,6 @@ function NewInstitution(Resources, $scope, $mdDialog, $mdToast) {
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
     $scope.groups = data.groups;
-    $scope.me = data.me;
   });
 
   $scope.save = function (institution) {

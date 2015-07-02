@@ -6,7 +6,6 @@ function ObservationDialogController($scope, $q, $state, $mdDialog, $mdToast, lo
   $scope.observation = locals.observation;
 
   Resources.get().then(function(data) {
-    $scope.me = data.me;
     $scope.ideas = _.filter(data.ideas, {observation_id: $scope.observation.id});
     $scope.examples = _.filter(data.examples, {observation_id: $scope.observation.id});
     $scope.notes = _.filter(data.notes, {observation_id: $scope.observation.id});

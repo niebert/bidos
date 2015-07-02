@@ -4,10 +4,6 @@ angular.module('bidos')
 
   function Toolbar(Resources, $scope, $rootScope, $mdDialog) {
 
-    Resources.get().then(function(data) {
-      $scope.me = data.me;
-    });
-
     $scope.settings = function (ev) {
       $mdDialog.show({
         targetEvent: ev,
@@ -17,7 +13,7 @@ angular.module('bidos')
     };
 
     $scope.sync = function () {
-      Resources.init();
+      Resources.get();
     };
 
     $scope.account = function (ev) {
@@ -30,7 +26,7 @@ angular.module('bidos')
     };
 
     $scope.docs = function (ev) {
-
+      console.warn('TODO docs!', ev); // FIXME TODO
     };
 
     $scope.feedback = function (ev) {

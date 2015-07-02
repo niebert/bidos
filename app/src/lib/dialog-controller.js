@@ -2,10 +2,10 @@ module.exports = function ($scope, $mdDialog, Resources, STRINGS) {
   return function (ev) {
     $mdDialog.show({
       bindToController: false,
-      controller: function() {
+      controller: function($rootScope) {
         console.info('SettingsDialogController');
         Resources.get().then(function(data) {
-          $scope.me = data.me;
+          $scope.me = $rootScope.me;
           console.info('me', $scope.me);
         });
       },

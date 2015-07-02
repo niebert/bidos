@@ -2,12 +2,12 @@
 angular.module('bidos')
 .controller('NewUser', NewUser);
 
-function NewUser(Resources, $scope, $mdDialog, $mdToast, STRINGS) {
+function NewUser(Resources, $scope, $rootScope, $mdDialog, $mdToast, STRINGS) {
 
   Resources.get().then(function(data) {
     $scope.institutions = data.institutions;
     $scope.groups = data.groups;
-    $scope.me = data.me;
+    $scope.me = $rootScope.me;
     $scope.roles = STRINGS.roles;
   });
 
