@@ -1,7 +1,6 @@
 'use strict';
 
 let _ = require('lodash');
-let crypto = require('crypto');
 
 function *getVanillaResources() {
   var behaviour = yield this.pg.db.client.query_({
@@ -94,7 +93,8 @@ function *getVanillaResources() {
     });
   });
 
-  // names can be colors
+  // names as colors
+  // let crypto = require('crypto');
   // _.each(resources.kids, function(k) {
     // k.color = '#' + crypto.createHash('md5').update(k.name).digest('hex').slice(0, 6);
   // });

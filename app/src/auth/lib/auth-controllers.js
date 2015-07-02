@@ -8,6 +8,7 @@ function AuthController(Resources, $rootScope, $state, $mdToast, $mdDialog, $sta
   // make the current state available to everywhere
   $rootScope.$on('$stateChangeSuccess', function(event, toState) {
     $rootScope.state = toState.name;
+    console.log($rootScope.state);
   });
 
   var vm = angular.extend(this, {
@@ -87,7 +88,7 @@ function AuthController(Resources, $rootScope, $state, $mdToast, $mdDialog, $sta
   }
 
   function authFailure() {
-    console.log('%cNOT AUTHORIZED', 'color: green; font-size: 1.2em, padding: 16px;');
+    console.log('%cNOT AUTHORIZED', 'color: #D84A05; font-size: 1.2em, padding: 16px;');
     if (location.hash.match(/reset/)) {
       $state.go('reset');
     } else {
