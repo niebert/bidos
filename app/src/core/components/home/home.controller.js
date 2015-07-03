@@ -4,45 +4,17 @@ angular.module('bidos')
 
 function Home(Resources, $mdDialog, $scope, $rootScope) {
 
-
-    // handle intercepted http requests
-    if (!$rootScope.httpRequests) { $rootScope.httpRequests = 0; }
-    if (!$rootScope.httpRequestErrors) { $rootScope.httpRequestErrors = false; }
-
-    $scope.$on('httpRequest', function(e) {
-      console.log('http request started');
-      $rootScope.httpRequests++;
-    });
-
-    $scope.$on('httpResponse', function(e) {
-      console.log('http request finished');
-      $rootScope.httpRequests--;
-    });
-
-    $scope.$on('httpRequestError', function(e) {
-      console.error('http request error');
-      $rootScope.httpRequestErrors = true;
-    });
-
-    $scope.$on('httpResponseError', function(e) {
-      console.error('http response error');
-      $rootScope.httpRequests--;
-    });
-
-
-
   Chart.defaults.global.colours =
     _.chain(['#ff3e70', '#69cd1c', '#e9a81f', '#3a5aec']).zip(['#FD9FB9', '#9BC57D', '#E3CA92', '#95A1E7']).flatten().value();
 
   Resources.get().then(function(data) {
-    $scope.me = $rootScope.me;
     $scope.items = data.items;
     $scope.domains = data.domains;
     $scope.domainItemCount = _.map(data.domains, 'items.length');
 
-    switch ($scope.me.role) {
+    switch ($rootScope.me.role) {
       case 1:
-        $scope.kids = $scope.me.kids;
+        $scope.kids = $rootScope.me.kids;
       break;
       case 2:
         $scope.groups = data.groups;
@@ -65,20 +37,25 @@ function Home(Resources, $mdDialog, $scope, $rootScope) {
 
   function kidTiles() {
     $scope.tiles = _.map($scope.kids, function(kid) {
+
+      let chartData = {
+        labels: _.chain(kid.observations).groupBy('item.subdomain.domain.name').keys().zip(['Personal (unbeobachtet)', 'Schrift und Sprache (unbeobachtet)', 'Mathematik (unbeobachtet)', 'Sozial (unbeobachtet)']).flatten().value(),
+        data: _.chain(kid.observations).groupBy('domain.id').values().map('length').zip($scope.domainItemCount).flatten().value()
+      };
+
       return {
         id: kid.id,
+        type: kid.type,
         text: kid.name,
         class: 'kid-tile',
-        chart: {
-          labels: _.chain(kid.observations).groupBy('item.subdomain.domain.name').keys().zip(['Personal (unbeobachtet)', 'Schrift und Sprache (unbeobachtet)', 'Mathematik (unbeobachtet)', 'Sozial (unbeobachtet)']).flatten().value(),
-          data: _.chain(kid.observations).groupBy('domain.id').values().map('length').zip($scope.domainItemCount).flatten().value()
-        },
+        chart: chartData,
         action: function() {
           $scope.kid = kid;
           console.log($scope.kid);
           itemTiles();
         }
       };
+
     });
   }
 
@@ -86,6 +63,7 @@ function Home(Resources, $mdDialog, $scope, $rootScope) {
     $scope.tiles = _.map($scope.items, function(item) {
       return {
         id: item.id,
+        type: item.type,
         text: item.name,
         class: `domain${item.subdomain.domain.id}`,
         observations: _.filter($scope.kid.observations, {item_id: item.id}),
@@ -155,45 +133,6 @@ function Home(Resources, $mdDialog, $scope, $rootScope) {
       return true;
     }
 
-    // function compareString(a, b) {
-    //   if (a && b) {
-    //     return b.match(new RegExp(a, 'gi'));
-    //   }
-    //   return true;
-    // }
   };
-
-  // chart tests
-
-  // var ctx = $('#myChart').get(0).getContext('2d');
-  // var myNewChart = new Chart(ctx);
-  // var myPieChart = new Chart(ctx[0]).Pie(data,options);
-
-
-  // $scope.labels = ['Sozial', 'Personal', 'Schrift/Sprache', 'Mathe'];
-  // $scope.data = [300, 500, 100, 200];
-
-
-
-  // var data = [
-  // {
-  //   value: 300,
-  //   color: '#F7464A',
-  //   highlight: '#FF5A5E',
-  //   label: 'Red'
-  // },
-  // {
-  //   value: 50,
-  //   color: '#46BFBD',
-  //   highlight: '#5AD3D1',
-  //   label: 'Green'
-  // },
-  // {
-  //   value: 100,
-  //   color: '#FDB45C',
-  //   highlight: '#FFC870',
-  //   label: 'Yellow'
-  // }
-  // ];
 
 }

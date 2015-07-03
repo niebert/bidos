@@ -9,11 +9,13 @@
  		<md-button class="md-icon-button" aria-label="Clear" ng-click="resetFilters()" ng-if="me.role!==0">
 			<md-icon md-svg-icon="/img/ic_clear_24px.svg"></md-icon>
 		</md-button>
+
 		<span flex></span>
 
 		<md-button class="" aria-label="Select a kid" ng-click="gotoKids()">
 			<md-icon md-svg-icon="/img/ic_face_24px.svg" ng-class="{selected:kid}"></md-icon> {{kid.name}}
 		</md-button>
+
 		<!--
 		<md-button class="md-icon-button" aria-label="Show Domains" ng-click="showDomains()">
 			<md-icon md-svg-icon="/img/ic_view_stream_24px.svg"></md-icon>
@@ -31,6 +33,7 @@
 			<md-icon md-svg-icon="/img/ic_view_list_24px.svg"></md-icon>
 		</md-button>
 		-->
+
 	</span>
 
 	<md-grid-list md-cols="6" md-cols-gt-lg="6" md-cols-lg="4" md-cols-md="3" md-cols-sm="2"md-gutter="8px" md-row-height="1:1">
@@ -40,7 +43,14 @@
 				<h3>{{tile.text}}</h3>
 			</md-grid-tile-header>
 
-			<canvas id="pie" class="chart chart-pie" data="tile.chart.data" labels="tile.chart.labels"></canvas>
+			<div layout layout-wrap>
+				<div flex>{{tile.chart.data[0]}}</div>
+				<div flex>{{tile.chart.data[1]}}</div>
+			</div>
+
+			<!-- <canvas id="pie" class="chart chart-pie" data="tile.chart.data" labels="tile.chart.labels"></canvas> -->
+
+			<!-- <canvas id="doughnut" class="chart chart-doughnut" data="tile.chart.data" labels="tile.chart.labels"></canvas> -->
 
 			<md-grid-tile-footer>
 				<h3>{{tile.observations.length ? tile.observations.length : ''}}</h3>
