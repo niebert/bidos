@@ -159,10 +159,10 @@ function ResourceService($rootScope, $q, CRUD) {
         defineInstitutionProps(resource);
         break;
     }
+    console.timeEnd('prepare data');
   }
 
   function link (resource) {
-    console.time('link');
     // pick k/v-pairs that reference another resource, e.g. item_id (n.b. test
     // is faster than match -- http://stackoverflow.com/q/10940137/220472)
     var refs = _.pick(resource, function(refId, refKey) {
@@ -205,7 +205,6 @@ function ResourceService($rootScope, $q, CRUD) {
         });
       });
     });
-    console.timeEnd('link');
   }
 
 
